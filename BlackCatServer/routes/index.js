@@ -91,7 +91,7 @@ exports.fetchCode=function(req,res){
                             new  BaseReturnInfo(0,"Error occured while removing: " + err,"")
                             );
                     }
-                    smscodemodule(mobile,function)
+                  //  smscodemodule(mobile,function)
                 });
 
 
