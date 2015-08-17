@@ -1,9 +1,13 @@
 
 var    BaseReturnInfo = require('../Module/basereturnmodel.js');
 var mongodb = require('../BlackCatDal/mongodb.js');
+var smscodemodule=require('../Common/sendsmscode').sendsmscode;
 var  Apperversion= mongodb.AppVersionModel;
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
-var mobileVerify = /^13\d{9}|14[57]\d{8}|15[012356789]\d{8}|18[01256789]\d{8}|170\d{8}$/;
+//var mobileVerify = /^13\d{9}|14[57]\d{8}|15[012356789]\d{8}|18[01256789]\d{8}|170\d{8}$/;
+var resendTimeout = 60;
+//var mobileVerify = /^13\d{9}|14[57]\d{8}|15[012356789]\d{8}|18[01256789]\d{8}|170\d{8}$/;
+var mobileVerify = /^1\d{10}$/;
 /**
  * 测试api 调用方法
  **/
@@ -72,10 +76,47 @@ exports.fetchCode=function(req,res){
                    new BaseReturnInfo(0,"Error occured: " + err,"")
                );
             }
+            if(instace){
+                var  now= new Date();
+                if ((now-instace.createdTime)<resendTimeout*1000){
+                    return res.status(500).json(
+                        new BaseReturnInfo(0,"","Wait a moment to send again"))
+                }
+
+            }
+            else{
+                instace.remove(function(err){
+                    if(err){
+                        return  res.status(500).json.(
+                            new  BaseReturnInfo(0,"Error occured while removing: " + err,"")
+                            );
+                    }
+                    smscodemodule(mobile,function)
+                });
+
+
+            }
+
 
         }
     );
 
+};
+
+/// ???????????
+var sendSmsResponse = function(res, error, response){
+    if(error || response.statusCode != 200){
+        res.status(500).json({
+            type: false,
+            message: "Error occured in sending sms: " + error
+        });
+        return;
+    }
+
+    // get back to user
+    res.status(200).json({
+        timeout: resendTimeout
+    });
 };
 
 
