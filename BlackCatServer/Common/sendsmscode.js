@@ -3,13 +3,17 @@
  */
 
 var mongodb = require('../BlackCatDal/mongodb.js');
+var request = require('superagent');
 
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
+
 exports.sendsmscode=function(mobile,callback){
     var smscode=parseInt(Math.random()*90000+10000);
+    console.log("sendsmscode mobile:"+mobile);
     var smscodeInstace=new smsVerifyCodeModel();
     smscodeInstace.mobile=mobile;
     smscodeInstace.smsCode=smscode;
+    smscodeInstace.createdTime=Date.now();
     smscodeInstace.save(function(err,user){
         if(err){
             if(callback!=undefined){
@@ -38,6 +42,7 @@ exports.sendsmscode=function(mobile,callback){
             .send(options)
             .type('form')
             .end(function(err, res){
+                //console.log(res)
                 callback(err, res);
             });
 

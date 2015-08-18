@@ -44,3 +44,4 @@ exports.close = function() {
 
 exports.AppVersionModel = require('../BlackCatDal/appversion.js');
 exports.SmsVerifyCodeModel = require('./smsVerifyCode.js');
+exports.UserModel=require('../BlackCatDal/user');
