@@ -4,8 +4,15 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var img=require('commonshema').ImgInfo;
 
+
+var ImgInfo= new Schema({
+    originalpic:{type:String,default:""},
+    thumbnailpic:{type:String,default:""},
+    width:{type:String,default:""},
+    height:{type:String,default:""}
+
+});
 var  UserSchema=new Schema({
     mobile: { type: String, index: true},
     name :{type:String,default:''},
@@ -14,7 +21,10 @@ var  UserSchema=new Schema({
     email:{type:String,default:''},
     token:{type:String,default:''},
     password:String,
-    headportrait: img,
+    headportrait: { originalpic:{type:String,default:""},
+        thumbnailpic:{type:String,default:""},
+        width:{type:String,default:""},
+        height:{type:String,default:""}},
     subject:{subjectid:Number,name:String},
     carmodels:{modelsid:Number,name:String},
     logintime:{type:Date,default:Date.now()}

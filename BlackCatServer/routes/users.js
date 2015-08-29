@@ -142,7 +142,7 @@ exports.UserLogin=function(req,res){
             var newuser=new usermodel();
              newuser.mobile=mobile;
              newuser.create=new Date();
-             usermodel.save(function(err,newinstace){
+            newuser.save(function(err,newinstace){
                 if(err){
                    return res.status(500).json(new BaseReturnInfo(0,"find user err:"+err,""));
                 }
