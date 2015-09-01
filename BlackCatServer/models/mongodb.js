@@ -4,7 +4,7 @@
 
 var mongoose = require("mongoose");
 
-var dbcofing = require('../Common/Config/DbConfig');
+var dbcofing = require('../Config/DbConfig');
 
 //var secrets = require(secretsFile);
 
@@ -42,6 +42,7 @@ exports.close = function() {
     mongoose.connection.close();
 }
 
-exports.AppVersionModel = require('../BlackCatDal/appversion.js');
+exports.AppVersionModel = require('./appversion.js');
 exports.SmsVerifyCodeModel = require('./smsVerifyCode.js');
-exports.UserModel=require('../BlackCatDal/user');
+exports.UserModel=require('./user');
+exports.DriveSchoolModel=require('./driveschool');

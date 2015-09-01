@@ -2,7 +2,7 @@
  * Created by metis on 2015-08-17.
  */
 
-var mongodb = require('../BlackCatDal/mongodb.js');
+var mongodb = require('../models/mongodb.js');
 var request = require('superagent');
 
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
@@ -20,7 +20,7 @@ exports.sendsmscode=function(mobile,callback){
                 return callback(err);
             }
         }
-        var sms = '????????' + smscode + '???????????????????????????????????????';
+        var sms = '您的黑猫驾校验证码是' + smscode + '。请在五分钟之内完成验证。本条信息无需回复。如非本人操作，请忽略。【黑猫驾校】';
         var options  = {
             "sn": "SDK-WSS-010-08341",
             "pwd": "DD6929B3420DA8E2785261FBF1074440",
@@ -42,7 +42,7 @@ exports.sendsmscode=function(mobile,callback){
             .send(options)
             .type('form')
             .end(function(err, res){
-                //console.log(res)
+                console.log(res)
                 callback(err, res);
             });
 

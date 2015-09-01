@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 
 
 var ImgInfo= new Schema({
+    id :Number,
     originalpic:{type:String,default:""},
     thumbnailpic:{type:String,default:""},
     width:{type:String,default:""},
@@ -27,7 +28,14 @@ var  UserSchema=new Schema({
         height:{type:String,default:""}},
     subject:{subjectid:Number,name:String},
     carmodels:{modelsid:Number,name:String},
-    logintime:{type:Date,default:Date.now()}
+    logintime:{type:Date,default:Date.now()},
+    address: String,
+    //Î¬¶È
+    latitude: Number,
+    longitude: Number,
+    loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
+    invitationcode:{type:Number},
+    referrerCode: Number,
 
 
 });

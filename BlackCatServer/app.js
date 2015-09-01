@@ -6,10 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //var apijson=require('./API');
 
-var routes = require('./routes/index');
-var userroutes = require('./routes/users');
+var apiRouterV1 = require('./routes/api_v1_router');
 
-var v1 = express.Router();
+
 var app = express();
 
 app.use(function(req, res, next) {
@@ -39,24 +38,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //test git
 //app.use('/', routes);
 //app.use('/users', users);
-app.use('/api/v1', v1);
-app.use('/api/', v1);
-//================================================ v1 api=================
-//测试接口
-v1.get('/test',routes.TestAPI);
-// app版本信息
-v1.get('/appversion/:type', routes.appVersion);
-// 获取验证码
-v1.get('/code/:mobile', userroutes.fetchCode);
-//获取科目
-v1.get('/userinfo/subject', userroutes.GetSubject);
-// 获取车型
-v1.get('/userinfo/carmodel', userroutes.GetCarModel);
-//用户登录
-v1.post('/userinfo/userlogin', userroutes.UserLogin);
+//app.use('/api/v1', v1);
+//app.use('/api/', v1);
+app.use('/api/v1', apiRouterV1);
+app.use('/api/', apiRouterV1);
 
-
-//=======================================================================
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
