@@ -74,7 +74,7 @@ v1.post("/courseinfo/finishreservation",ensureAuthorizedController.ensureAuthori
 //用户投诉
 v1.post("/courseinfo/usercomplaint",ensureAuthorizedController.ensureAuthorized,courseController.postUserComplaint);
 // 用户评论
-v1.post("/courseinfo/usercomment",ensureAuthorizedController.ensureAuthorized,courseController.userComment);
+v1.post("/courseinfo/usercomment",ensureAuthorizedController.ensureAuthorized,courseController.postUserComment);
 //教练获取预约列表
 
 // 教练获取某一天的预约列表
