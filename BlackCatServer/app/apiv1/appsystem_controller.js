@@ -60,3 +60,8 @@ exports.GetCarModel=function(req,res){
     var carmodels=commondataServer.carmodels;
     return res.json(new BaseReturnInfo(1,'',carmodels));
 }
+
+exports.GetWorkTimes=function(req,res){
+    var worktimes=commondataServer.worktimes;
+    return res.json(new BaseReturnInfo(1,'',worktimes));
+};

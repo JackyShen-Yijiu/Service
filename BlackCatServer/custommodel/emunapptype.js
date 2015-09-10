@@ -13,3 +13,32 @@ exports.UserType={
     User:1,
     Coach:2
 };
+// 报名信息申请状态
+exports.ApplyState={
+    NotApply:0, // 未报名
+    Applying:1, // 申请中
+    Applyed:2 // 报名成功
+}
+// 报名信息处理状态
+
+exports.ApplyHandelState={
+    NotHandel:0,// 未处理
+    Handeling :1,// 处理中
+    Handeled: 2 // 处理成功
+}
+
+exports.ReservationState={
+    //预约中
+   applying:1,
+    // 申请取消
+    applycanceling:2,
+    // 确认取消
+   applycancel:3,
+    // 已确认
+    applyconfirm:4,
+    //已拒绝
+    applyrefuse:5,
+    //已完成
+    finish:6
+
+}
