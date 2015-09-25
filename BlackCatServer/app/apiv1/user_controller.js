@@ -216,6 +216,10 @@ exports.getUserinfo=function(req,res){
     })
 
 }
+// 用户修改密码
+exports.updatePassword=function(req,res){
+    return res.json(new BaseReturnInfo(0,"",""));
+}
 
 
 
