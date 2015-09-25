@@ -2,6 +2,7 @@ var mongodb = require('../models/mongodb.js');
 var schoolModel=mongodb.DriveSchoolModel;
 var schoolclassModel=mongodb.ClassTypeModel;
 var trainingfieldModel=mongodb.TrainingFieldModel;
+var IM=require('../Common/IM/mobIm');
 
 exports.adddriveschool=function(callback){
     var school=new schoolModel();
@@ -67,4 +68,10 @@ exports.adddschoolclass=function(callback){
             return  callback(null,newshchool);
         }
     });
+};
+
+exports.gettok=function(callback){
+    IM.gettoken(function(data){
+        callback(data);
+    })
 };

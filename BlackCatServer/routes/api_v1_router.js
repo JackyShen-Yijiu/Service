@@ -23,10 +23,14 @@ v1.get('/info/subject', appsystemController.GetSubject);
 v1.get('/info/carmodel', appsystemController.GetCarModel);
 // 获取系统教练的工作时间
 v1.get('/info/worktimes', appsystemController.GetWorkTimes);
+// 获取图片上传token
+v1.get('/info/qiniuuptoken', appsystemController.GetqiniuupToken);
 
 //------------------------用户信息----------------------------------
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
+// 检验验证码 (用户登后修改验证码使用)
+//v1.post('/Verification/:mobile', userController.fetchCode);
 //用户注册
 v1.post('/userinfo/signup', userController.postSignUp);
 //用户登录
@@ -39,7 +43,7 @@ v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,
 //根据用户或者教练的id获取基本信息
 v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
 // 修改密码
-
+v1.post("/userinfo/updatepwd",ensureAuthorizedController.ensureAuthorized);
 //修改手机号
 
 
@@ -84,9 +88,13 @@ v1.post("/courseinfo/coachhandleinfo",ensureAuthorizedController.ensureAuthorize
 // 教练评价学员学习情况
 v1.post("/courseinfo/coachcomment",ensureAuthorizedController.ensureAuthorized,courseController.postCoachComment);
 
+//------------------------IM---------------
+v1.get('/gettoken', testController.gettoken);
+//-------------------------------------------------------------
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);
 v1.get('/addaddtrainingfield', testController.addaddtrainingfield);
+
 //------------------------------------------------------------------------------------
 module.exports = v1;

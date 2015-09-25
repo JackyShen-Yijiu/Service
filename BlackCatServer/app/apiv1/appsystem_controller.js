@@ -4,7 +4,8 @@
 
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var mongodb = require('../../models/mongodb.js');
-var commondataServer=require('../../Config/commondata')
+var commondataServer=require('../../Config/commondata');
+var qiniu=require("../../Common/qiniuUnit");
 var  Apperversion= mongodb.AppVersionModel;
 /**
  * 测试api 调用方法
@@ -65,3 +66,7 @@ exports.GetWorkTimes=function(req,res){
     var worktimes=commondataServer.worktimes;
     return res.json(new BaseReturnInfo(1,'',worktimes));
 };
+exports.GetqiniuupToken=function(req,res){
+    var token =qiniu.getQiniuUpToken();
+    return res.json(new BaseReturnInfo(1,'',token));
+}
