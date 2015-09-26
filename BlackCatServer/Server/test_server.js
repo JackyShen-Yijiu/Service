@@ -2,6 +2,7 @@ var mongodb = require('../models/mongodb.js');
 var schoolModel=mongodb.DriveSchoolModel;
 var schoolclassModel=mongodb.ClassTypeModel;
 var trainingfieldModel=mongodb.TrainingFieldModel;
+var usercount=mongodb.UserCountModel;
 var IM=require('../Common/IM/mobIm');
 
 exports.adddriveschool=function(callback){
@@ -22,6 +23,29 @@ exports.adddriveschool=function(callback){
     }
     });
 };
+exports.inindatabase=function(callback){
+    usercount.findOne(function(err,count){
+        if(err){
+          return  callback(err);
+        }
+        console.log(count);
+        if (!count){
+            var newcount=new usercount();
+            newcount.save(function(err,data){
+                if (err)
+                {
+                    return   callback(err);
+                }else
+                {
+                    return  callback(null,data);
+                }
+            })
+        }else{
+            return callback(null, count);
+        }
+    })
+
+}
 exports.addaddtrainingfield=function(callback){
     var field=new trainingfieldModel();
     field.fieldname="海淀练场";

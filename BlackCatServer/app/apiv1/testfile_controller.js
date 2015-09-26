@@ -41,6 +41,19 @@ exports.addaddtrainingfield=function(req,res){
         }
     })
 };
+
+exports.initData=function(req,res){
+    testserver.inindatabase(function(err,data){
+        if(err){
+            console.log(err);
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            console.log('suceeses');
+            return res.json (new BaseReturnInfo(1,"",data));
+        }
+    })
+};
+
 //获取token
 exports.gettoken=function(req,res){
     testserver.gettok(function(err,data){

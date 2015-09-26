@@ -95,6 +95,7 @@ v1.get('/gettoken', testController.gettoken);
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);
 v1.get('/addaddtrainingfield', testController.addaddtrainingfield);
+v1.get("/initdata",testController.initData)
 
 //------------------------------------------------------------------------------------
 module.exports = v1;
