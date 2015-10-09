@@ -102,7 +102,26 @@ exports.getNearbyCoach=function(req,res){
         }
     });
 };
-
+// 获取教学下面的教练
+exports.getSchoolCoach=function(req,res){
+    var  coachinfo={
+        schoolid:req.params.schoolid,
+        index:req.params.index
+    }
+    console.log(coachinfo);
+    if (coachinfo.schoolid===undefined||coachinfo.index === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"parms is wrong",""));
+    };
+    userserver.getSchoolCoach(coachinfo,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
 exports.postapplySchool=function(req,res){
     var applyinfo= {
          name : req.body.name,

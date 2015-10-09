@@ -281,7 +281,7 @@ exports.updatePassword=function(pwdinfo,callback){
  });
 }
 // 获取附近的教练
-exports.getNearCoach=function(latitude, longitude, radius ,callback){
+exports.getNearCoach=function(latitude, longitude, radius,callback){
     coachmode.getNearCoach(latitude, longitude, radius ,function(err ,coachlist){
         if (err || !coachlist || coachlist.length == 0) {
             console.log(err);
@@ -316,6 +316,45 @@ exports.getNearCoach=function(latitude, longitude, radius ,callback){
         }
 
     })
+
+};
+// 获取学校下面的教练
+exports.getSchoolCoach=function(coachinfo,callback){
+    coachmode.find({"driveschool":new mongodb.ObjectId(coachinfo.schoolid)})
+        .where("is_lock").equals("false")
+        .where("is_validation").equals("true")
+        .skip((coachinfo.index-1)*10)
+        .limit(10)
+        .exec(function(err ,coachlist){
+        if (err || !coachlist || coachlist.length == 0) {
+            console.log(err);
+            callback("get coach list failed"+err);
+
+        } else {
+            process.nextTick(function() {
+                rescoachlist=[];
+                coachlist.forEach(function (r, idx) {
+                    var returnmodel  = { //new resbasecoachinfomode(r);
+                        coachid : r._id,
+
+                        name: r.name,
+                        driveschoolinfo: r.driveschoolinfo,
+                        headportrait:r.headportrait,
+                        starlevel: r.starlevel,
+                        is_shuttle: r.is_shuttle,
+                        latitude: r.latitude,
+                        longitude: r.longitude
+
+                    }
+                    //  r.restaurantId = r._id;
+                    // delete(r._id);
+                    rescoachlist.push(returnmodel);
+                });
+                callback(null, rescoachlist);
+            });
+        }
+
+    });
 
 };
 // 添加我喜歡的教練

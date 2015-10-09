@@ -8,6 +8,7 @@ var coursemode=mongodb.CourseModel;
 var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
+require('date-utils');
 
 exports.GetCoachCourse=function(coachid,date ,callback){
     coachmode.findById(new mongodb.ObjectId(coachid),function(err,coachdata){
@@ -159,7 +160,7 @@ exports.postReservation=function(reservationinfo,callback){
         reservation.shuttleaddress=reservationinfo.address? reservationinfo.address:"";
         reservation.reservationcreatetime=new Date();
         reservation.reservationstate=appTypeEmun.ReservationState.applying;
-        reservation.bigintime=new Date(reservationinfo.begintime);
+        reservation.begintime=new Date(reservationinfo.begintime);
         reservation.endtime=new Date(reservationinfo.endtime);
         reservation.subject=userdata.subject;
         reservation.coursehour=coursecount;
@@ -204,8 +205,8 @@ exports.postReservation=function(reservationinfo,callback){
 //获取用户的预约信息
 exports.getuserReservation=function(userid,callback){
     reservationmodel.find({userid:new mongodb.ObjectId(userid)})
-        .populate("reservationcourse")
-      // .sort({reservationcreatetime:-1})
+        .populate("coachid","_id name driveschoolinfo headportrait")
+       .sort({reservationcreatetime:-1})
         .exec(function(err,reservationlist){
             if(err){
              return    callback("查询语言信息出错："+err)
@@ -235,19 +236,40 @@ exports.userCancelReservation=function(reservation,userid,callback){
         if(!resdata||resdata.length){
             callback("没有找到该语言信息");
         }
-        if(resdata.reservationstate<appTypeEmun.ReservationState.applyrefuse){
+        if(resdata.reservationstate!=appTypeEmun.ReservationState.applying&&
+            resdata.reservationstate!=appTypeEmun.ReservationState.applyconfirm){
             callback("该预约的状态无法取消");
         }
         var  now=new Date();
-        if (((resdata.begindate-now)/(1000*3600))<24){
+        if (now.getHoursBetween(resdata.begintime)<24){
             return callback("该时间：不能取消");
         }
         resdata.reservationstate=appTypeEmun.ReservationState.applycancel;
+        // 修改预约状态
+        resdata.save(function(err,newdata){
+            // 修改课程表中预约信息
+            process.nextTick(function(){
+                newdata.reservationcourse.forEach(function(r){
+                    coursemode.findOne(new mongodb.ObjectId(r),function(err,coursedata){
+                        coursedata.selectedstudentcount=coursedata.selectedstudentcount-1;
+                        coursedata.courseuser.push(new mongodb.ObjectId(userdata._id));
+                        coursedata.coursereservation.push(new mongodb.ObjectId(newreservation._id));
+                        coursedata.save(function(err,data){
+
+                        });
+                })
+            })
+            // 修改个人信息中的语言信息
+
+
+        });
+
 
     });
-};
+});
+}
 exports.userfinishReservation=function(reservation,userid,callback){
-    reservationmodel.find({_id:new mongodb.ObjectId(reservation),userid:new mongodb.ObjectId(reservation)},function(err,resdata){
+    reservationmodel.find({_id:new mongodb.ObjectId(reservation),userid:new mon1godb.ObjectId(reservation)},function(err,resdata){
         if(err){
             return  callback("查询预约课程出错："+err);
         }

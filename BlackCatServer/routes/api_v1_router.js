@@ -75,7 +75,8 @@ v1.get("/driveschool/schoolclasstype/:schoolid",driveSchoolController.getSchoolC
 v1.get("/trainingfield/nearbytrainingfield",driveSchoolController.getNearbytrainingfield);
 // 附近的教练
 v1.get("/userinfo/nearbycoach", userController.getNearbyCoach);
-//
+// 获取驾校下面的教练
+v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach)
 
 
 //==============================预约课程=========================================
