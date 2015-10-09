@@ -33,7 +33,9 @@ var DriveSchoolSchema=new Schema({
     address: {type:String,default:''},
     responsible:{type:String,default:''}, // 负责人
     phone:{type:String,default:''},  //联系电话
-    websit:{type:String,default:''}  // 网址
+    websit:{type:String,default:''},  // 网址
+    maxprice:Number,  // 最高价格
+    minprice:Number   // 最低价格
 
 });
 

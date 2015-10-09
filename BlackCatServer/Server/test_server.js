@@ -11,6 +11,9 @@ exports.adddriveschool=function(callback){
      school.latitude= 40.096263;
      school.longitude=116.127921 ;
      school.loc.coordinates=[116.127921,40.096263];
+    school.maxprice=5000;
+    school.minprice=3000;
+    //school._id=new mongodb.ObjectId("56163c376816a9741248b7f9");
     school.save(function(err,newshchool){
     if (err)
     {
@@ -56,6 +59,7 @@ exports.addaddtrainingfield=function(callback){
     field. responsible="掌声";
     field.phone="67899";
     field.capacity=5;
+
     field.save(function(err,newshchool){
         if (err)
         {
@@ -72,9 +76,9 @@ exports.addaddtrainingfield=function(callback){
 exports.adddschoolclass=function(callback){
     var schoolclass=new schoolclassModel();
     schoolclass.classname="海淀暑假班";
-    schoolclass.schoolid=new mongodb.ObjectId('55e678f59a3e52d435783a18');
+    schoolclass.schoolid=new mongodb.ObjectId('56163c376816a9741248b7f9');
     schoolclass.begintime=new Date("2015-09-08 21:06:00");
-    schoolclass.endtime=new Date("2015-09-08 21:06:00");
+    schoolclass.endtime=new Date("2015-12-08 21:06:00");
     schoolclass.is_using=true;
     schoolclass.is_vip=true;
     schoolclass.classdesc="特惠会！";

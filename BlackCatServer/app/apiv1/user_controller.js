@@ -145,6 +145,8 @@ exports.updateUserInfo=function(req,res){
        email: req.body.email,
        headportrait: req.body.headportrait,
        address: req.body.address,
+       gender:req.body.gender,
+       signature:req.body.signature
    }
     if (updateuserinfo.userid===undefined) {
         return res.json(
@@ -218,8 +220,109 @@ exports.getUserinfo=function(req,res){
 }
 // 用户修改密码
 exports.updatePassword=function(req,res){
-    return res.json(new BaseReturnInfo(0,"",""));
+  var  pwdinfo={
+      password:req.body.password,
+      smscode:req.body.smscode,
+      userid:req.userId
+  }
+    if (pwdinfo.userid===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"parms is wrong",""));
+    };
+  userserver.updatePassword(pwdinfo,function(err,data){
+      if(err){
+          return res.json(new BaseReturnInfo(0,err,""));
+      }
+      return res.json(new BaseReturnInfo(0,"",data));
+  })
+
+}
+// 修改用户手机号
+exports.updateMobile=function(req,res){
+    var  mobileinfo={
+        mobile:req.body.mobile,
+        smscode:req.body.smscode,
+        userid:req.userId
+    }
+    if (mobileinfo.userid===undefined||mobileinfo.mobile===undefined||mobileinfo.smscode===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"parms is wrong",""));
+    };
+    userserver.updateMobile(mobileinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    })
+
+}
+// 获取用户喜欢的驾校
+exports.getMyFavoritSchool=function(req,res){
+    userserver.FavoritSchoolList(req.userId,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    });
+}
+// 添加用户喜欢的驾校
+exports.putFavorSchool=function(req,res){
+    var userid = req.userId;
+    var shoolid = req.params.id;
+    userserver.addFavoritSchool(userid,shoolid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    });
 }
 
+// 删除用户喜欢的驾校
+exports.delFavorrSchool=function(req,res){
+    var userid = req.userId;
+    var shoolid = req.params.id;
+    userserver.delFavoritSchool(userid,shoolid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    });
+
+}
+//获取用户喜歡的的教练
+exports.getMyFavoritCoach=function(req,res){
+    userserver.FavoritSchoolList(req.userId,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    });
+
+}
+
+//添加用户的喜欢的教练
+exports.putFavorCoach=function(req,res){
+    var userid = req.userId;
+    var coachid = req.params.id;
+    userserver.addFavoritCoach(userid,coachid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    });
+
+}
+// 删除用户喜欢的教练
+exports.delFavorrCoach=function(req,res){
+    var userid = req.userId;
+    var coachid = req.params.id;
+    userserver.delFavoritCoach(userid,coachid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    });
+
+}
 
 

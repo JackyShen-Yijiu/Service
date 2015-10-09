@@ -7,12 +7,13 @@ var mongodb = require('../../models/mongodb.js');
 var commondataServer=require('../../Config/commondata');
 var qiniu=require("../../Common/qiniuUnit");
 var  Apperversion= mongodb.AppVersionModel;
+var sysstemserver=require('../../Server/systemdata_server');
 /**
  * 测试api 调用方法
  **/
 exports.TestAPI = function (req, res) {
     return  res.json(
-        new BaseReturnInfo(1,"","hello, BlackCate"))
+        new BaseReturnInfo(1,"","hello, BlackCat"))
 
 };
 /*
@@ -69,4 +70,23 @@ exports.GetWorkTimes=function(req,res){
 exports.GetqiniuupToken=function(req,res){
     var token =qiniu.getQiniuUpToken();
     return res.json(new BaseReturnInfo(1,'',token));
+}
+// 保存用户反馈信息
+exports.postUserFeedBack=function(req,res){
+    var  feedbackinfo={
+        userid:req.body.userid,
+        appversion:req.body.appversion,
+        feedbackmessage:req.body.feedbackmessage,
+        mobileversion:req.body.mobileversion,
+        network:req.body.network,
+        resolution:req.body.network
+    }
+    console.log(feedbackinfo);
+    sysstemserver.saveFeedback(feedbackinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(0,"",data));
+    })
+
 }

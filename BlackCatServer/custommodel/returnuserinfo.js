@@ -23,6 +23,9 @@ exports.resBaseUserInfo=function(user){
     this.is_lock=user.is_lock;
     this.telephone=user.telephone;
     this.applystate=user.applystate;
-    this.applycoachinfo=this.applycoachinfo;
-    this.applyclasstypeinfo=this.applyclasstypeinfo;
+    this.applycoachinfo=user.applycoachinfo;
+    this.applyclasstypeinfo=user.applyclasstypeinfo;
+    this.gender=user.gender;
+    this.signature=user.signature;
+    this.addresslist=user.addresslist;
 };

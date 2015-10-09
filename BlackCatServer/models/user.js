@@ -22,6 +22,8 @@ var  UserSchema=new Schema({
     email:{type:String,default:''},
     token:{type:String,default:''},
     password:String,
+    gender:String, //性别
+    signature:String,// 个性签名
     headportrait: { originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
         width:{type:String,default:""},
@@ -31,6 +33,7 @@ var  UserSchema=new Schema({
     carmodel:{modelsid:Number,name:String,code:String},
     logintime:{type:Date,default:Date.now()},
     address: String,
+    addresslist:[String],  //地址列表
     //维度
     latitude: {type:Number,default:0},
     longitude: {type:Number,default:0},
@@ -57,6 +60,10 @@ var  UserSchema=new Schema({
     is_lock: { type: Boolean, default: false},  //用户是否锁定
     idcardnumber:String, // 身份证
     telephone:String,  // 电话
+   // 喜欢的教练
+    favorcoach: [{type: Schema.Types.ObjectId, default:null, ref: 'coach'}],
+    // 喜欢的驾校
+    favorschool: [{type: Schema.Types.ObjectId, default:null, ref: 'DriveSchool'}],
     //科目二上课信息
     subjecttwo:{
         totalcourse:{type:Number,default:23},

@@ -245,6 +245,41 @@ exports.userSignup=function(usertype,userinfo,callback){
         }
     });
 };
+//用户修改手机号
+exports.updateMobile=function(mobileinfo,callback){
+    checkSmsCode(mobileinfo.mobile,mobileinfo.smscode,function(err){
+        if(err){
+            return  callback(err);
+        }
+        usermodel.update({_id:new mongodb.ObjectId(mobileinfo.userid)},{$set:{mobile:mobileinfo.mobile}},function(err){
+            if(err){
+                return callback("更新手机号出错："+err)
+            }
+            return callback(null,"success");
+        })
+    });
+}
+// 修改密码
+exports.updatePassword=function(pwdinfo,callback){
+ usermodel.findById(new mongodb.ObjectId(pwdinfo.userid),function(err,userdata){
+  if(err||!userdata){
+      return  callback("查询用户出错："+err);
+  }
+     checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
+         if (err) {
+             return callback("验证码出错：" + err);
+
+         }
+         userdata.password=pwdinfo.password;
+         userdata.save(function(err,newdata){
+             if(err){
+                 return  callback("保存用户信息出错："+err);
+             }
+             return callback(null,"success")
+         });
+     });
+ });
+}
 // 获取附近的教练
 exports.getNearCoach=function(latitude, longitude, radius ,callback){
     coachmode.getNearCoach(latitude, longitude, radius ,function(err ,coachlist){
@@ -283,6 +318,210 @@ exports.getNearCoach=function(latitude, longitude, radius ,callback){
     })
 
 };
+// 添加我喜歡的教練
+exports.addFavoritCoach=function(userid,coachid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid), function(err, user) {
+        if (err) {
+            return callback('查找用戶出錯：'+err);
+        }
+
+        if (!user){
+            return callback('沒有找到相关的用户');
+        }
+
+        if (user.favorcoach) {
+            var idx = user.favorcoach.indexOf(new mongodb.ObjectId(coachid));
+            if (idx == -1) {
+                user.favorcoach.push(new mongodb.ObjectId(coachid));
+            }
+            else {
+                return callback('已经存在');
+            }
+        } else {
+            user.favorcoach = [new mongodb.ObjectId(coachid)];
+        }
+
+        user.save(function (err) {
+            if (err) {
+                return callback('保存出錯：' + err);
+            }
+            return callback(null, "success");
+
+        })
+    });
+}
+// 删除我喜欢的教练
+exports.delFavoritCoach=function(userid,coachid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid), function(err, user) {
+        if (err) {
+            return callback('查找用戶出錯：'+err);
+        }
+
+        if (!user){
+            return callback('沒有找到相关的用户');
+        }
+
+        if (user.favorcoach) {
+            var idx = user.favorcoach.indexOf(new mongodb.ObjectId(coachid));
+            if (idx != -1) {
+                user.favorcoach.splice(idx, 1);
+                user.save(function (err) {
+                    if (err) {
+                        return callback('保存出錯：' + err);
+                    }
+                    return callback(null, "success");
+
+                })
+            }
+            else{
+                return  callback('该教练不存在我的喜欢列表中：');}
+        }
+        else{
+            return  callback('该教练不存在我的喜欢列表中：');}
+
+
+    });
+}
+// 获取我喜欢的教练
+exports.FavoritCoachList=function(userid,callback){
+usermodel.findById(new mongodb.ObjectId(userid))
+    .select("favorcoach")
+    .populate("favorcoach")
+    .exec(function(err,data){
+        if(err||!data){
+            return callback("查詢出錯:"+err);
+        }
+        if (data.favorcoach){
+            process.nextTick(function() {
+                rescoachlist=[];
+                data.favorcoach.forEach(function (r, idx) {
+                    var returnmodel  = { //new resbasecoachinfomode(r);
+                        coachid : r._id,
+                        /*distance : geolib.getDistance(
+                            {latitude: latitude, longitude: longitude},
+                            {latitude: r.latitude, longitude: r.longitude},
+                            10
+                        ),*/
+                        name: r.name,
+                        driveschoolinfo: r.driveschoolinfo,
+                        headportrait:r.headportrait,
+                        starlevel: r.starlevel,
+                        is_shuttle: r.is_shuttle,
+                        latitude: r.latitude,
+                        longitude: r.longitude
+
+                    }
+                    //  r.restaurantId = r._id;
+                    // delete(r._id);
+                    rescoachlist.push(returnmodel);
+                });
+                callback(null, rescoachlist);
+            });
+        }
+
+    })
+}
+
+//获取我喜欢的驾校
+exports.FavoritSchoolList=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("favorschool")
+        .populate("favorschool")
+        .exec(function(err,data){
+            if(err||!data){
+                return callback("查詢出錯:"+err);
+            }
+            if (data.favorschool){
+                process.nextTick(function(){
+                    driveschoollist=[];
+                    data.favorschool.forEach(function(r, idx){
+                        var oneschool= {
+                          /*  distance : geolib.getDistance(
+                                {latitude: latitude, longitude: longitude},
+                                {latitude: r.latitude, longitude: r.longitude},
+                                10),*/
+                            schoolid: r._id,
+                            name:r.name,
+                            logoimg:r.logoimg,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            address: r.address,
+                            passingrate: r.passingrate
+                        }
+                        driveschoollist.push(oneschool)
+                        //  r.restaurantId = r._id;
+                        // delete(r._id);
+                    });
+                    callback(null,driveschoollist);
+                });
+            }
+
+        })
+}
+// 添加我喜歡的驾校
+exports.addFavoritSchool=function(userid,schoolid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid), function(err, user) {
+        if (err) {
+            return callback('查找用戶出錯：'+err);
+        }
+
+        if (!user){
+            return callback('沒有找到相关的用户');
+        }
+
+        if (user.favorschool) {
+            var idx = user.favorschool.indexOf(new mongodb.ObjectId(schoolid));
+            if (idx == -1) {
+                user.favorschool.push(new mongodb.ObjectId(schoolid));
+            }
+            else {
+                return callback('已经存在');
+            }
+        } else {
+            user.favorschool = [new mongodb.ObjectId(schoolid)];
+        }
+
+        user.save(function (err) {
+            if (err) {
+                return callback('保存出錯：' + err);
+            }
+            return callback(null, "success");
+
+        })
+    });
+}
+// 删除我喜欢的驾校
+exports.delFavoritSchool=function(userid,schoolid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid), function(err, user) {
+        if (err) {
+            return callback('查找用戶出錯：'+err);
+        }
+
+        if (!user){
+            return callback('沒有找到相关的用户');
+        }
+
+        if (user.favorschool) {
+            var idx = user.favorschool.indexOf(new mongodb.ObjectId(schoolid));
+            if (idx != -1) {
+                user.favorschool.splice(idx, 1);
+                user.save(function (err) {
+                    if (err) {
+                        return callback('保存出錯：' + err);
+                    }
+                    return callback(null, "success");
+
+                })
+            }
+            else{
+                return  callback('该教练不存在我的喜欢列表中：');}
+        }
+        else{
+            return  callback('该教练不存在我的喜欢列表中：');}
+
+
+    });
+}
 //报名申请
 exports.applyschoolinfo=function(applyinfo,callback){
   usermodel.findById(new mongodb.ObjectId(applyinfo.userid),function(err,userdata){
@@ -367,7 +606,15 @@ exports.updateUserServer=function(updateinfo,callback){
         userdata.nickname= updateinfo.nickname? updateinfo.nickname:userdata.nickname;
         userdata.email= updateinfo.email?updateinfo.email:userdata.email;
         userdata.headportrait= updateinfo.headportrait?updateinfo.headportrait:userdata.headportrait;
-        userdata.address= updateinfo.address?rupdateinfo.address:userdata.address;
+        userdata.address= updateinfo.address?updateinfo.address:userdata.address;
+        userdata.gender=updateinfo.gender?updateinfo.gender:userdata.gender;
+        userdata.signature=updateinfo.signature?updateinfo.signature:userdata.signature;
+        if(updateinfo.address){
+            var idx = userdata.addresslist.indexOf(updateinfo.address);
+            if (idx == -1) {
+                userdata.addresslist.push(updateinfo.address);
+            }
+        }
         userdata.save(function(err,newdata){
             if(err){
                 return  callback("保存用户信息出错："+err);

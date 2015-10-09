@@ -17,6 +17,7 @@
     "jsonwebtoken": "^5.0.0",
     "express-jwt": "^3.0.1",
     "superagent": "^1.1.0",
-    "geolib": "^2.0.14"
+    "geolib": "^2.0.14",
+    "date-utils":"^1.2.17"
   }
 }

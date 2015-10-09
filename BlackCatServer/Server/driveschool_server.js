@@ -30,6 +30,8 @@ exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
                     latitude: r.latitude,
                     longitude: r.longitude,
                     address: r.address,
+                    maxprice: r.maxprice,
+                    minprice: r.minprice,
                     passingrate: r.passingrate
                    }
                 driveschoollist.push(oneschool)

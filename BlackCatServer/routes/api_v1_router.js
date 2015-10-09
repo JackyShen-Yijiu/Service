@@ -26,7 +26,10 @@ v1.get('/info/worktimes', appsystemController.GetWorkTimes);
 // 获取图片上传token
 v1.get('/info/qiniuuptoken', appsystemController.GetqiniuupToken);
 
-//------------------------用户信息----------------------------------
+// 用户反馈
+v1.post("/userfeedback",appsystemController.postUserFeedBack);
+
+//======================================用户信息======================================
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
 // 检验验证码 (用户登后修改验证码使用)
@@ -43,11 +46,24 @@ v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,
 //根据用户或者教练的id获取基本信息
 v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
 // 修改密码
-v1.post("/userinfo/updatepwd",ensureAuthorizedController.ensureAuthorized);
+v1.post("/userinfo/updatepwd",ensureAuthorizedController.ensureAuthorized,userController.updatePassword);
 //修改手机号
+v1.post("/userinfo/updatemobile",ensureAuthorizedController.ensureAuthorized,userController.updateMobile);
+//-----------------------------喜欢的教练操作----------------------------------------
+// 喜欢的教练
+v1.get("/userinfo/favoritecoach",ensureAuthorizedController.ensureAuthorized,userController.getMyFavoritCoach);
+// 添加喜歡的教練
+v1.put('/userinfo/favoritecoach/:id', ensureAuthorizedController.ensureAuthorized,userController.putFavorCoach);
+// 删除我喜欢的教练
+v1.delete('/userinfo/favoritecoach/:id',ensureAuthorizedController.ensureAuthorized, userController.delFavorrCoach);
+//--------------------------------喜欢的驾校操作-------------------------------------------
+// 获取我喜欢的驾校
+v1.get("/userinfo/favoriteschool",ensureAuthorizedController.ensureAuthorized,userController.getMyFavoritSchool);
+// 添加我喜欢的驾校
+v1.put('/userinfo/favoriteschool/:id', ensureAuthorizedController.ensureAuthorized,userController.putFavorSchool);
+// 删除我喜欢的驾校
+v1.delete('/userinfo/favoriteschool/:id',ensureAuthorizedController.ensureAuthorized, userController.delFavorrSchool);
 
-
-// 用户反馈
 
 //获取附近的驾校
 v1.get('/driveschool/nearbydriveschool', driveSchoolController.getNearbydriveSchool);

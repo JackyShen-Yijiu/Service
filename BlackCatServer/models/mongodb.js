@@ -52,3 +52,4 @@ exports.UserCountModel=require('./usercount');
 exports.ClassTypeModel=require('./calsstype');
 exports.CourseModel=require('./course');
 exports.ReservationModel=require('./reservation');
+exports.FeedBackModel=require("./feedback");

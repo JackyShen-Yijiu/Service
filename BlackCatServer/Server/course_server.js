@@ -20,6 +20,9 @@ exports.GetCoachCourse=function(coachid,date ,callback){
         if(coachdata.is_validation==false){
             return callback("该教练没有通过验证，无法获取训练信息");
         }
+        if(coachdata.is_lock==true){
+            return callback("该教练已经被锁定，无法获取训练信息");
+        }
         if(coachdata.worktime.length==0){
             return callback("该教练没有设置工作时间，无法获取训练信息");
         }
@@ -61,18 +64,44 @@ var savecourse=function(coachdata,coachid,date,callback){
                 if (err || !newcouse) {
                     return callback("存储课程出错：" + err);
                 }
-                count=count+1;
+
                 courselist.push(newcouse);
+                count=count+1;
+                //console.log("过程中：" + count);
                 if(count==insertcount){
                     return callback(null,courselist);
                 }
-                console.log("过程中：" + courselist);
-            });
 
+            });
+            //console.log("过程外"+ count );
         });
 
     })
 };
+// 判断用户预约课程信息
+VerificationCourse=function(courselist,userid,callback){
+    var   coursecount=courselist.length;
+    var count=0;
+    courselist.forEach(function(r){
+        coursemode.findOne(new mongodb.ObjectId(r),function(err,coursedata){
+            if(err||!coursedata){
+                return callback("查询课程出错："+err);
+            }
+            if(  coursedata.selectedstudentcount>=coursedata.coursestudentcount){
+                return callback("选择人数超过课程最大人数");
+            }
+            var idx = coursedata.courseuser.indexOf(new mongodb.ObjectId(userid));
+            if (idx != -1) {
+                return callback("您已经选择该课程了");
+            }
+            count=count+1;
+            if (count>=coursecount){
+                return callback(null);
+            }
+        });
+    });
+}
+
 
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
@@ -96,6 +125,13 @@ exports.postReservation=function(reservationinfo,callback){
         }
         arr = reservationinfo.courselist.split(',');
         coursecount=arr.length;
+        if (coursecount<=0){
+            return  callback("无法确定您的选择课程");
+        }
+        VerificationCourse(arr,reservationinfo.userid,function(err){
+            if(err){
+                return  callback("验证课程出错："+err);
+            }
         if(userdata.subject.subjectid==2){
 
         //判断用户预约课程数量
@@ -159,10 +195,11 @@ exports.postReservation=function(reservationinfo,callback){
 
         });
 
-
+        });
 
     });
 };
+
 
 //获取用户的预约信息
 exports.getuserReservation=function(userid,callback){

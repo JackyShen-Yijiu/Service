@@ -4,6 +4,7 @@
 // 处理教练课程相关信息
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var courseserver=require('../../Server/course_server');
+require('date-utils');
 
 // 获取教练某一天的课程安排
 exports.GetCourseByCoach=function(req,res){
@@ -11,6 +12,13 @@ exports.GetCourseByCoach=function(req,res){
     var  date=req.query.date;
     if (coachid===undefined|| date===undefined){
         return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    var now = new Date();
+    var coursedate=new Date(date);
+    //console.log(now.getDaysBetween(coursedate));
+    // 只能获取七天内的课程信息
+    if(now.getDaysBetween(coursedate)>7||now.getDaysBetween(coursedate)<0){
+        return res.json(new BaseReturnInfo(0,"无法获取该时间段的课程安排",""));
     }
     courseserver.GetCoachCourse(coachid,date,function(err,data){
         if (err){
