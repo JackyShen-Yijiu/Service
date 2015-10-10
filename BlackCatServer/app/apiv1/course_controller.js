@@ -99,7 +99,7 @@ exports.userCancelReservation=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     };
-    if(reservationinfo.userid!=req.userId){
+    if(cancelinfo.userid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
@@ -179,7 +179,27 @@ exports.postUserComment=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    courseserver.userComment(complaintinfo,function(err,data){
+    courseserver.userComment(commentinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+// 获取教练或者用户的评论
+exports.getUserComment=function(req,res){
+    var queryinfo= {
+        userid:req.params.userid,
+        type:req.params.type,
+        index:req.params.index
+    };
+    if (queryinfo.userid === undefined
+        ||queryinfo.type === undefined||
+        queryinfo.index === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    courseserver.GetComment(queryinfo,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
@@ -204,7 +224,7 @@ exports.postCoachComment=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    courseserver.coachComment(complaintinfo,function(err,data){
+    courseserver.coachComment(commentinfo,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,""));
         }

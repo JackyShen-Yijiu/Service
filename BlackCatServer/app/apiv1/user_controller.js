@@ -102,7 +102,7 @@ exports.getNearbyCoach=function(req,res){
         }
     });
 };
-// 获取教学下面的教练
+// 获取驾校下面的教练
 exports.getSchoolCoach=function(req,res){
     var  coachinfo={
         schoolid:req.params.schoolid,
@@ -122,6 +122,27 @@ exports.getSchoolCoach=function(req,res){
         }
     });
 }
+// 获取教练的学生列表
+exports.getStudentList=function(req,res){
+    var  coachinfo={
+        coachid:req.params.coachid,
+        index:req.params.index?req.params.index:1
+    }
+    if(coachinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getCoachStudentList(coachinfo,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
+
+//
 exports.postapplySchool=function(req,res){
     var applyinfo= {
          name : req.body.name,
@@ -201,6 +222,7 @@ exports.updateCoachInfo=function(req,res){
         coursestudentcount:req.body.coursestudentcount,
         idcardnumber:req.body.idcardnumber,
         drivinglicensenumber:req.body.drivinglicensenumber,
+        coachnumber :req.body.coachnumber,
         carmodel:req.body.carmodel,
         trainfield:req.body.trainfield,
         is_shuttle:req.body.is_shuttle

@@ -29,5 +29,5 @@ exports.resBaseCoachInfo=function(user){
     this.carmodel=user.carmodel;
     this.trainfieldlinfo=user.trainfieldlinfo;
     this.is_shuttle=user.is_shuttle;
-
+    this.coachnumber=user.coachnumber;
 };

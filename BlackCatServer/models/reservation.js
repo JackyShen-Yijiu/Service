@@ -22,7 +22,8 @@ var ReservationSchema=new Schema({
     //评论
     comment:{starlevel :Number, // 星级
         commentcontent:String  } , // 评论内容
-
+    //教练是否评论
+    is_coachcomment:{ type: Boolean, default: false},
     coachcomment:{starlevel :Number, // 星级
         commentcontent:String  } , // 评论内容
     //是否投诉

@@ -43,6 +43,7 @@ var  CoachSchema=new Schema({
     coursestudentcount:{type:Number,default:1},//每节课可以预约学生的数量
     idcardnumber:String ,// 身份证
     drivinglicensenumber:String,  // 驾驶证
+    coachnumber:String,//教练证
     starlevel :Number, // 星级
     carmodel:{modelsid:Number,name:String,code:String},
     trainfield:{type: Schema.Types.ObjectId, ref: 'trainingfield'} ,//训练场

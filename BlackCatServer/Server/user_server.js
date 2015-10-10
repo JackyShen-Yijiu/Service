@@ -357,6 +357,20 @@ exports.getSchoolCoach=function(coachinfo,callback){
     });
 
 };
+//获取教练的学员列表
+exports.getCoachStudentList=function(coachinfo,callback){
+    usermodel.find({"applycoach":new mongodb.ObjectId(coachinfo.coachid)})
+        .skip((coachinfo.index-1)*10)
+        .limit(10)
+        .sort({"createtime":-1})
+        .select("_id mobile name headportrait subject subjecttwo subjectthree")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询出错"+err);
+            }
+            return callback(null,data);
+        })
+}
 // 添加我喜歡的教練
 exports.addFavoritCoach=function(userid,coachid,callback){
     usermodel.findById(new mongodb.ObjectId(userid), function(err, user) {
@@ -680,6 +694,7 @@ exports.updateCoachServer=function(updateinfo,callback){
         coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
         coachdata.idcardnumber=updateinfo.idcardnumber ? updateinfo.idcardnumber:coachdata.idcardnumber;
         coachdata.drivinglicensenumber=updateinfo.drivinglicensenumber ? updateinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
+        coachdata.coachnumber=updateinfo.coachnumber ? updateinfo.coachnumber:coachdata.coachnumber;
         coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
         coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
         if (updateinfo.driveschoolid){
