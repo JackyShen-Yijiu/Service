@@ -101,9 +101,9 @@ v1.get("/courseinfo/getusercomment/:type/:userid/:index",courseController.getUse
 
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
-v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList)
+v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
 //教练获取预约列表
-
+v1.get("/courseinfo/coachcourse",ensureAuthorizedController.ensureAuthorized);
 // 教练获取某一天的预约列表
 
 //接受或者拒绝预约
