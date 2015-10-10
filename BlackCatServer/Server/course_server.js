@@ -407,8 +407,8 @@ exports.coachComment=function(commnetinfo,callback){
             return callback("预约没有完成不能评论：");
         }
         resdata.is_coachcomment=true;
-        resdata.coachcomment.starlevel=complaintinfo.starlevel;
-        resdata.coachcomment.commentcontent=complaintinfo.commentcontent;
+        resdata.coachcomment.starlevel=commnetinfo.starlevel;
+        resdata.coachcomment.commentcontent=commnetinfo.commentcontent;
         resdata.save(function(err,data){
             if(err){
                 return callback("保存评论出错");

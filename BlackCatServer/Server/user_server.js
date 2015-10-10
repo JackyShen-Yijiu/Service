@@ -603,7 +603,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
               // 检查所报的课程类型
               classtypeModel.findById(new mongodb.ObjectId(applyinfo.classtypeid),function(err,classtypedata){
                   if (err|| !classtypedata){
-                      return callback("不能找到该申请课程");
+                      return callback("不能找到该申请课程"+err);
                   }
                   // 判断 报的车型与课程里面的课程是否一样
                   if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
