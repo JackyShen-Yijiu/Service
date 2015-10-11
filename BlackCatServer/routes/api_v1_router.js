@@ -105,7 +105,7 @@ v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.e
 //教练获取预约列表
 v1.get("/courseinfo/coachcourse",ensureAuthorizedController.ensureAuthorized);
 // 教练获取某一天的预约列表
-
+ 
 //接受或者拒绝预约
 v1.post("/courseinfo/coachhandleinfo",ensureAuthorizedController.ensureAuthorized,courseController.postCoachHandleInfo);
 // 教练评价学员学习情况
