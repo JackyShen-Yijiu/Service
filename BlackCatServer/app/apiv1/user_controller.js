@@ -162,6 +162,7 @@ exports.postapplySchool=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));
     };
+    console.log("用户报名body："+req.body);
     if(applyinfo.userid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
