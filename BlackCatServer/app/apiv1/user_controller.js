@@ -144,6 +144,7 @@ exports.getStudentList=function(req,res){
 
 //
 exports.postapplySchool=function(req,res){
+    console.log(req.body);
     var applyinfo= {
          name : req.body.name,
      idcardnumber : req.body.idcardnumber,
