@@ -234,6 +234,7 @@ exports.postCoachComment=function(req,res){
 
 // 教练处理订单 拒绝或者接受
 exports.postCoachHandleInfo=function(req,res){
+
     var handleinfo= {
         coachid:req.body.coachid,
         reservationid:req.body.reservationid,
