@@ -606,6 +606,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       return callback("不能找到该申请课程"+err);
                   }
                   // 判断 报的车型与课程里面的课程是否一样
+                  console.log("applyinfo.carmodel.modelsid:"+applyinfo.carmodel.modelsid);
+                  console.log("classtypedata.carmodel.modelsid:"+classtypedata.carmodel.modelsid);
                   if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
                       return callback("所报车型与课程的类型不同，请重新选择");
                   }
