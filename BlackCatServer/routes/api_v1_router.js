@@ -80,6 +80,8 @@ v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach)
 
 
 //==============================预约课程(学生端)=========================================
+// 获取我当前可以预约的教练
+
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 // 用户预约课程
@@ -103,9 +105,11 @@ v1.get("/courseinfo/getusercomment/:type/:userid/:index",courseController.getUse
 // 教练获取学员列表个人信息中心
 v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
 //教练获取预约列表
-v1.get("/courseinfo/coachcourse",ensureAuthorizedController.ensureAuthorized);
+v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachReservationList);
 // 教练获取某一天的预约列表
- 
+v1.get("/courseinfo/daysreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachDaysreservation);
+// 教练获取预约详情
+v1.get("/courseinfo/reservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,courseController.coachGetReservationInfo)
 //接受或者拒绝预约
 v1.post("/courseinfo/coachhandleinfo",ensureAuthorizedController.ensureAuthorized,courseController.postCoachHandleInfo);
 // 教练评价学员学习情况

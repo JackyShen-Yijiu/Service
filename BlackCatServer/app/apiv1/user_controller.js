@@ -53,7 +53,7 @@ exports.UserLogin=function(req,res){
         if(err){
             return res.status(400).json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 };
 exports.postSignUp=function(req,res){
@@ -65,7 +65,7 @@ exports.postSignUp=function(req,res){
     userinfo.password=req.body.password;
     userinfo.referrerCode=req.body.referrerCode;
 
-    console.log('moblie:'+userinfo.mobile);
+   // console.log('moblie:'+userinfo.mobile);
     if (usertype===undefined||userinfo.mobile === undefined||
         userinfo.smscode === undefined||userinfo.password === undefined) {
         return res.json(
@@ -79,7 +79,7 @@ exports.postSignUp=function(req,res){
             return res.json(new  BaseReturnInfo(0,err,""));
         }
         else{
-            return res.json(new BaseReturnInfo(0,"",data));
+            return res.json(new BaseReturnInfo(1,"",data));
         }
     });
 
@@ -173,7 +173,7 @@ exports.postapplySchool=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 
 
@@ -203,7 +203,7 @@ exports.updateUserInfo=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 }
 
@@ -242,7 +242,7 @@ exports.updateCoachInfo=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 }
 
@@ -258,7 +258,7 @@ exports.getUserinfo=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     })
 
 }
@@ -296,7 +296,7 @@ exports.updateMobile=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     })
 
 }
@@ -306,7 +306,7 @@ exports.getMyFavoritSchool=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 }
 // 添加用户喜欢的驾校
@@ -329,17 +329,17 @@ exports.delFavorrSchool=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 
 }
 //获取用户喜歡的的教练
 exports.getMyFavoritCoach=function(req,res){
-    userserver.FavoritSchoolList(req.userId,function(err,data){
+    userserver.FavoritCoachList(req.userId,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 
 }
@@ -352,7 +352,7 @@ exports.putFavorCoach=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 
 }
@@ -364,7 +364,7 @@ exports.delFavorrCoach=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 
 }

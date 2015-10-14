@@ -13,6 +13,8 @@ exports.saveFeedback=function(feedbackinfo,callback){
         feedback.mobileversion=feedbackinfo.mobileversion;
         feedback.network=feedbackinfo.network;
         feedback.resolution=feedbackinfo.resolution;
+    feedback.createtime=new Date();
+    //console.log(feedback.createtime);
     feedback.save(function(err){
         if(err){
             return callback("保存反馈信息出错："+err);

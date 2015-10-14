@@ -22,7 +22,6 @@ exports.resBaseUserInfo=function(user){
     this.displayuserid=user.displayuserid;
     this.is_lock=user.is_lock;
     this.telephone=user.telephone;
-    this.applystate=user.applystate;
     this.applycoachinfo=user.applycoachinfo;
     this.applyclasstypeinfo=user.applyclasstypeinfo;
     this.gender=user.gender;

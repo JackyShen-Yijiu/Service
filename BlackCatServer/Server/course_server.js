@@ -450,7 +450,48 @@ exports.GetComment=function(queryinfo,callback){
             })
     }
 }
-
+// 教练 获取某一天的上课信息
+exports.getCoachDaysreservation=function(coachid,date,callback){
+    var datenow =new Date(date);
+    var datetomorrow = datenow.addDays(1);
+    reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
+        ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress")
+        .populate( "userid"," _id  name headportrait applyschoolinfo")
+        .sort({"begintime":1})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询数据出错："+err);
+            }
+            return callback(null,data);
+        })
+}
+// 教练获取我的预约列表
+exports.getCoachReservationList=function(queryinfo,callback){
+    reservationmodel.find( { coachid:new mongodb.ObjectId(queryinfo.coachid)})
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress")
+        .populate("userid","_id  name headportrait applyschoolinfo")
+        .skip((queryinfo.index-1)*10)
+        .limit(10)
+        .sort({"begintime":-1})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询数据出错："+err);
+            }
+            return callback(null,data);
+        })
+}
+exports.getCoachReservationinfo=function(reservationid,coachid,callback){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
+        coachid:new mongodb.ObjectId(coachid)})
+        .populate("userid","_id  name headportrait applyschoolinfo")
+        .exec(function(err,resdata){
+            if(err){
+                return callback("查询数据出错："+err);
+            }
+            return callback(null,resdata);
+        })
+}
 //教练处理预约信息聚聚还是接受
 exports.coachHandleInfo=function(handleinfo,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(handleinfo.reservationid),

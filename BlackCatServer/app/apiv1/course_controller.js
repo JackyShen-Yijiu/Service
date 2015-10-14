@@ -231,7 +231,60 @@ exports.postCoachComment=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 教练获取某一天的上课信息
+exports.getCoachDaysreservation=function(req,res){
+    var  coachid=req.query.coachid;
+    var  date=req.query.date;
+    if (coachid===undefined|| date===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    courseserver.getCoachDaysreservation(coachid,date,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 
+}
+// 教练获取所有的预约列表
+exports.getCoachReservationList=function(req,res){
+    var queryinfo= {
+          coachid:req.query.coachid,
+     index:req.query.index
+}
+    if (queryinfo.coachid===undefined|| queryinfo.index===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    if(queryinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    courseserver.getCoachReservationList(queryinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
+}
+// 教练获取预约详情
+exports.coachGetReservationInfo=function(req,res){
+    var reservationid=req.params.reservationid;
+    var coachid=req.userId;
+    if (reservationid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    courseserver.getCoachReservationinfo(reservationid,coachid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 // 教练处理订单 拒绝或者接受
 exports.postCoachHandleInfo=function(req,res){
 

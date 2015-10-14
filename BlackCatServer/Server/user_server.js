@@ -567,10 +567,10 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
                 })
             }
             else{
-                return  callback('该教练不存在我的喜欢列表中：');}
+                return  callback('该驾校不存在我的喜欢列表中：');}
         }
         else{
-            return  callback('该教练不存在我的喜欢列表中：');}
+            return  callback('该驾校不存在我的喜欢列表中：');}
 
 
     });
@@ -816,8 +816,12 @@ var checkSmsCode=function(mobile,code,callback){
         {
             return callback("No such code/mobile was found");
         }
+        console.log(instace);
         var  now=new Date();
-        if ((now-instace.createtime)>timeout*1000){
+        /*console.log(now);
+        console.log(instace.createdTime);
+        console.log(now-instace.createdTime);*/
+        if ((now-instace.createdTime)>timeout*1000){
             return callback("Code timeout");
         }
         instace.verified=true;
