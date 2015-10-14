@@ -261,7 +261,7 @@ exports.updateMobile=function(mobileinfo,callback){
 }
 // 修改密码
 exports.updatePassword=function(pwdinfo,callback){
- usermodel.findById(new mongodb.ObjectId(pwdinfo.userid),function(err,userdata){
+ usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
   if(err||!userdata){
       return  callback("查询用户出错："+err);
   }

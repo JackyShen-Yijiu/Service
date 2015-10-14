@@ -267,9 +267,9 @@ exports.updatePassword=function(req,res){
   var  pwdinfo={
       password:req.body.password,
       smscode:req.body.smscode,
-      userid:req.userId
+      mobile:req.mobile
   }
-    if (pwdinfo.userid===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
+    if (pwdinfo.mobile===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));
     };

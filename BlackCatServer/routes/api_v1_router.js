@@ -46,7 +46,7 @@ v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,
 //根据用户或者教练的id获取基本信息
 v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
 // 修改密码
-v1.post("/userinfo/updatepwd",ensureAuthorizedController.ensureAuthorized,userController.updatePassword);
+v1.post("/userinfo/updatepwd",userController.updatePassword);
 //修改手机号
 v1.post("/userinfo/updatemobile",ensureAuthorizedController.ensureAuthorized,userController.updateMobile);
 //-----------------------------喜欢的教练操作----------------------------------------
@@ -114,6 +114,7 @@ v1.get("/courseinfo/reservationinfo/:reservationid",ensureAuthorizedController.e
 v1.post("/courseinfo/coachhandleinfo",ensureAuthorizedController.ensureAuthorized,courseController.postCoachHandleInfo);
 // 教练评价学员学习情况
 v1.post("/courseinfo/coachcomment",ensureAuthorizedController.ensureAuthorized,courseController.postCoachComment);
+//教练获取
 
 //------------------------IM---------------
 v1.get('/gettoken', testController.gettoken);
