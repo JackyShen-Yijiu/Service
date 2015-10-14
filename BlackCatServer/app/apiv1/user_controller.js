@@ -267,7 +267,7 @@ exports.updatePassword=function(req,res){
   var  pwdinfo={
       password:req.body.password,
       smscode:req.body.smscode,
-      mobile:req.mobile
+      mobile:req.body.mobile
   }
     if (pwdinfo.mobile===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
         return res.json(
