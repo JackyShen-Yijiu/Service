@@ -294,7 +294,8 @@ exports.userCancelReservation=function(reservation,userid,callback){
 });
 }
 exports.userfinishReservation=function(reservation,userid,callback){
-    reservationmodel.findOne({_id:new mongodb.ObjectId(reservation),userid:new mongodb.ObjectId(userid)},function(err,resdata){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(reservation)},function(err,resdata){
+        //userid:new mongodb.ObjectId(userid)
         if(err){
             return  callback("查询预约课程出错："+err);
         }
@@ -315,7 +316,7 @@ exports.userfinishReservation=function(reservation,userid,callback){
                 callback("保存出错："+err);
             }
             // 修改个人信息中的语言信息
-            usermodel.findById(new mongodb.ObjectId(userid),function(err,data){
+            usermodel.findById(new mongodb.ObjectId(newdata.userid),function(err,data){
 
                 if (newdata.subject.subjectid==2){
                     data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
@@ -473,6 +474,19 @@ exports.getCoachReservationList=function(queryinfo,callback){
         .populate("userid","_id  name headportrait applyschoolinfo")
         .skip((queryinfo.index-1)*10)
         .limit(10)
+        .sort({"begintime":-1})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询数据出错："+err);
+            }
+            return callback(null,data);
+        })
+}
+// 教练获取没有处理的预约申请
+exports.getreservationapply=function(coachid,callback){
+    reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"reservationstate":appTypeEmun.ReservationState.applying})
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress")
+        .populate("userid","_id  name headportrait applyschoolinfo")
         .sort({"begintime":-1})
         .exec(function(err,data){
             if(err){

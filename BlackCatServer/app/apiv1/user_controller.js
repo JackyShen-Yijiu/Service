@@ -141,10 +141,22 @@ exports.getStudentList=function(req,res){
         }
     });
 }
-
+// 获取可以预约的教练
+exports.getUsefulCoachList=function(req,res){
+    var  index=req.params.index?req.params.index:1;
+    var  useid=req.userId;
+    userserver.getUsefulCoachList(useid,index,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
 //
 exports.postapplySchool=function(req,res){
-    console.log(req.body);
+    //console.log(req.body);
     var applyinfo= {
          name : req.body.name,
      idcardnumber : req.body.idcardnumber,

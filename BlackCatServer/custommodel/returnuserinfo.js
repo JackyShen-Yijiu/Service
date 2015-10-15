@@ -11,7 +11,6 @@ exports.resBaseUserInfo=function(user){
     this.nickname=user.nickname;
     this.createtime=user.createtime;
     this.email=user.email;
-    //this.token=user.token;
     this.headportrait =user.headportrait;
     this.carmodel=user.carmodel;
     this.subject=user.subject;

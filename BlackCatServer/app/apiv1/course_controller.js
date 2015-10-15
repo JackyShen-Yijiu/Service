@@ -136,6 +136,30 @@ exports.userfinishReservation=function(req,res){
     });
 }
 
+// 教练完成预约
+exports.coachfinishReservation=function(req,res){
+    var reservationinfo= {
+        coachid:req.body.coachid,
+        reservationid:req.body.reservationid,
+    };
+    if (reservationinfo.coachid === undefined
+        ||reservationinfo.reservationid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    if(reservationinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+
+    courseserver.userfinishReservation(reservationinfo.reservationid,reservationinfo.coachid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+
 //用户投诉
 exports.postUserComplaint=function(req,res){
     var complaintinfo= {
@@ -250,6 +274,24 @@ exports.getCoachDaysreservation=function(req,res){
     });
 
 }
+// 教练获取没有处理预约申请
+exports.getreservationapply=function(req,res){
+    var  coachid=req.query.coachid;
+    if (coachid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    courseserver.getreservationapply(coachid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
+}
 // 教练获取所有的预约列表
 exports.getCoachReservationList=function(req,res){
     var queryinfo= {
@@ -299,7 +341,7 @@ exports.postCoachHandleInfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     };
-    if(commentinfo.coachid!=req.userId){
+    if(handleinfo.coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };

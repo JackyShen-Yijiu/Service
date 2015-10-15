@@ -371,6 +371,67 @@ exports.getCoachStudentList=function(coachinfo,callback){
             return callback(null,data);
         })
 }
+exports.getUsefulCoachList=function(useid,index,callback){
+    usermodel.findById(new mongodb.ObjectId(useid),function(err,user){
+        if(err){
+            return callback("查询出错"+err);
+        }
+        if(!user){
+            return callback("没有查到相关用户信息");
+        }
+        //判断用户状态
+        if(user.is_lock==true)
+        {
+            return  callback("此用户已锁定，请联系客服");
+        }
+        //判断用户的预约权限
+        if(user.applystate!=2)
+        {
+            return  callback("用户没有报名的权限");
+        }
+        if(user.subject.subjectid!=2&&userdata.subject.subjectid!=3){
+            return  callback("该用户现阶段不能预约课程:"+userdata.subject.name);
+        }
+        coachmode.find({is_lock:false,is_validation:true,
+            driveschool:new mongodb.ObjectId(user.applyschool),
+            "carmodel.modelsid":user.carmodel.modelsids,
+        "subject.subjectid":{'$in':[user.subject.subjectid]}})
+            .sort({"passrate": -1})
+            .skip((index-1)*10)
+            .limit(10)
+            .exec(function(err ,coachlist) {
+                if (err || !coachlist || coachlist.length == 0) {
+                    console.log(err);
+                    callback("get coach list failed" + err);
+
+                } else {
+                    process.nextTick(function () {
+                        rescoachlist = [];
+                        coachlist.forEach(function (r, idx) {
+                            var returnmodel = { //new resbasecoachinfomode(r);
+                                coachid: r._id,
+
+                                name: r.name,
+                                driveschoolinfo: r.driveschoolinfo,
+                                headportrait: r.headportrait,
+                                starlevel: r.starlevel,
+                                is_shuttle: r.is_shuttle,
+                                latitude: r.latitude,
+                                longitude: r.longitude
+
+                            }
+                            //  r.restaurantId = r._id;
+                            // delete(r._id);
+                            rescoachlist.push(returnmodel);
+                        });
+                        callback(null, rescoachlist);
+                    });
+                }
+            });
+
+    });
+
+}
 // 添加我喜歡的教練
 exports.addFavoritCoach=function(userid,coachid,callback){
     usermodel.findById(new mongodb.ObjectId(userid), function(err, user) {

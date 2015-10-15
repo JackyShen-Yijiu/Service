@@ -81,7 +81,7 @@ v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach)
 
 //==============================预约课程(学生端)=========================================
 // 获取我当前可以预约的教练
-
+v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensureAuthorized,userController.getUsefulCoachList);
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 // 用户预约课程
@@ -114,8 +114,10 @@ v1.get("/courseinfo/reservationinfo/:reservationid",ensureAuthorizedController.e
 v1.post("/courseinfo/coachhandleinfo",ensureAuthorizedController.ensureAuthorized,courseController.postCoachHandleInfo);
 // 教练评价学员学习情况
 v1.post("/courseinfo/coachcomment",ensureAuthorizedController.ensureAuthorized,courseController.postCoachComment);
-//教练获取
-
+// 教练完成预约
+v1.post("/courseinfo/coachfinishreservation",ensureAuthorizedController.ensureAuthorized,courseController.coachfinishReservation);
+//教练获取没有处理的预约（在消息模块）
+v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthorized,courseController.getreservationapply);
 //------------------------IM---------------
 v1.get('/gettoken', testController.gettoken);
 //-------------------------------------------------------------
