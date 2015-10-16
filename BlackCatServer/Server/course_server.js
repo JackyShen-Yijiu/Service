@@ -421,6 +421,62 @@ exports.coachComment=function(commnetinfo,callback){
     });
 };
 
+// 学员获取我预约过的教练列表
+exports.getMyCoachList=function(userid,callback){
+    //Model.distinct(field, conditions, callback);
+    reservationmodel.find({"userid":new mongodb.ObjectId(userid)})
+    //reservationmodel.distinct("coachid",{"userid":new mongodb.ObjectId(userid)})
+        .select("coachid")
+        //.distinct("coachid")
+        .populate("coachid","_id  name headportrait  starlevel  is_shuttle driveschoolinfo latitude longitude")
+        .exec(function(err,data){
+            if(err||!data){
+                return callback("查詢出錯:"+err);
+            }
+            if (data){
+                console.log(data);
+                process.nextTick(function() {
+                    rescoachlist=[];
+                    data.forEach(function (r, idx) {
+                        var returnmodel  = { //new resbasecoachinfomode(r);
+                            coachid : r.coachid._id,
+                            /*distance : geolib.getDistance(
+                             {latitude: latitude, longitude: longitude},
+                             {latitude: r.latitude, longitude: r.longitude},
+                             10
+                             ),*/
+                            name: r.coachid.name,
+                            driveschoolinfo: r.coachid.driveschoolinfo,
+                            headportrait: r.coachid.headportrait,
+                            starlevel: r.coachid.starlevel,
+                            is_shuttle: r.coachid.is_shuttle,
+                            latitude: r.coachid.latitude,
+                            longitude: r.coachid.longitude
+
+                        }
+                        //  r.restaurantId = r._id;
+                        // delete(r._id);
+                        rescoachlist.push(returnmodel);
+                    });
+                    var sortlist=rescoachlist.unique2();
+                    callback(null, sortlist);
+                });
+            }
+        });
+}
+Array.prototype.unique2 = function()
+{
+    var n = {},r=[]; //n为hash表，r为临时数组
+    for(var i = 0; i < this.length; i++) //遍历当前数组
+    {
+        if (!n[this[i]]) //如果hash表中没有当前项
+        {
+            n[this[i]] = true; //存入hash表
+            r.push(this[i]); //把当前数组的当前项push到临时数组里面
+        }
+    }
+    return r;
+}
 //获取教练或者用户得到的哦评论信息
 exports.GetComment=function(queryinfo,callback){
     if(queryinfo.type==appTypeEmun.UserType.User){

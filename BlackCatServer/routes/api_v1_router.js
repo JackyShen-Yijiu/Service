@@ -49,6 +49,8 @@ v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
 v1.post("/userinfo/updatepwd",userController.updatePassword);
 //修改手机号
 v1.post("/userinfo/updatemobile",ensureAuthorizedController.ensureAuthorized,userController.updateMobile);
+// 获取我的教练，教练端个人中 （我所有预约过教练）
+v1.get("/userinfo/getmycoachlist",ensureAuthorizedController.ensureAuthorized,courseController.getMyCoachList);
 //-----------------------------喜欢的教练操作----------------------------------------
 // 喜欢的教练
 v1.get("/userinfo/favoritecoach",ensureAuthorizedController.ensureAuthorized,userController.getMyFavoritCoach);

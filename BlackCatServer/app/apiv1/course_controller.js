@@ -352,3 +352,13 @@ exports.postCoachHandleInfo=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 学生获取我所有的预约教练
+exports.getMyCoachList=function(req,res){
+    var userid=req.userId;
+    courseserver.getMyCoachList(userid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}

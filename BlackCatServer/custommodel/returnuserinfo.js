@@ -26,4 +26,6 @@ exports.resBaseUserInfo=function(user){
     this.gender=user.gender;
     this.signature=user.signature;
     this.addresslist=user.addresslist;
+    this.subjecttwo=user.subjecttwo;
+    this.subjectthree=user.subjectthree;
 };
