@@ -75,7 +75,7 @@ exports.postSignUp=function(req,res){
     userserver.userSignup(usertype,userinfo,function(err,data){
        // console.log('kaishizhce');
         if(err){
-            console.log('error');
+            //console.log('error');
             return res.json(new  BaseReturnInfo(0,err,""));
         }
         else{
@@ -108,7 +108,7 @@ exports.getSchoolCoach=function(req,res){
         schoolid:req.params.schoolid,
         index:req.params.index
     }
-    console.log(coachinfo);
+    //sconsole.log(coachinfo);
     if (coachinfo.schoolid===undefined||coachinfo.index === undefined) {
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));
@@ -175,8 +175,8 @@ exports.postapplySchool=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));
     };
-    console.log(" user apply body:"+req.body.carmodel.modelsid);
-    console.log(" applyinfo:"+applyinfo.carmodel.modelsid);
+    //console.log(" user apply body:"+req.body.carmodel.modelsid);
+    //sconsole.log(" applyinfo:"+applyinfo.carmodel.modelsid);
     if(applyinfo.userid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));

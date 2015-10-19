@@ -52,7 +52,7 @@ var get_token = function (callback) {
     var data = {grant_type: 'client_credentials', client_id: client_id, client_secret: client_secret};
     http_request(data, '/token', 'POST', function (data) {
         token = data.access_token;
-        console.log(data);
+        //console.log(data);
         if (callback)
             callback();
     });

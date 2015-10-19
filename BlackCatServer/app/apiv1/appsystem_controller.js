@@ -47,7 +47,7 @@ exports.appVersion=function(req,res){
         if (err) {
             return res.status(500).send(new BaseReturnInfo(0, "Internal Server Error", err));
         }
-        console.log(data);
+        //console.log(data);
         return res.json(
             new BaseReturnInfo(1,"",data)
         );

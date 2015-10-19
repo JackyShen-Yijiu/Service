@@ -48,7 +48,7 @@ exports.initData=function(req,res){
             console.log(err);
             return res.json(new BaseReturnInfo(0,err,""));
         }else{
-            console.log('suceeses');
+            //console.log('suceeses');
             return res.json (new BaseReturnInfo(1,"",data));
         }
     })
