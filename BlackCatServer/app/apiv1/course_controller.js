@@ -230,6 +230,24 @@ exports.getUserComment=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+//获取用户同时段学员
+exports.sameTimeStudents=function(req,res){
+    var reservationid = req.params.reservationid;
+    var index =req.params.index;
+    var userid = req.userId;
+    //|| userid===undefined
+    if (reservationid===undefined|| index===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    courseserver.getSameTimeStudents(reservationid,userid,index,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+
+    });
+
+}
 // 教练评论
 exports.postCoachComment=function(req,res){
     var commentinfo= {

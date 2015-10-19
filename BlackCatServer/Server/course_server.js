@@ -106,97 +106,109 @@ VerificationCourse=function(courselist,userid,callback){
 
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
-    usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata){
-        if(err|!userdata)
-        {
-            return  callback("不能找到此用户"+err);
+    usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
+        if (err | !userdata) {
+            return callback("不能找到此用户" + err);
         }
         //判断用户状态
-        if(userdata.is_lock==true)
-        {
-            return  callback("此用户已锁定，请联系客服");
+        if (userdata.is_lock == true) {
+            return callback("此用户已锁定，请联系客服");
         }
         //判断用户的预约权限
-        if(userdata.applystate!=2)
-        {
-            return  callback("用户没有报名的权限");
+        if (userdata.applystate != 2) {
+            return callback("用户没有报名的权限");
         }
-        if(userdata.subject.subjectid!=2&&userdata.subject.subjectid!=3){
-            return  callback("该用户现阶段不能预约课程:"+userdata.subject.name);
+        if (userdata.subject.subjectid != 2 && userdata.subject.subjectid != 3) {
+            return callback("该用户现阶段不能预约课程:" + userdata.subject.name);
         }
         arr = reservationinfo.courselist.split(',');
-        coursecount=arr.length;
-        if (coursecount<=0){
-            return  callback("无法确定您的选择课程");
+        coursecount = arr.length;
+        if (coursecount <= 0) {
+            return callback("无法确定您的选择课程");
         }
-        VerificationCourse(arr,reservationinfo.userid,function(err){
-            if(err){
-                return  callback("验证课程出错："+err);
+        coachmode.findById(new mongodb.ObjectId(reservationinfo.coachid), function (err, coachdata) {
+            if(err|| !coachdata){
+                return callback("查询教练出错："+err);
+                if (coachdata.is_lock){
+                    return callback("该教练被锁定：");
+                }
+                if (!coachdata.is_validation){
+                    return callback("该教练没有通过验证不能预约：");
+                }
+
             }
-        if(userdata.subject.subjectid==2){
+            VerificationCourse(arr, reservationinfo.userid, function (err) {
+                if (err) {
+                    return callback("验证课程出错：" + err);
+                }
+                if (userdata.subject.subjectid == 2) {
 
-        //判断用户预约课程数量
-        if(userdata.subjecttwo.reservation+coursecount>userdata.subjecttwo.totalcourse){
-            return  callback("预约课程数量超出最大课程");
-        }
+                    //判断用户预约课程数量
+                    if (userdata.subjecttwo.reservation + coursecount > userdata.subjecttwo.totalcourse) {
+                        return callback("预约课程数量超出最大课程");
+                    }
 
-        userdata.subjecttwo.reservation=userdata.subjecttwo.reservation+coursecount;}
-        else if(userdata.subject.subjectid==3){
-            if(userdata.subjectthree.reservation+coursecount>userdata.subjectthree.totalcourse){
-                return  callback("预约课程数量超出最大课程");
-            }
+                    userdata.subjecttwo.reservation = userdata.subjecttwo.reservation + coursecount;
+                }
+                else if (userdata.subject.subjectid == 3) {
+                    if (userdata.subjectthree.reservation + coursecount > userdata.subjectthree.totalcourse) {
+                        return callback("预约课程数量超出最大课程");
+                    }
 
-            userdata.subjectthree.reservation=userdata.subjectthree.reservation+coursecount;
-        }
-        else{
-            return  callback("不存在该阶段");
-        }
+                    userdata.subjectthree.reservation = userdata.subjectthree.reservation + coursecount;
+                }
+                else {
+                    return callback("不存在该阶段");
+                }
 
-        // 保存预约信息
-        var reservation=new  reservationmodel();
-        reservation.userid=new mongodb.ObjectId(reservationinfo.userid);
-        reservation.coachid=new mongodb.ObjectId(reservationinfo.coachid);
-        reservation.is_shuttle=reservationinfo.is_shuttle? (reservationinfo.is_shuttle==1?true:false):false;
-        reservation.shuttleaddress=reservationinfo.address? reservationinfo.address:"";
-        reservation.reservationcreatetime=new Date();
-        reservation.reservationstate=appTypeEmun.ReservationState.applying;
-        reservation.begintime=new Date(reservationinfo.begintime);
-        reservation.endtime=new Date(reservationinfo.endtime);
-        reservation.subject=userdata.subject;
-        reservation.coursehour=coursecount;
-        arr.forEach(function(r){
-            reservation.reservationcourse.push(new mongodb.ObjectId(r) );
-        });
-        //console.log(reservation);
-        reservation.save(function(err,newreservation){
-         if(err){
-             return callback("保存预约出错："+err);
-         }
-            // 保存课程人员和预约信息
-            //console.log("保存课程信息");
-            arr.forEach(function(r){
-                coursemode.findOne(new mongodb.ObjectId(r),function(err,coursedata){
-                    coursedata.selectedstudentcount=coursedata.selectedstudentcount+1;
-                    coursedata.courseuser.push(new mongodb.ObjectId(userdata._id));
-                    coursedata.coursereservation.push(new mongodb.ObjectId(newreservation._id));
-                    coursedata.save(function(err,data){
+
+                    // 保存预约信息
+                    var reservation = new reservationmodel();
+                    reservation.userid = new mongodb.ObjectId(reservationinfo.userid);
+                    reservation.coachid = new mongodb.ObjectId(reservationinfo.coachid);
+                    reservation.is_shuttle = reservationinfo.is_shuttle ? (reservationinfo.is_shuttle == 1 ? true : false) : false;
+                    reservation.shuttleaddress = reservationinfo.address ? reservationinfo.address : "";
+                    reservation.reservationcreatetime = new Date();
+                    reservation.reservationstate = appTypeEmun.ReservationState.applying;
+                    reservation.trainfieldid=coachdata.trainfield;
+                    reservation.begintime = new Date(reservationinfo.begintime);
+                    reservation.endtime = new Date(reservationinfo.endtime);
+                    reservation.subject = userdata.subject;
+                    reservation.coursehour = coursecount;
+                    arr.forEach(function (r) {
+                        reservation.reservationcourse.push(new mongodb.ObjectId(r));
+                    });
+                    //console.log(reservation);
+                    reservation.save(function (err, newreservation) {
+                        if (err) {
+                            return callback("保存预约出错：" + err);
+                        }
+                        // 保存课程人员和预约信息
+                        //console.log("保存课程信息");
+                        arr.forEach(function (r) {
+                            coursemode.findOne(new mongodb.ObjectId(r), function (err, coursedata) {
+                                coursedata.selectedstudentcount = coursedata.selectedstudentcount + 1;
+                                coursedata.courseuser.push(new mongodb.ObjectId(userdata._id));
+                                coursedata.coursereservation.push(new mongodb.ObjectId(newreservation._id));
+                                coursedata.save(function (err, data) {
+
+                                });
+                            });
+                        });
+                        // 保存用户信息里面的预约信息
+                        // console.log("保存用户信息");
+                        userdata.save(function (err, data) {
+                            if (err) {
+                                return callback("保存预约出错：" + err);
+                            }
+                            // console.log("返回成果");
+                            return callback(null, "success");
+                        });
 
                     });
+
                 });
             });
-            // 保存用户信息里面的预约信息
-           // console.log("保存用户信息");
-            userdata.save(function(err,data){
-                if(err){
-                    return callback("保存预约出错："+err);
-                }
-               // console.log("返回成果");
-                return  callback(null,"success");
-            });
-
-        });
-
-        });
 
     });
 };
@@ -420,6 +432,32 @@ exports.coachComment=function(commnetinfo,callback){
 
     });
 };
+// 获取同时段学员
+exports.getSameTimeStudents=function(reservationid,userid,index,callback){
+
+    reservationmodel.findById(new mongodb.ObjectId(reservationid),function(err,resdata){
+        if(err||!resdata){
+            return callback("查询预约信息出錯:"+err);
+        }
+        if (resdata.trainfieldid===undefined){
+            return callback("无法确认用户的练车信息");
+        }
+        reservationmodel.find({"trainfieldid":new mongodb.ObjectId(resdata.trainfieldid),"begintime":resdata.begintime,
+        "reservationstate":{"$ne":2,"$ne":4}})
+            .select("userid")
+            .populate("userid","_id  name headportrait ")
+            .skip((index-1)*10)
+            .limit(10)
+            .exec(function(err,data){
+                if(err){
+                    return callback("查询同时段学员出錯:"+t);
+                }
+                callback(null,data);
+            })
+
+    })
+}
+
 
 // 学员获取我预约过的教练列表
 exports.getMyCoachList=function(userid,callback){
@@ -431,7 +469,7 @@ exports.getMyCoachList=function(userid,callback){
         .populate("coachid","_id  name headportrait  starlevel  is_shuttle driveschoolinfo latitude longitude")
         .exec(function(err,data){
             if(err||!data){
-                return callback("查詢出錯:"+err);
+                return callback("查询出錯:"+err);
             }
             if (data){
                 //console.log(data);

@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var ReservationSchema=new Schema({
     userid :{type: Schema.Types.ObjectId, ref: 'User'},// 预约课程
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'}, //  预约教练
+    trainfieldid:{type: Schema.Types.ObjectId, ref: 'trainingfield'}, //  练车场id 同车学员
     // 预约状态
     reservationstate:{type:Number,default:0},
     //预约时间
@@ -36,6 +37,7 @@ var ReservationSchema=new Schema({
     is_shuttle:{ type: Boolean, default: false},
     // 接送地址
     shuttleaddress:String,
+
     //x学时
     coursehour:Number,
     subject:{subjectid:{type:Number,default:2},
