@@ -767,6 +767,7 @@ exports.updateCoachServer=function(updateinfo,callback){
         coachdata.drivinglicensenumber=updateinfo.drivinglicensenumber ? updateinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
         coachdata.coachnumber=updateinfo.coachnumber ? updateinfo.coachnumber:coachdata.coachnumber;
         coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
+        coachdata.platenumber=updateinfo.platenumber ? updateinfo.platenumber:coachdata.platenumber;
         coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
         if (updateinfo.driveschoolid){
             schoolModel.findById(new mongodb.ObjectId(updateinfo.driveschoolid),function(err,schooldata){

@@ -30,4 +30,8 @@ exports.resBaseCoachInfo=function(user){
     this.trainfieldlinfo=user.trainfieldlinfo;
     this.is_shuttle=user.is_shuttle;
     this.coachnumber=user.coachnumber;
+    this.platenumber=user.platenumber;
+    this.shuttlemsg=user.shuttlemsg;
+    this.introduction=user.introduction;
+    this.worktime=user.worktime;
 };

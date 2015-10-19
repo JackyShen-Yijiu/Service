@@ -240,7 +240,8 @@ exports.updateCoachInfo=function(req,res){
         coachnumber :req.body.coachnumber,
         carmodel:req.body.carmodel,
         trainfield:req.body.trainfield,
-        is_shuttle:req.body.is_shuttle
+        is_shuttle:req.body.is_shuttle,
+        platenumber:req.body.platenumber
     }
     if (updateuserinfo.coachid===undefined) {
         return res.json(
