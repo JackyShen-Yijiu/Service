@@ -434,7 +434,7 @@ exports.getMyCoachList=function(userid,callback){
                 return callback("查詢出錯:"+err);
             }
             if (data){
-                console.log(data);
+                //console.log(data);
                 process.nextTick(function() {
                     rescoachlist=[];
                     data.forEach(function (r, idx) {
@@ -449,6 +449,8 @@ exports.getMyCoachList=function(userid,callback){
                             driveschoolinfo: r.coachid.driveschoolinfo,
                             headportrait: r.coachid.headportrait,
                             starlevel: r.coachid.starlevel,
+                            passrate: r.coachid.passrate,
+                            Seniority: r.coachid.Seniority,
                             is_shuttle: r.coachid.is_shuttle,
                             latitude: r.coachid.latitude,
                             longitude: r.coachid.longitude

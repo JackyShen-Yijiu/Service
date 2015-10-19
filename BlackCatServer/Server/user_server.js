@@ -302,6 +302,8 @@ exports.getNearCoach=function(latitude, longitude, radius,callback){
                         driveschoolinfo: r.driveschoolinfo,
                         headportrait:r.headportrait,
                         starlevel: r.starlevel,
+                        passrate: r.passrate,
+                        Seniority: r.Seniority,
                         is_shuttle: r.is_shuttle,
                         latitude: r.latitude,
                         longitude: r.longitude
@@ -342,6 +344,8 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         headportrait:r.headportrait,
                         starlevel: r.starlevel,
                         is_shuttle: r.is_shuttle,
+                        passrate: r.passrate,
+                        Seniority: r.Seniority,
                         latitude: r.latitude,
                         longitude: r.longitude
 
@@ -416,6 +420,8 @@ exports.getUsefulCoachList=function(useid,index,callback){
                                 headportrait: r.headportrait,
                                 starlevel: r.starlevel,
                                 is_shuttle: r.is_shuttle,
+                                passrate: r.passrate,
+                                Seniority: r.Seniority,
                                 latitude: r.latitude,
                                 longitude: r.longitude
 
@@ -521,6 +527,8 @@ usermodel.findById(new mongodb.ObjectId(userid))
                         headportrait:r.headportrait,
                         starlevel: r.starlevel,
                         is_shuttle: r.is_shuttle,
+                        passrate: r.passrate,
+                        Seniority: r.Seniority,
                         latitude: r.latitude,
                         longitude: r.longitude
 
