@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // 教练信息信息
-var  CoachSchema=new Schema({
+var  CoachesSchema=new Schema({
     mobile: { type: String},
     name :{type:String,default:''},
     createtime:{type:Date,default:Date.now()},
@@ -60,7 +60,7 @@ var  CoachSchema=new Schema({
  * @param limit
  * @param callback
  */
-CoachSchema.statics.getNearCoach = function(latitude, longitude, radius, callback) {
+CoachesSchema.statics.getNearCoach = function(latitude, longitude, radius, callback) {
     // CAUTION: paramters (lat, lon, radius) in the query must be type of Number.
 //    this.find({loc:{$geoWithin:{ $centerSphere:[[longitude, latitude], radius/6378100.0]}}}) //within cycle of radius
 
@@ -73,14 +73,14 @@ CoachSchema.statics.getNearCoach = function(latitude, longitude, radius, callbac
         .exec(callback);
 };
 
-CoachSchema.statics.getCoachList = function(callback) {
-    this.find({)
+CoachesSchema.statics.getCoachList = function(callback) {
+    this.find()
         .lean()
         .exec(callback);
 };
 
-CoachSchema.index({mobile: 1});
-CoachSchema.index({loc: '2dsphere'});
+CoachesSchema.index({mobile: 1});
+CoachesSchema.index({loc: '2dsphere'});
 
 
-module.exports = mongoose.model('coach', CoachSchema);
+module.exports = mongoose.model('Coaches', CoachesSchema);

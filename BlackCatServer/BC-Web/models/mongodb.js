@@ -46,6 +46,7 @@ exports.AppVersionModel = require('./appversion.js');
 exports.SmsVerifyCodeModel = require('./smsVerifyCode.js');
 exports.UserModel=require('./user');
 exports.CoachModel=require('./coach');
+exports.QuestionModel=require('./question');
 exports.DriveSchoolModel=require('./driveschool');
 exports.TrainingFieldModel=require('./trainingfield');
 exports.UserCountModel=require('./usercount');

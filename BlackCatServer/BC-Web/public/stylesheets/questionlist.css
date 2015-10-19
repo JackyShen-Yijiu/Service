@@ -1,0 +1,81 @@
+body{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+.questionDiv{
+  margin:0 auto;
+  text-align: left;
+  background-color: #EDEDED;
+  padding: 10px;
+}
+.options ul{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  list-style-type: none;
+}
+.options li{
+  height: 50px;
+  line-height: 50px;
+}
+.options li:hover
+{
+    background-color:#EDFFED;
+    cursor: pointer;
+}
+.actionDiv{
+  text-align: center;
+  padding: 5px;
+}
+.actionDiv button{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  border-radius:2px;
+  padding-top:2px;
+  padding-bottom:2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #dd962d;
+
+  background-color: #EDEDED;
+  color:#FF7B16;
+
+  box-shadow: none !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.Answer_div{
+  width:120px; 
+  display:block; 
+  text-align:left; 
+  background:#CDE375;
+  margin: 5px;
+  font-size: 15px;
+}
+.Answer_div img{
+  height: 30px;
+  vertical-align: middle;
+}
+.Answer_div span{
+  vertical-align: middle;
+}
+#rightAnswer{
+  display: none;
+}
+#wrongAnswer{
+  display: none;
+}
+
+.why{
+  width: auto;
+  display: block;
+  text-align: left;
+  background:#CFDCE9;
+  margin: 5px;
+  padding: 2px;
+  min-height: 100px;
+}
+
+.statisticDiv{
+  border-top: dotted 1px ;
+  font-size: 10px;
+}

@@ -1,3 +1,4 @@
 *.xml
 
 BlackCatServer/node_modules/*
+BlackCatServer/BC-Web/node_modules/*
