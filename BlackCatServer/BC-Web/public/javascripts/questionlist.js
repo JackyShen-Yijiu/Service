@@ -2,7 +2,7 @@ $.ajaxSetup({
   contentType: "application/json; charset=utf-8",
   crossDomain: true
 });
-var apiHost = 'http://192.168.1.111:3000/';//"http://123.57.254.32:4000/";
+var apiHost = 'http://192.168.1.102:3600/';//"http://123.57.254.32:4000/";
 
 function init() {
     console.log('init.');
@@ -32,10 +32,12 @@ function getQuestionByID(id, callback){
 
 function showQuestions(questoinBody) {
   console.log("show questoin");
+  answered = false;
   currentQuestion = questoinBody;
   $("#question_title").text(questoinBody.question);
   $("#rightAnswer").hide();
   $("#wrongAnswer").hide();
+  $("#rightAnswer_txt").hide();
   $("#answer1").prop("checked", false);
   $("#answer2").prop("checked", false);
   $("#answer3").prop("checked", false);
@@ -84,6 +86,8 @@ for ( myExamOrderid = 0; myExamOrderid < 568; myExamOrderid++) {
 var Allcount = 568;
 var QIndex = 0;
 var currentQuestion;
+var rightCount=0, wrongCount=0;
+var answered=false;
 
 function nextQestion(){
   if(QIndex < Allcount){
@@ -102,13 +106,26 @@ function preQestion(){
 function answerIsRight(){
   $("#rightAnswer").show();
   $("#wrongAnswer").hide();
+  if(answered == false){
+    answered = true;
+    rightCount++;
+    $("#rightCount").text(rightCount);
+    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
+  }
 }
 function answerIsWrong(){
   $("#rightAnswer").hide();
   $("#wrongAnswer").show();
+    if(answered == false){
+      answered = true;
+      wrongCount++;
+      $("#wrongCount").text(wrongCount);
+      $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
+  }
 }
 function tjanswer(answer){
   console.log("tjanswer" + answer + " " + currentQuestion.ta);
+  $("#rightAnswer_txt").show();
   switch(answer){
     case "A":
       if(currentQuestion.ta == 1){
