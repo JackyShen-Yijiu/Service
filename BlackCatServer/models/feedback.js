@@ -15,7 +15,7 @@ var FeedbackSchema = new Schema({
     mobileversion:{type:String,default:''},
     network :{type:String,default:''},
     resolution:{type:String,default:''},
-    createtime:{type:Date,default:Date.now()}
+    createtime:{type:Date,default:new Date().getTime()/1000}
 });
 
 

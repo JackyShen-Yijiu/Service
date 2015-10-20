@@ -9,7 +9,7 @@ var qiniu=require("../../Common/qiniuUnit");
 var  Apperversion= mongodb.AppVersionModel;
 var sysstemserver=require('../../Server/systemdata_server');
 /**
- * ²âÊÔapi µ÷ÓÃ·½·¨
+ * æµ‹è¯•api è°ƒç”¨æ–¹æ³•
  **/
 exports.TestAPI = function (req, res) {
     return  res.json(
@@ -17,22 +17,22 @@ exports.TestAPI = function (req, res) {
 
 };
 /*
- »ñÈ¡appµÄ°æ±¾ÐÅÏ¢
+ èŽ·å–appçš„ç‰ˆæœ¬ä¿¡æ¯
  */
 
 exports.appVersion=function(req,res){
     var apptype=req.params.type;
     if (apptype>4||apptype<1||apptype === undefined)
     {
-        return res.status(500).send(new BaseReturnInfo(0,"ÇëÇó²ÎÊý´íÎó",""));
+        return res.status(500).send(new BaseReturnInfo(0,"è¯·æ±‚å‚æ•°é”™è¯¯",""));
     }
-    /* var appverison =new Apperversion();
-     appverison.name="andorid yonghukehuand";
+   /*  var appverison =new Apperversion();
+     appverison.name="andorid ç”¨æˆ·ç«¯";
      appverison.apptype=1;
      appverison.versionCode='v1.0';
-     appverison.updateMessage="¸üÐÂÐÅÏ¢";
+     appverison.updateMessage="æ›´æ–°ä¿¡æ¯";
      appverison.downloadUrl="www.baidu.com";
-     appverison.updateTime=Date.now();
+     appverison.updateTime=Date().toLocaleString();
 
      appverison.save(function(err, data) {
      if (err) {
@@ -47,13 +47,14 @@ exports.appVersion=function(req,res){
         if (err) {
             return res.status(500).send(new BaseReturnInfo(0, "Internal Server Error", err));
         }
+        //console.log(data);
         return res.json(
             new BaseReturnInfo(1,"",data)
         );
     })
 };
 
-//»ñÈ¡¿ÆÄ¿
+//èŽ·å–ç§‘ç›®
 exports.GetSubject=function(req,res){
     var subject=commondataServer.subject;
     return res.json( new BaseReturnInfo(1,'',subject));
@@ -71,7 +72,7 @@ exports.GetqiniuupToken=function(req,res){
     var token =qiniu.getQiniuUpToken();
     return res.json(new BaseReturnInfo(1,'',token));
 }
-// ±£´æÓÃ»§·´À¡ÐÅÏ¢
+// ä¿å­˜ç”¨æˆ·åé¦ˆä¿¡æ¯
 exports.postUserFeedBack=function(req,res){
     var  feedbackinfo={
         userid:req.body.userid,
@@ -81,12 +82,13 @@ exports.postUserFeedBack=function(req,res){
         network:req.body.network,
         resolution:req.body.network
     }
-    console.log(feedbackinfo);
+    //console.log(feedbackinfo);
+
     sysstemserver.saveFeedback(feedbackinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     })
 
 }

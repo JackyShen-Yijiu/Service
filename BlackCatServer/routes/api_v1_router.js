@@ -46,9 +46,11 @@ v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,
 //根据用户或者教练的id获取基本信息
 v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
 // 修改密码
-v1.post("/userinfo/updatepwd",ensureAuthorizedController.ensureAuthorized,userController.updatePassword);
+v1.post("/userinfo/updatepwd",userController.updatePassword);
 //修改手机号
 v1.post("/userinfo/updatemobile",ensureAuthorizedController.ensureAuthorized,userController.updateMobile);
+// 获取我的教练，教练端个人中 （我所有预约过教练）
+v1.get("/userinfo/getmycoachlist",ensureAuthorizedController.ensureAuthorized,courseController.getMyCoachList);
 //-----------------------------喜欢的教练操作----------------------------------------
 // 喜欢的教练
 v1.get("/userinfo/favoritecoach",ensureAuthorizedController.ensureAuthorized,userController.getMyFavoritCoach);
@@ -80,6 +82,8 @@ v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach)
 
 
 //==============================预约课程(学生端)=========================================
+// 获取我当前可以预约的教练
+v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensureAuthorized,userController.getUsefulCoachList);
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 // 用户预约课程
@@ -98,19 +102,26 @@ v1.post("/courseinfo/usercomplaint",ensureAuthorizedController.ensureAuthorized,
 v1.post("/courseinfo/usercomment",ensureAuthorizedController.ensureAuthorized,courseController.postUserComment);
 //获取教练的或者学生的评论
 v1.get("/courseinfo/getusercomment/:type/:userid/:index",courseController.getUserComment);
+//获取同时段学员
+v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",courseController.sameTimeStudents);
 
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
 v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
 //教练获取预约列表
-v1.get("/courseinfo/coachcourse",ensureAuthorizedController.ensureAuthorized);
+v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachReservationList);
 // 教练获取某一天的预约列表
- 
+v1.get("/courseinfo/daysreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachDaysreservation);
+// 教练获取预约详情
+v1.get("/courseinfo/reservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,courseController.coachGetReservationInfo)
 //接受或者拒绝预约
 v1.post("/courseinfo/coachhandleinfo",ensureAuthorizedController.ensureAuthorized,courseController.postCoachHandleInfo);
 // 教练评价学员学习情况
 v1.post("/courseinfo/coachcomment",ensureAuthorizedController.ensureAuthorized,courseController.postCoachComment);
-
+// 教练完成预约
+v1.post("/courseinfo/coachfinishreservation",ensureAuthorizedController.ensureAuthorized,courseController.coachfinishReservation);
+//教练获取没有处理的预约（在消息模块）
+v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthorized,courseController.getreservationapply);
 //------------------------IM---------------
 v1.get('/gettoken', testController.gettoken);
 //-------------------------------------------------------------

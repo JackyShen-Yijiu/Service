@@ -261,7 +261,7 @@ exports.updateMobile=function(mobileinfo,callback){
 }
 // 修改密码
 exports.updatePassword=function(pwdinfo,callback){
- usermodel.findById(new mongodb.ObjectId(pwdinfo.userid),function(err,userdata){
+ usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
   if(err||!userdata){
       return  callback("查询用户出错："+err);
   }
@@ -302,6 +302,8 @@ exports.getNearCoach=function(latitude, longitude, radius,callback){
                         driveschoolinfo: r.driveschoolinfo,
                         headportrait:r.headportrait,
                         starlevel: r.starlevel,
+                        passrate: r.passrate,
+                        Seniority: r.Seniority,
                         is_shuttle: r.is_shuttle,
                         latitude: r.latitude,
                         longitude: r.longitude
@@ -342,6 +344,8 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         headportrait:r.headportrait,
                         starlevel: r.starlevel,
                         is_shuttle: r.is_shuttle,
+                        passrate: r.passrate,
+                        Seniority: r.Seniority,
                         latitude: r.latitude,
                         longitude: r.longitude
 
@@ -370,6 +374,69 @@ exports.getCoachStudentList=function(coachinfo,callback){
             }
             return callback(null,data);
         })
+}
+exports.getUsefulCoachList=function(useid,index,callback){
+    usermodel.findById(new mongodb.ObjectId(useid),function(err,user){
+        if(err){
+            return callback("查询出错"+err);
+        }
+        if(!user){
+            return callback("没有查到相关用户信息");
+        }
+        //判断用户状态
+        if(user.is_lock==true)
+        {
+            return  callback("此用户已锁定，请联系客服");
+        }
+        //判断用户的预约权限
+        if(user.applystate!=2)
+        {
+            return  callback("用户没有报名的权限");
+        }
+        if(user.subject.subjectid!=2&&userdata.subject.subjectid!=3){
+            return  callback("该用户现阶段不能预约课程:"+userdata.subject.name);
+        }
+        coachmode.find({is_lock:false,is_validation:true,
+            driveschool:new mongodb.ObjectId(user.applyschool),
+            "carmodel.modelsid":user.carmodel.modelsids,
+        "subject.subjectid":{'$in':[user.subject.subjectid]}})
+            .sort({"passrate": -1})
+            .skip((index-1)*10)
+            .limit(10)
+            .exec(function(err ,coachlist) {
+                if (err || !coachlist || coachlist.length == 0) {
+                    console.log(err);
+                    callback("get coach list failed" + err);
+
+                } else {
+                    process.nextTick(function () {
+                        rescoachlist = [];
+                        coachlist.forEach(function (r, idx) {
+                            var returnmodel = { //new resbasecoachinfomode(r);
+                                coachid: r._id,
+
+                                name: r.name,
+                                driveschoolinfo: r.driveschoolinfo,
+                                headportrait: r.headportrait,
+                                starlevel: r.starlevel,
+                                is_shuttle: r.is_shuttle,
+                                passrate: r.passrate,
+                                Seniority: r.Seniority,
+                                latitude: r.latitude,
+                                longitude: r.longitude
+
+                            }
+                            //  r.restaurantId = r._id;
+                            // delete(r._id);
+                            rescoachlist.push(returnmodel);
+                        });
+                        callback(null, rescoachlist);
+                    });
+                }
+            });
+
+    });
+
 }
 // 添加我喜歡的教練
 exports.addFavoritCoach=function(userid,coachid,callback){
@@ -460,6 +527,8 @@ usermodel.findById(new mongodb.ObjectId(userid))
                         headportrait:r.headportrait,
                         starlevel: r.starlevel,
                         is_shuttle: r.is_shuttle,
+                        passrate: r.passrate,
+                        Seniority: r.Seniority,
                         latitude: r.latitude,
                         longitude: r.longitude
 
@@ -567,10 +636,10 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
                 })
             }
             else{
-                return  callback('该教练不存在我的喜欢列表中：');}
+                return  callback('该驾校不存在我的喜欢列表中：');}
         }
         else{
-            return  callback('该教练不存在我的喜欢列表中：');}
+            return  callback('该驾校不存在我的喜欢列表中：');}
 
 
     });
@@ -698,6 +767,7 @@ exports.updateCoachServer=function(updateinfo,callback){
         coachdata.drivinglicensenumber=updateinfo.drivinglicensenumber ? updateinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
         coachdata.coachnumber=updateinfo.coachnumber ? updateinfo.coachnumber:coachdata.coachnumber;
         coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
+        coachdata.platenumber=updateinfo.platenumber ? updateinfo.platenumber:coachdata.platenumber;
         coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
         if (updateinfo.driveschoolid){
             schoolModel.findById(new mongodb.ObjectId(updateinfo.driveschoolid),function(err,schooldata){
@@ -816,8 +886,12 @@ var checkSmsCode=function(mobile,code,callback){
         {
             return callback("No such code/mobile was found");
         }
+        console.log(instace);
         var  now=new Date();
-        if ((now-instace.createtime)>timeout*1000){
+        /*console.log(now);
+        console.log(instace.createdTime);
+        console.log(now-instace.createdTime);*/
+        if ((now-instace.createdTime)>timeout*1000){
             return callback("Code timeout");
         }
         instace.verified=true;

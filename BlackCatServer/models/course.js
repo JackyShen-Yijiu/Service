@@ -25,6 +25,8 @@ CourseSchema.statics.findCourse = function(coachid, _date, callback){
     this.find({ coachid:new mongoose.Types.ObjectId(coachid),
         coursedate: new Date(_date) }, function(err, result) {
       //  coursedate: { $gte: new Date(_date), $lte: new Date(_date) }}, function(err, result) {
+      //  new Date('2015-10-12')
+
         //console.log(result);
         //if(result != null) console.log('found: ' + _mobile);
        return  callback(err, result);

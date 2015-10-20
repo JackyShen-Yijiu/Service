@@ -17,4 +17,6 @@ exports.resBaseSchoolInfo=function(school){
     this.responsible=school.responsible;
     this.phone=school.phone;
     this.websit=school.websit;
+    this. maxprice=school.maxprice;
+    this.minprice=school.minprice;
 };

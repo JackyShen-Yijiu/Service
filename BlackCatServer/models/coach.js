@@ -48,8 +48,10 @@ var  CoachSchema=new Schema({
     carmodel:{modelsid:Number,name:String,code:String},
     trainfield:{type: Schema.Types.ObjectId, ref: 'trainingfield'} ,//训练场
     trainfieldlinfo:{name:String,id:String}, //训练成信息信息
+    platenumber:String, // 车牌号
     // 是否接送
     is_shuttle:{ type: Boolean, default: false},
+    shuttlemsg:String
 
 });
 
