@@ -144,3 +144,7 @@ exports.worktimes=[
         endtime:"20:00:00"
     }
 ]
+exports.examquestioninfo={
+    subjectone:"http://123.57.7.30:3600/question",
+subjectfour:"http://123.57.7.30:3600/question"
+}
