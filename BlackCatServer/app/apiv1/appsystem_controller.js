@@ -72,6 +72,9 @@ exports.GetqiniuupToken=function(req,res){
     var token =qiniu.getQiniuUpToken();
     return res.json(new BaseReturnInfo(1,'',token));
 }
+exports.getExamQuestion=function (req,res){
+   return res.json(new BaseReturnInfo(1,"",commondataServer.examquestioninfo))
+}
 // 保存用户反馈信息
 exports.postUserFeedBack=function(req,res){
     var  feedbackinfo={

@@ -25,6 +25,8 @@ v1.get('/info/carmodel', appsystemController.GetCarModel);
 v1.get('/info/worktimes', appsystemController.GetWorkTimes);
 // 获取图片上传token
 v1.get('/info/qiniuuptoken', appsystemController.GetqiniuupToken);
+// 获取科目一或科目四训考试题
+v1.get("/info/examquestion",appsystemController.getExamQuestion);
 
 // 用户反馈
 v1.post("/userfeedback",appsystemController.postUserFeedBack);
