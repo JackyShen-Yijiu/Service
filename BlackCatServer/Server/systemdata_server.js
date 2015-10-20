@@ -4,6 +4,7 @@
 
 var mongodb = require('../models/mongodb.js');
 var feedbackModel=mongodb.FeedBackModel;
+var headLineModel=mongodb.HeadLineNewsModel;
 
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
@@ -21,4 +22,15 @@ exports.saveFeedback=function(feedbackinfo,callback){
         }
         return callback(null,"success");
     })
+}
+exports.getHeadLineNews=function(callback){
+    headLineModel.find({"is_using":"true"})
+        .limit(8)
+        .sort({createtime: -1 })
+        .exec(function(err,data){
+            if(err){
+                return callback("查询头条信息错误："+err);
+            }
+            return  callback (null ,data);
+        })
 }

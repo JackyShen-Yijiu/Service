@@ -75,6 +75,15 @@ exports.GetqiniuupToken=function(req,res){
 exports.getExamQuestion=function (req,res){
    return res.json(new BaseReturnInfo(1,"",commondataServer.examquestioninfo))
 }
+// 获取app 头条信息
+exports.getHeadLineNews=function (req,res){
+    sysstemserver.getHeadLineNews(function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
 // 保存用户反馈信息
 exports.postUserFeedBack=function(req,res){
     var  feedbackinfo={

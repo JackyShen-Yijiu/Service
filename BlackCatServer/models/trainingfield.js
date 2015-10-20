@@ -1,9 +1,20 @@
 /**
  * Created by v-lyf on 2015/9/2.
  */
+
+
 // 训练场信息
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
+var ImgInfo= new Schema({
+    id :Number,
+    originalpic:{type:String,default:""},
+    thumbnailpic:{type:String,default:""},
+    width:{type:String,default:""},
+    height:{type:String,default:""}
+
+});
 var  TrainingFieldSchema=new Schema({
     fieldname:String,   // 训练场名称
     // 场地地点
@@ -15,6 +26,9 @@ var  TrainingFieldSchema=new Schema({
     phone:{type:String,default:''} , //联系电话
     capacity:Number, // 容量可容纳多少个辆车
     fielddesc:String,
+    subject:[{subjectid:{type:Number,default:2},
+        name:{type:String,default:"科目二"}}], //支持科目几的训练科目二
+    pictures:[ImgInfo]
 });
 
 /**

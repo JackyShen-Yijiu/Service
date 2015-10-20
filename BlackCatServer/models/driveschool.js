@@ -34,6 +34,9 @@ var DriveSchoolSchema=new Schema({
     responsible:{type:String,default:''}, // 负责人
     phone:{type:String,default:''},  //联系电话
     websit:{type:String,default:''},  // 网址
+    schoollevel:String, //驾校星级
+    carcount:Number, // 驾校车辆数
+    coachcount:Number,  // 驾校教练数
     maxprice:Number,  // 最高价格
     minprice:Number   // 最低价格
 

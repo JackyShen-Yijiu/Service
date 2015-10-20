@@ -27,7 +27,8 @@ v1.get('/info/worktimes', appsystemController.GetWorkTimes);
 v1.get('/info/qiniuuptoken', appsystemController.GetqiniuupToken);
 // 获取科目一或科目四训考试题
 v1.get("/info/examquestion",appsystemController.getExamQuestion);
-
+// 获取头条信息
+v1.get("/info/headlinenews",appsystemController.getHeadLineNews);
 // 用户反馈
 v1.post("/userfeedback",appsystemController.postUserFeedBack);
 
@@ -131,6 +132,7 @@ v1.get('/gettoken', testController.gettoken);
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);
 v1.get('/addaddtrainingfield', testController.addaddtrainingfield);
+v1.get('/addheadlinenews', testController.addheadlinenews);
 v1.get("/initdata",testController.initData)
 
 //------------------------------------------------------------------------------------

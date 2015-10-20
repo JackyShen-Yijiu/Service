@@ -53,6 +53,7 @@ var  CoachSchema=new Schema({
     is_shuttle:{ type: Boolean, default: false},
     shuttlemsg:String
 
+
 });
 
 /**

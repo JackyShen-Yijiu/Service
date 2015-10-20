@@ -41,7 +41,17 @@ exports.addaddtrainingfield=function(req,res){
         }
     })
 };
-
+exports.addheadlinenews=function(req,res){
+    testserver.addheadlinenews(function(err,data){
+        if(err){
+            console.log(err);
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            console.log('suceeses');
+            return res.json (new BaseReturnInfo(1,"",data));
+        }
+    })
+}
 exports.initData=function(req,res){
     testserver.inindatabase(function(err,data){
         if(err){

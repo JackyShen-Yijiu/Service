@@ -3,6 +3,7 @@ var schoolModel=mongodb.DriveSchoolModel;
 var schoolclassModel=mongodb.ClassTypeModel;
 var trainingfieldModel=mongodb.TrainingFieldModel;
 var usercount=mongodb.UserCountModel;
+var headlinenews=mongodb.HeadLineNewsModel;
 var IM=require('../Common/IM/mobIm');
 
 exports.adddriveschool=function(callback){
@@ -47,6 +48,36 @@ exports.inindatabase=function(callback){
             return callback(null, count);
         }
     })
+
+}
+exports.addheadlinenews=function(callback) {
+    var headline=new    headlinenews();
+    headline.newsname="科目一考试试题";
+    headline.headportrait.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/u=2116917190,1673171654&fm=21&gp=0.jpg";
+    headline.createtime=new Date();
+    headline.type=1;
+    headline.linkurl="http://123.57.7.30:3600/question";
+    headline.is_using=true;
+    headline.save();
+    var headline=new    headlinenews();
+    headline.newsname="教练信息";
+    headline.headportrait.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/40f58723dae34a88a61df26ee98d4218.jpg";
+    headline.createtime=new Date();
+    headline.type=2;
+    headline.linkurl="5616352721ec29041a9af889";
+    headline.is_using=true;
+    headline.save();
+
+    var headline=new    headlinenews();
+    headline.newsname="驾校信息";
+    headline.headportrait.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/20140719222416-1080523700.jpg";
+    headline.createtime=new Date();
+    headline.type=2;
+    headline.linkurl="561724502ab613ec10384e0c";
+    headline.is_using=true;
+    headline.save();
+
+    return callback(null ,"success");
 
 }
 exports.addaddtrainingfield=function(callback){
