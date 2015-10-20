@@ -13,7 +13,7 @@ var UserCountSchema= new Schema({
 
 UserCountSchema.statics.getUserCountInfo=function( callback){
     // return this.collection.findAndModify(query, sort, doc, options, callback);
-    //,'invitationcode':1
+    //,'invitationcode':
     this.collection.findAndModify({}, [],{$inc:{'displayid':1,"invitationcode":1}},{"new":true,select: {displayid: 1,
         invitationcode:1}},function(err,rst){
         if (err){
