@@ -36,6 +36,7 @@
       </div>
       <div>
         <div class="Answer_div">
+          <span id="holdAnswer"></span>
           <span id="rightAnswer"><img src="../images/right-check-marks.png"><span>回答正确!</span></span>
           <span id="wrongAnswer"><img src="../images/wrong-check-marks.png"><span>回答错误!</span></span>
         </div>
@@ -46,9 +47,9 @@
         <button type="button" name="nexQ" onclick="nextQestion()" style="margin-left:18px;">下一题</button>
       </div>
       <div class="statisticDiv">
-        <span>正确：<span>6</span> 道，</span>
-        <span>错误：<span>4</span> 道，</span>
-        <span>正确率：<span>50</span>%，</span>
+        <span>正确：<span id="rightCount">0</span> 道，</span>
+        <span>错误：<span id="wrongCount">0</span> 道，</span>
+        <span>正确率：<span id="rightRate">50</span>%，</span>
         <span>共：<span>50</span>道。</span>
       </div>
     </div>
