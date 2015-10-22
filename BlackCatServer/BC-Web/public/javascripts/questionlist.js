@@ -4,6 +4,7 @@ $.ajaxSetup({
 });
 //var apiHost = 'http://192.168.1.102:3600/';//"http://123.57.254.32:4000/";
 var apiHost = 'http://123.57.7.30:3600/';
+// var apiHost = 'http://192.168.1.102:3600/';
 function init() {
     console.log('init.');
 
@@ -42,6 +43,17 @@ function showQuestions(questoinBody) {
   $("#answer2").prop("checked", false);
   $("#answer3").prop("checked", false);
   $("#answer4").prop("checked", false);
+
+  $("#img_ans_1").attr("src","../images/null-check-marks.png");
+  $("#img_ans_2").attr("src","../images/null-check-marks.png");
+  $("#img_ans_3").attr("src","../images/null-check-marks.png");
+  $("#img_ans_4").attr("src","../images/null-check-marks.png");
+  if(questoinBody.sinaimg != ""){
+    $("#question_img").show();
+    $("#question_img").attr("src","../images/kemuyi/img-600/" + questoinBody.sinaimg);
+  }else{
+    $("#question_img").hide();
+  }
 
   if(questoinBody.Type == 2){
     $("#answer1_txt").text("A：" + questoinBody.a);
@@ -126,6 +138,35 @@ function answerIsWrong(){
 function tjanswer(answer){
   console.log("tjanswer" + answer + " " + currentQuestion.ta);
   $("#rightAnswer_txt").show();
+
+  if($("#answer1").is(':visible') == true){
+    $("#img_ans_1").attr("src","../images/wrong-check-marks.png");
+  }
+  if($("#answer2").is(':visible') == true){
+    $("#img_ans_2").attr("src","../images/wrong-check-marks.png");
+  }
+  if($("#answer3").is(':visible') == true){
+    $("#img_ans_3").attr("src","../images/wrong-check-marks.png");
+  }
+  if($("#answer4").is(':visible') == true){
+    $("#img_ans_4").attr("src","../images/wrong-check-marks.png");
+  }
+
+  switch(currentQuestion.ta){
+    case 1:
+      $("#img_ans_1").attr("src","../images/right-check-marks.png");
+      break;
+    case 2:
+      $("#img_ans_2").attr("src","../images/right-check-marks.png");
+      break;
+    case 3:
+      $("#img_ans_3").attr("src","../images/right-check-marks.png");
+      break;
+    case 4:
+      $("#img_ans_4").attr("src","../images/right-check-marks.png");
+      break;
+  }
+
   switch(answer){
     case "A":
       if(currentQuestion.ta == 1){
@@ -137,6 +178,7 @@ function tjanswer(answer){
       break;
     case "B":
       if(currentQuestion.ta == "2"){
+        $("#img_ans_2").attr("src","../images/right-check-marks.png");
         answerIsRight();
       }else{
         console.log("B wrong");
@@ -145,6 +187,7 @@ function tjanswer(answer){
       break;
     case "C":
       if(currentQuestion.ta == 3){
+        $("#img_ans_3").attr("src","../images/right-check-marks.png");
         answerIsRight();
       }else{
         console.log("C wrong");
@@ -153,6 +196,7 @@ function tjanswer(answer){
       break;
     case "D":
       if(currentQuestion.ta == 4){
+        $("#img_ans_4").attr("src","../images/right-check-marks.png");
         answerIsRight();
       }else{
         console.log("D wrong");

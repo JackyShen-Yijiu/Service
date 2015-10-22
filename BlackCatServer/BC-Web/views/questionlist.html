@@ -10,48 +10,76 @@
   </head>
   <body onload="init()">
     <h2>科目一测试</h2>
-    <div class="questionDiv">
-      <div class="title">
-        <span id="number_title">1</span>、<span id="question_title">驾驶机动车在道路上违反道路交通安全法的行为，属于什么行为？</span>
+
+
+    <div class="body_div">
+<!--
+      <div class="right_div">
+        <span id="nav_prev">
+          <a title="上一页" href="#" onclick="preQestion()">&#8249;</a>
+        </span>
       </div>
-      <div class="options">
-        <ul>
-          <li id="li_answer1">
-            <input onclick="tjanswer('A');" type="radio" value="A" name="answer" id="answer1"">
-            <label for="answer1" id="answer1_txt">违法行为</label>
-          </li>
-          <li id="li_answer2">
-            <input onclick="tjanswer('B');" type="radio" value="B" name="answer" id="answer2">
-            <label for="answer2" id="answer2_txt">违法行为</label>
-          </li>
-          <li id="li_answer3">
-            <input onclick="tjanswer('C');" type="radio" value="C" name="answer" id="answer3">
-            <label for="answer3" id="answer3_txt">违法行为</label>
-          </li>
-          <li id="li_answer4">
-            <input onclick="tjanswer('D');" type="radio" value="D" name="answer" id="answer4">
-            <label for="answer4" id="answer4_txt">违法行为</label>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="Answer_div">
-          <span id="holdAnswer"></span>
-          <span id="rightAnswer"><img src="../images/right-check-marks.png"><span>回答正确!</span></span>
-          <span id="wrongAnswer"><img src="../images/wrong-check-marks.png"><span>回答错误!</span></span>
+-->
+      <div class="questionDiv">
+
+        <div class="title">
+          <span id="number_title">1</span>、<span id="question_title">驾驶机动车在道路上违反道路交通安全法的行为，属于什么行为？</span>
         </div>
-        <span class="why" id="rightAnswer_txt">《道路运输从业人员管理规定》规定：机动车驾驶人驾驶证有效期满换领驾驶证时，须提交县级以上医疗机构出具的身体条件证明。</span>
+        <div class="options">
+          <ul>
+            <li id="li_answer1">
+            <!--<div class="Answer_div_inline">-->
+              <img class="anImginline" id="img_ans_1">
+            <!--</div>-->
+              <input onclick="tjanswer('A');" type="radio" value="A" name="answer" id="answer1"/>
+              <label for="answer1" id="answer1_txt">违法行为</label>
+            </li>
+            <li id="li_answer2">
+              <img class="anImginline" id="img_ans_2">
+              <input onclick="tjanswer('B');" type="radio" value="B" name="answer" id="answer2"/>
+              <label for="answer2" id="answer2_txt">违法行为</label>
+            </li>
+            <li id="li_answer3">
+              <img class="anImginline" id="img_ans_3">
+              <input onclick="tjanswer('C');" type="radio" value="C" name="answer" id="answer3"/>
+              <label for="answer3" id="answer3_txt">违法行为</label>
+            </li>
+            <li id="li_answer4">
+              <img class="anImginline" id="img_ans_4">
+              <input onclick="tjanswer('D');" type="radio" value="D" name="answer" id="answer4"/>
+              <label for="answer4" id="answer4_txt">违法行为</label>
+            </li>
+          </ul>
+        </div>
+        <img id="question_img" src="../images/kemuyi/img-600/5eb4d75agw1e28yntci5ej.jpg" style="width:100%;">
+
+        <div>
+          <!--<div class="Answer_div">
+            <span id="holdAnswer"></span>
+            <span id="rightAnswer"><img src="../images/right-check-marks.png"><span>回答正确!</span></span>
+            <span id="wrongAnswer"><img src="../images/wrong-check-marks.png"><span>回答错误!</span></span>
+          </div>-->
+          <span class="why" id="rightAnswer_txt">《道路运输从业人员管理规定》规定：机动车驾驶人驾驶证有效期满换领驾驶证时，须提交县级以上医疗机构出具的身体条件证明。</span>
+        </div>
       </div>
+
       <div class="actionDiv">
         <button type="button" name="preQ" onclick="preQestion()">上一题</button>
         <button type="button" name="nexQ" onclick="nextQestion()" style="margin-left:18px;">下一题</button>
+        <div class="statisticDiv">
+          <span>正确：<span id="rightCount">0</span> 道，</span>
+          <span>错误：<span id="wrongCount">0</span> 道，</span>
+          <span>正确率：<span id="rightRate">50</span>%，</span>
+          <span>共：<span>50</span>道。</span>
+        </div>
       </div>
-      <div class="statisticDiv">
-        <span>正确：<span id="rightCount">0</span> 道，</span>
-        <span>错误：<span id="wrongCount">0</span> 道，</span>
-        <span>正确率：<span id="rightRate">50</span>%，</span>
-        <span>共：<span>50</span>道。</span>
+<!--
+      <div  class="left_div">
+        <span id="nav_next">
+          <a title="下一页" href="#" onclick="nextQestion()">&#8250;</a>
+        </span>
       </div>
+-->
     </div>
   </body>
 </html>
