@@ -30,16 +30,14 @@ exports.ApplyHandelState={
 exports.ReservationState={
     //预约中
    applying:1,
-    // 取消预约
+    // 取消预约(自己取消)
    applycancel:2,
     // 已确认
     applyconfirm:3,
-    //已拒绝
+    //已拒绝(教练取消)
     applyrefuse:4,
     //已完成，待评价
     ucomments:5,
     // 已完成
     finish:6
-
-
 }

@@ -154,7 +154,36 @@ exports.getUsefulCoachList=function(req,res){
         }
     });
 }
-//
+// 用户报考验证
+exports.postenrollverification=function(req,res){
+    var applyinfo= {
+        name : req.body.name,
+        idcardnumber : req.body.idcardnumber,
+        telephone : req.body.telephone,
+        address : req.body.address,
+        userid:req.body.userid,
+        schoolid:req.body.schoolid,
+        ticketnumber:req.body.ticketnumber,
+            studentid:req.body.studentid
+    };
+    if (applyinfo.name===undefined||applyinfo.idcardnumber === undefined||
+        applyinfo.telephone === undefined||applyinfo.userid === undefined
+        ||applyinfo.schoolid === undefined||applyinfo.ticketnumber === undefined || applyinfo.studentid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"params is wrong",""));
+    };
+    if(applyinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.applyschoolinfo(applyinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+//用户报名
 exports.postapplySchool=function(req,res){
     console.log(req.body);
     var applyinfo= {
@@ -173,8 +202,13 @@ exports.postapplySchool=function(req,res){
         ||applyinfo.schoolid === undefined ||applyinfo.coachid === undefined
         ||applyinfo.carmodel === undefined ||applyinfo.classtypeid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"parms is wrong",""));
+            new BaseReturnInfo(0,"params is wrong",""));
     };
+    if(applyinfo.carmodel.modelsid===undefined){
+        applyinfo.carmodel=JSON.parse(applyinfo.carmodel.toString());
+        console.log(applyinfo);
+    }
+
     //console.log(" user apply body:"+req.body.carmodel.modelsid);
     //sconsole.log(" applyinfo:"+applyinfo.carmodel.modelsid);
     if(applyinfo.userid!=req.userId){

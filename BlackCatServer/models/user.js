@@ -66,7 +66,7 @@ var  UserSchema=new Schema({
     favorschool: [{type: Schema.Types.ObjectId, default:null, ref: 'DriveSchool'}],
     //科目二上课信息
     subjecttwo:{
-        totalcourse:{type:Number,default:23},
+        totalcourse:{type:Number,default:24},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0}
     },
@@ -76,6 +76,12 @@ var  UserSchema=new Schema({
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0}
     },
+    vipserverlist:[{id:Number,name:String}], // 我所享受的vip服务列表
+    // 是否进行报考验证
+    is_enrollverification :{ type: Boolean, default: false},
+    // 报考信息学号还有准考证号
+    enrollverificationinfo:{studentid:String,
+     ticketnumber:String}
 
 });
 UserSchema.index({mobile: 1}, {unique: true});

@@ -29,4 +29,5 @@ exports.resBaseUserInfo=function(user){
     this.address=user.address;
     this.subjecttwo=user.subjecttwo;
     this.subjectthree=user.subjectthree;
+    this.vipserverlist=user.vipserverlist;
 };

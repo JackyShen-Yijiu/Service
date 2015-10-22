@@ -647,6 +647,64 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
 
     });
 }
+// 报名验证
+exports.enrollverification=function(applyinfo,callback){
+    usermodel.findById(new mongodb.ObjectId(applyinfo.userid),function(err,userdata){
+        if(err|!userdata)
+        {
+            return  callback("不能找到此用户");
+        }
+        //判断用户状态
+        if(userdata.is_lock==true)
+        {
+            return  callback("此用户已锁定，请联系客服");
+        }
+        if(userdata.applystate!=appTypeEmun.ApplyState.NotApply){
+            return  callback("此用户已经报名，请查看报名详情页");
+        }
+
+            // 检查教练
+            schoolModel.findById(new mongodb.ObjectId(applyinfo.schoolid),function(err,schooldata){
+                if(err||!schooldata){
+                    return callback("不能找到报名的驾校");
+                };
+
+                    userdata.idcardnumber=applyinfo.idcardnumber;
+                    userdata.name =applyinfo.name;
+                    userdata.telephone=applyinfo.telephone;
+                    userdata.address=applyinfo.address;
+
+
+                    userdata.applyschool=applyinfo.schoolid;
+                    userdata.applyschoolinfo.id=applyinfo.schoolid;
+                    userdata.applyschoolinfo.name=schooldata.name;
+
+
+                    userdata.applystate=appTypeEmun.ApplyState.Applying;
+                    userdata.applyinfo.applytime=new Date();
+                    userdata.is_enrollverification=true;
+                    userdata.enrollverificationinfo.studentid=applyinfo.studentid;
+                    userdata.enrollverificationinfo.ticketnumber=applyinfo.ticketnumber;
+
+                    userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
+                    // 保存 申请信息
+                    userdata.save(function(err,newuserdata){
+                        if(err){
+                            return   callback("保存申请信息错误："+err);
+                        }
+                        classtypedata.applycount=classtypedata.applycount+1;
+                        return callback(null,"success");
+                    });
+
+                });
+
+
+
+
+
+    });
+}
+
 //报名申请
 exports.applyschoolinfo=function(applyinfo,callback){
   usermodel.findById(new mongodb.ObjectId(applyinfo.userid),function(err,userdata){
@@ -701,6 +759,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyclasstypeinfo.id=applyinfo.classtypeid;
                   userdata.applyclasstypeinfo.name=classtypedata.classname;
                   userdata.applyclasstypeinfo.price=classtypedata.price;
+                  userdata.vipserverlist=classtypedata.vipserverlist;
                   userdata.applystate=appTypeEmun.ApplyState.Applying;
                   userdata.applyinfo.applytime=new Date();
                   userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;

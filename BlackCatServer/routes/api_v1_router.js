@@ -31,6 +31,8 @@ v1.get("/info/examquestion",appsystemController.getExamQuestion);
 v1.get("/info/headlinenews",appsystemController.getHeadLineNews);
 // 用户反馈
 v1.post("/userfeedback",appsystemController.postUserFeedBack);
+// 获取科目二和科目三的训练内容
+v1.get("/trainingcontent",appsystemController.getTrainingContent);
 
 //======================================用户信息======================================
 // 获取验证码
@@ -43,6 +45,8 @@ v1.post('/userinfo/signup', userController.postSignUp);
 v1.post('/userinfo/userlogin', userController.UserLogin);
 // 用户报名
 v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,userController.postapplySchool);
+// 用户报名验证（对于已经报名的用户）
+v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthorized,userController.postenrollverification);
 // 用户更新信息
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
@@ -81,7 +85,7 @@ v1.get("/trainingfield/nearbytrainingfield",driveSchoolController.getNearbytrain
 // 附近的教练
 v1.get("/userinfo/nearbycoach", userController.getNearbyCoach);
 // 获取驾校下面的教练
-v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach)
+v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach);
 
 
 //==============================预约课程(学生端)=========================================

@@ -14,10 +14,10 @@ var ClassTypeSchema=new Schema({
     is_using:{type:Boolean,default:true},
     is_vip:{type:Boolean,default:false},
     carmodel:{modelsid:Number,name:String,code:String},
-    cartype:String,
+    cartype:String, //车品牌
     applycount:{modelsid:Number,name:String},
     classdesc:{type:String,default:""},
-    vipserverlist:[String],
+    vipserverlist:[{id:Number,name:String}],
     price:Number
 });
 

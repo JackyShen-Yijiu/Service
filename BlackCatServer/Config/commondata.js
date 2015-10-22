@@ -48,8 +48,31 @@ exports.carmodels=[
         modelsid:2,
         name:'小型自动挡汽车',
         code:"C2"
+    },
+    {
+        modelsid:3,
+        name:"其他车型",
+        code:"O"
     }
 ]
+
+exports.vipserver=[
+    {
+    id:1,
+    name:"接送"},
+{
+    id:2,
+        name:"午餐"
+},{
+        id:3,
+        name:"室内练车"
+    }
+]
+
+exports.trainingcontent={
+    subjecttwo:["起步","直角转弯","侧方停车","曲线行驶","坡道定点停车和起步","倒车入库"],
+    subjectthree:["上车准备","起步","直线行驶","变更车道","通过路口","靠边停车","会车","超车","掉头","夜间行驶"]
+}
 
 exports.worktimes=[
     {
