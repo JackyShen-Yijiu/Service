@@ -164,7 +164,7 @@ exports.postenrollverification=function(req,res){
         userid:req.body.userid,
         schoolid:req.body.schoolid,
         ticketnumber:req.body.ticketnumber,
-            studentid:req.body.studentid
+        studentid:req.body.studentid
     };
     if (applyinfo.name===undefined||applyinfo.idcardnumber === undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined

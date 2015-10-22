@@ -401,17 +401,21 @@ exports.getUsefulCoachList=function(useid,index,callback){
         }
         coachmode.find({is_lock:false,is_validation:true,
             driveschool:new mongodb.ObjectId(user.applyschool),
-            "carmodel.modelsid":user.carmodel.modelsids,
+            "carmodel.modelsid":user.carmodel.modelsid,
         "subject.subjectid":{'$in':[user.subject.subjectid]}})
             .sort({"passrate": -1})
             .skip((index-1)*10)
             .limit(10)
             .exec(function(err ,coachlist) {
-                if (err || !coachlist || coachlist.length == 0) {
+                if (err || !coachlist  ) {
                     console.log(err);
-                    callback("get coach list failed" + err);
+                    return callback("get coach list failed" + err);
 
-                } else {
+                } else if(coachlist.length == 0)
+                {
+                     return callback(null,coachlist);
+                }
+                else {
                     process.nextTick(function () {
                         rescoachlist = [];
                         coachlist.forEach(function (r, idx) {
