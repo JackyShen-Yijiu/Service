@@ -31,6 +31,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/coach', coach);
 app.use('/question', question);
+app.use('/questionwronglist/:userid', question);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
