@@ -328,11 +328,14 @@ exports.getSchoolCoach=function(coachinfo,callback){
         .skip((coachinfo.index-1)*10)
         .limit(10)
         .exec(function(err ,coachlist){
-        if (err || !coachlist || coachlist.length == 0) {
+        if (err || !coachlist ) {
             console.log(err);
             callback("get coach list failed"+err);
 
-        } else {
+        }else if( coachlist.length == 0){
+            callback(null,coachlist);
+        }
+        else {
             process.nextTick(function() {
                 rescoachlist=[];
                 coachlist.forEach(function (r, idx) {

@@ -223,7 +223,7 @@ exports.getuserReservation=function(userid,callback){
             if(err){
              return    callback("查询语言信息出错："+err)
             }
-            console.log(reservationlist);
+            //console.log(reservationlist);
             return callback(null,reservationlist);
         });
 };
@@ -248,7 +248,7 @@ exports.userCancelReservation=function(reservation,userid,callback){
         if(!resdata||resdata.length==0){
           return   callback("没有找到该预约信息");
         }
-        console.log(resdata.reservationstate);
+        //console.log(resdata.reservationstate);
         if(resdata.reservationstate!=appTypeEmun.ReservationState.applying&&
             resdata.reservationstate!=appTypeEmun.ReservationState.applyconfirm){
           return   callback("该预约的状态无法取消");
