@@ -34,4 +34,5 @@ exports.resBaseCoachInfo=function(user){
     this.shuttlemsg=user.shuttlemsg;
     this.introduction=user.introduction;
     this.worktime=user.worktime;
+    this.worktimedesc=user.worktimedesc;
 };

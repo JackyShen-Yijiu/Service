@@ -111,6 +111,8 @@ v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
 v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
+// 教练请假接口
+v1.post("/courseinfo/putcoachleave",ensureAuthorizedController.ensureAuthorized,courseController.postCoachLeave);
 //教练获取预约列表
 v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachReservationList);
 // 教练获取某一天的预约列表

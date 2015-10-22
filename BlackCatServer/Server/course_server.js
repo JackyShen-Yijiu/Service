@@ -563,6 +563,33 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
             return callback(null,data);
         })
 }
+// 处理教练的请假申请
+exports.saveCoachLeaveInfo=function(leaveinfo ,callback){
+    var datebegin=(new Date(leaveinfo.begintime)).cleartime();
+    var endtime=(new Date(leaveinfo.endtime)).addDays(1).cleartime();
+    coursemode.find({"coachid":new mongodb.ObjectId(leaveinfo.coachid),"coursedate": { $gte: datebegin, $lt:endtime}},function(err,course){
+        if(err){
+            return callback ("查询课程出错"+err);
+        }
+        if(course&&course.length>0){
+            process.nextTick(function(){
+                course.forEach(function(r,index){
+                    coursedate = new Date(r.coursedate.toString()+ r.coursetime.begintime);
+                    if (coursedate>=new Date(leaveinfo.begintime)&&coursedate<=new Date(leaveinfo.endtime)&& r.selectedstudentcount>0){
+                        return callback ("请假时间内有预约课程，请取消后再请假");
+                    }
+                })
+            })
+
+        }
+        coachmode.update({"_id":new mongodb.ObjectId(leaveinfo.coachid)},{"leavebegintime":new Date(leaveinfo.begintime),"leaveendtime":new Date(leaveinfo.endtime)},function(err,data){
+            if(err){
+                return callback("保存请假信息出错");
+            }
+            return callback(null,"success");
+        })
+    });
+}
 // 教练获取我的预约列表
 exports.getCoachReservationList=function(queryinfo,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(queryinfo.coachid)})

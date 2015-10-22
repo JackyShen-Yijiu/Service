@@ -331,6 +331,31 @@ exports.getCoachReservationList=function(req,res){
     });
 
 }
+// 提交教练的预约请求
+exports.postCoachLeave=function(req,res){
+    var leaveinfo={
+        coachid:req.body.coachid,
+        begintime:req.body.begintime,
+        endtime:req.boy.endtime
+    }
+    if (leaveinfo.coachid===undefined|| leaveinfo.begintime===undefined|| leaveinfo.endtime===undefined ){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    if(queryinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    if(Date.now()>new Date(leaveinfo.begintime)|| new Date(leaveinfo.begintime)>new Date(leaveinfo.endtime)){
+        return res.json(new BaseReturnInfo(0,"请假时间错误"));
+    }
+    courseserver.saveCoachLeaveInfo(leaveinfo ,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+
 // 教练获取预约详情
 exports.coachGetReservationInfo=function(req,res){
     var reservationid=req.params.reservationid;

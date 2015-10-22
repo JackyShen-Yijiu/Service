@@ -55,7 +55,7 @@ exports.addheadlinenews=function(callback) {
     headline.newsname="科目一考试试题";
     headline.headportrait.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/u=2116917190,1673171654&fm=21&gp=0.jpg";
     headline.createtime=new Date();
-    headline.type=1;
+    headline.newtype=1;
     headline.linkurl="http://123.57.7.30:3600/question";
     headline.is_using=true;
     headline.save();
@@ -63,7 +63,7 @@ exports.addheadlinenews=function(callback) {
     headline.newsname="教练信息";
     headline.headportrait.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/40f58723dae34a88a61df26ee98d4218.jpg";
     headline.createtime=new Date();
-    headline.type=2;
+    headline.newtype=2;
     headline.linkurl="5616352721ec29041a9af889";
     headline.is_using=true;
     headline.save();
@@ -72,7 +72,7 @@ exports.addheadlinenews=function(callback) {
     headline.newsname="驾校信息";
     headline.headportrait.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/20140719222416-1080523700.jpg";
     headline.createtime=new Date();
-    headline.type=2;
+    headline.newtype=3;
     headline.linkurl="561724502ab613ec10384e0c";
     headline.is_using=true;
     headline.save();

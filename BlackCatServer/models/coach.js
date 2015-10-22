@@ -40,6 +40,7 @@ var  CoachSchema=new Schema({
     Seniority :String , // 教龄
     passrate :Number ,  // 通过率
     worktime:[{timeid:Number,timespace:String,begintime:String,endtime:String}] ,// 工作时间
+    worktimedesc:String, // 工作时间描述 （周一到周五 9：00--18:00）
     coursestudentcount:{type:Number,default:1},//每节课可以预约学生的数量
     idcardnumber:String ,// 身份证
     drivinglicensenumber:String,  // 驾驶证
@@ -49,9 +50,14 @@ var  CoachSchema=new Schema({
     trainfield:{type: Schema.Types.ObjectId, ref: 'trainingfield'} ,//训练场
     trainfieldlinfo:{name:String,id:String}, //训练成信息信息
     platenumber:String, // 车牌号
+    //请假开始时间
+     leavebegintime :Date,
+    // 请假结束时间
+    leaveendtime:Date,
     // 是否接送
     is_shuttle:{ type: Boolean, default: false},
-    shuttlemsg:String
+    shuttlemsg:String  //  接送信息（接送备信息）
+
 
 
 });
