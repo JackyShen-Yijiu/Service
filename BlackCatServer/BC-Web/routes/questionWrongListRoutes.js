@@ -3,10 +3,9 @@ var router = express.Router();
 var mongodb = require('../models/mongodb');
 
 var question = mongodb.QuestionModel;
-
+var userinfo = mongodb.UserInfoModel;
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log("User id is: ");
   res.render('questionwronglist');
 });
 
@@ -22,8 +21,24 @@ function getQuestionList(req, res) {
 }
 
 function getQuestionByID(req, res) {
-  console.log("get question from mongo by ID: " + req.params.id);
-  question.FindByID(req.params.id, function(err, questions){
+
+  //try to add test data in userinfo.
+  /*console.log("try to add userinfo.");
+  try{
+    var u = new userinfo();
+    u.id = "560539bea694336c25c3acb9";
+    u.kemusi_wronglist=[11064, 11067];
+    u.save(function (err, fluffy) {
+        if (err) return console.error(err);
+        console.log("saved: " + fluffy.id);
+      });    
+  }catch(err){
+    console.log(err);
+  }*/
+
+
+  console.log("get wrong question from mongo by UserID: " + req.params.id);
+  userinfo.FindByID(req.params.id, function(err, questions){
     console.log(err);
     res.json(questions);
   });

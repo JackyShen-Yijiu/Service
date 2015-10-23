@@ -15,7 +15,7 @@ function init() {
 
 function getQuestionList(id, callback){
     console.log("get question list");
-    $.get(apiHost + "question/questionlist/" + id,
+    $.get(apiHost + "questionwronglist/questionlist/" + id,
         function(data){
           callback(data, "OK");
         }).fail(function(xHr, status, message){
@@ -24,8 +24,8 @@ function getQuestionList(id, callback){
 }
 
 function getQuestionByID(id, callback){
-    console.log("get question list");
-    $.get(apiHost + "question/questionbyid/" + id,
+    console.log("get wrong question by id.");
+    $.get(apiHost + "questionwronglist/questionbyid/" + id,
         function(data){
           callback(data, "OK");
         }).fail(function(xHr, status, message){

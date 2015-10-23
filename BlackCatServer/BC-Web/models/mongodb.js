@@ -54,3 +54,4 @@ exports.ClassTypeModel=require('./calsstype');
 exports.CourseModel=require('./course');
 exports.ReservationModel=require('./reservation');
 exports.FeedBackModel=require("./feedback");
+exports.UserInfoModel=require("./userinfo");
