@@ -114,6 +114,7 @@ v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",
 // 用户报考
 v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized,userController.postApplyExamination);
 
+
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
 v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
