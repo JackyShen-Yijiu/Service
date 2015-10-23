@@ -37,7 +37,8 @@ var ReservationSchema=new Schema({
     is_shuttle:{ type: Boolean, default: false},
     // 接送地址
     shuttleaddress:String,
-
+   // 学习内容
+    learningcontent:String,
     //x学时
     coursehour:Number,
     subject:{subjectid:{type:Number,default:2},

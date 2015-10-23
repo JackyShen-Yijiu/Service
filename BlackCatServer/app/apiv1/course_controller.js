@@ -93,6 +93,8 @@ exports.userCancelReservation=function(req,res){
     var cancelinfo= {
         userid:req.body.userid,
         reservationid:req.body.reservationid,
+        cancelreason:req.body.cancelreason,
+        cancelcontent:req.body.cancelcontent
     };
     if (cancelinfo.userid === undefined
         ||cancelinfo.reservationid === undefined) {
@@ -104,7 +106,7 @@ exports.userCancelReservation=function(req,res){
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
 
-    courseserver.userCancelReservation(cancelinfo.reservationid,cancelinfo.userid,function(err,data){
+    courseserver.userCancelReservation(cancelinfo,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
@@ -117,6 +119,7 @@ exports.userfinishReservation=function(req,res){
     var reservationinfo= {
         userid:req.body.userid,
         reservationid:req.body.reservationid,
+        learningcontent:req.body.learningcontent
     };
     if (reservationinfo.userid === undefined
         ||reservationinfo.reservationid === undefined) {
@@ -128,7 +131,7 @@ exports.userfinishReservation=function(req,res){
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
 
-    courseserver.userfinishReservation(reservationinfo.reservationid,reservationinfo.userid,function(err,data){
+    courseserver.userfinishReservation(reservationinfo,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
@@ -141,6 +144,7 @@ exports.coachfinishReservation=function(req,res){
     var reservationinfo= {
         coachid:req.body.coachid,
         reservationid:req.body.reservationid,
+        learningcontent:req.body.learningcontent
     };
     if (reservationinfo.coachid === undefined
         ||reservationinfo.reservationid === undefined) {
@@ -152,7 +156,7 @@ exports.coachfinishReservation=function(req,res){
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
 
-    courseserver.userfinishReservation(reservationinfo.reservationid,reservationinfo.coachid,function(err,data){
+    courseserver.userfinishReservation(reservationinfo,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
@@ -376,7 +380,9 @@ exports.postCoachHandleInfo=function(req,res){
     var handleinfo= {
         coachid:req.body.coachid,
         reservationid:req.body.reservationid,
-        handletype:req.body.handletype
+        handletype:req.body.handletype,
+        cancelreason:req.body.cancelreason,
+        cancelcontent:req.body.cancelcontent
     };
     if (handleinfo.coachid === undefined
         ||handleinfo.reservationid === undefined||

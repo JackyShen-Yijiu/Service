@@ -68,20 +68,39 @@ var  UserSchema=new Schema({
     subjecttwo:{
         totalcourse:{type:Number,default:24},
         reservation:{type:Number,default:0},
-        finishcourse:{type:Number,default:0}
+        finishcourse:{type:Number,default:0},// 学习进度
+        progress:String // 学习进度
     },
     // 科目三上课信息
     subjectthree:{
         totalcourse:{type:Number,default:16},
         reservation:{type:Number,default:0},
-        finishcourse:{type:Number,default:0}
+        finishcourse:{type:Number,default:0},
+        progress:String // 学习进度
     },
     vipserverlist:[{id:Number,name:String}], // 我所享受的vip服务列表
     // 是否进行报考验证
     is_enrollverification :{ type: Boolean, default: false},
     // 报考信息学号还有准考证号
     enrollverificationinfo:{studentid:String,
-     ticketnumber:String}
+     ticketnumber:String},
+    // 考试信息：
+    examinationinfo:{
+        subjecttwo:{
+            examinationstate:{type:Number,default:0},
+            applydate:Date,  //  申请时间
+            examinationdate:Date, // 考试信息
+            // 申请处理信息
+            examinationhandelinfo:String
+        },
+        subjectthree:{
+            examinationstate:{type:Number,default:0},
+            applydate:Date,  //  申请时间
+            examinationdate:Date, // 考试信息
+            // 申请处理信息
+            examinationhandelinfo:String
+        }
+    }
 
 });
 UserSchema.index({mobile: 1}, {unique: true});

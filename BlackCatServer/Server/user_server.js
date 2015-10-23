@@ -364,6 +364,45 @@ exports.getSchoolCoach=function(coachinfo,callback){
     });
 
 };
+// 用户报考
+exports.applyExamintion=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid),function(err,userdata){
+        if(err)
+        {
+            return callback("查找用户出错："+err)
+        }
+        if(!userdata){
+            return callback("没有找到相关用户");
+        }
+        if (userdata.is_lock || userdata.applystate!=appTypeEmun.ApplyState.Applyed){
+            return callback("您暂时没有权限报考");
+        }
+        if (userdata.subject.subjectid!=2 && userdata.subject.subjectid!=3){
+            return callback("该科目下无法报考");
+        }
+
+        if(userdata.subject.subjectid==2){
+            if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation<userdata.subjecttwo.totalcourse){
+                return callback("您的学时不够，无法报考");
+            }
+            userdata.examquestioninfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
+            userdata.examquestioninfo.subjecttwo.applydate=new Date();
+        }else if(userdata.subject.subjectid==3){
+
+            if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation<userdata.subjectthree.totalcourse){
+                return callback("您的学时不够，无法报考");
+            }
+            userdata.examquestioninfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
+            userdata.examquestioninfo.subjectthree.applydate=new Date();
+        }
+        userdata.save(function(err){
+            if (err){
+                return callback("保存报考信息出错："+err);
+            }
+            return callback(null,"success");
+        })
+    })
+}
 //获取教练的学员列表
 exports.getCoachStudentList=function(coachinfo,callback){
     usermodel.find({"applycoach":new mongodb.ObjectId(coachinfo.coachid)})
@@ -696,7 +735,7 @@ exports.enrollverification=function(applyinfo,callback){
                         if(err){
                             return   callback("保存申请信息错误："+err);
                         }
-                        classtypedata.applycount=classtypedata.applycount+1;
+                        //classtypedata.applycount=classtypedata.applycount+1;
                         return callback(null,"success");
                     });
 

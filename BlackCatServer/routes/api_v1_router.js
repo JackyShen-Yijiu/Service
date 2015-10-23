@@ -111,6 +111,8 @@ v1.post("/courseinfo/usercomment",ensureAuthorizedController.ensureAuthorized,co
 v1.get("/courseinfo/getusercomment/:type/:userid/:index",courseController.getUserComment);
 //获取同时段学员
 v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",courseController.sameTimeStudents);
+// 用户报考
+v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized,userController.postApplyExamination);
 
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心

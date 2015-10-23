@@ -240,8 +240,8 @@ exports.getCourseDeatil=function(courseid,callback){
 };
 
 // 用户取消预约
-exports.userCancelReservation=function(reservation,userid,callback){
-    reservationmodel.findOne({_id:new mongodb.ObjectId(reservation),userid:new mongodb.ObjectId(userid)},function(err,resdata){
+exports.userCancelReservation=function(reservation,callback){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(reservation.reservationid),userid:new mongodb.ObjectId(reservation.userid)},function(err,resdata){
         if(err){
           return  callback("查询预约课程出错："+err);
         }
@@ -262,6 +262,9 @@ exports.userCancelReservation=function(reservation,userid,callback){
           return   callback("该时间段不能取消");
         }
         resdata.reservationstate=appTypeEmun.ReservationState.applycancel;
+        resdata.cancelreason.reason=reservation.cancelreason;
+        resdata.cancelreason.cancelcontent=reservation.cancelcontent;
+
         // 修改预约状态
         resdata.save(function(err,newdata){
             // 修改课程表中预约信息
@@ -269,7 +272,7 @@ exports.userCancelReservation=function(reservation,userid,callback){
                 newdata.reservationcourse.forEach(function(r){
                     coursemode.findOne(new mongodb.ObjectId(r),function(err,coursedata){
                         coursedata.selectedstudentcount=coursedata.selectedstudentcount-1;
-                        var index=coursedata.courseuser.indexOf(new mongodb.ObjectId(userid))
+                        var index=coursedata.courseuser.indexOf(new mongodb.ObjectId(reservation.userid))
                         if(index!=-1){
                             coursedata.courseuser.splice(index,1);
                         }
@@ -283,7 +286,7 @@ exports.userCancelReservation=function(reservation,userid,callback){
                 })
             })
             // 修改个人信息中的语言信息
-                usermodel.findById(new mongodb.ObjectId(userid),function(err,data){
+                usermodel.findById(new mongodb.ObjectId(reservation.userid),function(err,data){
                     if (newdata.subject.subjectid==2){
                         data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
                     }
@@ -305,8 +308,8 @@ exports.userCancelReservation=function(reservation,userid,callback){
     });
 });
 }
-exports.userfinishReservation=function(reservation,userid,callback){
-    reservationmodel.findOne({_id:new mongodb.ObjectId(reservation)},function(err,resdata){
+exports.userfinishReservation=function(reservationinfo,callback){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(reservationinfo.reservationid)},function(err,resdata){
         //userid:new mongodb.ObjectId(userid)
         if(err){
             return  callback("查询预约课程出错："+err);
@@ -314,14 +317,15 @@ exports.userfinishReservation=function(reservation,userid,callback){
         if(!resdata){
             return callback("没有找到该预约信息");
         }
-        if(resdata.reservationstate!=appTypeEmun.ReservationState.applyconfirm){
-            return  callback("该订单没有确认，不能完成");
+        if(resdata.reservationstate!=appTypeEmun.ReservationState.unconfirmfinish){
+            return  callback("该预约状态下不能确认完成");
         }
         var  now=new Date();
         if ((now-resdata.endtime)<0){
             return callback("课程没有上完不能确认完成");
         }
         resdata.reservationstate=appTypeEmun.ReservationState.ucomments;
+        resdata.learningcontent=reservationinfo.learningcontent;
         resdata.finishtime=new Date();
         resdata.save(function(err,newdata){
             if(err){
@@ -333,10 +337,12 @@ exports.userfinishReservation=function(reservation,userid,callback){
                 if (newdata.subject.subjectid==2){
                     data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
                     data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
+                    data.subjecttwo.progress=reservationinfo.learningcontent;
                 }
                 if (newdata.subject.subjectid==3){
                     data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
                     data.subjectthree.finishcourse=data.subjectthree.finishcourse+newdata.coursehour;
+                    data.subjectthree.progress=reservationinfo.learningcontent;
                 }
                 //console.log(data);
                 data.save(function(err){
@@ -636,7 +642,7 @@ exports.coachHandleInfo=function(handleinfo,callback){
         if(err||!resdata){
             return callback("查询预约信息出粗："+err);
         }
-        if(resdata.reservationstate!=appTypeEmun.ReservationState.applying)
+        if(resdata.reservationstate!=appTypeEmun.ReservationState.applying&& resdata.reservationstate!=appTypeEmun.ReservationState.applyconfirm)
         {
             return callback("不能修改预约信息");
         }
@@ -645,10 +651,62 @@ exports.coachHandleInfo=function(handleinfo,callback){
         {
             return callback("处理信息类型不对");
         }
+
+        if ( resdata.reservationstate==appTypeEmun.ReservationState.applyconfirm&& handleinfo.handletype==appTypeEmun.ReservationState.applyrefuse)
+        {
+            var  now=new Date();
+            if(resdata.begintime==undefined)
+            {
+                return callback("无法确认课程时间，无法取消预约")
+            }
+            if (now.getHoursBetween(resdata.begintime)<24){
+                return   callback("该时间段不能取消");
+            }
+        }
         resdata.reservationstate=handleinfo.handletype;
-        resdata.save(function(err,data){
+        resdata.cancelreason.reason=handleinfo.cancelreason;
+        resdata.cancelreason.cancelcontent=handleinfo.cancelcontent;
+        resdata.save(function(err,newdata){
             if(err){
                 return callback("处理信息错误："+err);
+            }
+
+            if(handleinfo.handletype==appTypeEmun.ReservationState.applyrefuse){
+                process.nextTick(function(){
+                    newdata.reservationcourse.forEach(function(r){
+                        coursemode.findOne(new mongodb.ObjectId(r),function(err,coursedata){
+                            coursedata.selectedstudentcount=coursedata.selectedstudentcount-1;
+                            var index=coursedata.courseuser.indexOf(new mongodb.ObjectId(newdata.userid))
+                            if(index!=-1){
+                                coursedata.courseuser.splice(index,1);
+                            }
+                            var index2=coursedata.coursereservation.indexOf(new mongodb.ObjectId(resdata._id));
+                            if(index2!=-1){
+                                coursedata.coursereservation.splice(index2,1);
+                            }
+                            coursedata.save(function(err,data){
+
+                            });
+                        })
+                    })
+                    // 修改个人信息中的语言信息
+                    usermodel.findById(new mongodb.ObjectId(newdata.userid),function(err,data){
+                        if (newdata.subject.subjectid==2){
+                            data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
+                        }
+                        if (newdata.subject.subjectid==3){
+                            data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                        }
+                        data.save(function(err){
+                            if (err){
+                                return callback("取消课程出错");
+                            }
+                            return callback(null,"success");
+                        })
+                    })
+
+
+                });
             }
             return callback(null,"success");
         })

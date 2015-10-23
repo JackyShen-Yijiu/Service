@@ -122,6 +122,18 @@ exports.getSchoolCoach=function(req,res){
         }
     });
 }
+
+exports.postApplyExamination=function(req,res){
+    var userid =req.userId;
+    userserver.applyExamintion(userid,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
 // 获取教练的学生列表
 exports.getStudentList=function(req,res){
     var  coachinfo={
@@ -176,7 +188,7 @@ exports.postenrollverification=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    userserver.applyschoolinfo(applyinfo,function(err,data){
+    userserver.enrollverification(applyinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
