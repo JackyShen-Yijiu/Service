@@ -270,25 +270,26 @@ exports.updateCoachInfo=function(req,res){
     //console.log(req.body);
     var updateuserinfo ={
         coachid: req.body.coachid,
-        name : req.body.name,
-        introduction: req.body.introduction,
-        email: req.body.email,
+        name : req.body.name,  //姓名
+        introduction: req.body.introduction, // 简介
+        gender:req.bodygender, //性别
+        email: req.body.email,  // 邮件
         headportrait: req.body.headportrait,
-        address: req.body.address,
-        subject :req.body.subject,
+        address: req.body.address, // 地址
+        subject :req.body.subject,   //科目
         driveschoolid:req.body.driveschoolid,
         Seniority:req.body.Seniority, //教龄
-        passrate:req.body.passrate,
+        passrate:req.body.passrate,  //通过率
         worktime:req.body.worktime,
-        coursestudentcount:req.body.coursestudentcount,
-        idcardnumber:req.body.idcardnumber,
-        drivinglicensenumber:req.body.drivinglicensenumber,
-        coachnumber :req.body.coachnumber,
-        carmodel:req.body.carmodel,
-        trainfield:req.body.trainfield,
-        is_shuttle:req.body.is_shuttle,
-        platenumber:req.body.platenumber,
-        shuttlemsg:req.body.shuttlemsg
+        coursestudentcount:req.body.coursestudentcount, // 可供选择学生数量
+        idcardnumber:req.body.idcardnumber,   // 身份证
+        drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证
+        coachnumber :req.body.coachnumber,  // 教练证
+        carmodel:req.body.carmodel,      // 车型 c1 c2
+        trainfield:req.body.trainfield,  // 训练场
+        is_shuttle:req.body.is_shuttle,  // 是否接送
+        platenumber:req.body.platenumber, // 车牌号
+        shuttlemsg:req.body.shuttlemsg  // 车送说明
     }
     if (updateuserinfo.coachid===undefined) {
         return res.json(
@@ -327,12 +328,14 @@ exports.updatePassword=function(req,res){
   var  pwdinfo={
       password:req.body.password,
       smscode:req.body.smscode,
-      mobile:req.body.mobile
+      mobile:req.body.mobile,
+      usertype:req.body.usertype
   }
     if (pwdinfo.mobile===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));
-    };
+    }
+
   userserver.updatePassword(pwdinfo,function(err,data){
       if(err){
           return res.json(new BaseReturnInfo(0,err,""));

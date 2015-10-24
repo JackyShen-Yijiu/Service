@@ -8,6 +8,8 @@ var ReservationSchema=new Schema({
     userid :{type: Schema.Types.ObjectId, ref: 'User'},// 预约课程
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'}, //  预约教练
     trainfieldid:{type: Schema.Types.ObjectId, ref: 'trainingfield'}, //  练车场id 同车学员
+    trainfieldlinfo:{name:String,id:String,}, //训练成信息信息
+
     // 预约状态
     reservationstate:{type:Number,default:0},
     //预约时间
@@ -22,10 +24,16 @@ var ReservationSchema=new Schema({
     is_comment:{ type: Boolean, default: false},
     //评论
     comment:{starlevel :Number, // 星级
+        attitudelevel:Number, //态度级别
+        timelevel:Number,  //时间观念星级
+        abilitylevel:Number,  // 能力星级
         commentcontent:String  } , // 评论内容
     //教练是否评论
     is_coachcomment:{ type: Boolean, default: false},
     coachcomment:{starlevel :Number, // 星级
+        attitudelevel:Number, //态度级别
+        timelevel:Number,  //时间观念星级
+        abilitylevel:Number,  // 能力星级
         commentcontent:String  } , // 评论内容
     //是否投诉
     is_complaint:{ type: Boolean, default: false},
@@ -41,6 +49,9 @@ var ReservationSchema=new Schema({
     learningcontent:String,
     //x学时
     coursehour:Number,
+    // 课程进度描述
+    courseprocessdesc :String,
+    // 科目
     subject:{subjectid:{type:Number,default:2},
         name:{type:String,default:"科目二"}},
 });

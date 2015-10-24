@@ -75,6 +75,10 @@ exports.GetqiniuupToken=function(req,res){
 exports.getExamQuestion=function (req,res){
    return res.json(new BaseReturnInfo(1,"",commondataServer.examquestioninfo))
 }
+
+exports.getTrainingContent=function(req,res){
+    //getTrainingContent
+}
 exports.getTrainingContent=function (req,res){
     return res.json(new BaseReturnInfo(1,"",commondataServer.trainingcontent));
 }

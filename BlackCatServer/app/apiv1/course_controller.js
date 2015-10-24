@@ -195,6 +195,9 @@ exports.postUserComment=function(req,res){
         userid:req.body.userid,
         reservationid:req.body.reservationid,
         starlevel:req.body.starlevel,
+        attitudelevel:req.body.attitudelevel,
+        timelevel:req.body.timelevel,
+        abilitylevel:req.body.abilitylevel,
         commentcontent:req.body.commentcontent
     };
     if (commentinfo.userid === undefined
@@ -258,6 +261,9 @@ exports.postCoachComment=function(req,res){
         coachid:req.body.coachid,
         reservationid:req.body.reservationid,
         starlevel:req.body.starlevel,
+        attitudelevel:req.body.attitudelevel,
+        timelevel:req.body.timelevel,
+        abilitylevel:req.body.abilitylevel,
         commentcontent:req.body.commentcontent
     };
     if (commentinfo.coachid === undefined

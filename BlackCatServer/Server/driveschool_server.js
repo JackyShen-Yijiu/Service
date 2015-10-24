@@ -67,6 +67,15 @@ exports.getNeartrainingfield=function(latitude, longitude, radius ,callback){
     })
 
 };
+
+exports.getSchoolTrainingField=function(schoolid,callback){
+    trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,data){
+        if(err||!data){
+            return callback("查询出错："+err);
+        }
+        return callback(null,data);
+    })
+}
 //根据驾校id 获取驾校课程类型
 exports.getClassTypeBySchoolId=function(schoolid,callback){
     classtypeModel.find({"schoolid":new mongodb.ObjectId(schoolid),"is_using":true},function(err,data){
@@ -85,7 +94,12 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
                         is_vip: r.is_vip,
                         classdesc: r.classdesc,
                         price: r.price,
-                        carmodel: r.carmodel
+                        carmodel: r.carmodel,
+                    cartype:r.cartype,
+                        classdesc:r.classdesc,
+                    vipserverlist:r.vipserverlist
+
+
                     }
                     classlist.push(oneclass)
                 })

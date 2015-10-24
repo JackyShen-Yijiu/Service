@@ -141,6 +141,7 @@ exports.postReservation=function(reservationinfo,callback){
                 if (err) {
                     return callback("验证课程出错：" + err);
                 }
+                var currentcoursecount;
                 if (userdata.subject.subjectid == 2) {
 
                     //判断用户预约课程数量
@@ -148,13 +149,15 @@ exports.postReservation=function(reservationinfo,callback){
                         return callback("预约课程数量超出最大课程");
                     }
 
+                    currentcoursecount = userdata.subjecttwo.reservation;
                     userdata.subjecttwo.reservation = userdata.subjecttwo.reservation + coursecount;
+
                 }
                 else if (userdata.subject.subjectid == 3) {
                     if (userdata.subjectthree.reservation + coursecount > userdata.subjectthree.totalcourse) {
                         return callback("预约课程数量超出最大课程");
                     }
-
+                    currentcoursecount=userdata.subjecttwo.subjectthree;
                     userdata.subjectthree.reservation = userdata.subjectthree.reservation + coursecount;
                 }
                 else {
@@ -164,6 +167,7 @@ exports.postReservation=function(reservationinfo,callback){
 
                     // 保存预约信息
                     var reservation = new reservationmodel();
+                    reservation.courseprocessdesc=userdata.subject.name +" 第"+ currentcoursecount+" --"+(currentcoursecount+coursecount)+"课时";
                     reservation.userid = new mongodb.ObjectId(reservationinfo.userid);
                     reservation.coachid = new mongodb.ObjectId(reservationinfo.coachid);
                     reservation.is_shuttle = reservationinfo.is_shuttle ? (reservationinfo.is_shuttle == 1 ? true : false) : false;
@@ -399,6 +403,9 @@ exports.userComment=function(commnetinfo,callback){
         }
         resdata.is_comment=true;
         resdata.comment.starlevel=commnetinfo.starlevel;
+        resdata.comment.attitudelevel=commnetinfo.attitudelevel;
+        resdata.comment.timelevel=commnetinfo.timelevel;
+        resdata.comment.abilitylevel=commnetinfo.abilitylevel;
         resdata.comment.commentcontent=commnetinfo.commentcontent;
         resdata.reservationstate=appTypeEmun.ReservationState.finish;
         resdata.save(function(err,data){
@@ -427,6 +434,9 @@ exports.coachComment=function(commnetinfo,callback){
         }
         resdata.is_coachcomment=true;
         resdata.coachcomment.starlevel=commnetinfo.starlevel;
+        resdata.coachcomment.attitudelevel=commnetinfo.attitudelevel;
+        resdata.coachcomment.timelevel=commnetinfo.timelevel;
+        resdata.coachcomment.abilitylevel=commnetinfo.abilitylevel;
         resdata.coachcomment.commentcontent=commnetinfo.commentcontent;
         resdata.save(function(err,data){
             if(err){

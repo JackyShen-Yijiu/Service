@@ -33,6 +33,11 @@ v1.get("/info/headlinenews",appsystemController.getHeadLineNews);
 v1.post("/userfeedback",appsystemController.postUserFeedBack);
 // 获取科目二和科目三的训练内容
 v1.get("/trainingcontent",appsystemController.getTrainingContent);
+// 获取地址信息
+//v1.get("/location",appsystemController.getLocation);
+
+//======================================基础数据======================================
+
 
 //======================================用户信息======================================
 // 获取验证码
@@ -86,6 +91,8 @@ v1.get("/trainingfield/nearbytrainingfield",driveSchoolController.getNearbytrain
 v1.get("/userinfo/nearbycoach", userController.getNearbyCoach);
 // 获取驾校下面的教练
 v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach);
+// 获取驾校下面的练车场
+v1.get("/getschooltrainingfield",driveSchoolController.getSchoolTrainingField);
 
 
 //==============================预约课程(学生端)=========================================
@@ -142,7 +149,7 @@ v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);
 v1.get('/addaddtrainingfield', testController.addaddtrainingfield);
 v1.get('/addheadlinenews', testController.addheadlinenews);
-v1.get("/initdata",testController.initData)
+v1.get("/initdata",testController.initData);
 
 //------------------------------------------------------------------------------------
 module.exports = v1;

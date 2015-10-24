@@ -33,6 +33,7 @@ var  CoachSchema=new Schema({
     wallet:{type:Number,default:0}, // 钱包
     is_lock: { type: Boolean, default: false} , //用户是否锁定
     is_validation: { type: Boolean, default: false} , //教练是否通过验证
+    validationstate:Number, // 验证状态
     driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     driveschoolinfo:{name:String,id:String}, //申请学校信息
     studentcoount:{type:Number,default:0}, //学生数量
@@ -40,8 +41,11 @@ var  CoachSchema=new Schema({
     Seniority :String , // 教龄
     passrate :Number ,  // 通过率
     worktime:[{timeid:Number,timespace:String,begintime:String,endtime:String}] ,// 工作时间
+    workweek:[Number], // 周几工作
+    worktimespace:{begintimeint:Number,endtimeint:Number}, //工作时间
     worktimedesc:String, // 工作时间描述 （周一到周五 9：00--18:00）
-    coursestudentcount:{type:Number,default:1},//每节课可以预约学生的数量
+    coursestudentcount:{type:Number,default:1},//每节课可以预约
+    // 学生的数量
     idcardnumber:String ,// 身份证
     drivinglicensenumber:String,  // 驾驶证
     coachnumber:String,//教练证

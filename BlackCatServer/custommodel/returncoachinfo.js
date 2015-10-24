@@ -33,6 +33,9 @@ exports.resBaseCoachInfo=function(user){
     this.platenumber=user.platenumber;
     this.shuttlemsg=user.shuttlemsg;
     this.introduction=user.introduction;
-    this.worktime=user.worktime;
+    //this.worktime=user.worktime;
     this.worktimedesc=user.worktimedesc;
+    this.workweek=user.workweek;
+    this.worktimespace=user.worktimespace;
+
 };

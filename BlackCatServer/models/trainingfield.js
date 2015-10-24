@@ -26,6 +26,7 @@ var  TrainingFieldSchema=new Schema({
     phone:{type:String,default:''} , //联系电话
     capacity:Number, // 容量可容纳多少个辆车
     fielddesc:String,
+    driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     subject:[{subjectid:{type:Number,default:2},
         name:{type:String,default:"科目二"}}], //支持科目几的训练科目二
     pictures:[ImgInfo]

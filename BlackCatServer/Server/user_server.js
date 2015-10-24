@@ -261,6 +261,11 @@ exports.updateMobile=function(mobileinfo,callback){
 }
 // 修改密码
 exports.updatePassword=function(pwdinfo,callback){
+    if (pwdinfo.usertype===undefined){
+        pwdinfo.usertype=appTypeEmun.UserType.User;
+    }
+    if(pwdinfo.usertype==appTypeEmun.UserType.User){
+
  usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
   if(err||!userdata){
       return  callback("查询用户出错："+err);
@@ -279,6 +284,26 @@ exports.updatePassword=function(pwdinfo,callback){
          });
      });
  });
+   }else if(pwdinfo.usertype==appTypeEmun.UserType.Coach){
+        coachmode.findOne({mobile: pwdinfo.mobile},function(err,userdata){
+            if(err||!userdata){
+                return  callback("查询用户出错："+err);
+            }
+            checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
+                if (err) {
+                    return callback("验证码出错：" + err);
+
+                }
+                userdata.password=pwdinfo.password;
+                userdata.save(function(err,newdata){
+                    if(err){
+                        return  callback("保存用户信息出错："+err);
+                    }
+                    return callback(null,"success")
+                });
+            });
+        });
+    }
 }
 // 获取附近的教练
 exports.getNearCoach=function(latitude, longitude, radius,callback){
@@ -859,6 +884,7 @@ exports.updateCoachServer=function(updateinfo,callback){
             return  callback("查询教练出错："+err);
         }
         coachdata.name=updateinfo.name ? updateinfo.name:coachdata.name;
+        coachdata.Gender=updateinfo.gender ? updateinfo.gender:coachdata.Gender;
         coachdata.introduction=updateinfo.introduction ? updateinfo.introduction:coachdata.introduction;
         coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
         coachdata.headportrait=updateinfo.headportrait ? updateinfo.headportrait:coachdata.headportrait;
