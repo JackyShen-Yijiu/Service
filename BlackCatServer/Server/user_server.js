@@ -904,7 +904,7 @@ exports.applyVerification=function(applyinfo,callback){
         coachdata.validationstate=appTypeEmun.CoachValidationState.Validationing;
         coachdata.is_validation=false;
         if (applyinfo.driveschoolid){
-            schoolModel.findById(new mongodb.ObjectId(applyinfo.driveschoolid),function(err,schooldata){
+           /* schoolModel.findById(new mongodb.ObjectId(applyinfo.driveschoolid),function(err,schooldata){
                 if(err||!schooldata){
                     return callback("查询驾校出错："+err);
                 }
@@ -919,6 +919,13 @@ exports.applyVerification=function(applyinfo,callback){
                     return callback(null,"success");
                 })
 
+            })*/
+            coachdata.save(function(err,data){
+                if(err)
+                {
+                    return callback("保存教练信息出错："+err);
+                }
+                return callback(null,"success");
             })
         }
         else{

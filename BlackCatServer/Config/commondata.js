@@ -169,12 +169,12 @@ exports.worktimes=[
 ]
 exports.examquestioninfo={
     subjectone:{questionlisturl:"http://123.57.7.30:3600/question",
-        questiontesturl:"http://123.57.7.30:3600/question",
-        questionerrorurl:"http://123.57.7.30:3600/question"
+        questiontesturl:"http://123.57.7.30:3600/questiontest",
+        questionerrorurl:"http://123.57.7.30:3600/questionwronglist"
     },
 
 subjectfour:{questionlisturl:"http://123.57.7.30:3600/question",
-    questiontesturl:"http://123.57.7.30:3600/question",
-    questionerrorurl:"http://123.57.7.30:3600/question"
+    questiontesturl:"http://123.57.7.30:3600/questiontest",
+    questionerrorurl:"http://123.57.7.30:3600/questionwronglist"
 }
 }
