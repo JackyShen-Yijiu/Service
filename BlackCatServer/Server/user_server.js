@@ -251,12 +251,25 @@ exports.updateMobile=function(mobileinfo,callback){
         if(err){
             return  callback(err);
         }
-        usermodel.update({_id:new mongodb.ObjectId(mobileinfo.userid)},{$set:{mobile:mobileinfo.mobile}},function(err){
-            if(err){
-                return callback("更新手机号出错："+err)
-            }
-            return callback(null,"success");
-        })
+        if (pwdinfo.usertype===undefined){
+            pwdinfo.usertype=appTypeEmun.UserType.User;
+        }
+        if (pwdinfo.usertype==appTypeEmun.UserType.User) {
+            usermodel.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
+                if (err) {
+                    return callback("更新手机号出错：" + err)
+                }
+                return callback(null, "success");
+            })
+        }else if( pwdinfo.usertype==appTypeEmun.UserType.Coach)
+        {
+            coachmode.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
+                if (err) {
+                    return callback("更新手机号出错：" + err)
+                }
+                return callback(null, "success");
+            })
+        }
     });
 }
 // 修改密码
@@ -265,8 +278,7 @@ exports.updatePassword=function(pwdinfo,callback){
         pwdinfo.usertype=appTypeEmun.UserType.User;
     }
     if(pwdinfo.usertype==appTypeEmun.UserType.User){
-
- usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
+        usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
   if(err||!userdata){
       return  callback("查询用户出错："+err);
   }
@@ -292,7 +304,6 @@ exports.updatePassword=function(pwdinfo,callback){
             checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
                 if (err) {
                     return callback("验证码出错：" + err);
-
                 }
                 userdata.password=pwdinfo.password;
                 userdata.save(function(err,newdata){
@@ -875,6 +886,51 @@ exports.updateUserServer=function(updateinfo,callback){
             }
             return callback(null,"success")
         });
+    });
+}
+ // 教练提交审核申请
+exports.applyVerification=function(applyinfo,callback){
+    coachmode.findById(new mongodb.ObjectId(applyinfo.coachid),function(err,coachdata){
+        if (err||!coachdata){
+            return  callback("查询教练出错："+err);
+        }
+        if(coachdata.validationstate==appTypeEmun.CoachValidationState.Validated||coachdata.validationstate==appTypeEmun.CoachValidationState.Validationing){
+            return callback("该验证状态下不允许提交验证申请");
+        }
+        coachdata.name=applyinfo.name ? applyinfo.name:coachdata.name;
+        coachdata.idcardnumber=applyinfo.idcardnumber ? applyinfo.idcardnumber:coachdata.idcardnumber;
+        coachdata.drivinglicensenumber=applyinfo.drivinglicensenumber ? applyinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
+        coachdata.coachnumber=applyinfo.coachnumber ? applyinfo.coachnumber:coachdata.coachnumber;
+        coachdata.validationstate=appTypeEmun.CoachValidationState.Validationing;
+        coachdata.is_validation=false;
+        if (applyinfo.driveschoolid){
+            schoolModel.findById(new mongodb.ObjectId(applyinfo.driveschoolid),function(err,schooldata){
+                if(err||!schooldata){
+                    return callback("查询驾校出错："+err);
+                }
+                coachdata.driveschool=new mongodb.ObjectId(applyinfo.driveschoolid);
+                coachdata.driveschoolinfo.id=applyinfo.driveschoolid;
+                coachdata.driveschoolinfo.name=schooldata.name;
+                coachdata.save(function(err,data){
+                    if(err)
+                    {
+                        return callback("保存教练信息出错："+err);
+                    }
+                    return callback(null,"success");
+                })
+
+            })
+        }
+        else{
+            coachdata.save(function(err,data){
+                if(err)
+                {
+                    return callback("保存教练信息出错："+err);
+                }
+                return callback(null,"success");
+            })
+        }
+
     });
 }
 //更新教练信息

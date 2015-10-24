@@ -55,6 +55,8 @@ v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthoriz
 // 用户更新信息
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
+//教练申请验证
+v1.post("/userinfo/applyverification",ensureAuthorizedController.ensureAuthorized,userController.coachApplyVerification);
 //根据用户或者教练的id获取基本信息
 v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
 // 修改密码

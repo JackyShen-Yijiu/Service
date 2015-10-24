@@ -13,6 +13,14 @@ exports.UserType={
     User:1,
     Coach:2
 };
+// 教练审核的状态
+exports.CoachValidationState={
+    NotValidation:0, // 未提交审核申请
+    Validationing:1, //  审核中
+    ValidationRefuse:2, // 审核未通过
+    Validated:3 //  审核通过
+
+};
 // 报名信息申请状态
 exports.ApplyState={
     NotApply:0, // 未报名

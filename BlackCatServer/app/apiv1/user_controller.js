@@ -265,6 +265,34 @@ exports.updateUserInfo=function(req,res){
     });
 }
 
+//教练申请验证
+exports.coachApplyVerification=function(req,res){
+    var applyinfo={
+        coachid: req.body.coachid,
+        name : req.body.name,  //姓名
+        idcardnumber:req.body.idcardnumber,   // 身份证
+        drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证
+        coachnumber :req.body.coachnumber,  // 教练证
+        driveschoolid:req.body.driveschoolid, //所在驾校
+        referrerCode:req.body.referrerCode  //邀请吗可选
+    }
+    if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
+        applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"params is wrong",""));
+    };
+    if(applyinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.applyVerification(applyinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
     //console.log(req.body);
@@ -349,7 +377,8 @@ exports.updateMobile=function(req,res){
     var  mobileinfo={
         mobile:req.body.mobile,
         smscode:req.body.smscode,
-        userid:req.userId
+        userid:req.userId,
+        usertype:req.body.usertype
     }
     if (mobileinfo.userid===undefined||mobileinfo.mobile===undefined||mobileinfo.smscode===undefined) {
         return res.json(

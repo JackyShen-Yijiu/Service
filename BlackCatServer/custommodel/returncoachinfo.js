@@ -10,7 +10,6 @@ exports.resBaseCoachInfo=function(user){
     this.email=user.email;
     //this.token=user.token;
     this.headportrait =user.headportrait;
-
     this.logintime=user.logintime;
     this.invitationcode=user.invitationcode;
     this.displaycoachid=user.displaycoachid;
@@ -19,6 +18,7 @@ exports.resBaseCoachInfo=function(user){
     this.introduction=user.introduction;
     this.Gender=user.Gender;
     this.is_validation=user.is_validation;
+    this.validationstate=user.validationstate;
     this.driveschoolinfo=user.driveschoolinfo;
     this.studentcoount=user.studentcoount;
     this.commentcount=user.commentcount;
@@ -33,9 +33,7 @@ exports.resBaseCoachInfo=function(user){
     this.platenumber=user.platenumber;
     this.shuttlemsg=user.shuttlemsg;
     this.introduction=user.introduction;
-    //this.worktime=user.worktime;
     this.worktimedesc=user.worktimedesc;
     this.workweek=user.workweek;
     this.worktimespace=user.worktimespace;
-
 };

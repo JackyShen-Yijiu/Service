@@ -33,7 +33,7 @@ var  CoachSchema=new Schema({
     wallet:{type:Number,default:0}, // 钱包
     is_lock: { type: Boolean, default: false} , //用户是否锁定
     is_validation: { type: Boolean, default: false} , //教练是否通过验证
-    validationstate:Number, // 验证状态
+    validationstate:{type:Number,default:0}, // 教练审核状态 0 未申请， 1 申请中 ，2 审核拒绝 3审核通过
     driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     driveschoolinfo:{name:String,id:String}, //申请学校信息
     studentcoount:{type:Number,default:0}, //学生数量
