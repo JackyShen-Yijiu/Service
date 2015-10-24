@@ -29,6 +29,19 @@ exports.getNearbytrainingfield=function(req,res){
         }
     });
 };
+// 根据驾校名字模糊查询驾校信息
+exports.getSchoolByName=function(req,res){
+    var schoolname=req.query.schoolname;
+    driverSchool.getSchoolByName(schoolname,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+
+}
 // 获取驾校下面的训练场
 exports.getSchoolTrainingField=function(req,res){
     var schoolid=req.query.schoolid;
@@ -40,6 +53,7 @@ exports.getSchoolTrainingField=function(req,res){
     })
 
 }
+
 //获取可以报名的课程类型
 exports.getSchoolClassType=function(req,res){
     var  schoolid=req.params.schoolid;

@@ -95,6 +95,8 @@ v1.get("/userinfo/nearbycoach", userController.getNearbyCoach);
 v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach);
 // 获取驾校下面的练车场
 v1.get("/getschooltrainingfield",driveSchoolController.getSchoolTrainingField);
+//根据名称模糊查询练车场
+v1.get("/getschoolbyname",driveSchoolController.getSchoolByName);
 
 
 //==============================预约课程(学生端)=========================================

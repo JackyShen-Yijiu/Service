@@ -45,6 +45,33 @@ exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
     })
 
 };
+exports.getSchoolByName=function(schoolname,callback){
+    schoolModel.find({"name":new RegExp(schoolname)})
+        .limit(10)
+        .exec(function (err,driveschool){
+            if (err){
+                return  callback("查询驾校出错："+err);
+            }
+            process.nextTick(function(){
+                driveschoollist=[];
+                driveschool.forEach(function(r, idx){
+                    var oneschool= {
+                        schoolid: r._id,
+                        name:r.name,
+                        logoimg:r.logoimg,
+                        latitude: r.latitude,
+                        longitude: r.longitude,
+                        address: r.address,
+                        maxprice: r.maxprice,
+                        minprice: r.minprice,
+                        passingrate: r.passingrate
+                    }
+                    driveschoollist.push(oneschool);
+                });
+                callback(null,driveschoollist);
+            });
+        })
+}
 exports.getNeartrainingfield=function(latitude, longitude, radius ,callback){
     trainingfiledModel.getNearTrainingField(latitude, longitude, radius ,function(err ,trainingfield){
         if (err || !trainingfield || trainingfield.length == 0) {
