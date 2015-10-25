@@ -368,7 +368,7 @@ exports.updatePassword=function(req,res){
       if(err){
           return res.json(new BaseReturnInfo(0,err,""));
       }
-      return res.json(new BaseReturnInfo(0,"",data));
+      return res.json(new BaseReturnInfo(1,"",data));
   })
 
 }

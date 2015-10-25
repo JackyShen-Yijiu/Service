@@ -19,6 +19,7 @@
     "superagent": "^1.1.0",
     "geolib": "^2.0.14",
     "date-utils":"^1.2.17",
+    "domain":"*",
     "node-schedule":"*"
   }
 }

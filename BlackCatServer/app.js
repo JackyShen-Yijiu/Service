@@ -4,9 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 //var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
-
+var apiRouterV2=require('./routes/api_v2_router.js');
+var domain = require('domain');
 
 var app = express();
 
@@ -20,6 +22,23 @@ app.use(function(req, res, next) {
   }
 
   next();
+});
+
+//引入一个domain的中间件，将每一个请求都包裹在一个独立的domain中
+//domain来处理异常
+app.use(function (req,res, next) {
+  var d = domain.create();
+  //监听domain的错误事件
+  d.on('error', function (err) {
+    //logger.error(err);
+    console.log(err);
+    res.statusCode = 500;
+    res.json(new BaseReturnInfo(0,"server wrong",""));
+    d.dispose();
+  });
+  d.add(req);
+  d.add(res);
+  d.run(next);
 });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,11 +58,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/users', users);
 //app.use('/api/v1', v1);
 //app.use('/api/', v1);
+
+
+app.use(function(req, res, next) {
+  var _ver=req.query._ver;
+  //console.log("url"+req.url);
+  if(_ver===undefined||_ver==1){
+    //console.log("apiRouterV1");
+
+
+  }else if(_ver==2)
+  {
+   // req.url=req.url.replace("v1","v2");
+    //console.log("url"+req.url);
+
+  }
+  next();
+});
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
+app.use('/api/v2', apiRouterV2);
 
-
-// catch 404 and forward to error handler
+// catch 404 anid forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
