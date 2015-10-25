@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var coach = require('./routes/coachRoutes');
 var question = require('./routes/questionRoutes');
 var questionwronglist = require('./routes/questionwronglistRoutes');
+var questiontest = require('./routes/questiontestRoutes');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use('/users', users);
 app.use('/coach', coach);
 app.use('/question', question);
 app.use('/questionwronglist', questionwronglist);
+app.use('/questiontest', questiontest);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

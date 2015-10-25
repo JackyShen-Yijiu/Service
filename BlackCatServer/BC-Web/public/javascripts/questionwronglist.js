@@ -4,19 +4,32 @@ $.ajaxSetup({
 });
 //var apiHost = 'http://192.168.1.102:3600/';//"http://123.57.254.32:4000/";
 //var apiHost = 'http://123.57.7.30:3600/';
-//var apiHost = 'http://192.168.1.102:3600/';
-var apiHost = 'http://192.168.7.100:3600/';
+var apiHost = 'http://192.168.1.102:3600/';
+//var apiHost = 'http://192.168.7.100:3600/';
+
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+var userID = getUrlParam('userid'); 
+var userInfo;
+console.log(getUrlParam('userid'));
 
 function init() {
     console.log('init.');
 
-    nextQestion();
+    getUserInfo(userID, nextQestion);
 }
 
-function getQuestionList(id, callback){
-    console.log("get question list");
-    $.get(apiHost + "questionwronglist/questionlist/" + id,
+function getUserInfo(id, callback){
+    console.log("get user list: " + userID);
+    $.get(apiHost + "questionwronglist/userinfo/" + userID,
         function(data){
+          userInfo = data;
+          myExamID = userInfo.kemusi_wronglist;
+          Allcount = myExamID.length;
+          console.log("userinfo: " + userInfo);
           callback(data, "OK");
         }).fail(function(xHr, status, message){
         callback(message, "Fail");
@@ -79,14 +92,14 @@ function showQuestions(questoinBody) {
   $("#rightAnswer_txt").text(questoinBody.bestanswer);
 }
 
-var chapexamids = [[1,365],[2541,2640],[10923,10925],[10930,10931],[10938,10962],[10964,10971],[10978,10978],[10987,10995],[10998,11009],[11015,11015],[11022,11034],[11046,11046],[11049,11054],[11057,11078]];
-var myExamID = new Array(568);
-var myExamOrder = new Array(568);
-var arri = 0;
+//var chapexamids = [[1,365],[2541,2640],[10923,10925],[10930,10931],[10938,10962],[10964,10971],[10978,10978],[10987,10995],[10998,11009],[11015,11015],[11022,11034],[11046,11046],[11049,11054],[11057,11078]];
+var myExamID;
+//var myExamOrder;
+//var arri = 0;
 
 var j = 0;
 
-for (var i = 0, len = chapexamids.length; i < len; i++) {
+/*for (var i = 0, len = chapexamids.length; i < len; i++) {
   for (var minm = chapexamids[i][0], maxm = chapexamids[i][1]; minm <= maxm; minm++) {
     myExamID[arri] = minm;
     arri++;
@@ -95,9 +108,9 @@ for (var i = 0, len = chapexamids.length; i < len; i++) {
 
 for ( myExamOrderid = 0; myExamOrderid < 568; myExamOrderid++) {
   myExamOrder[myExamOrderid] = myExamOrderid + 1
-}
+}*/
 
-var Allcount = 568;
+var Allcount = 0;
 var QIndex = 0;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
@@ -206,4 +219,9 @@ function tjanswer(answer){
       }
       break;
   }
+}
+
+function play(){
+  console.log("play");
+  $("#falsh_embed").attr("play","true");
 }

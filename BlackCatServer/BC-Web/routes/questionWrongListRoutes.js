@@ -9,15 +9,21 @@ router.get('/', function(req, res, next) {
   res.render('questionwronglist');
 });
 
-router.get('/questionlist/', getQuestionList);
+router.get('/UserInfo/:userid', getQuestionList);
 router.get('/questionbyid/:id', getQuestionByID);
 
 function getQuestionList(req, res) {
-  console.log("get question from mongo: " + req.params.id);
-  question.List(function(err, questions){
+  console.log("get question from mongo: " + req.params.userid);
+
+  userinfo.FindByID(req.params.userid, function(err, questions){
     console.log(err);
     res.json(questions);
   });
+
+  /*question.List(function(err, questions){
+    console.log(err);
+    res.json(questions);
+  });*/
 }
 
 function getQuestionByID(req, res) {
@@ -36,12 +42,14 @@ function getQuestionByID(req, res) {
     console.log(err);
   }*/
 
-
-  console.log("get wrong question from mongo by UserID: " + req.params.id);
-  userinfo.FindByID(req.params.id, function(err, questions){
+  console.log("get question from mongo by ID: " + req.params.id);
+  question.FindByID(req.params.id, function(err, questions){
     console.log(err);
     res.json(questions);
   });
+
+  console.log("get wrong question from mongo by UserID: " + req.params.id);
+
 }
 
 module.exports = router;
