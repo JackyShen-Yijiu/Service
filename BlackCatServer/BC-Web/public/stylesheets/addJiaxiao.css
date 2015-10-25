@@ -1,0 +1,71 @@
+body{padding:0;margin:0; overflow:hidden; font-size:62.5%;font-family:'microsoft yahei', Arial, Helvetica, sans-serif;}
+
+.div_04{width:100%;margin:0 auto; text-align: center;}
+
+.button {
+    border-radius:10px;
+    font-size:2.5vmin;
+    font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+    padding-top:0.2em;
+    padding-bottom:0.2em;
+    padding-left: 0px;
+    padding-right: 0px;
+    border: 1px solid #dd962d;
+
+    background-color: #EDEDED;
+    color:#FF7B16;  
+
+    box-shadow: none !important;
+    text-decoration: none;
+    cursor: pointer;
+} 
+
+.title{font-size:4.8vmin;color:#ff6600;text-align: left;width:100%;padding-left: 2%; line-height: 2em;display: block;}
+
+.div_04{text-align: left;}
+.div_04 .input_div{
+    width: 60%;
+    margin-left: 15%;
+    vertical-align: middle;
+}
+.input_div span{
+    width:40%;
+    color: #FF6600;
+    font-weight: 400;
+    font-size: 2.2vmin;
+    margin-bottom: 5px;
+    display:inline-block;
+    text-align:right;
+    vertical-align:middle;
+
+}
+.input_div input{
+    width: 20%;
+    color: #777777;
+    font-size: 16px;
+    padding: 7px 10px;
+    border: 1px solid #FF6600;
+    outline: none;
+    background: #ededed;
+    border-radius:5px;
+    margin:0 auto;
+    margin-left: 1vmin;
+    height: 3vmin;
+    text-align: left;
+    vertical-align:middle;
+    background-color: #FAFAFA;
+    
+}
+.div_04 img{margin-left: 1vmin;}
+.div_04 .button{font-weight: 400;font-size: 3vmin;color: #FFFFFF;background-color: #FF6600;padding: 0 3vmin;border-radius: 0.5vmin;vertical-align:middle;}
+
+ fieldset {
+      border: 0;
+    }
+
+    select {
+      width: 200px;
+    }
+    .overflow {
+      height: 200px;
+    }

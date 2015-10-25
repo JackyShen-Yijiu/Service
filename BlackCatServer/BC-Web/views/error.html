@@ -3,86 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1 user-scalable=0"/>
-    <title>html5 移动端单页面布局</title>
-    <style>
-    /*初始化css*/
-    *{ margin:0; padding: 0;}
-    li{ list-style-type: none;}
-    img{ max-width: 100%; display: block; margin: 0 auto 5px auto;}
-    html,body{ width: 100%; height: 100%; background: #e4e4e4;
-        -webkit-tap-highlight-color: rgba(88,44,22,0.9);
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
+    <title>404</title>
 
-    }
-    /*主体页面样式*/
-    .main{ width: 100%; height: auto; position: relative;}
-    .main section{ width: 100%; height: auto; position:absolute; left: 0; top:0; }
-    .main section.hide{ display: none;}
-    .main section.curr{ display: block;}
-
-    /*菜单样式*/
-    .menu{ width: 100%; height: 45px; position: fixed; bottom:0; left:0; box-shadow: #2d2d2d 0 0 4px;background:#0099cc;}
-    .menu.menucurr{ background: #ea4c88;}
-    .menu ul{width: 100%; height: 100%; }
-    .menu li{ width: 24.9%; height: 100%; float: left; line-height: 45px; text-align: center; background: #0099cc; color:#fff;}
-    .menu li.curr{ background: #ea4c88;}
-    .menu li:nth-child(1),.menu li:nth-child(2),.menu li:nth-child(3){ border-right:1px solid #663300;}
-    </style>
 
 </head>
 <body>
-    <!--页面主体部分-->
-<div class="main">
-    <section class="curr">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/136389/screenshots/1732382/dashboardfash_perspective_1x.png" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/1061/screenshots/678418/pixelplant_ipad.jpg" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/255/screenshots/1332988/blog_1x.png" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/188162/screenshots/1143662/satigo_website_1x.jpg" alt="">
-    </section>
-    <section  class="hide">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/4404/screenshots/757400/css3.jpg" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/1061/screenshots/620200/camerastore.jpg" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/269922/screenshots/1008644/files.jpg" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/12787/screenshots/1243088/dribbblemini_1x.png" alt="">
-    </section>
-    <section class="hide">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/84550/screenshots/1236264/clip.png" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/2158/screenshots/377946/hra.png" alt="">
-    </section>
-    <section class="hide">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/114529/screenshots/534146/scienza2.jpeg" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/33345/screenshots/1150666/zen-of-ruby_1x.png" alt="">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/33345/screenshots/965067/company-info_1x.png" alt="">
-    </section>
-</div>
-<!--页面菜单按钮-->
-<div class="menu">
-    <ul>
-        <li class="curr">Html5</li>
-        <li>Css3</li>
-        <li>Javascript</li>
-        <li>About</li>
-    </ul>
-</div>
-<script src="../public/javascripts/zepto.js"></script>
-<script src="../public/javascripts/lib/jquery-2.1.3.min.js"></script>
-
-<script>
-  $(function(){
-      $(".menu li").each(function(index){
-          $(this).tap(function(){
-              $(this).addClass("curr").siblings().removeClass("curr");
-              $(".main section").eq(index).show().siblings().hide();
-              if(index==3){
-                  $(".menu").addClass("menucurr");
-              }else{
-                  $(".menu").removeClass("menucurr");
-              }
-          })
-
-      })
-  })
-</script>
+ 
 </body>
 </html>
