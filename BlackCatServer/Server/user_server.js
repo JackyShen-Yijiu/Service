@@ -1130,7 +1130,7 @@ var checkSmsCode=function(mobile,code,callback){
         {
             return callback("No such code/mobile was found");
         }
-        console.log(instace);
+        //console.log(instace);
         var  now=new Date();
         /*console.log(now);
         console.log(instace.createdTime);
