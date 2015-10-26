@@ -177,7 +177,7 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.trainfieldid=coachdata.trainfield;
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);
-                    reservation.classdatetimedesc= reservationinfo.begintime +"--"+(new Date(reservationinfo.endtime)).toTimeString();
+                    reservation.classdatetimedesc= (new Date(reservationinfo.begintime)).toFormat("YYYY年MM月DD日 HH:00:00") +"--"+(new Date(reservationinfo.begintime)).toFormat("HH:00:00");;
                     reservation.subject = userdata.subject;
                     reservation.coursehour = coursecount;
                     arr.forEach(function (r) {
@@ -570,7 +570,7 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
     var datetomorrow = datenow.addDays(1);
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
-        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress")
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc")
         .populate( "userid"," _id  name headportrait applyschoolinfo")
         .sort({"begintime":1})
         .exec(function(err,data){
@@ -610,7 +610,7 @@ exports.saveCoachLeaveInfo=function(leaveinfo ,callback){
 // 教练获取我的预约列表
 exports.getCoachReservationList=function(queryinfo,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(queryinfo.coachid)})
-        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress")
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc")
         .populate("userid","_id  name headportrait applyschoolinfo")
         .skip((queryinfo.index-1)*10)
         .limit(10)
@@ -625,7 +625,7 @@ exports.getCoachReservationList=function(queryinfo,callback){
 // 教练获取没有处理的预约申请
 exports.getreservationapply=function(coachid,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"reservationstate":appTypeEmun.ReservationState.applying})
-        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress")
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc")
         .populate("userid","_id  name headportrait applyschoolinfo")
         .sort({"begintime":-1})
         .exec(function(err,data){

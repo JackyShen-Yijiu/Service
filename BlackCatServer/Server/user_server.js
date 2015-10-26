@@ -252,10 +252,10 @@ exports.updateMobile=function(mobileinfo,callback){
         if(err){
             return  callback(err);
         }
-        if (pwdinfo.usertype===undefined){
-            pwdinfo.usertype=appTypeEmun.UserType.User;
+        if (mobileinfo.usertype===undefined){
+            mobileinfo.usertype=appTypeEmun.UserType.User;
         }
-        if (pwdinfo.usertype==appTypeEmun.UserType.User) {
+        if (mobileinfo.usertype==appTypeEmun.UserType.User) {
             usermodel.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
                 if (err) {
                     return callback("error in find user:" + err);
@@ -270,7 +270,7 @@ exports.updateMobile=function(mobileinfo,callback){
                 }
                 return callback(null, "success");
             })
-        }else if( pwdinfo.usertype==appTypeEmun.UserType.Coach)
+        }else if( mobileinfo.usertype==appTypeEmun.UserType.Coach)
         {
             coachmode.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
                 if (err) {
