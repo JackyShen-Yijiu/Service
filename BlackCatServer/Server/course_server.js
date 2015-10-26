@@ -177,6 +177,7 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.trainfieldid=coachdata.trainfield;
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);
+                    reservation.classdatetimedesc= reservationinfo.begintime +"--"+(new Date(reservationinfo.endtime)).toTimeString();
                     reservation.subject = userdata.subject;
                     reservation.coursehour = coursecount;
                     arr.forEach(function (r) {

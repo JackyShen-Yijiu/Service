@@ -18,6 +18,7 @@ var ReservationSchema=new Schema({
     finishtime:Date,
     begintime:Date,
     endtime:Date,
+    classdatetimedesc:String, // 上课时间描述
     //预约课程
     reservationcourse: [{type: Schema.Types.ObjectId, default:null, ref: 'course'}],
     //是否评论

@@ -9,7 +9,8 @@ var jwt = require('jsonwebtoken');
 var userTypeEmun=require("../custommodel/emunapptype").UserType;
 var resbaseuserinfomodel=require("../custommodel/returnuserinfo").resBaseUserInfo;
 var resbasecoachinfomode=require("../custommodel/returncoachinfo").resBaseCoachInfo;
-var appTypeEmun=require("../custommodel/emunapptype");
+var appTypeEmun=require("../custommodel/emunapptype")
+var appWorkTimes=require("../Config/commondata").worktimes;
 var secretParam= require('./jwt-secret').secretParam;
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
@@ -953,6 +954,40 @@ exports.applyVerification=function(applyinfo,callback){
         }
 
     });
+}
+// 更新教练的工作时间
+exports.coachSetWorkTime=function(timeinfo,callback){
+    coachmode.findById(new mongodb.ObjectId(timeinfo.coachid),function(err,coachdata){
+        if (err||!coachdata){
+            return  callback("查询教练出错："+err);
+        }
+       var   weeklist=timeinfo.workweek.split(",");
+        coachdata.workweek=weeklist;
+        coachdata.worktimedesc=timeinfo.worktimedesc;
+        coachdata.worktimespace.begintimeint=timeinfo.begintimeint;
+        coachdata.worktimespace.endtimeint=timeinfo.endtimeint;
+        var worktimes=[];
+        console.log(timeinfo);
+        for(var i=parseInt(timeinfo.begintimeint);i<=parseInt(timeinfo.endtimeint);i++){
+            console.log(i.toString()+":00:00");
+            appWorkTimes.forEach(function(r,index){
+                console.log(r.begintime);
+                console.log(i.toString()+":00:00");
+                if(r.begintime== i.toString()+":00:00"){
+                    worktimes.push(appWorkTimes[index]);
+                }
+
+            })
+        }
+        coachdata.worktime=worktimes;
+        coachdata.save(function(err,data){
+            if(err)
+            {
+                return callback("保存教练信息出错："+err);
+            }
+            return callback(null,"success");
+        })
+    })
 }
 //更新教练信息
 exports.updateCoachServer=function(updateinfo,callback){

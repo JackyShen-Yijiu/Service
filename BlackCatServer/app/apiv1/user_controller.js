@@ -137,8 +137,8 @@ exports.postApplyExamination=function(req,res){
 // 获取教练的学生列表
 exports.getStudentList=function(req,res){
     var  coachinfo={
-        coachid:req.params.coachid,
-        index:req.params.index?req.params.index:1
+        coachid:req.query.coachid,
+        index:req.query.index?req.query.index:1
     }
     if(coachinfo.coachid!=req.userId){
         return res.json(
@@ -292,7 +292,35 @@ exports.coachApplyVerification=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
-
+// 教练设置工作时间
+exports.coachSetWorkTime=function(req,res){
+    var timeinfo={
+        coachid: req.body.coachid,
+        workweek:req.body.workweek,
+        worktimedesc:req.body.worktimedesc,
+        begintimeint:req.body.begintimeint,
+        endtimeint:req.body.endtimeint,
+    }
+    if (timeinfo.coachid===undefined|| timeinfo.workweek===undefined|| timeinfo.worktimedesc===undefined||
+        timeinfo.begintimeint===undefined||timeinfo.endtimeint===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完成",""));
+    };
+    if(timeinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    if(!timeinfo.workweek||timeinfo.workweek.length<=0){
+        return res.json(
+            new BaseReturnInfo(0,"星期不能为空",""));
+    }
+    userserver.coachSetWorkTime(timeinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
     //console.log(req.body);

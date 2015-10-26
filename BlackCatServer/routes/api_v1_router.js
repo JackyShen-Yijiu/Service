@@ -56,7 +56,7 @@ v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthoriz
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
 // 教练设置工作时间
-v1.post("/userinfo/coachsetworktime",ensureAuthorizedController.ensureAuthorized);
+v1.post("/userinfo/coachsetworktime",ensureAuthorizedController.ensureAuthorized,userController.coachSetWorkTime);
 //教练申请验证
 v1.post("/userinfo/applyverification",ensureAuthorizedController.ensureAuthorized,userController.coachApplyVerification);
 //根据用户或者教练的id获取基本信息
@@ -130,7 +130,7 @@ v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized
 
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
-v1.get("/userinfo/coachstudentlist/:coachid/:index",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
+v1.get("/userinfo/coachstudentlist",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
 // 教练请假接口
 v1.post("/courseinfo/putcoachleave",ensureAuthorizedController.ensureAuthorized,courseController.postCoachLeave);
 //教练获取预约列表
