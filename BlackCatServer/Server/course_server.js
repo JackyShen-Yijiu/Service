@@ -177,7 +177,8 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.trainfieldid=coachdata.trainfield;
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);
-                    reservation.classdatetimedesc= (new Date(reservationinfo.begintime)).toFormat("YYYY年MM月DD日 HH:00:00") +"--"+(new Date(reservationinfo.begintime)).toFormat("HH:00:00");;
+                    reservation.classdatetimedesc= (new Date(reservationinfo.begintime)).toFormat("YYYY年MM月DD日 HH:00") +"--"
+                        +(new Date(reservationinfo.begintime)).toFormat("HH:00");;
                     reservation.subject = userdata.subject;
                     reservation.coursehour = coursecount;
                     arr.forEach(function (r) {
