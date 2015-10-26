@@ -41,7 +41,7 @@ exports.getCodebyMolile=function(mobilenumber,callback){
             }
             if(instace){
                 var  now= new Date();
-                console.log(now-instace.createdTime);
+                //console.log(now-instace.createdTime);
                 if ((now-instace.createdTime)<resendTimeout*1000){
                     return callback("Wait a moment to send again");
                 }

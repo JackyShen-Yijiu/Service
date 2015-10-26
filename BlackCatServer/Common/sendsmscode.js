@@ -44,7 +44,7 @@ exports.sendsmscode=function(mobile,callback) {
             .send(options)
             .type('form')
             .end(function(err, res){
-                console.log(res)
+               // console.log(res)
                 callback(err, res);
             });
 
