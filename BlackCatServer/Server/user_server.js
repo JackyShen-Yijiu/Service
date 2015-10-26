@@ -358,7 +358,8 @@ exports.getNearCoach=function(latitude, longitude, radius,callback){
                         Seniority: r.Seniority,
                         is_shuttle: r.is_shuttle,
                         latitude: r.latitude,
-                        longitude: r.longitude
+                        longitude: r.longitude,
+                        subject: r.subject
 
                 }
                     //  r.restaurantId = r._id;
@@ -402,7 +403,8 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         passrate: r.passrate,
                         Seniority: r.Seniority,
                         latitude: r.latitude,
-                        longitude: r.longitude
+                        longitude: r.longitude,
+                        subject: r.subject
 
                     }
                     //  r.restaurantId = r._id;
@@ -521,7 +523,8 @@ exports.getUsefulCoachList=function(useid,index,callback){
                                 passrate: r.passrate,
                                 Seniority: r.Seniority,
                                 latitude: r.latitude,
-                                longitude: r.longitude
+                                longitude: r.longitude,
+                                subject: r.subject
 
                             }
                             //  r.restaurantId = r._id;
@@ -628,7 +631,8 @@ usermodel.findById(new mongodb.ObjectId(userid))
                         passrate: r.passrate,
                         Seniority: r.Seniority,
                         latitude: r.latitude,
-                        longitude: r.longitude
+                        longitude: r.longitude,
+                        subject: r.subject
 
                     }
                     //  r.restaurantId = r._id;
