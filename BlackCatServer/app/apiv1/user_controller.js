@@ -300,7 +300,7 @@ exports.updateCoachInfo=function(req,res){
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
         introduction: req.body.introduction, // 简介
-        gender:req.bodygender, //性别
+        gender:req.body.gender, //性别
         //email: req.body.email,  // 邮件
         headportrait: req.body.headportrait,
         address: req.body.address, // 地址
@@ -308,16 +308,15 @@ exports.updateCoachInfo=function(req,res){
         driveschoolid:req.body.driveschoolid,
         Seniority:req.body.Seniority, //教龄
         passrate:req.body.passrate,  //通过率
-        worktime:req.body.worktime,
-        coursestudentcount:req.body.coursestudentcount, // 可供选择学生数量
+        //coursestudentcount:req.body.coursestudentcount, // 可供选择学生数量
         idcardnumber:req.body.idcardnumber,   // 身份证
         drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证
         coachnumber :req.body.coachnumber,  // 教练证
-        carmodel:req.body.carmodel,      // 车型 c1 c2
+        //carmodel:req.body.carmodel,      // 车型 c1 c2
         trainfield:req.body.trainfield,  // 训练场
-        is_shuttle:req.body.is_shuttle,  // 是否接送
+        //is_shuttle:req.body.is_shuttle,  // 是否接送
         platenumber:req.body.platenumber, // 车牌号
-        shuttlemsg:req.body.shuttlemsg  // 车送说明
+        //shuttlemsg:req.body.shuttlemsg  // 车送说明
     }
     if (updateuserinfo.coachid===undefined) {
         return res.json(

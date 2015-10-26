@@ -11,7 +11,7 @@ exports.ensureAuthorized = function(req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
     if (typeof bearerHeader !== 'undefined') {
-        req.token = bearerHeader
+        req.token = bearerHeader;
         verifyToken(bearerHeader, function(ret, decode){
             if(ret){
                 if(decode.userId === undefined){
@@ -33,6 +33,7 @@ exports.ensureAuthorized = function(req, res, next) {
 var verifyToken = function(token, callback) {
     jwt.verify(token, secretParam.secret, undefined, function(err, decoded) {
         if (err) {
+            console.log(err);
             if(callback != undefined){
                 callback(false);
             }

@@ -15,21 +15,23 @@ var ImgInfo= new Schema({
     height:{type:String,default:""}
 
 });
+
+//驾校练车场信息
 var  TrainingFieldSchema=new Schema({
     fieldname:String,   // 训练场名称
     // 场地地点
     latitude: {type:Number,default:0},
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
-    address: {type:String,default:''},
+    address: {type:String,default:''}, // 练车场地址
     responsible:{type:String,default:''}, // 负责人
     phone:{type:String,default:''} , //联系电话
     capacity:Number, // 容量可容纳多少个辆车
-    fielddesc:String,
+    fielddesc:String,   // 练车场描述
     driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     subject:[{subjectid:{type:Number,default:2},
         name:{type:String,default:"科目二"}}], //支持科目几的训练科目二
-    pictures:[ImgInfo]
+    pictures:[ImgInfo]   //练车场图片
 });
 
 /**

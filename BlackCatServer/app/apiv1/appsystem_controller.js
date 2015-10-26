@@ -13,7 +13,7 @@ var sysstemserver=require('../../Server/systemdata_server');
  **/
 exports.TestAPI = function (req, res) {
     return  res.json(
-        new BaseReturnInfo(1,"","hello, BlackCat v1"))
+        new BaseReturnInfo(1,"","hello, BlackCat v1d"))
 
 };
 /*

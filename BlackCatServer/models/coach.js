@@ -6,26 +6,26 @@ var Schema = mongoose.Schema;
 
 // 教练信息信息
 var  CoachSchema=new Schema({
-    mobile: { type: String},
-    name :{type:String,default:''},
-    createtime:{type:Date,default:Date.now()},
-    email:{type:String,default:''},
-    token:{type:String,default:''},
-    password:String,
-    logintime:{type:Date,default:Date.now()},
-    address: String,
+    mobile: { type: String},  //手机
+    name :{type:String,default:''},  // 姓名
+    createtime:{type:Date,default:Date.now()},  // 注册时间
+    email:{type:String,default:''},  // 邮箱
+    token:{type:String,default:''},  //登录token
+    password:String,   // 密码
+    logintime:{type:Date,default:Date.now()}, //最近一次登录时间
+    address: String,   // 地址
     introduction:String, // 简介
-    Gender:String,
+    Gender:String,  //  x性别
     //维度
-    latitude: {type:Number,default:0},
-    longitude: {type:Number,default:0},
-    loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
-    invitationcode:{type:String},  // 要初始化
+    latitude: {type:Number,default:0},  //纬度
+    longitude: {type:Number,default:0},  // 经度
+    loc:{type:{type:String, default:'Point'}, coordinates:[Number]},    //经纬度坐标
+    invitationcode:{type:String},  // 要初始化  邀请码
     referrerCode: String,   // 被邀请码
-    headportrait: { originalpic:{type:String,default:""},
-        thumbnailpic:{type:String,default:""},
-        width:{type:String,default:""},
-        height:{type:String,default:""}},
+    headportrait: { originalpic:{type:String,default:""},  //头像信息  原始地址
+        thumbnailpic:{type:String,default:""}, // 缩略图地址
+        width:{type:String,default:""},  // 宽度
+        height:{type:String,default:""}}, // 高度
 
     subject:[{subjectid:{type:Number,default:2},
         name:{type:String,default:"科目二"}}], //所教科目 默认是科目二
@@ -40,9 +40,9 @@ var  CoachSchema=new Schema({
     commentcount:{type:Number,default:0}, // 评论数量
     Seniority :String , // 教龄
     passrate :Number ,  // 通过率
-    worktime:[{timeid:Number,timespace:String,begintime:String,endtime:String}] ,// 工作时间
+    worktime:[{timeid:Number,timespace:String,begintime:String,endtime:String}] ,// 工作时间短每一个小时一个时间段，
     workweek:[Number], // 周几工作
-    worktimespace:{begintimeint:Number,endtimeint:Number}, //工作时间
+    worktimespace:{begintimeint:Number,endtimeint:Number}, //工作时间 早8 到晚6
     worktimedesc:String, // 工作时间描述 （周一到周五 9：00--18:00）
     coursestudentcount:{type:Number,default:1},//每节课可以预约
     // 学生的数量
@@ -50,7 +50,7 @@ var  CoachSchema=new Schema({
     drivinglicensenumber:String,  // 驾驶证
     coachnumber:String,//教练证
     starlevel :Number, // 星级
-    carmodel:{modelsid:Number,name:String,code:String},
+    carmodel:{modelsid:Number,name:String,code:String},  // 负责教的车型
     trainfield:{type: Schema.Types.ObjectId, ref: 'trainingfield'} ,//训练场
     trainfieldlinfo:{name:String,id:String}, //训练成信息信息
     platenumber:String, // 车牌号

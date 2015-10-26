@@ -963,21 +963,21 @@ exports.updateCoachServer=function(updateinfo,callback){
         coachdata.name=updateinfo.name ? updateinfo.name:coachdata.name;
         coachdata.Gender=updateinfo.gender ? updateinfo.gender:coachdata.Gender;
         coachdata.introduction=updateinfo.introduction ? updateinfo.introduction:coachdata.introduction;
-        coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
+        //coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
         coachdata.headportrait=updateinfo.headportrait ? updateinfo.headportrait:coachdata.headportrait;
         coachdata.address=updateinfo.address ? updateinfo.address:coachdata.address;
         coachdata.subject=updateinfo.subject ? updateinfo.subject:coachdata.subject;
         coachdata.Seniority=updateinfo.Seniority ? updateinfo.Seniority:coachdata.Seniority;
         coachdata.passrate=updateinfo.passrate ? updateinfo.passrate:coachdata.passrate;
-        coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
-        coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
+        //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
+        //coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
         coachdata.idcardnumber=updateinfo.idcardnumber ? updateinfo.idcardnumber:coachdata.idcardnumber;
         coachdata.drivinglicensenumber=updateinfo.drivinglicensenumber ? updateinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
         coachdata.coachnumber=updateinfo.coachnumber ? updateinfo.coachnumber:coachdata.coachnumber;
-        coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
+        //coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
         coachdata.platenumber=updateinfo.platenumber ? updateinfo.platenumber:coachdata.platenumber;
-        coachdata.shuttlemsg=updateinfo.shuttlemsg ? updateinfo.shuttlemsg:coachdata.shuttlemsg;
-        coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
+        //coachdata.shuttlemsg=updateinfo.shuttlemsg ? updateinfo.shuttlemsg:coachdata.shuttlemsg;
+        //coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
         if (updateinfo.driveschoolid){
             schoolModel.findById(new mongodb.ObjectId(updateinfo.driveschoolid),function(err,schooldata){
                 if(err||!schooldata){

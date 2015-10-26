@@ -55,6 +55,8 @@ v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthoriz
 // 用户更新信息
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
+// 教练设置工作时间
+v1.post("/userinfo/coachsetworktime",ensureAuthorizedController.ensureAuthorized);
 //教练申请验证
 v1.post("/userinfo/applyverification",ensureAuthorizedController.ensureAuthorized,userController.coachApplyVerification);
 //根据用户或者教练的id获取基本信息

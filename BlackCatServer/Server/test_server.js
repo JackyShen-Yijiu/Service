@@ -8,12 +8,24 @@ var IM=require('../Common/IM/mobIm');
 
 exports.adddriveschool=function(callback){
     var school=new schoolModel();
-     school.name="北京海淀驾校";
+     school.name="北京北方驾校";
      school.latitude= 40.096263;
-     school.longitude=116.127921 ;
-     school.loc.coordinates=[116.127921,40.096263];
+     school.longitude=120.127921 ;
+     school.loc.coordinates=[120.127921,40.096263];
     school.maxprice=5000;
     school.minprice=3000;
+    school.logoimg.originalpic="http://7xnjg0.com1.z0.glb.clouddn.com/20151018/1619315611292a193184140355c49a.png";
+    school.passingrate=100
+    school.hours="8:00--18:00"
+    school.introduction="北京北方驾校";
+    school.registertime=Date.now();
+    school.address="北京市";
+    school.responsible="王先生";
+    school.phone="123456788"
+    school.coachcount=50
+    school.carcount=50
+    school.schoollevel="一级"
+    school.websit="www.baidu.com"
     //school._id=new mongodb.ObjectId("56163c376816a9741248b7f9");
     school.save(function(err,newshchool){
     if (err)
@@ -82,15 +94,16 @@ exports.addheadlinenews=function(callback) {
 }
 exports.addaddtrainingfield=function(callback){
     var field=new trainingfieldModel();
-    field.fieldname="海淀练场";
+    field.fieldname="北方驾校练车场";
     field.latitude= 40.096263;
     field.longitude=116.127921 ;
     field.loc.coordinates=[field.longitude,field.latitude];
     field.address="北清路148号",
-    field. responsible="掌声";
+    field. responsible="李先生";
     field.phone="67899";
     field.capacity=5;
-
+    field.fielddesc="北方驾校练车场";
+    field.driveschool="562dcd0fe87706a478b2495b";
     field.save(function(err,newshchool){
         if (err)
         {
@@ -106,16 +119,17 @@ exports.addaddtrainingfield=function(callback){
 
 exports.adddschoolclass=function(callback){
     var schoolclass=new schoolclassModel();
-    schoolclass.classname="海淀暑假班";
-    schoolclass.schoolid=new mongodb.ObjectId('56163c376816a9741248b7f9');
+    schoolclass.classname="金龙普通班快班";
+    schoolclass.schoolid=new mongodb.ObjectId('562dcc3ccb90f25c3bde40da');
     schoolclass.begintime=new Date("2015-09-08 21:06:00");
     schoolclass.endtime=new Date("2015-12-08 21:06:00");
     schoolclass.is_using=true;
-    schoolclass.is_vip=true;
+    schoolclass.is_vip=false;
     schoolclass.classdesc="特惠会！";
     schoolclass.price=4700;
     schoolclass.carmodel.modelsid=1;
     schoolclass.carmodel.name="小型汽车手动挡";
+    schoolclass.carmodel.code="C1";
     schoolclass.save(function(err,newshchool){
         if (err)
         {

@@ -21,6 +21,12 @@ exports.CoachValidationState={
     Validated:3 //  审核通过
 
 };
+exports.ApplyHandelState={
+    NotHandel:0,// 未处理
+    Handeling:1,//处理中
+    Handeled:2  // 已处理
+}
+
 // 报名信息申请状态
 exports.ApplyState={
     NotApply:0, // 未报名
