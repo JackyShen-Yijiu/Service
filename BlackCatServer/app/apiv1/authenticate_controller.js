@@ -16,17 +16,17 @@ exports.ensureAuthorized = function(req, res, next) {
             if(ret){
                 if(decode.userId === undefined){
 
-                    return res.status(401).json(new BaseReturnInfo(0,"No user id was found In authenticated",""));
+                    return res.json(new BaseReturnInfo(0,"No user id was found In authenticated",""));
                 }
                 req.userId = decode.userId;
                 next();
             }else{
 
-                return res.status(401).json(new BaseReturnInfo(0,"Not authenticated",""));
+                return res.json(new BaseReturnInfo(0,"Not authenticated",""));
             }
         });
     } else {
-        return res.status(401).json(new BaseReturnInfo(0,"Not authenticated",""));
+        return res.json(new BaseReturnInfo(0,"Not authenticated",""));
     }
 }
 
