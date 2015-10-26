@@ -255,6 +255,14 @@ exports.updateMobile=function(mobileinfo,callback){
             pwdinfo.usertype=appTypeEmun.UserType.User;
         }
         if (pwdinfo.usertype==appTypeEmun.UserType.User) {
+            usermodel.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
+                if (err) {
+                    return callback("error in find user:" + err);
+                }
+                if (userinstace) {
+                    return callback("改手机号已经存在，请更换手机号");
+                }
+            })
             usermodel.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
                 if (err) {
                     return callback("更新手机号出错：" + err)
@@ -263,6 +271,14 @@ exports.updateMobile=function(mobileinfo,callback){
             })
         }else if( pwdinfo.usertype==appTypeEmun.UserType.Coach)
         {
+            coachmode.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
+                if (err) {
+                    return callback("error in find user:" + err);
+                }
+                if (userinstace) {
+                    return callback("改手机号已经存在，请更换手机号");
+                }
+            })
             coachmode.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
                 if (err) {
                     return callback("更新手机号出错：" + err)

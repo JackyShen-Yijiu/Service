@@ -51,7 +51,7 @@ exports.UserLogin=function(req,res){
     }
     userserver.userlogin(usertype,userinfo,function(err,data){
         if(err){
-            return res.status(400).json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,""));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
