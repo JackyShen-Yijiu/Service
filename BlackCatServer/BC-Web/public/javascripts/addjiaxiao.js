@@ -27,7 +27,7 @@ function AddSchool(sch_name, sch_address, sch_contact){
                 $("#code_error").hide();
                 console.log(data);
                 if(data.code > 0){
-                    
+                    alert("新增驾校成功！");
                 }else if(data.code == -1){
                     
                 }
@@ -64,7 +64,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
                 $("#code_error").hide();
                 console.log(data);
                 if(data.code > 0){
-                    
+                    alert("新增教练成功！");
                 }else if(data.code == -1){
                     
                 }
