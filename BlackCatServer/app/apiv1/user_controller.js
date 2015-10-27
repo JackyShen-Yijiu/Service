@@ -265,9 +265,11 @@ exports.updateUserInfo=function(req,res){
        gender:req.body.gender,
        signature:req.body.signature
    }
-
-    updateuserinfo.headportrait=JSON.parse(updateuserinfo.headportrait.toString());
+    console.log(updateuserinfo.toString());
+    //if(updateuserinfo.headportrait!=undefined){
+        updateuserinfo=JSON.parse(updateuserinfo);
          console.log(updateuserinfo);
+    //}
 
     if (updateuserinfo.userid===undefined) {
         return res.json(
@@ -277,6 +279,10 @@ exports.updateUserInfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
+    if(updateuserinfo.headportrait!=undefined &&updateuserinfo.headportrait.length>0){
+    updateuserinfo.headportrait=JSON.parse(updateuserinfo.headportrait);
+    console.log(updateuserinfo);
+    }
     userserver.updateUserServer(updateuserinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));

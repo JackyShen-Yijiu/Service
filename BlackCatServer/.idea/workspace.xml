@@ -25,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="136" column="105" selection-start-line="136" selection-start-column="105" selection-end-line="136" selection-end-column="105" />
+              <caret line="55" column="102" selection-start-line="55" selection-start-column="102" selection-end-line="55" selection-end-column="102" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -46,8 +46,8 @@
       <file leaf-file-name="user_controller.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/apiv1/user_controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66360503">
-              <caret line="165" column="7" selection-start-line="165" selection-start-column="7" selection-end-line="165" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.92652124">
+              <caret line="284" column="4" selection-start-line="284" selection-start-column="4" selection-end-line="284" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -1016,7 +1016,7 @@
     <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="136" column="105" selection-start-line="136" selection-start-column="105" selection-end-line="136" selection-end-column="105" />
+          <caret line="55" column="102" selection-start-line="55" selection-start-column="102" selection-end-line="55" selection-end-column="102" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>
@@ -1025,8 +1025,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/apiv1/user_controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66360503">
-          <caret line="165" column="7" selection-start-line="165" selection-start-column="7" selection-end-line="165" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.92652124">
+          <caret line="284" column="4" selection-start-line="284" selection-start-column="4" selection-end-line="284" selection-end-column="4" />
           <folding />
         </state>
       </provider>
