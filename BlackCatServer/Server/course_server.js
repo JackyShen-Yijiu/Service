@@ -636,7 +636,8 @@ exports.saveCoachLeaveInfo=function(leaveinfo ,callback){
 // 教练获取我的预约列表
 exports.getCoachReservationList=function(queryinfo,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(queryinfo.coachid)})
-        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc")
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc " +
+        " courseprocessdesc")
         .populate("userid","_id  name headportrait applyschoolinfo")
         .skip((queryinfo.index-1)*10)
         .limit(10)
@@ -645,7 +646,23 @@ exports.getCoachReservationList=function(queryinfo,callback){
             if(err){
                 return callback("查询数据出错："+err);
             }
-            return callback(null,data);
+            process.nextTick(function(){
+                var list=[]
+                data.forEach(function(r,index){
+                    var listone= {
+                        userid: r.userid,
+                        reservationstate: r.reservationstate,
+                        reservationcreatetime: r.reservationcreatetime, subject: r.subject,
+                        is_shuttle: r.is_shuttle,
+                        shuttleaddress: r.shuttleaddress,
+                        courseprocessdesc: r.courseprocessdesc,
+                        begintime :(r.begintime).toFormat("HH:00"),
+                        endtime :(r.endtime).toFormat("HH:00")
+                    }
+                    list.push(listone);
+                })
+                return callback(null,list);
+            })
         })
 }
 // 教练获取没有处理的预约申请
