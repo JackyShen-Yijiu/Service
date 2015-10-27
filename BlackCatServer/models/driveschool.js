@@ -13,29 +13,33 @@ var ImgInfo= new Schema({
     height:{type:String,default:""}
 
 });
+// 驾校信息
 var DriveSchoolSchema=new Schema({
-    name :{type:String,default:''},
-    latitude: {type:Number,default:0},
+    name :{type:String,default:''},  //名称
+    latitude: {type:Number,default:0},  //坐标经纬度
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
-    pictures:[ImgInfo],
-    logoimg:{
+    pictures:[ImgInfo], //  驾校的宣传图片地址
+    logoimg:{     // 驾校log
         originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
         width:{type:String,default:""},
         height:{type:String,default:""}
     },
-    passingrate:Number, // ͨ����
-    hours:{type:String,default:""}, //Ӫҵʱ��
-    introduction :{type:String,default:""}, // ���
-    createtime:{type:Date,default:Date.now()}, //
-    registertime:{type:Date,default:Date.now()},
-    address: {type:String,default:''},
-    responsible:{type:String,default:''}, // ������
-    phone:{type:String,default:''},  //��ϵ�绰
-    websit:{type:String,default:''},  // ��ַ
-    maxprice:Number,  // ��߼۸�
-    minprice:Number   // ��ͼ۸�
+    passingrate:Number, // 通过率
+    hours:{type:String,default:""}, //营业时间
+    introduction :{type:String,default:""}, // 简介
+    createtime:{type:Date,default:Date.now()}, // 注册时间
+    registertime:{type:Date,default:Date.now()}, // 驾校成立时间
+    address: {type:String,default:''}, // 地址
+    responsible:{type:String,default:''}, // 负责人
+    phone:{type:String,default:''},  //联系电话
+    websit:{type:String,default:''},  // 网址
+    schoollevel:String, //驾校星级
+    carcount:Number, // 驾校车辆数
+    coachcount:Number,  // 驾校教练数
+    maxprice:Number,  // 最高价格
+    minprice:Number   // 最低价格
 
 });
 

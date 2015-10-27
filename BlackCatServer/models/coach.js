@@ -76,6 +76,12 @@ CoachSchema.statics.getNearCoach = function(latitude, longitude, radius, callbac
         .exec(callback);
 };
 
+CoachSchema.statics.getCoachList = function(callback) {
+    this.find()
+        .lean()
+        .exec(callback);
+};
+
 CoachSchema.index({mobile: 1});
 CoachSchema.index({loc: '2dsphere'});
 

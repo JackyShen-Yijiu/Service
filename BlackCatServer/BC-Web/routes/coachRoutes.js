@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mongodb = require('../models/mongodb');
+var mongodb = require('../../models/mongodb');
 
 var coach = mongodb.CoachModel;
 
