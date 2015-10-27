@@ -166,6 +166,9 @@ exports.getCoachClassType=function(req,res){
     });
 
 }
+exports.postCoachSetClass=function(req,res){
+
+}
 // 获取可以预约的教练
 exports.getUsefulCoachList=function(req,res){
     var  index=req.params.index?req.params.index:1;
