@@ -24,16 +24,16 @@ app.use(function(req, res, next) {
   next();
 });
 
-//ÒıÈëÒ»¸ödomainµÄÖĞ¼ä¼ş£¬½«Ã¿Ò»¸öÇëÇó¶¼°ü¹üÔÚÒ»¸ö¶ÀÁ¢µÄdomainÖĞ
-//domainÀ´´¦ÀíÒì³£
+//å¼•å…¥ä¸€ä¸ªdomainçš„ä¸­é—´ä»¶ï¼Œå°†æ¯ä¸€ä¸ªè¯·æ±‚éƒ½åŒ…è£¹åœ¨ä¸€ä¸ªç‹¬ç«‹çš„domainä¸­
+//domainæ¥å¤„ç†å¼‚å¸¸
 app.use(function (req,res, next) {
   var d = domain.create();
-  //¼àÌıdomainµÄ´íÎóÊÂ¼ş
+  //ç›‘å¬domainçš„é”™è¯¯äº‹ä»¶
   d.on('error', function (err) {
     //logger.error(err);
     console.log(err);
     res.statusCode = 500;
-    res.json(new BaseReturnInfo(0,"·şÎñÆ÷ÄÚ²¿´íÎó",""));
+    res.json(new BaseReturnInfo(0,"æœåŠ¡å™¨å†…éƒ¨é”™è¯¯",""));
     d.dispose();
   });
   d.add(req);

@@ -169,9 +169,9 @@ exports.getCoachClassType=function(req,res){
 exports.postCoachSetClass=function(req,res){
     var classinfo={
         coachid:req.body.coachid,
-        classtypelist:req.body.coachid
+        classtypelist:req.body.classtypelist
     }
-
+    //console.log(req.body)
     if (classinfo.coachid === undefined
         ||classinfo.classtypelist === undefined ) {
         return res.json(

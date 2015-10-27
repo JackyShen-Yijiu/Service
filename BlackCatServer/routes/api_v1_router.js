@@ -136,7 +136,7 @@ v1.get("/userinfo/coachstudentlist",ensureAuthorizedController.ensureAuthorized,
 // 获取我的选择班级的信息
 v1.get("/userinfo/getcoachclasstype",ensureAuthorizedController.ensureAuthorized,userController.getCoachClassType);
 // 教练设置班型
-v1.get("/userinfo/coachsetclass",ensureAuthorizedController.ensureAuthorized,userController.postCoachSetClass);
+v1.post("/userinfo/coachsetclass",ensureAuthorizedController.ensureAuthorized,userController.postCoachSetClass);
 // 教练请假接口
 v1.post("/courseinfo/putcoachleave",ensureAuthorizedController.ensureAuthorized,courseController.postCoachLeave);
 //教练获取预约列表

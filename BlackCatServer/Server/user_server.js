@@ -474,7 +474,7 @@ exports.getCoachStudentList=function(coachinfo,callback){
         })
 }
 exports.setCoachClassInfo=function(classinfo,callback){
-    coachmode.findById(new mongodb.ObjectId(classinfo.userid))
+    coachmode.findOne({_id:new mongodb.ObjectId(classinfo.coachid)})
         .select("serverclasslist driveschool ")
         .exec(function(err,data){
             if(err||!data){
@@ -488,32 +488,33 @@ exports.setCoachClassInfo=function(classinfo,callback){
                 process.nextTick(function(){
                     var is_shuttle=false;
                     classlist.forEach(function(r,index){
-                        var idx=data.serverclasslist.indexOf(new mongodb.ObjectId(r._id));
-                        if (idx == -1) {
-                            data.serverclasslist.splice(idx);
+                        var idx=data.serverclasslist.indexOf(r._id);
+                        if (idx != -1) {
+                            data.serverclasslist.splice(idx, 1);;
                         }
                         var idx2=postclasslist.indexOf(r._id);
                         if(idx2>0){
                             r.vipserverlist.forEach(function(server,index2){
                                 if (server.id==1){
                                     is_shuttle=true;
-                                    return;
+                                   // return;
                                 }
                             })
                         }
-
                     })
                     postclasslist.forEach(function(r,index){
+                        if(r.length>1){
                         var idx = data.serverclasslist.indexOf(new mongodb.ObjectId(r));
                         if (idx == -1) {
-                            data.serverclasslist.push(new mongodb.ObjectId(coachid));
-                        }
+                            data.serverclasslist.push(new mongodb.ObjectId(r));
+                        }}
                     })
                     var shuttlemsg="暂不提供接送服务";
                     if(is_shuttle){
                         shuttlemsg="根据报考班型提供接送服务";
                     };
-                    coachmode.update({_id:new mongodb.ObjectId(classinfo.userid)} ,
+
+                    coachmode.update({_id:new mongodb.ObjectId(classinfo.coachid)} ,
                         {$set: { serverclasslist: data.serverclasslist,"is_shuttle":is_shuttle,"shuttlemsg":shuttlemsg }},
                     function(err){
                         if(err){
@@ -544,14 +545,14 @@ exports.getCoachClassInfo=function(userid,callback){
 
                     classlist.forEach(function(r,index){
                         var ind=data.serverclasslist.indexOf(r._id);
-                        if (ind != -1) {
-                            data.serverclasslist.splice(idx, 1);
+                        if (ind<0){
+                        r.is_choose=false;}
+                        else
+                        {
+                            r.is_choose=true;
                         }
                     })
-                    var idx = user.favorcoach.indexOf(new mongodb.ObjectId(coachid));
-                    if (idx == -1) {
-                        user.favorcoach.push(new mongodb.ObjectId(coachid));
-                    }
+
                     return callback(null,classlist);
                 })
             })
