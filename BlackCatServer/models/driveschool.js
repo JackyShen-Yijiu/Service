@@ -13,33 +13,33 @@ var ImgInfo= new Schema({
     height:{type:String,default:""}
 
 });
-// ¼İĞ£ĞÅÏ¢
+// é©¾æ ¡ä¿¡æ¯
 var DriveSchoolSchema=new Schema({
-    name :{type:String,default:''},  //Ãû³Æ
-    latitude: {type:Number,default:0},  //×ø±ê¾­Î³¶È
+    name :{type:String,default:''},  //åç§°
+    latitude: {type:Number,default:0},  //åæ ‡ç»çº¬åº¦
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
-    pictures:[ImgInfo], //  ¼İĞ£µÄĞû´«Í¼Æ¬µØÖ·
-    logoimg:{     // ¼İĞ£log
+    pictures:[ImgInfo], //  é©¾æ ¡çš„å®£ä¼ å›¾ç‰‡åœ°å€
+    logoimg:{     // é©¾æ ¡log
         originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
         width:{type:String,default:""},
         height:{type:String,default:""}
     },
-    passingrate:Number, // Í¨¹ıÂÊ
-    hours:{type:String,default:""}, //ÓªÒµÊ±¼ä
-    introduction :{type:String,default:""}, // ¼ò½é
-    createtime:{type:Date,default:Date.now()}, // ×¢²áÊ±¼ä
-    registertime:{type:Date,default:Date.now()}, // ¼İĞ£³ÉÁ¢Ê±¼ä
-    address: {type:String,default:''}, // µØÖ·
-    responsible:{type:String,default:''}, // ¸ºÔğÈË
-    phone:{type:String,default:''},  //ÁªÏµµç»°
-    websit:{type:String,default:''},  // ÍøÖ·
-    schoollevel:String, //¼İĞ£ĞÇ¼¶
-    carcount:Number, // ¼İĞ£³µÁ¾Êı
-    coachcount:Number,  // ¼İĞ£½ÌÁ·Êı
-    maxprice:Number,  // ×î¸ß¼Û¸ñ
-    minprice:Number   // ×îµÍ¼Û¸ñ
+    passingrate:Number, // é€šè¿‡ç‡
+    hours:{type:String,default:""}, //è¥ä¸šæ—¶é—´
+    introduction :{type:String,default:""}, // ç®€ä»‹
+    createtime:{type:Date,default:Date.now()}, // æ³¨å†Œæ—¶é—´
+    registertime:{type:Date,default:Date.now()}, // é©¾æ ¡æˆç«‹æ—¶é—´
+    address: {type:String,default:''}, // åœ°å€
+    responsible:{type:String,default:''}, // è´Ÿè´£äºº
+    phone:{type:String,default:''},  //è”ç³»ç”µè¯
+    websit:{type:String,default:''},  // ç½‘å€
+    schoollevel:String, //é©¾æ ¡æ˜Ÿçº§
+    carcount:Number, // é©¾æ ¡è½¦è¾†æ•°
+    coachcount:Number,  // é©¾æ ¡æ•™ç»ƒæ•°
+    maxprice:Number,  // æœ€é«˜ä»·æ ¼
+    minprice:Number   // æœ€ä½ä»·æ ¼
 
 });
 

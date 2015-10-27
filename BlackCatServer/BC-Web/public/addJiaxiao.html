@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1 user-scalable=0"/>
+    <title>添加驾校</title>
+    <style>
+    .tabs {
+        margin-top: 10px;
+        font-size: 2vmin;
+        float:left;
+        width:100%;
+    }
+    .tabs ul 
+    {
+        list-style: none outside none;
+        margin: 0;
+        padding: 0;
+    }
+    .tabs ul li
+    {
+        float: left;
+        line-height: 24px;
+        margin: 0;
+        padding: 2px 20px 0 15px;
+    }
+    .tab-nav{
+         cursor:pointer;
+    }
+    .tab-nav-action{
+        background-color: #EDEDED;
+        cursor:pointer;
+    }
+    .tabs-body
+    {
+        border-bottom: 1px solid #B4C9C6;
+        border-left: 1px solid #B4C9C6;
+        border-right: 1px solid #B4C9C6;
+        float: left;
+        padding: 5px 0 0;
+        width: 100%;
+    }
+    .tabs-body div 
+    {
+        padding:10px;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="stylesheets/addJiaxiao.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/jquery-ui.css">
+    <script type="text/javascript" src="javascripts/lib/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="javascripts/lib/jquery-ui.js"></script>
+    <script type="text/javascript" src="javascripts/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascripts/addjiaxiao.js"></script>
+</head>
+<body>
+
+
+
+    <div class="tabs">
+    <ul id="tabs">
+        <li class="tab-nav-action">添加驾校</li>
+        <li class="tab-nav">添加教练</li>
+    </ul>
+    </div>
+    <div id="tabs-body" class="tabs-body">
+        <div style="display:block">
+        
+            <div id="div_04" class="div_04" style="min-width:20em;">
+                <div class="input_div">
+                    <span>驾校名称：</span>
+                    <input type="text" id="sch_name" class="text" value="" onblur="" style="width:25vmin;">
+                </div>
+                <div class="input_div">
+                    <span>地址：</span>
+                    <input type="text" id="sch_province" class="text" value="" onblur="" style="width:25vmin;">
+                    <input type="text" id="sch_city" class="text" value="" onblur="" style="width:25vmin;">
+                </div>
+                <div class="input_div">
+                    <span>电话：</span>
+                    <input type="text" id="sch_phone" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:35vmin;">
+                </div>            
+                <div class="input_div">
+                    <span>联系人：</span>
+                    <input type="text" id="sch_contact" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>工作时间：</span>
+                    <input type="text" id="sch_workingtime" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>网址：</span>
+                    <input type="text" id="sch_url" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>邮箱：</span>
+                    <input type="text" id="sch_email" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>简介：</span>
+                    <input type="text" id="sch_abs" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>班型：</span>
+                    <input type="text" id="sch_class" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>教练人数：</span>
+                    <input type="text" id="sch_countofcoach" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>车辆数：</span>
+                    <input type="text" id="sch_countofcoach" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>图片：</span>
+
+                    <input type="text" id="sch_contact" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                    <input type="file" style="display:none" id="uploadimage1" multiple="multiple" onchange="show(uploadimage1, thumbnail1)"></input>
+                    <a id="upload" class="button" style="width:20vmin;" onclick="chooseImg(uploadimage1)">
+                       选择图片
+                    </a>
+                    <div id="thumbnail1" style="display:inline;"></div>
+                </div>
+
+                <div style="width:30%;margin-left:40%;">
+                    <a class="button" onclick="resetSchool()" style="width:30%;">重填</a>
+                    <a class="button" onclick="AddSchool(sch_name, sch_address, sch_contact)" style="width:30%;margin-left:8%;">提交</a>
+                </div>
+
+            </div>
+
+        </div>
+        <div style="display:none">
+        <div style="display:block">
+            <div id="div_04" class="div_04" style="min-width:20em;">
+                <div class="input_div">
+                    <span>姓名：</span>
+                    <input type="text" id="coa_name" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <span id="name_error" style="font-size:1.6vmin;width:20vmin;text-align:left;margin-left:1vmin;display:none;">姓名不能为空！</span>
+                </div>
+                <div class="input_div">
+                    <span>地址：</span>
+                    <input type="text" id="coa_address" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:35vmin;">
+                </div>            
+                <div class="input_div">
+                    <span>电话：</span>
+                    <input type="text" id="coa_phone" class="text" value="" onblur="verifyPhone(coa_phone)" style="width:30vmin;">
+                    <span id="phone_error" style="font-size:1.6vmin;width:20vmin;text-align:left;margin-left:1vmin;display:none;">请输入正确格式！</span>
+                </div>            
+                <div class="input_div">
+                    <span>邮箱：</span>
+                    <input type="text" id="coa_email" class="text" value="" onblur="verifyEmail(coa_email)" style="width:30vmin;">
+                    <span id="email_error" style="font-size:1.6vmin;width:20vmin;text-align:left;margin-left:1vmin;display:none;">请输入正确格式！</span>
+                </div>
+                <div class="input_div">
+                    <span>初始密码：</span>
+                    <input type="password" id="coa_password" class="text" value="" onblur="verifyPassword(coa_password, coa_password_2)" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>重复输入密码：</span>
+                    <input type="password" id="coa_password_2" class="text" value="" onblur="verifyPassword(coa_password, coa_password_2)" style="width:30vmin;">
+                    <span id="password_error" style="font-size:1.6vmin;width:20vmin;text-align:left;margin-left:1vmin;display:none;">请重复输入相同的密码。</span>
+                </div>
+                <div class="input_div">
+                    <span>教龄：</span>
+                    <div style="display:inline;width:30vmin;">
+                        <select name="number" id="coa_seniority">
+                          <option>1</option>
+                          <option selected="selected">2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option>7</option>
+                          <option>8</option>
+                          <option>9</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                          <option>13</option>
+                          <option>14</option>
+                          <option>15</option>
+                          <option>16</option>
+                          <option>17</option>
+                          <option>18</option>
+                          <option>19</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_div">
+                    <span>驾照编号：</span>
+                    <input type="text" id="coa_drivelicensenumber" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>所属驾校：</span>
+                    <input type="text" id="coa_trainfield" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div style="width:30%;margin-left:40%;">
+                    <a class="button" onclick="resetCoach()" style="width:30%;">重填</a>
+                    <a class="button" onclick="AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa_seniority, coa_drivelicensenumber, coa_trainfield)" style="width:30%;margin-left:8%;">提交</a>
+                </div>
+
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+</body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tabs li").bind("click", function () {
+                var index = $(this).index();
+                var divs = $("#tabs-body > div");
+                $(this).parent().children("li").attr("class", "tab-nav");//将所有选项置为未选中
+                $(this).attr("class", "tab-nav-action"); //设置当前选中项为选中样式
+                divs.hide();//隐藏所有选中项内容
+                divs.eq(index).show(); //显示选中项对应内容
+            });
+     
+        });
+    </script>
+
+</html>

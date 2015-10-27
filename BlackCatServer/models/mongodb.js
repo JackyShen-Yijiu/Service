@@ -54,3 +54,5 @@ exports.CourseModel=require('./course');
 exports.ReservationModel=require('./reservation');
 exports.FeedBackModel=require("./feedback");
 exports.HeadLineNewsModel=require("./headlinenews");
+exports.UserInfoModel=require("./userinfo");
+exports.QuestionModel=require('./question');

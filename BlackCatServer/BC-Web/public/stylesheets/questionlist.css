@@ -1,0 +1,145 @@
+body{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+.left_arrow_div{
+  margin-left:-80px;
+}
+.right_arrow_div{
+  float: left;
+  width: 5%;
+}
+.questionDiv{
+  float: left;
+  text-align: left;
+  background-color: #EDEDED;
+  width: 100%;
+}
+.options ul{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  list-style-type: none;
+  margin-left: -40px;
+}
+.options li{
+  height: 50px;
+}
+.options li:hover
+{
+    background-color:#EDFFED;
+    cursor: pointer;
+}
+.options input{
+  vertical-align: middle;
+} 
+.options label{
+  vertical-align: middle;
+} 
+.actionDiv{
+  text-align: center;
+  padding: 5px;
+  width: 100%;
+
+  position:fixed;
+  bottom:0px;
+  background-color: #EDEDED;
+}
+.actionDiv button{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  font-size: 7vmin;
+  border-radius:2px;
+  padding-top:2px;
+  padding-bottom:2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #dd962d;
+
+  background-color: #EDEDED;
+  color:#FF7B16;
+
+  box-shadow: none !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.Answer_div_inline{
+  display: inline;
+}
+.Answer_div_inline img{
+  height: 30px;
+  vertical-align: middle;
+}
+.anImginline{
+  width: 30px;
+  vertical-align: middle;
+}
+
+.Answer_div{
+  width:120px; 
+  display:block; 
+  text-align:left; 
+  background:#CDE375;
+  margin: 5px;
+  font-size: 15px;
+}
+.Answer_div img{
+  height: 30px;
+  vertical-align: middle;
+}
+.Answer_div span{
+  vertical-align: middle;
+}
+#rightAnswer{
+  display: none;
+}
+#wrongAnswer{
+  display: none;
+}
+
+.why{
+  width: auto;
+  display: block;
+  text-align: left;
+  background:#CFDCE9;
+  margin: 5px;
+  padding: 2px;
+  min-height: 100px;
+  margin-bottom: 50px;
+}
+
+.statisticDiv{
+  border-top: dotted 1px ;
+  font-size: 2vmin;
+}
+.right_div{
+  width: 5%;
+  top:-50%;
+  float: left;
+}
+.left_div{
+  width: 5%;
+  float: left;
+}
+
+#nav_next a,#nav_prev a{
+  display:block;
+  float:left;
+
+  margin-top: 400px;
+  line-height: 50px;
+  height: 50px;
+  background:#bbd8e7;
+  text-decoration: none;
+  font-size:70px;
+  line-height:50px;
+  color:#567280;
+  width:100%;
+  padding-bottom:20px;
+  z-index:3;
+  text-align:center;
+  font-family: "Microsoft YaHei","Hiragino Sans GB W3",Tahoma,Arial;
+}
+
+#nav_next a:hover, #nav_prev a:hover{
+  background:#fff;
+  color:#000;
+}
