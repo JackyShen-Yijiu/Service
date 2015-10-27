@@ -473,6 +473,62 @@ exports.getCoachStudentList=function(coachinfo,callback){
             return callback(null,data);
         })
 }
+exports.setCoachClassInfo=function(classinfo,callback){
+    coachmode.findById(new mongodb.ObjectId(classinfo.userid))
+        .select("serverclasslist driveschool ")
+        .exec(function(err,data){
+            if(err||!data){
+                return callback("查询教练出错"+err);
+            }
+            postclasslist=classinfo.classtypelist.split(",");
+            classtypeModel.find({schoolid:data.driveschool,"is_using":true},function(err,classlist){
+                if(err){
+                    return callback("查询课程出错");
+                }
+                process.nextTick(function(){
+                    var is_shuttle=false;
+                    classlist.forEach(function(r,index){
+                        var idx=data.serverclasslist.indexOf(new mongodb.ObjectId(r._id));
+                        if (idx == -1) {
+                            data.serverclasslist.splice(idx);
+                        }
+                        var idx2=postclasslist.indexOf(r._id);
+                        if(idx2>0){
+                            r.vipserverlist.forEach(function(server,index2){
+                                if (server.id==1){
+                                    is_shuttle=true;
+                                    return;
+                                }
+                            })
+                        }
+
+                    })
+                    postclasslist.forEach(function(r,index){
+                        var idx = data.serverclasslist.indexOf(new mongodb.ObjectId(r));
+                        if (idx == -1) {
+                            data.serverclasslist.push(new mongodb.ObjectId(coachid));
+                        }
+                    })
+                    var shuttlemsg="暂不提供接送服务";
+                    if(is_shuttle){
+                        shuttlemsg="根据报考班型提供接送服务";
+                    };
+                    coachmode.update({_id:new mongodb.ObjectId(classinfo.userid)} ,
+                        {$set: { serverclasslist: data.serverclasslist,"is_shuttle":is_shuttle,"shuttlemsg":shuttlemsg }},
+                    function(err){
+                        if(err){
+                        return callback("保存用户课程错误："+err);
+                    }
+                    return callback(null,"success")}
+                    );
+
+
+
+                })
+            })
+        })
+}
+// 交流获取我课程班级信息
 exports.getCoachClassInfo=function(userid,callback){
     coachmode.findById(new mongodb.ObjectId(userid))
         .select("serverclasslist driveschool")
@@ -488,9 +544,14 @@ exports.getCoachClassInfo=function(userid,callback){
 
                     classlist.forEach(function(r,index){
                         var ind=data.serverclasslist.indexOf(r._id);
-                        r.is_choose=ind<0?false:true;
-
+                        if (ind != -1) {
+                            data.serverclasslist.splice(idx, 1);
+                        }
                     })
+                    var idx = user.favorcoach.indexOf(new mongodb.ObjectId(coachid));
+                    if (idx == -1) {
+                        user.favorcoach.push(new mongodb.ObjectId(coachid));
+                    }
                     return callback(null,classlist);
                 })
             })

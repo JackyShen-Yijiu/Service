@@ -167,6 +167,28 @@ exports.getCoachClassType=function(req,res){
 
 }
 exports.postCoachSetClass=function(req,res){
+    var classinfo={
+        coachid:req.body.coachid,
+        classtypelist:req.body.coachid
+    }
+
+    if (classinfo.coachid === undefined
+        ||classinfo.classtypelist === undefined ) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    if(classinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.setCoachClassInfo(classinfo,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
 
 }
 // 获取可以预约的教练
