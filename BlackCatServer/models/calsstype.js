@@ -17,7 +17,7 @@ var ClassTypeSchema=new Schema({
     cartype:String, //车品牌  富康、奔驰等
     applycount:Number,  // 该班级报名的数量
     classdesc:{type:String,default:""},  // 课程描述
-    vipserverlist:[{id:Number,name:String}], // 该课程提供的vip 服务列表
+    vipserverlist:[{id:Number,name:String}], // 该课程提供的vip 服务列表{接送、包过，1对1}
     price:Number // 价格
 });
 

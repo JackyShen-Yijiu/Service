@@ -990,6 +990,32 @@ exports.coachSetWorkTime=function(timeinfo,callback){
         })
     })
 }
+// 同步个性化设置
+exports.personalSetting=function(settingifo,callback){
+    if (settingifo.usertype==appTypeEmun.UserType.User){
+        usermodel.update({_id:new mongodb.ObjectId(settingifo.userid)},{ $set:
+        { "usersetting.reservationreminder": settingifo.reservationreminder==1?true:false,
+            "usersetting.newmessagereminder": settingifo.newmessagereminder==1?true:false,
+            "usersetting.classremind": settingifo.classremind==1?true:false }},function(err){
+            if(err){
+                return callback("保存个性化设置失败："+err);
+            }
+            return callback(null,"success");
+        })
+
+    }
+    else if(settingifo.usertype==appTypeEmun.UserType.Coach){
+        coachmode.update({_id:new mongodb.ObjectId(settingifo.userid)},{ $set:
+        { "usersetting.reservationreminder": settingifo.reservationreminder==1?true:false,
+            "usersetting.newmessagereminder": settingifo.newmessagereminder==1?true:false,
+            "usersetting.classremind": settingifo.classremind==1?true:false }},function(err){
+            if(err){
+                return callback("保存个性化设置失败："+err);
+            }
+            return callback(null,"success");
+        })
+    }
+}
 //更新教练信息
 exports.updateCoachServer=function(updateinfo,callback){
     coachmode.findById(new mongodb.ObjectId(updateinfo.coachid),function(err,coachdata){

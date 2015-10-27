@@ -92,6 +92,12 @@ var  UserSchema=new Schema({
             // 申请处理信息
             examinationhandelinfo:String  // 报考信息处理
         }
+    },
+    //个人设置
+    usersetting:{
+        reservationreminder:{ type: Boolean, default: false}, //新消息提醒
+        newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
+        classremind:{ type: Boolean, default: false}// 开课提醒
     }
 
 });

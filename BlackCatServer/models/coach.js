@@ -60,7 +60,13 @@ var  CoachSchema=new Schema({
     leaveendtime:Date,
     // 是否接送
     is_shuttle:{ type: Boolean, default: false},
-    shuttlemsg:String  //  接送信息（接送备信息）
+    shuttlemsg:String , //  接送信息（接送备信息）
+    //个人设置
+    usersetting:{
+        reservationreminder:{ type: Boolean, default: false}, //新消息提醒
+        newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
+        classremind:{ type: Boolean, default: false}// 开课提醒
+    }
 
 
 

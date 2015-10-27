@@ -325,6 +325,31 @@ exports.coachSetWorkTime=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// J教练学员同步个人设置
+exports.postPersonalSetting=function(req,res){
+    var settinginfo={
+        userid:req.body.userid,
+        usertype:req.body.usertype,
+        reservationreminder:req.body.reservationreminder?req.body.reservationreminder:0,
+        newmessagereminder:req.body.newmessagereminder?req.body.newmessagereminder:0,
+        classremind:req.body.classremind?req.body.classremind:0
+    }
+    if (settinginfo.usertype===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(settinginfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.personalSetting(settinginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
+}
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
     //console.log(req.body);
@@ -352,7 +377,7 @@ exports.updateCoachInfo=function(req,res){
     }
     if (updateuserinfo.coachid===undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数错误",""));
     };
     if(updateuserinfo.coachid!=req.userId){
         return res.json(
