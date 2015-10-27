@@ -30,4 +30,5 @@ exports.resBaseUserInfo=function(user){
     this.subjecttwo=user.subjecttwo;
     this.subjectthree=user.subjectthree;
     this.vipserverlist=user.vipserverlist;
+    this.usersetting=user.usersetting;
 };

@@ -36,4 +36,5 @@ exports.resBaseCoachInfo=function(user){
     this.worktimedesc=user.worktimedesc;
     this.workweek=user.workweek;
     this.worktimespace=user.worktimespace;
+    this.usersetting=user.usersetting;
 };

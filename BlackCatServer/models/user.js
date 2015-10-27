@@ -95,7 +95,7 @@ var  UserSchema=new Schema({
     },
     //个人设置
     usersetting:{
-        reservationreminder:{ type: Boolean, default: false}, //新消息提醒
+        reservationreminder:{ type: Boolean, default: false}, //预约提醒
         newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
         classremind:{ type: Boolean, default: false}// 开课提醒
     }
