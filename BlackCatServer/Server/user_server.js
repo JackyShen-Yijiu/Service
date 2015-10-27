@@ -1124,11 +1124,11 @@ var checkSmsCode=function(mobile,code,callback){
     smsVerifyCodeModel.findOne({mobile:mobile,smsCode:code, verified: false},function(err,instace){
         if(err)
         {
-            return callback("Error occured: "+ err);
+            return callback("查询出错: "+ err);
         }
         if (!instace)
         {
-            return callback("No such code/mobile was found");
+            return callback("没有查询到此手机号");
         }
         //console.log(instace);
         var  now=new Date();
@@ -1136,13 +1136,13 @@ var checkSmsCode=function(mobile,code,callback){
         console.log(instace.createdTime);
         console.log(now-instace.createdTime);*/
         if ((now-instace.createdTime)>timeout*1000){
-            return callback("Code timeout");
+            return callback("您已超时请重新发送");
         }
         instace.verified=true;
         instace.save(function(err,temp){
             if (err)
             {
-                return callback("Error occured:"+err);
+                return callback("服务器内部错误:"+err);
             }
             return callback(null);
         })
