@@ -579,14 +579,31 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
     var datetomorrow = datenow.addDays(1);
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
-        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc")
+        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc courseprocessdesc")
         .populate( "userid"," _id  name headportrait applyschoolinfo")
         .sort({"begintime":1})
         .exec(function(err,data){
             if(err){
                 return callback("查询数据出错："+err);
             }
-            return callback(null,data);
+            process.nextTick(function(){
+                var list=[]
+                data.forEach(function(r,index){
+                    var listone= {
+                        userid: r.userid,
+                        reservationstate: r.reservationstate,
+                        reservationcreatetime: r.reservationcreatetime, subject: r.subject,
+                        is_shuttle: r.is_shuttle,
+                        shuttleaddress: r.shuttleaddress,
+                        courseprocessdesc: r.courseprocessdesc,
+                        begintime :(r.begintime).toFormat("HH:00"),
+                        endtime :(r.endtime).toFormat("HH:00")
+                }
+                    list.push(listone);
+                })
+                return callback(null,list);
+            })
+
         })
 }
 // 处理教练的请假申请
