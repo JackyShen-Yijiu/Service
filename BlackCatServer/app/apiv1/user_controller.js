@@ -153,6 +153,10 @@ exports.getStudentList=function(req,res){
         }
     });
 }
+// 获取教练所选班型信息
+exports.getCoachClassType=function(req,res){
+  var userid=req.userId;
+}
 // 获取可以预约的教练
 exports.getUsefulCoachList=function(req,res){
     var  index=req.params.index?req.params.index:1;
@@ -388,7 +392,7 @@ exports.updatePassword=function(req,res){
   }
     if (pwdinfo.mobile===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
         return res.json(
-            new BaseReturnInfo(0,"parms is wrong",""));
+            new BaseReturnInfo(0,"参数错误",""));
     }
 
   userserver.updatePassword(pwdinfo,function(err,data){

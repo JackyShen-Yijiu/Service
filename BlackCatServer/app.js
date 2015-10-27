@@ -33,7 +33,7 @@ app.use(function (req,res, next) {
     //logger.error(err);
     console.log(err);
     res.statusCode = 500;
-    res.json(new BaseReturnInfo(0,"server wrong",""));
+    res.json(new BaseReturnInfo(0,"服务器内部错误",""));
     d.dispose();
   });
   d.add(req);
