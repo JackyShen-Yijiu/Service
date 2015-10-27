@@ -155,7 +155,16 @@ exports.getStudentList=function(req,res){
 }
 // 获取教练所选班型信息
 exports.getCoachClassType=function(req,res){
-  var userid=req.userId;
+    var userid=req.userId;
+    userserver.getCoachClassInfo(userid,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+
 }
 // 获取可以预约的教练
 exports.getUsefulCoachList=function(req,res){
@@ -222,7 +231,7 @@ exports.postapplySchool=function(req,res){
     };
     if(applyinfo.carmodel.modelsid===undefined){
         applyinfo.carmodel=JSON.parse(applyinfo.carmodel.toString());
-        console.log(applyinfo);
+       // console.log(applyinfo);
     }
 
     //console.log(" user apply body:"+req.body.carmodel.modelsid);
@@ -253,6 +262,10 @@ exports.updateUserInfo=function(req,res){
        gender:req.body.gender,
        signature:req.body.signature
    }
+
+    updateuserinfo.headportrait=JSON.parse(updateuserinfo.headportrait.toString());
+         console.log(updateuserinfo);
+
     if (updateuserinfo.userid===undefined) {
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));

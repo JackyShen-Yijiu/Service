@@ -25,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="105" selection-start-line="60" selection-start-column="105" selection-end-line="60" selection-end-column="105" />
+              <caret line="55" column="102" selection-start-line="55" selection-start-column="102" selection-end-line="55" selection-end-column="102" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -37,53 +37,17 @@
         <entry file="file://$PROJECT_DIR$/models/calsstype.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="course_server.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/course_server.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.4">
-              <caret line="180" column="78" selection-start-line="180" selection-start-column="78" selection-end-line="180" selection-end-column="78" />
-              <folding>
-                <element signature="e#0#40#0" expanded="false" />
-                <element signature="e#373#1404#0" expanded="false" />
-                <element signature="e#468#522#0" expanded="false" />
-                <element signature="e#1463#2591#0" expanded="false" />
-                <element signature="e#2662#3386#0" expanded="false" />
-                <element signature="e#8883#9297#0" expanded="false" />
-                <element signature="e#9363#9602#0" expanded="false" />
-                <element signature="e#12526#14541#0" expanded="false" />
-                <element signature="e#14608#15511#0" expanded="false" />
-                <element signature="e#16624#17659#0" expanded="false" />
-                <element signature="e#17745#18526#0" expanded="false" />
-                <element signature="e#18594#20587#0" expanded="false" />
-                <element signature="e#20625#20896#0" expanded="false" />
-                <element signature="e#20963#22098#0" expanded="false" />
-                <element signature="e#22891#24054#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="user_controller.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="user_controller.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/apiv1/user_controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="344" column="42" selection-start-line="344" selection-start-column="42" selection-end-line="344" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="emunapptype.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/custommodel/emunapptype.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.81056255">
+              <caret line="266" column="35" selection-start-line="266" selection-start-column="35" selection-end-line="266" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -92,40 +56,28 @@
       <file leaf-file-name="user_server.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/user_server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-41.9">
-              <caret line="1017" column="1" selection-start-line="1017" selection-start-column="1" selection-end-line="1017" selection-end-column="1" />
-              <folding>
-                <element signature="e#5893#10072#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/test.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
+            <state vertical-scroll-proportion="-22.133333">
+              <caret line="493" column="50" selection-start-line="493" selection-start-column="50" selection-end-line="493" selection-end-column="50" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="returncoachinfo.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/custommodel/returncoachinfo.js">
+      <file leaf-file-name="userinfomodel.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/custommodel/userinfomodel.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+              <caret line="8" column="20" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="returnuserinfo.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="returnuserinfo.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/custommodel/returnuserinfo.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7669346">
-              <caret line="32" column="38" selection-start-line="32" selection-start-column="38" selection-end-line="32" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -137,6 +89,41 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="74" column="60" selection-start-line="74" selection-start-column="60" selection-end-line="81" selection-end-column="63" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="coach.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/coach.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="69" column="19" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qiniuUnit.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Common/qiniuUnit.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="commondata.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Config/commondata.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="177" column="26" selection-start-line="176" selection-start-column="1" selection-end-line="177" selection-end-column="26" />
+              <folding>
+                <element signature="e#59#447#0" expanded="false" />
+                <element signature="e#466#680#0" expanded="false" />
+                <element signature="e#700#902#0" expanded="false" />
+                <element signature="e#1109#2950#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -183,7 +170,6 @@
         <option value="$PROJECT_DIR$/Common/location.js" />
         <option value="$PROJECT_DIR$/app/apiv1/school_controller.js" />
         <option value="$PROJECT_DIR$/Server/driveschool_server.js" />
-        <option value="$PROJECT_DIR$/Config/commondata.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/routes/api_v2_router.js" />
         <option value="$PROJECT_DIR$/app/apiv1/authenticate_controller.js" />
@@ -197,15 +183,16 @@
         <option value="$PROJECT_DIR$/Common/sendsmscode.js" />
         <option value="$PROJECT_DIR$/Server/course_server.js" />
         <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/routes/api_v1_router.js" />
-        <option value="$PROJECT_DIR$/models/coach.js" />
-        <option value="$PROJECT_DIR$/app/apiv1/user_controller.js" />
         <option value="$PROJECT_DIR$/models/test.js" />
-        <option value="$PROJECT_DIR$/Server/user_server.js" />
-        <option value="$PROJECT_DIR$/models/calsstype.js" />
         <option value="$PROJECT_DIR$/models/user.js" />
         <option value="$PROJECT_DIR$/custommodel/returncoachinfo.js" />
         <option value="$PROJECT_DIR$/custommodel/returnuserinfo.js" />
+        <option value="$PROJECT_DIR$/Config/commondata.js" />
+        <option value="$PROJECT_DIR$/models/coach.js" />
+        <option value="$PROJECT_DIR$/models/calsstype.js" />
+        <option value="$PROJECT_DIR$/Server/user_server.js" />
+        <option value="$PROJECT_DIR$/routes/api_v1_router.js" />
+        <option value="$PROJECT_DIR$/app/apiv1/user_controller.js" />
       </list>
     </option>
   </component>
@@ -481,7 +468,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
+    <frame x="-11" y="-11" width="1942" height="1042" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20885417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -595,7 +582,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Server/user_server.js</url>
-          <line>927</line>
+          <line>950</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -610,11 +597,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Server/user_server.js</url>
-          <line>959</line>
+          <line>982</line>
           <option name="timeStamp" value="67" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Config/commondata.js</url>
+          <line>58</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="68" />
+      <option name="time" value="69" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -682,13 +674,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Common/qiniuUnit.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Config/qiniuconfig.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -729,13 +714,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custommodel/userinfomodel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -863,18 +841,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Config/commondata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="80" column="26" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="26" />
-          <folding>
-            <element signature="e#59#447#0" expanded="false" />
-            <element signature="e#466#680#0" expanded="false" />
-            <element signature="e#700#809#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Common/sendsmscode.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -930,14 +896,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/coach.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="10" selection-start-line="63" selection-start-column="10" selection-end-line="63" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/course_server.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.4">
@@ -962,24 +920,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="105" selection-start-line="60" selection-start-column="105" selection-end-line="60" selection-end-column="105" />
-          <folding>
-            <element signature="e#0#42#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/apiv1/user_controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="344" column="42" selection-start-line="344" selection-start-column="42" selection-end-line="344" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/custommodel/emunapptype.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -996,20 +936,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/user_server.js">
+    <entry file="file://$PROJECT_DIR$/custommodel/returncoachinfo.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-41.9">
-          <caret line="1017" column="1" selection-start-line="1017" selection-start-column="1" selection-end-line="1017" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/qiniuUnit.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Config/commondata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="177" column="26" selection-start-line="176" selection-start-column="1" selection-end-line="177" selection-end-column="26" />
           <folding>
-            <element signature="e#5893#10072#0" expanded="false" />
+            <element signature="e#59#447#0" expanded="false" />
+            <element signature="e#466#680#0" expanded="false" />
+            <element signature="e#700#902#0" expanded="false" />
+            <element signature="e#1109#2950#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/calsstype.js">
+    <entry file="file://$PROJECT_DIR$/custommodel/userinfomodel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+          <caret line="8" column="20" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/coach.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="69" column="19" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custommodel/returnuserinfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -1022,18 +997,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/custommodel/returncoachinfo.js">
+    <entry file="file://$PROJECT_DIR$/models/calsstype.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/custommodel/returnuserinfo.js">
+    <entry file="file://$PROJECT_DIR$/Server/user_server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7669346">
-          <caret line="32" column="38" selection-start-line="32" selection-start-column="38" selection-end-line="32" selection-end-column="38" />
+        <state vertical-scroll-proportion="-22.133333">
+          <caret line="493" column="50" selection-start-line="493" selection-start-column="50" selection-end-line="493" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="102" selection-start-line="55" selection-start-column="102" selection-end-line="55" selection-end-column="102" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/apiv1/user_controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.81056255">
+          <caret line="266" column="35" selection-start-line="266" selection-start-column="35" selection-end-line="266" selection-end-column="35" />
           <folding />
         </state>
       </provider>

@@ -66,7 +66,11 @@ var  CoachSchema=new Schema({
         reservationreminder:{ type: Boolean, default: false}, //新消息提醒
         newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
         classremind:{ type: Boolean, default: false}// 开课提醒
-    }
+    },
+    serverclasslist:[{type: Schema.Types.ObjectId, ref: 'classtype'} ]
+    // 我所服务的班级列,
+
+
 
 
 

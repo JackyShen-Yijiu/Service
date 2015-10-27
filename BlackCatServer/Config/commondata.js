@@ -66,6 +66,14 @@ exports.vipserver=[
 },{
         id:3,
         name:"室内练车"
+    },
+    {
+        id:4,
+        name:"1对1练车"
+    },
+    {
+        id:5,
+        name:"包过"
     }
 ]
 

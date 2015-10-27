@@ -473,6 +473,29 @@ exports.getCoachStudentList=function(coachinfo,callback){
             return callback(null,data);
         })
 }
+exports.getCoachClassInfo=function(userid,callback){
+    coachmode.findById(new mongodb.ObjectId(userid))
+        .select("serverclasslist driveschool")
+        .exec(function(err,data){
+            if(err||!data){
+                return callback("查询教练出错"+err);
+            }
+            classtypeModel.find({schoolid:data.driveschool,"is_using":true},function(err,classlist){
+                if(err){
+                    return callback("查询课程出错");
+                }
+                process.nextTick(function(){
+
+                    classlist.forEach(function(r,index){
+                        var ind=data.serverclasslist.indexOf(r._id);
+                        r.is_choose=ind<0?false:true;
+
+                    })
+                    return callback(null,classlist);
+                })
+            })
+        })
+}
 exports.getUsefulCoachList=function(useid,index,callback){
     usermodel.findById(new mongodb.ObjectId(useid),function(err,user){
         if(err){
