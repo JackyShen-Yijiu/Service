@@ -97,6 +97,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.token=token;
                            returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                            returnmodel.userid =newinstace._id;
+                           returnmodel.idcardnumber=newinstace.idcardnumber;
                            return callback(null,returnmodel);
 
                        });
