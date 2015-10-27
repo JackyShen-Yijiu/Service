@@ -33,7 +33,9 @@ function register(req, res){
   coa.password = req.body.password;
   coa.Seniority = req.body.Seniority;
   coa.Seniority = req.body.Seniority;
+  coa.idcardnumber = req.body.idcardnumber;
   coa.drivinglicensenumber = req.body.drivinglicensenumber;
+  coa.coachnumber = req.body.coachnumber;
   coa.trainfield = "561724502ab613ec10384e0c";//req.body.trainfield;
   coa.Gender = req.body.Gender;
 

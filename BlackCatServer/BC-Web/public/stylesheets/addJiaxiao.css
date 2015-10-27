@@ -1,4 +1,4 @@
-body{padding:0;margin:0; overflow:hidden; font-size:62.5%;font-family:'microsoft yahei', Arial, Helvetica, sans-serif;}
+body{padding:0;margin:0;overflow-y: auto;overflow-x:hidden; font-size:62.5%;font-family:'microsoft yahei', Arial, Helvetica, sans-serif;}
 
 .div_04{width:100%;margin:0 auto; text-align: center;}
 

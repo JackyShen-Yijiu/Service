@@ -20,6 +20,7 @@ var DriveSchoolSchema=new Schema({
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
     pictures:[ImgInfo], //  驾校的宣传图片地址
+    pictures_path:[{type:String, default:''}],
     logoimg:{     // 驾校log
         originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
@@ -31,16 +32,22 @@ var DriveSchoolSchema=new Schema({
     introduction :{type:String,default:""}, // 简介
     createtime:{type:Date,default:Date.now()}, // 注册时间
     registertime:{type:Date,default:Date.now()}, // 驾校成立时间
+    provice: {type:String,default:''}, // 省
+    city: {type:String,default:''}, // 市
     address: {type:String,default:''}, // 地址
     responsible:{type:String,default:''}, // 负责人
     phone:{type:String,default:''},  //联系电话
-    websit:{type:String,default:''},  // 网址
+    website:{type:String,default:''},  // 网址
     schoollevel:String, //驾校星级
     carcount:Number, // 驾校车辆数
     coachcount:Number,  // 驾校教练数
+    studentcount:Number,  // 驾校学生数
     maxprice:Number,  // 最高价格
-    minprice:Number   // 最低价格
-
+    minprice:Number,  // 最低价格
+    email :{type:String,default:""}, // 电子邮箱
+    businesslicensenumber :{type:String,default:""}, // 营业执照
+    organizationcode :{type:String,default:""}, // 组织机构代码
+    hotindex:Number//关注度
 });
 
 /**
@@ -65,3 +72,4 @@ DriveSchoolSchema.statics.getNearDriverSchool = function(latitude, longitude, ra
 
 DriveSchoolSchema.index({loc: '2dsphere'});
 module.exports = mongoose.model('DriveSchool', DriveSchoolSchema);
+

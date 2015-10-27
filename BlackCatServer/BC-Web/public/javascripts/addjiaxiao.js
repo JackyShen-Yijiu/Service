@@ -4,20 +4,35 @@ $.ajaxSetup({
   crossDomain: true
 });
 
-//var apiHost = 'http://192.168.1.102:3600/';//"http://123.57.254.32:4000/";
-var apiHost = 'http://123.57.7.30:3600/';
-//var apiHost = 'http://192.168.1.102:3600/';
-//var apiHost = 'http://192.168.7.100:3600/';
 function AddSchool(sch_name, sch_address, sch_contact){
     
     if(sch_name.value == ''){
         //setNameErr(true);
     }else{
-        
+        var sch_workingtime  = sch_workingtime_from + "-" + sch_workingtime_from_end;
         var jiaxiao = {
             name: sch_name.value,
+            province: sch_province.value,
+            city: sch_city.value,
             address: sch_address.value,
-            contact: sch_contact.value,
+            phone: sch_phone.value,
+            responsible: sch_contact.value,
+            hours: sch_workingtime.value,
+            website: sch_website.value,
+            email: sch_email.value,
+            introduction: sch_abs.value,
+            //contact: sch_class.value,
+            coachcount: sch_countofcoach.value,
+            carcount: sch_countofcar.value,
+            schoollevel: sch_level.value,
+            studentcount: sch_countofstudent.value,
+            passingrate: sch_passrate.value,
+            hotindex: sch_hotindex.value,
+            //contact: sch_trainfield.value,
+            registertime: sch_createtime.value,
+            businesslicensenumber: sch_businesslicensenumber.value,
+            organizationcode: sch_organizationcode.value,
+            picPath: picPath
         };
         console.log(jiaxiao);
         $.post(apiHost + "driveSchool/register", 
@@ -53,7 +68,9 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             email: coa_email.value,
             password: coa_password.value,
             seniority: coa_seniority.value,
+            idcardnumber: coa_idcardnumber.value,
             drivelicensenumber: coa_drivelicensenumber.value,
+            coachnumber: coa_coachnumber.value,
             trainfield: coa_trainfield.value
         };
         console.log(coach);
@@ -183,4 +200,32 @@ $(function() {
         .selectmenu()
         .selectmenu( "menuWidget" )
         .addClass( "overflow" );
+    $("#sch_workingtime_from")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
+    $("#sch_workingtime_from_end")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
   });
+
+var picPath;
+function submitForm() {
+    console.log("submit event");
+    picPath = file_path.value;
+    var fd = new FormData(document.getElementById("fileinfo"));
+    fd.append("label", "WEBUPLOAD");
+    $.ajax({
+      url: "/driveSchool/upload",
+      type: "POST",
+      data: fd,
+      enctype: 'multipart/form-data',
+      processData: false,  // tell jQuery not to process the data
+      contentType: false   // tell jQuery not to set contentType
+    }).done(function( data ) {
+        console.log("PHP Output:");
+        console.log( data );
+    });
+    return false;
+}
