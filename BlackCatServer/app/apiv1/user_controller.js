@@ -69,7 +69,7 @@ exports.postSignUp=function(req,res){
     if (usertype===undefined||userinfo.mobile === undefined||
         userinfo.smscode === undefined||userinfo.password === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     }
 
     userserver.userSignup(usertype,userinfo,function(err,data){
@@ -220,7 +220,7 @@ exports.postenrollverification=function(req,res){
         applyinfo.telephone === undefined||applyinfo.userid === undefined
         ||applyinfo.schoolid === undefined||applyinfo.ticketnumber === undefined || applyinfo.studentid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     };
     if(applyinfo.userid!=req.userId){
         return res.json(
@@ -252,7 +252,7 @@ exports.postapplySchool=function(req,res){
         ||applyinfo.schoolid === undefined ||applyinfo.coachid === undefined
         ||applyinfo.carmodel === undefined ||applyinfo.classtypeid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     };
     if(applyinfo.carmodel.modelsid===undefined){
         applyinfo.carmodel=JSON.parse(applyinfo.carmodel.toString());
@@ -323,7 +323,7 @@ exports.coachApplyVerification=function(req,res){
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
         applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     };
     if(applyinfo.coachid!=req.userId){
         return res.json(

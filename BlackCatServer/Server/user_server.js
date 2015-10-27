@@ -75,11 +75,11 @@ exports.userlogin= function(usertype,userinfo,callback){
         usermodel.findOne({mobile: userinfo.mobile}, function (err, userinstace) {
           if (err)
           {
-           return callback ("error in find user:"+ err);
+           return callback ("查找用户出错:"+ err);
           } else
           {
               if(!userinstace){
-                  return callback("cannot find user ");
+                  return callback("用户不存在 ");
               }else {
                   if (userinstace.password == userinfo.password){
                        var token = jwt.sign({
@@ -103,7 +103,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                        });
                   }
                   else{
-                      return callback("password is wrong");
+                      return callback("用户名或者密码错误");
                   }
                       }
 
@@ -114,11 +114,11 @@ exports.userlogin= function(usertype,userinfo,callback){
         coachmode.findOne({mobile: userinfo.mobile}, function (err, userinstace) {
             if (err)
             {
-                return callback ("error in find coach user:"+ err);
+                return callback ("查找用户出错:"+ err);
             } else
             {
                 if(!userinstace){
-                    return callback("cannot find user ");
+                    return callback("用户不存在");
                 }else {
                     if (userinstace.password == userinfo.password){
                         var token = jwt.sign({
@@ -141,14 +141,14 @@ exports.userlogin= function(usertype,userinfo,callback){
                         });
                     }
                     else{
-                        return callback("password is wrong");
+                        return callback("用户名/密码错误");
                     }
                 }
 
             }
         });
     }else{
-        return callback("error in userrole");
+        return callback("登录失败");
     }
 };
 exports.userSignup=function(usertype,userinfo,callback){
@@ -161,10 +161,10 @@ exports.userSignup=function(usertype,userinfo,callback){
         if (usertype==userTypeEmun.User) {
             usermodel.findOne({mobile: userinfo.mobile}, function (err, userinstace) {
                 if (err) {
-                    return callback( "find user err:" + err);
+                    return callback( "查找用户出错:" + err);
                 }
                 if (userinstace) {
-                    return callback( "User already exists");
+                    return callback( "用户已存在请直接登录");
 
                 } else {
                     var newuser = new usermodel();
@@ -175,13 +175,13 @@ exports.userSignup=function(usertype,userinfo,callback){
                     newuser.loc.coordinates=[newuser.longitude,newuser.latitude];
                     getUserCount(function(err,usercoutinfo){
                         if (err){
-                            return callback( " error in get userid :"+err);
+                            return callback( " 获取用户ID出错 :"+err);
                         }
                         newuser.displayuserid=usercoutinfo.value.displayid;
                         newuser.invitationcode=usercoutinfo.value.invitationcode;
                         newuser.save(function (err, newinstace) {
                             if (err) {
-                                return callback("save user error");
+                                return callback("保存用户出错"+err);
                             }
                             var token = jwt.sign({
                                 userId: newinstace._id,
@@ -204,10 +204,10 @@ exports.userSignup=function(usertype,userinfo,callback){
 
             coachmode.findOne({mobile: userinfo.mobile}, function (err, coachuserinstace) {
                 if (err) {
-                    return callback( "find coach user err:" + err);
+                    return callback( "查找用户出错:" + err);
                 }
                 if (coachuserinstace) {
-                    return callback( "User already exists");
+                    return callback( "用户已存在");
 
                 } else {
                     var newuser = new coachmode();
@@ -218,13 +218,13 @@ exports.userSignup=function(usertype,userinfo,callback){
                     newuser.loc.coordinates=[newuser.longitude,newuser.latitude];
                     getUserCount(function(err,usercoutinfo){
                         if (err){
-                            return callback( " error in get coach userid :"+err);
+                            return callback( " 获取教练ID出错:"+err);
                         }
                         newuser.displaycoachid=usercoutinfo.value.displayid;
                         newuser.invitationcode=usercoutinfo.value.invitationcode;
                         newuser.save(function (err, newinstace) {
                             if (err) {
-                                return callback("save user error"+err);
+                                return callback("保存用户出错："+err);
                             }
                             var token = jwt.sign({
                                 userId: newinstace._id,
@@ -259,7 +259,7 @@ exports.updateMobile=function(mobileinfo,callback){
         if (mobileinfo.usertype==appTypeEmun.UserType.User) {
             usermodel.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
                 if (err) {
-                    return callback("error in find user:" + err);
+                    return callback("查找用户出错:" + err);
                 }
                 if (userinstace) {
                     return callback("改手机号已经存在，请更换手机号");
@@ -275,7 +275,7 @@ exports.updateMobile=function(mobileinfo,callback){
         {
             coachmode.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
                 if (err) {
-                    return callback("error in find user:" + err);
+                    return callback("查找用户出错:" + err);
                 }
                 if (userinstace) {
                     return callback("改手机号已经存在，请更换手机号");
@@ -337,9 +337,9 @@ exports.updatePassword=function(pwdinfo,callback){
 // 获取附近的教练
 exports.getNearCoach=function(latitude, longitude, radius,callback){
     coachmode.getNearCoach(latitude, longitude, radius ,function(err ,coachlist){
-        if (err || !coachlist || coachlist.length == 0) {
+        if (err ) {
             console.log(err);
-            callback("get coach list failed"+err);
+            callback("查找教练出错"+err);
 
         } else {
             process.nextTick(function() {
@@ -385,7 +385,7 @@ exports.getSchoolCoach=function(coachinfo,callback){
         .exec(function(err ,coachlist){
         if (err || !coachlist ) {
             console.log(err);
-            callback("get coach list failed"+err);
+            callback("查找教练出错"+err);
 
         }else if( coachlist.length == 0){
             callback(null,coachlist);
@@ -470,7 +470,32 @@ exports.getCoachStudentList=function(coachinfo,callback){
             if(err){
                 return callback("查询出错"+err);
             }
-            return callback(null,data);
+
+            process.nextTick(function(){
+                var userlist=[] ;
+                data.forEach(function(r,index){
+                    var subjectprocess;
+                    if (r.subject.subjectid==2){
+                        subjectprocess= r.subjecttwo;
+                    }
+                    else if(r.subject.subjectid==3)
+                    {
+                        subjectprocess= r.subjectthree;
+                    }
+                    var user={
+                        "_id": r._id,
+                        "mobile": r.mobile,
+                        "name": r.name,
+                        "headportrait": r.headportrait,
+                        "subject": r.subject,
+                        "subjectprocess": subjectprocess
+
+                    }
+                    userlist.push(user);
+                })
+                return callback(null,userlist);
+            })
+
         })
 }
 exports.setCoachClassInfo=function(classinfo,callback){

@@ -27,6 +27,14 @@ exports.GetCoachCourse=function(coachid,date ,callback){
         if(coachdata.worktime.length==0){
             return callback("该教练没有设置工作时间，无法获取训练信息");
         }
+        // 判断星期
+        var temptime=new Date(date);
+        var i=temptime.getDay()
+        if(i==0){i=7}
+        var index=coachdata.workweek.indexOf(i);
+        if(index=-1){
+            return callback("该教练今天不工作");
+        }
         coursemode.findCourse(coachid,date,function(err,coursedata){
          if(err){
              return callback("查询课程信息出错："+err);

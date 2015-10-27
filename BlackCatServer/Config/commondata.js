@@ -42,17 +42,20 @@ exports.subject=[
 exports.carmodels=[
     {modelsid:1,
         name:'小型汽车手动挡',
-        code:"C1"
+        code:"C1",
+        desc:"准驾车型：小型、微型客汽车以及轻型、微型载货汽车，轻、小、微型专项作业车。C1准驾C2车型."
     },
     {
         modelsid:2,
         name:'小型自动挡汽车',
-        code:"C2"
+        code:"C2",
+        desc:"小型、微型自动挡载客汽车以及轻型、微型自动挡载货汽车。"
     },
     {
         modelsid:3,
         name:"其他车型",
-        code:"O"
+        code:"O",
+        desc:"目前仅提供C1、C2驾照类型的在线预约服务。关于其他驾照类型的预约服务，请在客服人员跟进时特别咨询。"
     }
 ]
 

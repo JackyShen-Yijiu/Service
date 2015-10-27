@@ -11,9 +11,9 @@ var geolib = require('geolib');
 
 exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
     schoolModel.getNearDriverSchool(latitude, longitude, radius ,function(err ,driveschool){
-        if (err || !driveschool || driveschool.length == 0) {
+        if (err ) {
             console.log(err);
-            callback("get driveschool failed");
+            callback("查找驾校出错："+err);
 
         } else {
             process.nextTick(function(){
@@ -76,7 +76,7 @@ exports.getNeartrainingfield=function(latitude, longitude, radius ,callback){
     trainingfiledModel.getNearTrainingField(latitude, longitude, radius ,function(err ,trainingfield){
         if (err || !trainingfield || trainingfield.length == 0) {
             console.log(err);
-            callback("get trainingfield failed");
+            callback("查询训练场出错");
 
         } else {
             trainingfield.forEach(function(r, idx){
