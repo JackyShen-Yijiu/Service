@@ -265,11 +265,7 @@ exports.updateUserInfo=function(req,res){
        gender:req.body.gender,
        signature:req.body.signature
    }
-    console.log(updateuserinfo.toString());
-    //if(updateuserinfo.headportrait!=undefined){
-        updateuserinfo=JSON.parse(updateuserinfo);
-         console.log(updateuserinfo);
-    //}
+    console.log(updateuserinfo);
 
     if (updateuserinfo.userid===undefined) {
         return res.json(
