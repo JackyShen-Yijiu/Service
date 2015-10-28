@@ -25,7 +25,10 @@ var j = schedule.scheduleJob(rule, function(){
 
     console.log(new Date().toLocaleDateString()+": 开始更新预约状态");
     reservationmodel.update({reservationstate:appTypeEmun.ReservationState.applyconfirm,endtime:{ "$lt": new Date()}} ,
-        { $set: { reservationstate:appTypeEmun.ReservationState.unconfirmfinish }})
+        { $set: { reservationstate:appTypeEmun.ReservationState.unconfirmfinish }});
+// 自动修改
+    reservationmodel.update({reservationstate:appTypeEmun.ReservationState.applying,reservationcreatetime:{ "$gt": new Date().addMinute(-10)}} ,
+        { $set: { reservationstate:appTypeEmun.ReservationState.applyconfirm }})
     console.log(new Date().toLocaleDateString()+": 更新预约状态,完成");
 });
 } catch(e){
