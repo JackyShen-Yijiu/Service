@@ -56,6 +56,8 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
 
     console.log('add coach.');
     console.log('驾龄' + coa_seniority.value);
+    console.log('性别' + $('input:radio[name="Sex"]:checked').val());
+    var sch_workingtime  = sch_workingtime_from + "-" + sch_workingtime_from_end;
     
     if(coa_name.value == ''){
         //setNameErr(true);
@@ -63,6 +65,9 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
         
         var coach = {
             name: coa_name.value,
+            Gender: $('input:radio[name="Sex"]:checked').val(),
+            province: coa_province.value,
+            city: coa_city.value,
             address: coa_address.value,
             phone: coa_phone.value,
             email: coa_email.value,
@@ -208,10 +213,22 @@ $(function() {
         .selectmenu()
         .selectmenu( "menuWidget" )
         .addClass( "overflow" );
+    $("#coa_workingtime_from")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
+    $("#coa_workingtime_from_end")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
+    $("#coa_starlevel")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
   });
 
 var picPath;
-function submitForm() {
+function uploadSchoolImage() {
     console.log("submit event");
     picPath = file_path.value;
     var fd = new FormData(document.getElementById("fileinfo"));
@@ -232,4 +249,31 @@ function submitForm() {
         }
     });
     return false;
+}
+function uploadCoachImage() {
+    console.log("submit event");
+    console.log(coachImage_path.value);
+    picPath = coachImage_path.value;
+    var fd = new FormData(document.getElementById("coachImage"));
+    fd.append("label", "WEBUPLOAD");
+    $.ajax({
+      url: "/coach/upload",
+      type: "POST",
+      data: fd,
+      enctype: 'multipart/form-data',
+      processData: false,  // tell jQuery not to process the data
+      contentType: false   // tell jQuery not to set contentType
+    }).done(function( data ) {
+        console.log( data.code );
+        if(data.code > 0){
+            alert("上传成功！");
+        }else{
+            alert("上传失败！");
+        }
+    });
+    return false;
+}
+
+function getDriveSchools(){
+
 }

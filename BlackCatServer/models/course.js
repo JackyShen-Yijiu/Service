@@ -4,16 +4,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-//½ÌÁ·µÄ¿Î³ÌĞÅÏ¢
+//æ•™ç»ƒçš„è¯¾ç¨‹ä¿¡æ¯
 var CourseSchema=new Schema({
-    coachid:{type: Schema.Types.ObjectId, ref: 'coach'},  // ½ÌÁ·
-    coursedate:Date,  //  ¿Î³ÌÈÕÆÚ
+    coachid:{type: Schema.Types.ObjectId, ref: 'coach'},  // æ•™ç»ƒ
+    coursedate:Date,  //  è¯¾ç¨‹æ—¥æœŸ
     createtime:{type:Date,default:Date.now()},
-    coursetime:{timeid:Number,timespace:String,begintime:String,endtime:String},  // ¿Î³ÌÊ±¼ä
-    coursestudentcount:{type:Number,default:1},// ¿Î³Ì¿ÉÒÔÔ¤Ñ¡ÈËÊı
-    selectedstudentcount:{type:Number,default:0} , //ÒÑÑ¡¿Î³ÌÈËÊı
-    courseuser:[{type: Schema.Types.ObjectId, ref: 'User'}], // ÒÑÑ¡¿Î³ÌÈËÔ±
-    // Ñ¡Ôñ¸Ã¿Î³ÌµÄ¶©µ¥
+    coursetime:{timeid:Number,timespace:String,begintime:String,endtime:String},  // è¯¾ç¨‹æ—¶é—´
+    coursestudentcount:{type:Number,default:1},// è¯¾ç¨‹å¯ä»¥é¢„é€‰äººæ•°
+    selectedstudentcount:{type:Number,default:0} , //å·²é€‰è¯¾ç¨‹äººæ•°
+    courseuser:[{type: Schema.Types.ObjectId, ref: 'User'}], // å·²é€‰è¯¾ç¨‹äººå‘˜
+    // é€‰æ‹©è¯¥è¯¾ç¨‹çš„è®¢å•
     coursereservation:[{type: Schema.Types.ObjectId, ref: 'reservation'}]
 
 });
@@ -25,8 +25,6 @@ CourseSchema.statics.findCourse = function(coachid, _date, callback){
     this.find({ coachid:new mongoose.Types.ObjectId(coachid),
         coursedate: new Date(_date) }, function(err, result) {
       //  coursedate: { $gte: new Date(_date), $lte: new Date(_date) }}, function(err, result) {
-      //  new Date('2015-10-12')
-
         //console.log(result);
         //if(result != null) console.log('found: ' + _mobile);
        return  callback(err, result);

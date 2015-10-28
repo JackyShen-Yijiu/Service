@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongodb = require('../../models/mongodb');
-
+var formidable = require('formidable');
+var fs = require('fs');
 var coach = mongodb.CoachModel;
 
 /* GET home page. */
@@ -11,6 +12,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/coachlist', getCoachList);
 router.post('/register', register);
+router.post('/upload', uploadFile);
 
 function getCoachList(req, res) {
   console.log("get coach from mongo");
@@ -64,6 +66,51 @@ function register(req, res){
       }
 
     });
+}
+
+function uploadFile(req, res) {
+  try{
+    console.log('uploading file');
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+        console.log('err: ' + err);
+
+        var tmp_path = files.coachImagefile.path;
+        var target_path = 'data/upload/' + files.coachImagefile.name;
+        console.log("tmp_path： " + tmp_path);
+        console.log("target_path " + target_path);
+
+        fs.rename(tmp_path, target_path, function(err) {
+          console.log(err);
+          if (err) throw err;
+
+          console.log("store file in : " + target_path);
+
+          fs.unlink(tmp_path, function() {
+              if (err){
+                console.log(err);
+                res.contentType('json');
+                res.send(JSON.stringify({code:0 }));
+                res.end();
+              }
+              res.contentType('json');
+              res.send(JSON.stringify({code:1 }));
+              res.end();
+          });
+        });
+
+        //res.writeHead(200, {'content-type': 'text/plain'});
+        //res.write('received upload:\n\n');
+        //console.log(files.uploadedfile);
+
+        //res.end(util.inspect({fields: fields, files: files}));
+    });
+  }
+  catch(err){
+    console.log(err);
+  }
+ 
+    return;
 }
 
 module.exports = router;

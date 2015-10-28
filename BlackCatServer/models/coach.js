@@ -13,6 +13,8 @@ var  CoachSchema=new Schema({
     token:{type:String,default:''},  //登录token
     password:String,   // 密码
     logintime:{type:Date,default:Date.now()}, //最近一次登录时间
+    provice: {type:String,default:''}, // 省
+    city: {type:String,default:''}, // 市
     address: String,   // 地址
     introduction:String, // 简介
     Gender:String,  //  x性别
@@ -36,7 +38,7 @@ var  CoachSchema=new Schema({
     validationstate:{type:Number,default:0}, // 教练审核状态 0 未申请， 1 申请中 ，2 审核拒绝 3审核通过
     driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     driveschoolinfo:{name:String,id:String}, //申请学校信息
-    studentcoount:{type:Number,default:0}, //学生数量
+    studentcount:{type:Number,default:0}, //学生数量
     commentcount:{type:Number,default:0}, // 评论数量
     Seniority :String , // 教龄
     passrate :Number ,  // 通过率
