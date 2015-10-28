@@ -69,6 +69,38 @@ exports.getCodebyMolile=function(mobilenumber,callback){
         }
     );
 };
+exports.verifyUserExists=function(usertype,mobile,callback){
+    if (usertype==userTypeEmun.User) {
+        usermodel.findOne({mobile: mobile})
+            .select("_id")
+            .exec(function (err, userinstace) {
+            if (err)
+            {
+                return callback ("查找用户出错:"+ err);
+            }
+                if(!userinstace){
+                    return callback(null,0);
+                }else {
+                            return callback(null,1);
+                    }
+        });
+    }
+   else if(usertype==userTypeEmun.Coach){
+        coachmode.findOne({mobile: mobile})
+            .select("_id")
+            .exec(function (err, userinstace) {
+                if (err)
+                {
+                    return callback ("查找用户出错:"+ err);
+                }
+                if(!userinstace){
+                    return callback(null,0);
+                }else {
+                    return callback(null,1);
+                }
+            });
+    }
+}
 // 用户登录
 exports.userlogin= function(usertype,userinfo,callback){
     if (usertype==userTypeEmun.User) {
@@ -305,7 +337,7 @@ exports.updatePassword=function(pwdinfo,callback){
   }
      checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
          if (err) {
-             return callback("验证码出错：" + err);
+             return callback("验证码错误" );
 
          }
          userdata.password=pwdinfo.password;
@@ -324,7 +356,7 @@ exports.updatePassword=function(pwdinfo,callback){
             }
             checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
                 if (err) {
-                    return callback("验证码出错：" + err);
+                    return callback("验证码出错");
                 }
                 userdata.password=pwdinfo.password;
                 userdata.save(function(err,newdata){

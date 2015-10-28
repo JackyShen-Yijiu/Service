@@ -42,6 +42,8 @@ v1.get("/trainingcontent",appsystemController.getTrainingContent);
 //======================================用户信息======================================
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
+// 验证用户是否存在
+v1.get("/userinfo/userexists",userController.verifyUserExists);
 // 检验验证码 (用户登后修改验证码使用)
 //v1.post('/Verification/:mobile', userController.fetchCode);
 //用户注册

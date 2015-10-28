@@ -36,8 +36,21 @@ exports.fetchCode=function(req,res){
 
 };
 
-
-
+// 验证用户是否存在
+exports.verifyUserExists=function(req,res){
+    var usertype=req.query.usertype;
+    var mobile=req.query.mobile;
+    if (usertype===undefined||mobile === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    }
+    userserver.verifyUserExists(usertype,mobile,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.UserLogin=function(req,res){
     //console.log(req.body);
     var usertype=req.body.usertype;
@@ -47,7 +60,7 @@ exports.UserLogin=function(req,res){
     if (usertype===undefined||userinfo.mobile === undefined||
         userinfo.password === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"parms is wrong",""));
+            new BaseReturnInfo(0,"参数错误",""));
     }
     userserver.userlogin(usertype,userinfo,function(err,data){
         if(err){
