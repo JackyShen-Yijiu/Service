@@ -225,7 +225,7 @@ function submitForm() {
       contentType: false   // tell jQuery not to set contentType
     }).done(function( data ) {
         console.log( data );
-        if(data.code == 1){
+        if(data.code > 0){
             alert("上传成功！");
         }else{
             alert("上传失败！");
