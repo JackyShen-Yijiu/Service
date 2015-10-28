@@ -57,8 +57,8 @@ function register(req, res){
 
           console.log("register school successful");
           res.contentType('json');
-            res.send(JSON.stringify({ id: fluffy.idd, code:1 }));
-            res.end();
+          res.send(JSON.stringify({ id: fluffy.idd, code:1 }));
+          res.end();
         } else {
           console.log("register school failed: " + err);
           res.contentType('json');
@@ -93,9 +93,11 @@ function register(req, res){
           fs.unlink(tmp_path, function() {
               if (err){
                 console.log(err);
+                res.contentType('json');
                 res.send(JSON.stringify({code:0 }));
                 res.end();
               }
+              res.contentType('json');
               res.send(JSON.stringify({code:1 }));
               res.end();
           });
