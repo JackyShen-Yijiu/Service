@@ -90,11 +90,15 @@ function register(req, res){
 
           console.log("store file in : " + target_path);
 
-          /*fs.unlink(tmp_path, function() {
-              if (err) throw err;
+          fs.unlink(tmp_path, function() {
+              if (err){
+                console.log(err);
+                res.send(JSON.stringify({code:0 }));
+                res.end();
+              }
               res.send(JSON.stringify({code:1 }));
               res.end();
-          });*/
+          });
         });
 
         //res.writeHead(200, {'content-type': 'text/plain'});

@@ -224,8 +224,12 @@ function submitForm() {
       processData: false,  // tell jQuery not to process the data
       contentType: false   // tell jQuery not to set contentType
     }).done(function( data ) {
-        console.log("PHP Output:");
         console.log( data );
+        if(data.code == 1){
+            alert("上传成功！");
+        }else{
+            alert("上传失败！");
+        }
     });
     return false;
 }
