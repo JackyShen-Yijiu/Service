@@ -133,6 +133,8 @@ v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
 v1.get("/userinfo/coachstudentlist",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
+// 查看学员详情（预约学员详情页）
+v1.get("/userinfo/studentinfo",ensureAuthorizedController.ensureAuthorized,userController.getStudentInfo);
 // 获取我的选择班级的信息
 v1.get("/userinfo/getcoachclasstype",ensureAuthorizedController.ensureAuthorized,userController.getCoachClassType);
 // 教练设置班型

@@ -134,6 +134,24 @@ exports.postApplyExamination=function(req,res){
         }
     });
 }
+
+//  教练查看学生详情页
+exports.getStudentInfo=function(req,res){
+    var userid=req.query.userid;
+    if(userid===undefined){
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    }
+    userserver.getStudentInfo(userid,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+
+}
 // 获取教练的学生列表
 exports.getStudentList=function(req,res){
     var  coachinfo={

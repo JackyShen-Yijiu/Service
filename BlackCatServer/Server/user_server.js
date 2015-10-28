@@ -97,7 +97,8 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.token=token;
                            returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                            returnmodel.userid =newinstace._id;
-                           returnmodel.idcardnumber=newinstace.idcardnumber;
+                           returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
+                           returnmodel.usersetting=newinstace.usersetting;
                            return callback(null,returnmodel);
 
                        });
@@ -135,6 +136,8 @@ exports.userlogin= function(usertype,userinfo,callback){
                             var returnmodel=new resbasecoachinfomode(newinstace);
                             returnmodel.token=token;
                             //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
+                            returnmodel.usersetting=newinstace.usersetting;
+                            returnmodel.idcardnumber=
                             returnmodel.coachid =newinstace._id;
                             return callback(null,returnmodel);
 
@@ -459,6 +462,44 @@ exports.applyExamintion=function(userid,callback){
         })
     })
 }
+//教练端获取学生详情页
+exports.getStudentInfo=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("_id mobile name headportrait subject subjecttwo subjectthree address applyschoolinfo " +
+        " carmodel displayuserid")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询出错"+err);
+            }
+
+                    var subjectprocess="";
+                    if (data.subject.subjectid==2){
+                        subjectprocess= data.subjecttwo.progress;
+                    }
+                    else if(data.subject.subjectid==3)
+                    {
+                        subjectprocess=  data.subjecttwo.progress;
+                    }
+                    var user={
+                        "_id": data._id,
+                        "mobile": data.mobile,
+                        "displayuserid":data.displayuserid,
+                        "name": data.name,
+                        "headportrait": data.headportrait,
+                        "carmodel":data.carmodel,
+                        "subject": data.subject,
+                        "mobile":data.mobile,
+                        "address":data.address,
+                        "applyschoolinfo":data.applyschoolinfo,
+                        "subjectprocess": subjectprocess
+
+                    }
+
+                return callback(null,user);
+            })
+
+
+}
 //获取教练的学员列表
 exports.getCoachStudentList=function(coachinfo,callback){
     usermodel.find({"applycoach":new mongodb.ObjectId(coachinfo.coachid)})
@@ -474,13 +515,13 @@ exports.getCoachStudentList=function(coachinfo,callback){
             process.nextTick(function(){
                 var userlist=[] ;
                 data.forEach(function(r,index){
-                    var subjectprocess;
+                    var subjectprocess="";
                     if (r.subject.subjectid==2){
-                        subjectprocess= r.subjecttwo;
+                        subjectprocess= r.subjecttwo.progress;
                     }
                     else if(r.subject.subjectid==3)
                     {
-                        subjectprocess= r.subjectthree;
+                        subjectprocess=  r.subjecttwo.progress;
                     }
                     var user={
                         "_id": r._id,
@@ -558,6 +599,7 @@ exports.setCoachClassInfo=function(classinfo,callback){
 exports.getCoachClassInfo=function(userid,callback){
     coachmode.findById(new mongodb.ObjectId(userid))
         .select("serverclasslist driveschool")
+        .populate("driveschool","address")
         .exec(function(err,data){
             if(err||!data){
                 return callback("查询教练出错"+err);
@@ -567,18 +609,21 @@ exports.getCoachClassInfo=function(userid,callback){
                     return callback("查询课程出错");
                 }
                 process.nextTick(function(){
-
+                    var list=[];
                     classlist.forEach(function(r,index){
                         var ind=data.serverclasslist.indexOf(r._id);
-                        if (ind<0){
-                        r.is_choose=false;}
-                        else
-                        {
-                            r.is_choose=true;
+                        var listone={
+                            classname: r.classname,
+                            price: r.price,
+                            onsaleprice: r.price,
+                            address:  data.driveschool.address,
+                            vipserverlist: r.vipserverlist,
+                            is_choose:ind<0?false:true
                         }
+                        list.push(listone);
                     })
 
-                    return callback(null,classlist);
+                    return callback(null,list);
                 })
             })
         })
@@ -1290,5 +1335,10 @@ var checkSmsCode=function(mobile,code,callback){
 var mobileObfuscator = function(mobile){
     mobile = mobile.substr(0, 3) + "****" + mobile.substr(7, 4);
     return mobile;
+};
+
+var idCardNumberObfuscator = function(idCardNumber){
+    idCardNumber = idCardNumber.substr(0, 14) + "****" ;
+    return idCardNumber;
 };
 

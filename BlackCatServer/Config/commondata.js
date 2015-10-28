@@ -72,7 +72,7 @@ exports.vipserver=[
     },
     {
         id:4,
-        name:"1对1练车"
+        name:"1:1"
     },
     {
         id:5,

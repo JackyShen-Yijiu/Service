@@ -100,7 +100,21 @@ exports.getSchoolTrainingField=function(schoolid,callback){
         if(err||!data){
             return callback("查询出错："+err);
         }
-        return callback(null,data);
+        process.nextTick(function(){
+            var list=[];
+            data.forEach(function(r,index){
+                var listone={
+                    _id: r._id,
+                    fieldname: r.fieldname,
+                    latitude: r.latitude,
+                    longitude: r.longitude,
+                    address: r.address
+                }
+                list.push(listone);
+            })
+
+            return callback(null,list);
+        })
     })
 }
 //根据驾校id 获取驾校课程类型
