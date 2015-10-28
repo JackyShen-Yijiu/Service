@@ -8,6 +8,8 @@ var Schema = mongoose.Schema;
 var CourseSchema=new Schema({
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'},  // 教练
     coursedate:Date,  //  课程日期
+    coursebegintime:Date,
+    courseendtime:Date,
     createtime:{type:Date,default:Date.now()},
     coursetime:{timeid:Number,timespace:String,begintime:String,endtime:String},  // 课程时间
     coursestudentcount:{type:Number,default:1},// 课程可以预选人数

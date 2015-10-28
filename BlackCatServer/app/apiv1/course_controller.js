@@ -346,16 +346,16 @@ exports.postCoachLeave=function(req,res){
     var leaveinfo={
         coachid:req.body.coachid,
         begintime:req.body.begintime,
-        endtime:req.boy.endtime
+        endtime:req.body.endtime
     }
     if (leaveinfo.coachid===undefined|| leaveinfo.begintime===undefined|| leaveinfo.endtime===undefined ){
         return res.json(new BaseReturnInfo(0,"获取参数错误",""));
     }
-    if(queryinfo.coachid!=req.userId){
+    if(leaveinfo.coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    if(Date.now()>new Date(leaveinfo.begintime)|| new Date(leaveinfo.begintime)>new Date(leaveinfo.endtime)){
+    if(Date.now()>new Date(leaveinfo.begintime*1000)|| new Date(leaveinfo.begintime*1000)>new Date(leaveinfo.endtime*1000)){
         return res.json(new BaseReturnInfo(0,"请假时间错误"));
     }
     courseserver.saveCoachLeaveInfo(leaveinfo ,function(err,data){

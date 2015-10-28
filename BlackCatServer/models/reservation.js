@@ -14,6 +14,11 @@ var ReservationSchema=new Schema({
     reservationstate:{type:Number,default:0},
     //预约时间
     reservationcreatetime:{type:Date,default:Date.now()},
+    // 预约 开始第几个课时
+    startclassnum:Number,
+        // 预约到第几个课时
+    endclassnum:Number,
+        //
     //  完成时间
     finishtime:Date,
     begintime:Date,
