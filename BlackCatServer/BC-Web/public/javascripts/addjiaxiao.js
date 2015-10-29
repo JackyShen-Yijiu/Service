@@ -93,6 +93,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             drivelicensenumber: coa_drivelicensenumber.value,
             coachnumber: coa_coachnumber.value,
             driveschool: coa_driveschool.value,
+            driveschoolName: $("#coa_driveschool option:selected").text(),
             abs: coa_abs.value,
             studentcount: coa_studentcount.value,
             passrate: coa_passrate.value,

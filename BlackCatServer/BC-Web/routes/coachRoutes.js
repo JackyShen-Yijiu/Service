@@ -41,6 +41,7 @@ function register(req, res){
     coa.drivelicensenumber = req.body.drivelicensenumber;
     coa.coachnumber = req.body.coachnumber;
     coa.driveschool = req.body.driveschool;
+    coa.driveschoolinfo = {name:req.body.driveschoolName, id:req.body.driveschool};
     coa.introduction = req.body.abs;
     coa.studentcount = req.body.studentcount;
     coa.passrate = req.body.passrate;
