@@ -60,6 +60,12 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
     console.log('school: ' + coa_driveschool.value);
     console.log('train field:' + $("#coa_trainfield option:selected").text());
     var coa_workingtime  = coa_workingtime_from + "-" + coa_workingtime_from_end;
+
+    var serverclasslist = []; 
+    $('#coa_serverclasslist :selected').each(function(i, selected){
+      serverclasslist[i] = selected.value; 
+    });
+    console.log(serverclasslist);
     
     if(coa_name.value == ''){
         //setNameErr(true);
@@ -100,7 +106,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             trainfield: coa_trainfield.value,
             trainfieldName: $("#coa_trainfield option:selected").text(),
             platenumber: coa_platenumber.value,
-            serverclasslist: coa_serverclasslist.value
+            serverclasslist: serverclasslist
         };
         console.log(coach);
         $.post(apiHost + "coach/register", 

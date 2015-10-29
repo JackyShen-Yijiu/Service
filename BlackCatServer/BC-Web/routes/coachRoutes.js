@@ -54,7 +54,7 @@ function register(req, res){
     coa.trainfield = req.body.trainfield;
     coa.trainfieldlinfo = {name:req.body.trainfieldName,id:req.body.trainfield};
     coa.platenumber = req.body.platenumber;
-    //coa.serverclasslist = req.body.serverclasslist;
+    coa.serverclasslist = req.body.serverclasslist;
 
 
     coa.latitude= 40.096263;
