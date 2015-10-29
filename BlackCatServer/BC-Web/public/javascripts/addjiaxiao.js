@@ -116,7 +116,7 @@ function AddField(){
     }else{
         
         var field = {
-            name: field_fieldname.value,
+            fieldname: field_fieldname.value,
             driveschool: field_driveschool.value,
             province: coa_province.value,
             city: coa_city.value,
