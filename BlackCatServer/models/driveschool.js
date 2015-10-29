@@ -70,6 +70,12 @@ DriveSchoolSchema.statics.getNearDriverSchool = function(latitude, longitude, ra
         .exec(callback);
 };
 
+DriveSchoolSchema.statics.getDriverSchoolList = function(callback) {
+    this.find()
+        .lean()
+        .exec(callback);
+};
+
 DriveSchoolSchema.index({loc: '2dsphere'});
 module.exports = mongoose.model('DriveSchool', DriveSchoolSchema);
 

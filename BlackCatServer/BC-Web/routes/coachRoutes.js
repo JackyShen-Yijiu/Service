@@ -26,46 +26,63 @@ function register(req, res){
   console.log('registering coach.');
   console.log(req.body);
 
+  try{
+    var coa = new coach ();
+    coa.name = req.body.name;
+    coa.Gender = req.body.Gender;
+    coa.province = req.body.province;
+    coa.city = req.body.city;
+    coa.address = req.body.address;
+    coa.mobile = req.body.phone;
+    coa.email = req.body.email;
+    coa.password = req.body.password;
+    coa.Seniority = req.body.Seniority;
+    coa.idcardnumber = req.body.idcardnumber;
+    coa.drivelicensenumber = req.body.drivelicensenumber;
+    coa.coachnumber = req.body.coachnumber;
+    coa.driveschool = req.body.driveschool;
+    coa.introduction = req.body.abs;
+    coa.studentcount = req.body.studentcount;
+    coa.passrate = req.body.passrate;
+    coa.starlevel = req.body.starlevel;
+    coa.worktimedesc = req.body.workingtime;
+    coa.worktime = [{timeid:1, timespace:"8:00-9:00", begintime:"8:00", endtime:"9:00"}];
+    coa.workweek = [1,2,3,4,5];
+    coa.worktimespace = {begintimeint:8, endtimeint:17};
+    coa.carmodel = req.body.carmodel;
+    //coa.trainfield = req.body.trainfield;
+    coa.trainfieldlinfo = req.body.trainfieldlinfo;
+    coa.platenumber = req.body.platenumber;
+    //coa.serverclasslist = req.body.serverclasslist;
 
-  var coa = new coach ();
-  coa.name = req.body.name;
-  coa.address = req.body.address;
-  coa.mobile = req.body.contact;
-  coa.email = req.body.email;
-  coa.password = req.body.password;
-  coa.Seniority = req.body.Seniority;
-  coa.Seniority = req.body.Seniority;
-  coa.idcardnumber = req.body.idcardnumber;
-  coa.drivinglicensenumber = req.body.drivinglicensenumber;
-  coa.coachnumber = req.body.coachnumber;
-  coa.trainfield = "561724502ab613ec10384e0c";//req.body.trainfield;
-  coa.Gender = req.body.Gender;
+
+    coa.latitude= 40.096263;
+    coa.longitude=116.127921 ;
+    coa.loc.coordinates=[116.127921,40.096263];
 
 
-  coa.latitude= 40.096263;
-  coa.longitude=116.127921 ;
-  coa.loc.coordinates=[116.127921,40.096263];
+    console.log("new coach: " + coa);
 
+    coa.save(function (err, fluffy) {
+    
+      if (!err){
 
-  console.log("new coach: " + coa);
+          console.log("register coach successful");
+          res.contentType('json');
+            res.send(JSON.stringify({ id: fluffy.idd, code:1 }));
+            res.end();
+        } else {
+          console.log("register coach failed: " + err);
+          res.contentType('json');
+          res.status(401);
+            res.send(JSON.stringify({ status:"register coach failed" , code:0}));
+            res.end();
+        }
 
-  coa.save(function (err, fluffy) {
-  
-    if (!err){
-
-        console.log("register coach successful");
-        res.contentType('json');
-          res.send(JSON.stringify({ id: fluffy.idd, code:1 }));
-          res.end();
-      } else {
-        console.log("register coach failed: " + err);
-        res.contentType('json');
-        res.status(401);
-          res.send(JSON.stringify({ status:"register coach failed" , code:0}));
-          res.end();
-      }
-
-    });
+      });
+  }catch(err){
+    console.log(err);
+  }
 }
 
 function uploadFile(req, res) {

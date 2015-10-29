@@ -57,7 +57,8 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
     console.log('add coach.');
     console.log('驾龄' + coa_seniority.value);
     console.log('性别' + $('input:radio[name="Sex"]:checked').val());
-    var sch_workingtime  = sch_workingtime_from + "-" + sch_workingtime_from_end;
+    console.log('school: ' + coa_driveschool.value);
+    var coa_workingtime  = coa_workingtime_from + "-" + coa_workingtime_from_end;
     
     if(coa_name.value == ''){
         //setNameErr(true);
@@ -76,7 +77,17 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             idcardnumber: coa_idcardnumber.value,
             drivelicensenumber: coa_drivelicensenumber.value,
             coachnumber: coa_coachnumber.value,
-            trainfield: coa_trainfield.value
+            driveschool: coa_driveschool.value,
+            abs: coa_abs.value,
+            studentcount: coa_studentcount.value,
+            passrate: coa_passrate.value,
+            starlevel: coa_starlevel.value,
+            workingtime: coa_workingtime.value,
+            carmodel: coa_carmodel.value,
+            trainfield: coa_trainfield.value,
+            trainfieldlinfo: coa_trainfieldlinfo.value,
+            platenumber: coa_platenumber.value,
+            serverclasslist: coa_serverclasslist.value
         };
         console.log(coach);
         $.post(apiHost + "coach/register", 
@@ -87,6 +98,86 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
                 console.log(data);
                 if(data.code > 0){
                     alert("新增教练成功！");
+                }else if(data.code == -1){
+                    
+                }
+            }).fail(function(a, b, c) {
+                console.log('failed.');
+            });
+        }
+}
+
+function AddField(){
+    console.log('add field.');
+
+    
+    if(field_fieldname.value == ''){
+        //setNameErr(true);
+    }else{
+        
+        var field = {
+            name: field_fieldname.value,
+            driveschool: field_driveschool.value,
+            province: coa_province.value,
+            city: coa_city.value,
+            address: coa_address.value,
+            responsible: field_responsible.value,
+            phone: field_phone.value,
+            capacity: field_capacity.value,
+            fielddesc: field_fielddesc.value,
+            subject: field_subject.value
+        };
+        console.log(field);
+        $.post(apiHost + "trainingfield/register", 
+            JSON.stringify(field), 
+            //res,
+            function(data){
+                $("#code_error").hide();
+                console.log(data);
+                if(data.code > 0){
+                    alert("新增训练场成功！");
+                }else if(data.code == -1){
+                    
+                }
+            }).fail(function(a, b, c) {
+                console.log('failed.');
+            });
+        }
+}
+
+function AddClassType(){
+    console.log('add field.');
+
+    
+    if(ct_classname.value == ''){
+        //setNameErr(true);
+    }else{
+        
+        var ct = {
+            classname: ct_classname.value,
+            schoolid: ct_schoolid.value,
+            begindate: ct_begindate.value,
+            enddate: ct_enddate.value,
+            is_using: coa_address.value,
+            is_vip: field_responsible.value,
+            carmodel_name: ct_carmodel_name.value,
+            carmodel_code: ct_carmodel_code.value,
+            cartype: ct_cartype.value,
+            applycount: ct_applycount.value,
+            classdesc: ct_classdesc.value,
+            vipserverlist_name: ct_vipserverlist_name.value,
+            price: ct_price.value,
+            onsaleprice: ct_onsaleprice.value
+        };
+        console.log(ct);
+        $.post(apiHost + "classtype/register", 
+            JSON.stringify(ct), 
+            //res,
+            function(data){
+                $("#code_error").hide();
+                console.log(data);
+                if(data.code > 0){
+                    alert("新增课程成功！");
                 }else if(data.code == -1){
                     
                 }
@@ -225,12 +316,31 @@ $(function() {
         .selectmenu()
         .selectmenu( "menuWidget" )
         .addClass( "overflow" );
+    /*$("#coa_driveschool")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );*/
+
+    $("#coa_trainfield")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
+    $("#field_driveschool")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
+    $("#ct_schoolid")
+        .selectmenu()
+        .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
   });
 
 var picPath;
 function uploadSchoolImage() {
     console.log("submit event");
-    picPath = file_path.value;
+    //picPath = file_path.value;
+    picPath = file_path.value.substring(file_path.value.lastIndexOf("\\") + 1);
+    console.log(picPath);
     var fd = new FormData(document.getElementById("fileinfo"));
     fd.append("label", "WEBUPLOAD");
     $.ajax({
@@ -250,10 +360,13 @@ function uploadSchoolImage() {
     });
     return false;
 }
+var coach_Image;
 function uploadCoachImage() {
     console.log("submit event");
-    console.log(coachImage_path.value);
-    picPath = coachImage_path.value;
+    
+    //picPath = coachImage_path.value;
+    coach_Image = coachImage_path.value.substring(coachImage_path.value.lastIndexOf("\\") + 1);
+    console.log(coach_Image);
     var fd = new FormData(document.getElementById("coachImage"));
     fd.append("label", "WEBUPLOAD");
     $.ajax({
@@ -272,6 +385,104 @@ function uploadCoachImage() {
         }
     });
     return false;
+}
+var field_Image;
+function uploadFieldImage() {
+    console.log("submit event");
+    
+    //picPath = coachImage_path.value;
+    coach_Image = fieldImage_path.value.substring(fieldImage_path.value.lastIndexOf("\\") + 1);
+    console.log(coach_Image);
+    var fd = new FormData(document.getElementById("fieldImage"));
+    fd.append("label", "WEBUPLOAD");
+    $.ajax({
+      url: "/trainingfield/upload",
+      type: "POST",
+      data: fd,
+      enctype: 'multipart/form-data',
+      processData: false,  // tell jQuery not to process the data
+      contentType: false   // tell jQuery not to set contentType
+    }).done(function( data ) {
+        console.log( data.code );
+        if(data.code > 0){
+            alert("上传成功！");
+        }else{
+            alert("上传失败！");
+        }
+    });
+    return false;
+}
+
+function showAddCoach(){
+    console.log('show add coach');
+
+    $.get(apiHost + "driveSchool/driveSchoollist",
+        function(data){
+          //callback(data, "OK");
+          console.log(data);
+          for (s in data) {
+                console.log(s);
+                $('#coa_driveschool').append('<option value="' + data[s]._id + '">' + data[s].name + '</option>');
+            }
+            coa_driveschool_changed();
+        }).fail(function(xHr, status, message){
+        //callback(message, "Fail");
+            console.log(message);
+        });
+
+}
+
+function coa_driveschool_changed(){
+    console.log('change');
+    $.get(apiHost + "trainingfield/trainingFieldlist/"+coa_driveschool.value,
+        function(data){
+          //callback(data, "OK");
+          console.log(data);
+          for (s in data) {
+                console.log(s);
+                $('#coa_trainfield').append('<option value="' + data[s]._id + '">' + data[s].fieldname + '</option>');
+            }
+
+        }).fail(function(xHr, status, message){
+        //callback(message, "Fail");
+            console.log(message);
+        });
+}
+
+function showAddTrainField(){
+    console.log('show add coach');
+
+    $.get(apiHost + "driveSchool/driveSchoollist",
+        function(data){
+          //callback(data, "OK");
+          console.log(data);
+          for (s in data) {
+                console.log(s);
+                $('#field_driveschool').append('<option value="' + data[s]._id + '">' + data[s].name + '</option>');
+            }
+
+        }).fail(function(xHr, status, message){
+        //callback(message, "Fail");
+            console.log(message);
+        });
+}
+
+function showAddClassType(){
+    console.log('show add coach');
+
+    $.get(apiHost + "driveSchool/driveSchoollist",
+        function(data){
+          //callback(data, "OK");
+          console.log(data);
+          for (s in data) {
+                console.log(s);
+                $('#ct_schoolid').append('<option value="' + data[s]._id + '">' + data[s].name + '</option>');
+            }
+
+        }).fail(function(xHr, status, message){
+        //callback(message, "Fail");
+            console.log(message);
+        });
 }
 
 function getDriveSchools(){

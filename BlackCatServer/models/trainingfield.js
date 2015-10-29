@@ -23,6 +23,8 @@ var  TrainingFieldSchema=new Schema({
     latitude: {type:Number,default:0},
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
+    provice: {type:String,default:''}, // 省
+    city: {type:String,default:''}, // 市
     address: {type:String,default:''}, // 练车场地址
     responsible:{type:String,default:''}, // 负责人
     phone:{type:String,default:''} , //联系电话
@@ -53,6 +55,15 @@ TrainingFieldSchema.statics.getNearTrainingField = function(latitude, longitude,
         .lean()
         .exec(callback);
 };
+
+TrainingFieldSchema.statics.getTrainingFieldList = function(school_id, callback) {
+    this.find({driveschool:school_id})
+        .lean()
+        .exec(callback);
+    
+};
+
+
 
 TrainingFieldSchema.index({loc: '2dsphere'});
 module.exports = mongoose.model('trainingfield', TrainingFieldSchema);

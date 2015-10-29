@@ -12,6 +12,8 @@ var question = require('./routes/questionRoutes');
 var questionwronglist = require('./routes/questionwronglistRoutes');
 var questiontest = require('./routes/questiontestRoutes');
 var driveSchool = require('./routes/driveSchoolRoutes');
+var trainingfield = require('./routes/trainingfieldRoutes');
+var classtype = require('./routes/classtypeRoutes');
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use('/question', question);
 app.use('/questionwronglist', questionwronglist);
 app.use('/questiontest', questiontest);
 app.use('/driveSchool', driveSchool);
+app.use('/trainingfield', trainingfield);
+app.use('/classtype', classtype);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
