@@ -31,7 +31,7 @@ exports.GetCoachCourse=function(coachid,date ,callback){
         var temptime=new Date(date);
         var i=temptime.getDay();
         if(i==0){i=7}
-        console.log(coachdata.workweek);
+        //console.log(coachdata.workweek);
 
         var index=coachdata.workweek.indexOf(i);
         if(index==-1){
@@ -73,7 +73,7 @@ exports.GetCoachCourse=function(coachid,date ,callback){
                 else{
                     list=coursedata;
                 }
-                list.sort(coursebegintime);
+                //list.sort(coursebegintime);
                 return callback(null,list);
             }
 
