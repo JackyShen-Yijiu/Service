@@ -2,6 +2,12 @@
  * Created by v-lyf on 2015/8/16.
  */
 
+exports.LogType={
+    log:1,
+    err:2,
+    info:3,
+    warn:4
+}
 exports.ClientType = {
     AndroidUserClient:1,
     AndroidCoachClient: 2,

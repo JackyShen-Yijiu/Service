@@ -56,3 +56,4 @@ exports.FeedBackModel=require("./feedback");
 exports.HeadLineNewsModel=require("./headlinenews");
 exports.UserInfoModel=require("./userinfo");
 exports.QuestionModel=require('./question');
+exports.SystemLogModel=require("./apierrorlog");

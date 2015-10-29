@@ -728,6 +728,7 @@ exports.getCoachReservationList=function(queryinfo,callback){
                 var list=[]
                 data.forEach(function(r,index){
                     var listone= {
+                        _id: r._id,
                         userid: r.userid,
                         reservationstate: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
@@ -760,7 +761,7 @@ exports.getreservationapply=function(coachid,callback){
 exports.getCoachReservationinfo=function(reservationid,coachid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         coachid:new mongodb.ObjectId(coachid)})
-        .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress" +
+        .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
         "  courseprocessdesc classdatetimedesc trainfieldlinfo userid")
         .populate("userid","_id  name headportrait displayuserid")
         .exec(function(err,resdata){

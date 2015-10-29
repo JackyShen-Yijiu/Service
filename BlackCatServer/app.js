@@ -9,6 +9,8 @@ var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
 var domain = require('domain');
+var logType=require("./custommodel/emunapptype").LogType;
+var log=require("./Common/systemlog");
 
 var app = express();
 
@@ -32,6 +34,7 @@ app.use(function (req,res, next) {
   d.on('error', function (err) {
     //logger.error(err);
     console.log(err);
+    log.writeLog(req,err,logType.err);
     res.statusCode = 500;
     res.json(new BaseReturnInfo(0,"服务器内部错误",""));
     d.dispose();
@@ -61,18 +64,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(function(req, res, next) {
-  var _ver=req.query._ver;
-  //console.log("url"+req.url);
-  if(_ver===undefined||_ver==1){
-    //console.log("apiRouterV1");
-
-
-  }else if(_ver==2)
-  {
-   // req.url=req.url.replace("v1","v2");
-    //console.log("url"+req.url);
-
-  }
+  log.writeLog(req,"",logType.log);
   next();
 });
 app.use('/api/v1', apiRouterV1);
