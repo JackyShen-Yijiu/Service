@@ -9,9 +9,9 @@ var logModel=mongodb.SystemLogModel;
 exports.writeLog=function(req ,errmsg,logType){
     var loginfo=new logModel;
      loginfo.apiname=req.url;
-     loginfo.ver=req.query.ver;
-    loginfo.os=req.query.os;
-    loginfo.msid=req.query.msid;
+     loginfo.ver=req.query._ver;
+    loginfo.os=req.query._os;
+    loginfo.msid=req.query._mid;
      loginfo.ip= getClientIp(req);
     //loginfo.queryparameter=req.query.toString();
     //loginfo.pathparameter=req.params.toString();
@@ -19,7 +19,7 @@ exports.writeLog=function(req ,errmsg,logType){
     loginfo.errmsg=errmsg;
     loginfo.logtype=logType;
     loginfo.save(function(err){
-        console.log(err)
+      //  console.log(err)
     });
 }
 

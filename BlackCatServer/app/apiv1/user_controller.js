@@ -235,6 +235,24 @@ exports.getUsefulCoachList=function(req,res){
         }
     });
 }
+// 用户获取我的报名状态
+exports.getMyApplyState=function(req,res){
+    var userid =req.query.userid;
+    if(userid===undefined){
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    }
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getMyApplyState(userid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 // 用户报考验证
 exports.postenrollverification=function(req,res){
     var applyinfo= {

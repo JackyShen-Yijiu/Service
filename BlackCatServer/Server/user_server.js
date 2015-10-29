@@ -935,6 +935,17 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
 
     });
 }
+// 获取用户的报名状态
+  exports.getMyApplyState=function(userid,callback){
+      usermodel.findById(new mongodb.ObjectId(userid))
+          .select("applystate applyinfo")
+          .exec(function(err,userdata){
+              if(err){
+                  return  callback("查询错误："+err);
+              }
+              return callback(null,userdata);
+          })
+  }
 // 报名验证
 exports.enrollverification=function(applyinfo,callback){
     usermodel.findById(new mongodb.ObjectId(applyinfo.userid),function(err,userdata){

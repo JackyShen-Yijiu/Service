@@ -54,6 +54,8 @@ v1.post('/userinfo/userlogin', userController.UserLogin);
 v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,userController.postapplySchool);
 // 用户报名验证（对于已经报名的用户）
 v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthorized,userController.postenrollverification);
+// 获取我的报名状态
+v1.get('/userinfo/getmyapplystate',ensureAuthorizedController.ensureAuthorized,userController.getMyApplyState)
 // 用户更新信息
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
@@ -114,6 +116,7 @@ v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 v1.post("/courseinfo/userreservationcourse",ensureAuthorizedController.ensureAuthorized,courseController.postReservation);
 // 获取我的订单 用户
 v1.get("/courseinfo/getmyreservation",ensureAuthorizedController.ensureAuthorized,courseController.getuserresveration);
+v1.get("/courseinfo/userreservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,courseController.userGetReservationInfo)
 //获取课程的详信息
 v1.get("/courseinfo/getcourse/:courseid",ensureAuthorizedController.ensureAuthorized,courseController.getCourseDeatil);
 //用户取消预约
