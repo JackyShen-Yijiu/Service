@@ -49,9 +49,10 @@ function register(req, res){
     coa.worktime = [{timeid:1, timespace:"8:00-9:00", begintime:"8:00", endtime:"9:00"}];
     coa.workweek = [1,2,3,4,5];
     coa.worktimespace = {begintimeint:8, endtimeint:17};
+    coa.subject = req.body.subject;
     coa.carmodel = req.body.carmodel;
     coa.trainfield = req.body.trainfield;
-    coa.trainfieldlinfo = req.body.trainfieldlinfo;
+    coa.trainfieldlinfo = {name:req.body.trainfieldName,id:req.body.trainfield};
     coa.platenumber = req.body.platenumber;
     //coa.serverclasslist = req.body.serverclasslist;
 

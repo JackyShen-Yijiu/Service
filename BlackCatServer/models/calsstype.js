@@ -23,6 +23,14 @@ var ClassTypeSchema=new Schema({
     is_choose:Boolean //备用字段（）无实际意义 （用了记录教练对课程的状态）
 });
 
+ClassTypeSchema.statics.getClassTypeList = function(school_id, callback) {
+    console.log('school_id: ' + school_id);
+    this.find({schoolid: school_id})
+        .lean()
+        .exec(callback);
+    
+};
+
 ClassTypeSchema.index({schoolid: 1});
 ClassTypeSchema.index({is_using:1});
 module.exports = mongoose.model('classtype', ClassTypeSchema);

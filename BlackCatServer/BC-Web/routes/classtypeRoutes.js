@@ -11,6 +11,20 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', register);
+router.get('/classTypelist/:id', getClassTypeList);
+
+function getClassTypeList(req, res) {
+  console.log("get coach from mongo");
+  try{
+    classType.getClassTypeList(req.params.id, function(err, coaches){
+      console.log(err);
+      res.json(coaches);
+    });
+  }catch(err)
+  {
+    console.log(err);
+  }
+}
 
 function register(req, res){
   try

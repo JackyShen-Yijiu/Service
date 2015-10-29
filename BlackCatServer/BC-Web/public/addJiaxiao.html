@@ -209,12 +209,24 @@
                     <span id="name_error" style="font-size:1.6vmin;width:20vmin;text-align:left;margin-left:1vmin;display:none;">姓名不能为空！</span>
                 </div>
                 <div class="input_div">
+                    <span>验证状态：</span>
+                    
+                    <input type="radio" name="coa_validationstate" value="3" checked="checked" style="width:8vmin;text-align:left;">
+                    通过
+                    <input type="radio" name="coa_validationstate" value="2" style="width:8vmin">
+                    拒绝 
+                    <input type="radio" name="coa_validationstate" value="1" style="width:8vmin">
+                    申请中 
+                    <input type="radio" name="coa_validationstate" value="0" style="width:8vmin">
+                    未申请 
+                </div> 
+                <div class="input_div">
                     <span>性别：</span>
                     
                     <input type="radio" name="Sex" value="Male" checked="checked" style="width:8vmin;text-align:left;">
-                    男：
+                    男
                     <input type="radio" name="Sex" value="Female" style="width:8vmin">
-                    女: 
+                    女 
                 </div>  
                 <div class="input_div">
                     <span>地址：</span>
@@ -347,7 +359,20 @@
                 </div>
                 <div class="input_div">
                     <span>车型：</span>
-                    <input type="text" id="coa_carmodel" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                        <select name="number" id="coa_carmodel">
+                          <option value="C1">小型汽车手动挡</option>
+                          <option value="C2">小型自动挡汽车</option>
+                        </select>
+                    <!--名称<input type="text" id="coa_carmodel_name" class="text" value="" onblur="" onblur="" style="width:25vmin;">
+                    编号<input type="text" id="coa_carmodel_code" class="text" value="" onblur="" onblur="" style="width:25vmin;">-->
+                </div>
+                <div class="input_div">
+                    <span>授课：</span>
+                        <select name="number" id="coa_subject">
+
+                        </select>
+                    <!--名称<input type="text" id="coa_carmodel_name" class="text" value="" onblur="" onblur="" style="width:25vmin;">
+                    编号<input type="text" id="coa_carmodel_code" class="text" value="" onblur="" onblur="" style="width:25vmin;">-->
                 </div>
                 <div class="input_div">
                     <span>训练场：</span>
@@ -355,19 +380,22 @@
                         <select name="number" id="coa_trainfield" style="width:40vmin;">
                         </select>
                     </div>
-                    <!--<input type="text" id="coa_trainfield" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">-->
                 </div>
-                <div class="input_div">
+                <!--<div class="input_div">
                     <span>训练场信息：</span>
                     <textarea style="overflow:auto;width:40vmin;height:10vmin;"  id="coa_trainfieldlinfo" class="text" ></textarea>
-                </div>
+                </div>-->
                 <div class="input_div">
                     <span>车牌号：</span>
                     <input type="text" id="coa_platenumber" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
                 </div>
                 <div class="input_div">
                     <span>服务的班级：</span>
-                    <input type="text" id="coa_serverclasslist" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                    <div style="display:inline;width:40vmin;">
+                        <select name="number" id="coa_serverclasslist" style="width:40vmin;">
+                        </select>
+                    </div>
+                    <!--<input type="text" id="coa_serverclasslist" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">-->
                 </div>
                 <div class="input_div">
                     <span>图片：</span>
@@ -412,15 +440,15 @@
                 </div> 
                 <div class="input_div">
                     <span>负责人：</span>
-                    <input type="text" id="field_responsible" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="field_responsible" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>联系电话：</span>
-                    <input type="text" id="field_phone" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="field_phone" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>容纳多少量车：</span>
-                    <input type="text" id="field_capacity" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="field_capacity" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>训练场描述：</span>
@@ -448,7 +476,7 @@
             <div id="div_04" class="div_04" style="min-width:20em;">
                 <div class="input_div">
                     <span>班级姓名：</span>
-                    <input type="text" id="ct_classname" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="ct_classname" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>所属驾校：</span>
@@ -469,30 +497,30 @@
                     <span>是否正在使用：</span>
                     
                     <input type="radio" name="isUse" value="1" checked="checked" style="width:8vmin;text-align:left;">
-                    是：
+                    是
                     <input type="radio" name="isUse" value="0" style="width:8vmin">
-                    否: 
+                    否
                 </div> 
                 <div class="input_div">
                     <span>是否VIP课程：</span>
                     
                     <input type="radio" name="isVIP" value="1" checked="checked" style="width:8vmin;text-align:left;">
-                    是：
+                    是
                     <input type="radio" name="isVIP" value="0" style="width:8vmin">
-                    否: 
+                    否
                 </div> 
                 <div class="input_div">
                     <span>车型：</span>
-                    名称<input type="text" id="ct_carmodel_name" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
-                    编号<input type="text" id="ct_carmodel_code" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    名称<input type="text" id="ct_carmodel_name" class="text" value="" onblur="" onblur="" style="width:25vmin;">
+                    编号<input type="text" id="ct_carmodel_code" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>车品牌：</span>
-                    <input type="text" id="ct_cartype" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="ct_cartype" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>报名的数量：</span>
-                    <input type="text" id="ct_applycount" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="ct_applycount" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>课程描述：</span>
@@ -500,15 +528,15 @@
                 </div>
                 <div class="input_div">
                     <span>VIP服务列表：</span>
-                    <input type="text" id="ct_vipserverlist_name" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="ct_vipserverlist_name" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>价格：</span>
-                    <input type="text" id="ct_price" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="ct_price" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 <div class="input_div">
                     <span>优化价格：</span>
-                    <input type="text" id="ct_onsaleprice" class="text" value="" onblur="verifyName(coa_name)" onblur="" style="width:25vmin;">
+                    <input type="text" id="ct_onsaleprice" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                 </div>
                 
                 <div style="width:30%;margin-left:40%;">

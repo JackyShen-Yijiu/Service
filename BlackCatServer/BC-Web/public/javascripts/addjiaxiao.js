@@ -58,6 +58,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
     console.log('驾龄' + coa_seniority.value);
     console.log('性别' + $('input:radio[name="Sex"]:checked').val());
     console.log('school: ' + coa_driveschool.value);
+    console.log('train field:' + $("#coa_trainfield option:selected").text());
     var coa_workingtime  = coa_workingtime_from + "-" + coa_workingtime_from_end;
     
     if(coa_name.value == ''){
@@ -66,6 +67,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
         
         var coach = {
             name: coa_name.value,
+            validationstate: $('input:radio[name="coa_validationstate"]:checked').val(),
             Gender: $('input:radio[name="Sex"]:checked').val(),
             province: coa_province.value,
             city: coa_city.value,
@@ -83,9 +85,12 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             passrate: coa_passrate.value,
             starlevel: coa_starlevel.value,
             workingtime: coa_workingtime.value,
-            carmodel: coa_carmodel.value,
+            subject: [{subjectid:coa_subject.value, name:$("#coa_subject option:selected").text()}],
+            carmodel: {modelsid:$("#coa_carmodel option:selected").index() + 1,name:$("#coa_carmodel option:selected").text(),code:coa_carmodel.value},
+            //carmodel_name: coa_carmodel_name.value,
+            //carmodel_code: coa_carmodel_code.value,
             trainfield: coa_trainfield.value,
-            trainfieldlinfo: coa_trainfieldlinfo.value,
+            trainfieldName: $("#coa_trainfield option:selected").text(),
             platenumber: coa_platenumber.value,
             serverclasslist: coa_serverclasslist.value
         };
@@ -200,14 +205,14 @@ function resetCoach(){
 }
 
 function verifyName(name){
-    if(name.value == ''){ 
+    /*if(name.value == ''){ 
         setErr($("#name_error"), true)
-        phone.focus();
+        coa_phone.focus();
         return false;
     }else{
         setErr($("#name_error"), false)
         return true;
-    }
+    }*/
 }
 
 function verifyPhone(phone){
@@ -416,6 +421,50 @@ function uploadFieldImage() {
 function showAddCoach(){
     console.log('show add coach');
 
+    var subjects=[
+    {
+        subjectid:0,
+        name:'准备报考'
+
+    },
+    {
+        subjectid:1,
+        name:'科目一'
+
+    },
+    {
+        subjectid:2,
+        name:'科目二'
+
+    },
+    {
+        subjectid:3,
+        name:'科目三'
+
+    }
+    ,
+    {
+        subjectid:4,
+        name:'科目四'
+
+    },
+    {
+        subjectid:5,
+        name:'新手上路'
+    },
+    {
+        subjectid:6,
+        name:'我是老鸟'
+
+    }
+
+    ];
+
+    for (s in subjects) {
+        console.log(s);
+        $('#coa_subject').append('<option value="' + subjects[s].subjectid + '">' + subjects[s].name + '</option>');
+    }
+
     $.get(apiHost + "driveSchool/driveSchoollist",
         function(data){
           //callback(data, "OK");
@@ -442,6 +491,20 @@ function coa_driveschool_changed(){
           for (s in data) {
                 console.log(s);
                 $('#coa_trainfield').append('<option value="' + data[s]._id + '">' + data[s].fieldname + '</option>');
+            }
+
+        }).fail(function(xHr, status, message){
+        //callback(message, "Fail");
+            console.log(message);
+        });
+    $.get(apiHost + "classtype/classTypelist/"+coa_driveschool.value,
+        function(data){
+          //callback(data, "OK");
+          console.log(data);
+          $('#coa_serverclasslist').find('option').remove();
+          for (s in data) {
+                console.log(s);
+                $('#coa_serverclasslist').append('<option value="' + data[s]._id + '">' + data[s].classname + '</option>');
             }
 
         }).fail(function(xHr, status, message){

@@ -43,7 +43,8 @@ function register(req, res){
     fie.phone = req.body.phone;
     fie.capacity = req.body.capacity;
     fie.fielddesc = req.body.fielddesc;
-    fie.subject = req.body.subject;
+    var subject = {subjectid:2, name:req.body.subject};
+    fie.subject = [subject];
     
    
     fie.pictures_path = [req.body.picPath];
