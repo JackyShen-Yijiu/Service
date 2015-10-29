@@ -167,6 +167,7 @@ function tjanswer(answer){
 
   switch(answer){
     case "A":
+      $("#answer1").attr('checked', true);
       if(currentQuestion.ta == 1){
         answerIsRight();
       }else{
@@ -175,6 +176,7 @@ function tjanswer(answer){
       }
       break;
     case "B":
+      $("#answer2").attr('checked', true);
       if(currentQuestion.ta == "2"){
         $("#img_ans_2").attr("src","../images/right-check-marks.png");
         answerIsRight();
@@ -184,6 +186,7 @@ function tjanswer(answer){
       }
       break;
     case "C":
+    $("#answer3").attr('checked', true);
       if(currentQuestion.ta == 3){
         $("#img_ans_3").attr("src","../images/right-check-marks.png");
         answerIsRight();
@@ -193,6 +196,7 @@ function tjanswer(answer){
       }
       break;
     case "D":
+    $("#answer4").attr('checked', true);
       if(currentQuestion.ta == 4){
         $("#img_ans_4").attr("src","../images/right-check-marks.png");
         answerIsRight();
