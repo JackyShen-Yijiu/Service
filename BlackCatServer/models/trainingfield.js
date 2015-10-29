@@ -6,6 +6,8 @@
 // 训练场信息
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+
 
 var ImgInfo= new Schema({
     id :Number,
@@ -57,7 +59,8 @@ TrainingFieldSchema.statics.getNearTrainingField = function(latitude, longitude,
 };
 
 TrainingFieldSchema.statics.getTrainingFieldList = function(school_id, callback) {
-    this.find({driveschool:ObjectId.fromString(school_id)})
+    console.log('school_id: ' + school_id);
+    this.find({driveschool: school_id})
         .lean()
         .exec(callback);
     

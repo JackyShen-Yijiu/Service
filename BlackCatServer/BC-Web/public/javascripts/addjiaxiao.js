@@ -319,12 +319,12 @@ $(function() {
     /*$("#coa_driveschool")
         .selectmenu()
         .selectmenu( "menuWidget" )
-        .addClass( "overflow" );*/
+        .addClass( "overflow" );
 
     $("#coa_trainfield")
         .selectmenu()
         .selectmenu( "menuWidget" )
-        .addClass( "overflow" );
+        .addClass( "overflow" );*/
     $("#field_driveschool")
         .selectmenu()
         .selectmenu( "menuWidget" )
@@ -438,6 +438,7 @@ function coa_driveschool_changed(){
         function(data){
           //callback(data, "OK");
           console.log(data);
+          $('#coa_trainfield').find('option').remove();
           for (s in data) {
                 console.log(s);
                 $('#coa_trainfield').append('<option value="' + data[s]._id + '">' + data[s].fieldname + '</option>');
