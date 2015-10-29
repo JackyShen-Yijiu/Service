@@ -64,7 +64,14 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
     if(coa_name.value == ''){
         //setNameErr(true);
     }else{
-        
+        var subject = new Array();
+        $("[name='coa_subject']:checked").each(function(index, element) {
+                        var s = subjects[$(this).val()];
+                        console.log("subject" + s.subjectid + s.name);
+                        subject.push(s);
+                        // strSel += $(this).val() + ",";
+                     });
+
         var coach = {
             name: coa_name.value,
             validationstate: $('input:radio[name="coa_validationstate"]:checked').val(),
@@ -85,7 +92,8 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             passrate: coa_passrate.value,
             starlevel: coa_starlevel.value,
             workingtime: coa_workingtime.value,
-            subject: [{subjectid:coa_subject.value, name:$("#coa_subject option:selected").text()}],
+            subject: subject,
+            //subject: [{subjectid:coa_subject.value, name:$("#coa_subject option:selected").text()}],
             carmodel: {modelsid:$("#coa_carmodel option:selected").index() + 1,name:$("#coa_carmodel option:selected").text(),code:coa_carmodel.value},
             //carmodel_name: coa_carmodel_name.value,
             //carmodel_code: coa_carmodel_code.value,
@@ -422,45 +430,6 @@ function uploadFieldImage() {
 function showAddCoach(){
     console.log('show add coach');
 
-    var subjects=[
-    {
-        subjectid:0,
-        name:'准备报考'
-
-    },
-    {
-        subjectid:1,
-        name:'科目一'
-
-    },
-    {
-        subjectid:2,
-        name:'科目二'
-
-    },
-    {
-        subjectid:3,
-        name:'科目三'
-
-    }
-    ,
-    {
-        subjectid:4,
-        name:'科目四'
-
-    },
-    {
-        subjectid:5,
-        name:'新手上路'
-    },
-    {
-        subjectid:6,
-        name:'我是老鸟'
-
-    }
-
-    ];
-
     for (s in subjects) {
         console.log(s);
         $('#coa_subject').append('<option value="' + subjects[s].subjectid + '">' + subjects[s].name + '</option>');
@@ -553,3 +522,42 @@ function showAddClassType(){
 function getDriveSchools(){
 
 }
+
+var subjects=[
+{
+    subjectid:0,
+    name:'准备报考'
+
+},
+{
+    subjectid:1,
+    name:'科目一'
+
+},
+{
+    subjectid:2,
+    name:'科目二'
+
+},
+{
+    subjectid:3,
+    name:'科目三'
+
+}
+,
+{
+    subjectid:4,
+    name:'科目四'
+
+},
+{
+    subjectid:5,
+    name:'新手上路'
+},
+{
+    subjectid:6,
+    name:'我是老鸟'
+
+}
+
+];
