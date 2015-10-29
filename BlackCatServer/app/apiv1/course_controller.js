@@ -365,7 +365,21 @@ exports.postCoachLeave=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
-
+// 学员获取预约详情
+exports.userGetReservationInfo=function(req,res){
+    var reservationid=req.params.reservationid;
+    var userid=req.userId;
+    if (reservationid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    courseserver.getUserReservationinfo(reservationid,userid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+//
 // 教练获取预约详情
 exports.coachGetReservationInfo=function(req,res){
     var reservationid=req.params.reservationid;

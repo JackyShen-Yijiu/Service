@@ -758,16 +758,34 @@ exports.getreservationapply=function(coachid,callback){
             return callback(null,data);
         })
 }
+//  获取学员预约详情
+exports.getUserReservationinfo=function(reservationid,userid,callback){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
+        userid:new mongodb.ObjectId(userid)})
+        .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid")
+        .populate("coachid","_id  name headportrait  driveschoolinfo")
+        .exec(function(err,resdata){
+            if(err){
+                return callback("查询数据出错："+err);
+            }
+            return callback(null,resdata);})
+
+}
 exports.getCoachReservationinfo=function(reservationid,coachid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         coachid:new mongodb.ObjectId(coachid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason")
         .populate("userid","_id  name headportrait displayuserid")
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
             }
+            if(resdata.reservationstate!=appTypeEmun.ReservationState.applycancel&&resdata.reservationstate!=appTypeEmun.ReservationState.applyrefuse){
+                resdata.cancelreason=undefined;
+            }
+           // console.log(resdata);
             return callback(null,resdata);})
 
 }
