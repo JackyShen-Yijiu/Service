@@ -34,7 +34,7 @@ function register(req, res){
 
 
     var fie = new trainingField ();
-    fie.name = req.body.fieldname;
+    fie.fieldname = req.body.fieldname;
     fie.driveschool = req.body.driveschool;
     fie.province = req.body.province;
     fie.city = req.body.city;
