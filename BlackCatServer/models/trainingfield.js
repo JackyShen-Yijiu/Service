@@ -57,7 +57,7 @@ TrainingFieldSchema.statics.getNearTrainingField = function(latitude, longitude,
 };
 
 TrainingFieldSchema.statics.getTrainingFieldList = function(school_id, callback) {
-    this.find({driveschool:school_id})
+    this.find({driveschool:ObjectId.fromString(school_id}))
         .lean()
         .exec(callback);
     
