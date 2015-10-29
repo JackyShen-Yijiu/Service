@@ -165,8 +165,9 @@ function AddClassType(){
             enddate: ct_enddate.value,
             is_using: coa_address.value,
             is_vip: field_responsible.value,
-            carmodel_name: ct_carmodel_name.value,
-            carmodel_code: ct_carmodel_code.value,
+            carmodel: {modelsid:$("#ct_carmodel option:selected").index() + 1,name:$("#ct_carmodel option:selected").text(),code:ct_carmodel.value}
+            //carmodel_name: ct_carmodel_name.value,
+            //carmodel_code: ct_carmodel_code.value,
             cartype: ct_cartype.value,
             applycount: ct_applycount.value,
             classdesc: ct_classdesc.value,

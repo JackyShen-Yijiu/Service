@@ -40,9 +40,10 @@ function register(req, res){
     ct.enddate = req.body.enddate;
     ct.is_using = req.body.is_using;
     ct.is_vip = req.body.is_vip;
-    var carmodel_name = req.body.carmodel_name;
-    var carmodel_code = req.body.carmodel_code;
-    ct.carmodel = {modelsid:1,name:carmodel_name,code:carmodel_code};
+    //var carmodel_name = req.body.carmodel_name;
+    //var carmodel_code = req.body.carmodel_code;
+    //ct.carmodel = {modelsid:1,name:carmodel_name,code:carmodel_code};
+    ct.carmodel = req.body.carmodel;
     ct.cartype = req.body.cartype;
     ct.applycount = req.body.applycount;
     ct.classdesc = req.body.classdesc;
