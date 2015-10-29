@@ -670,6 +670,7 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                 var list=[]
                 data.forEach(function(r,index){
                     var listone= {
+                        _id: r.id,
                         userid: r.userid,
                         reservationstate: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
