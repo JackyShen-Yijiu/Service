@@ -777,7 +777,7 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         coachid:new mongodb.ObjectId(coachid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason subject")
         .populate("userid","_id  name headportrait displayuserid")
         .exec(function(err,resdata){
             if(err){

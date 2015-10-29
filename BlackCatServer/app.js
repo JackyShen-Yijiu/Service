@@ -8,12 +8,30 @@ var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 //var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
+//var logType=require("./custommodel/emunapptype").LogType;
+//var log=require("./Common/systemlog");
 var domain = require('domain');
-var logType=require("./custommodel/emunapptype").LogType;
-var log=require("./Common/systemlog");
+
 
 var app = express();
 
+
+//引入一个domain的中间件，将每一个请求都包裹在一个独立的domain中
+//domain来处理异常
+app.use(function (req,res, next) {
+  var d = domain.create();
+  //监听domain的错误事件
+  d.on('error', function (err) {
+    console.log(err);
+    //log.writeLog(req,err,logType.err);
+    res.statusCode = 500;
+    res.json(new BaseReturnInfo(0,"服务器内部错误",""));
+    d.dispose();
+  });
+  d.add(req);
+  d.add(res);
+  d.run(next);
+});
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -26,23 +44,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-//引入一个domain的中间件，将每一个请求都包裹在一个独立的domain中
-//domain来处理异常
-app.use(function (req,res, next) {
-  var d = domain.create();
-  //监听domain的错误事件
-  d.on('error', function (err) {
-    //logger.error(err);
-    console.log(err);
-    log.writeLog(req,err,logType.err);
-    res.statusCode = 500;
-    res.json(new BaseReturnInfo(0,"服务器内部错误",""));
-    d.dispose();
-  });
-  d.add(req);
-  d.add(res);
-  d.run(next);
-});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -64,7 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(function(req, res, next) {
-  log.writeLog(req,"",logType.log);
+  //log.writeLog(req,"",logType.log);
   next();
 });
 app.use('/api/v1', apiRouterV1);
