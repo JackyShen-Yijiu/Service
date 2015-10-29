@@ -129,7 +129,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.token=token;
                            returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                            returnmodel.userid =newinstace._id;
-                           returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
+                           returnmodel.idcardnumber=newinstace.idcardnumber;
                            returnmodel.usersetting=newinstace.usersetting;
                            return callback(null,returnmodel);
 
@@ -169,7 +169,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.usersetting=newinstace.usersetting;
-                            returnmodel.idcardnumber=
+                            returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
                             return callback(null,returnmodel);
 
@@ -1370,7 +1370,9 @@ var mobileObfuscator = function(mobile){
 };
 
 var idCardNumberObfuscator = function(idCardNumber){
-    idCardNumber = idCardNumber.substr(0, 14) + "****" ;
+    if (idCardNumber!=undefined && idCardNumber.length>0) {
+        idCardNumber = idCardNumber.substr(0, 14) + "****";
+    }
     return idCardNumber;
 };
 
