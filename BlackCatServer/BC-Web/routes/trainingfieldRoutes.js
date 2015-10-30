@@ -44,8 +44,8 @@ function register(req, res){
     fie.phone = req.body.phone;
     fie.capacity = req.body.capacity;
     fie.fielddesc = req.body.fielddesc;
-    var subject = {subjectid:2, name:req.body.subject};
-    fie.subject = [subject];    
+    //var subject = {subjectid:2, name:req.body.subject};
+    fie.subject = req.body.subject;
     fie.pictures = [{id:1, originalpic:req.body.pictures}]
 
     fie.latitude= 40.096263;

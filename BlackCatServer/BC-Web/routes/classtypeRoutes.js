@@ -47,7 +47,7 @@ function register(req, res){
     ct.cartype = req.body.cartype;
     ct.applycount = req.body.applycount;
     ct.classdesc = req.body.classdesc;
-    ct.vipserverlist = [{id:1, name:req.body.vipserverlist_name}];
+    ct.vipserverlist = req.body.vipserverlist;
     ct.price = req.body.price;
     ct.onsaleprice = req.body.onsaleprice;    
    

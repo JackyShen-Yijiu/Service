@@ -61,21 +61,23 @@ exports.carmodels=[
 
 exports.vipserver=[
     {
-    id:1,
-    name:"接送"},
-{
-    id:2,
+        id:0,
+        name:"接送"
+    },
+    {
+        id:1,
         name:"午餐"
-},{
-        id:3,
+    },
+    {
+        id:2,
         name:"室内练车"
     },
     {
-        id:4,
+        id:3,
         name:"1:1"
     },
     {
-        id:5,
+        id:4,
         name:"包过"
     }
 ]

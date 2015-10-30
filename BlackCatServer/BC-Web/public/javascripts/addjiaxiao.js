@@ -151,6 +151,13 @@ function AddField(){
     if(field_fieldname.value == ''){
         //setNameErr(true);
     }else{
+        var subject = new Array();
+        $("[name='field_subject']:checked").each(function(index, element) {
+                        var s = subjects[$(this).val()];
+                        console.log("subject" + s.subjectid + s.name);
+                        subject.push(s);
+                        // strSel += $(this).val() + ",";
+                     });
         
         var field = {
             fieldname: field_fieldname.value,
@@ -162,7 +169,7 @@ function AddField(){
             phone: field_phone.value,
             capacity: field_capacity.value,
             fielddesc: field_fielddesc.value,
-            subject: field_subject.value,
+            subject: subject,
             pictures: field_Image
         };
         console.log(field);
@@ -190,6 +197,13 @@ function AddClassType(){
     if(ct_classname.value == ''){
         //setNameErr(true);
     }else{
+
+        var vipserverlist = new Array();
+        $("[name='ct_vipserverlist']:checked").each(function(index, element) {
+                        var v = vipserver[$(this).val()];
+                        console.log("subject" + v.id + v.name);
+                        vipserverlist.push(v);
+                     });
         
         var ct = {
             classname: ct_classname.value,
@@ -199,12 +213,10 @@ function AddClassType(){
             is_using: $('input:radio[name="isUse"]:checked').val(),
             is_vip: $('input:radio[name="isVIP"]:checked').val(),
             carmodel: {modelsid:$("#ct_carmodel option:selected").index() + 1,name:$("#ct_carmodel option:selected").text(),code:ct_carmodel.value},
-            //carmodel_name: ct_carmodel_name.value,
-            //carmodel_code: ct_carmodel_code.value,
             cartype: ct_cartype.value,
             applycount: ct_applycount.value,
             classdesc: ct_classdesc.value,
-            vipserverlist_name: ct_vipserverlist_name.value,
+            vipserverlist: vipserverlist,
             price: ct_price.value,
             onsaleprice: ct_onsaleprice.value
         };
@@ -584,41 +596,3 @@ function getDriveSchools(){
 
 }
 
-var subjects=[
-{
-    subjectid:0,
-    name:'准备报考'
-
-},
-{
-    subjectid:1,
-    name:'科目一'
-
-},
-{
-    subjectid:2,
-    name:'科目二'
-
-},
-{
-    subjectid:3,
-    name:'科目三'
-
-}
-,
-{
-    subjectid:4,
-    name:'科目四'
-
-},
-{
-    subjectid:5,
-    name:'新手上路'
-},
-{
-    subjectid:6,
-    name:'我是老鸟'
-
-}
-
-];
