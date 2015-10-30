@@ -8,10 +8,30 @@ var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 //var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
+//var logType=require("./custommodel/emunapptype").LogType;
+//var log=require("./Common/systemlog");
 var domain = require('domain');
+
 
 var app = express();
 
+
+//å¼•å…¥ä¸€ä¸ªdomainçš„ä¸­é—´ä»¶ï¼Œå°†æ¯ä¸€ä¸ªè¯·æ±‚éƒ½åŒ…è£¹åœ¨ä¸€ä¸ªç‹¬ç«‹çš„domainä¸­
+//domainæ¥å¤„ç†å¼‚å¸¸
+app.use(function (req,res, next) {
+  var d = domain.create();
+  //ç›‘å¬domainçš„é”™è¯¯äº‹ä»¶
+  d.on('error', function (err) {
+    console.log(err);
+    //log.writeLog(req,err,logType.err);
+    res.statusCode = 500;
+    res.json(new BaseReturnInfo(0,"æœåŠ¡å™¨å†…éƒ¨é”™è¯¯",""));
+    d.dispose();
+  });
+  d.add(req);
+  d.add(res);
+  d.run(next);
+});
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -24,22 +44,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-//ÒıÈëÒ»¸ödomainµÄÖĞ¼ä¼ş£¬½«Ã¿Ò»¸öÇëÇó¶¼°ü¹üÔÚÒ»¸ö¶ÀÁ¢µÄdomainÖĞ
-//domainÀ´´¦ÀíÒì³£
-app.use(function (req,res, next) {
-  var d = domain.create();
-  //¼àÌıdomainµÄ´íÎóÊÂ¼ş
-  d.on('error', function (err) {
-    //logger.error(err);
-    console.log(err);
-    res.statusCode = 500;
-    res.json(new BaseReturnInfo(0,"·şÎñÆ÷ÄÚ²¿´íÎó",""));
-    d.dispose();
-  });
-  d.add(req);
-  d.add(res);
-  d.run(next);
-});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -60,21 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/api/', v1);
 
 
-app.use(function(req, res, next) {
-  var _ver=req.query._ver;
-  //console.log("url"+req.url);
-  if(_ver===undefined||_ver==1){
-    //console.log("apiRouterV1");
 
-
-  }else if(_ver==2)
-  {
-   // req.url=req.url.replace("v1","v2");
-    //console.log("url"+req.url);
-
-  }
-  next();
-});
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);

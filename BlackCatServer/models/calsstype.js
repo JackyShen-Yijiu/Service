@@ -20,7 +20,6 @@ var ClassTypeSchema=new Schema({
     vipserverlist:[{id:Number,name:String}], // 该课程提供的vip 服务列表{接送、包过，1对1}
     price:Number, // 价格 原价
     onsaleprice:Number , // 优化价格,
-    is_choose:Boolean //备用字段（）无实际意义 （用了记录教练对课程的状态）
 });
 
 ClassTypeSchema.statics.getClassTypeList = function(school_id, callback) {

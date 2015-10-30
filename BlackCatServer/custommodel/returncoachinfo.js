@@ -8,7 +8,6 @@ exports.resBaseCoachInfo=function(user){
     this.name=user.name;
     this.createtime=user.createtime;
     this.email=user.email;
-    //this.token=user.token;
     this.headportrait =user.headportrait;
     this.logintime=user.logintime;
     this.invitationcode=user.invitationcode;
@@ -31,10 +30,11 @@ exports.resBaseCoachInfo=function(user){
     this.is_shuttle=user.is_shuttle;
     this.coachnumber=user.coachnumber;
     this.platenumber=user.platenumber;
+    this.drivinglicensenumber=user.drivinglicensenumber;
     this.shuttlemsg=user.shuttlemsg;
     this.introduction=user.introduction;
     this.worktimedesc=user.worktimedesc;
     this.workweek=user.workweek;
     this.worktimespace=user.worktimespace;
-    this.usersetting=user.usersetting;
+
 };

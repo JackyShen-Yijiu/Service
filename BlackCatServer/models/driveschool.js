@@ -13,20 +13,26 @@ var ImgInfo= new Schema({
     height:{type:String,default:""}
 
 });
-// 驾校信息
+// 椹炬牎淇℃伅
 var DriveSchoolSchema=new Schema({
-    name :{type:String,default:''},  //名称
-    latitude: {type:Number,default:0},  //坐标经纬度
+    name :{type:String,default:''},  //鍚嶇О
+    latitude: {type:Number,default:0},  //鍧愭爣缁忕含搴�
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
+<<<<<<< HEAD
     pictures:[ImgInfo], //  驾校的宣传图片地址
     pictures_path:[{type:String, default:''}],
     logoimg:{     // 驾校log
+=======
+    pictures:[ImgInfo], //  椹炬牎鐨勫浼犲浘鐗囧湴鍧�
+    logoimg:{     // 椹炬牎log
+>>>>>>> 8369ae46e57ba688dd360308cac273a3e836c8d5
         originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
         width:{type:String,default:""},
         height:{type:String,default:""}
     },
+<<<<<<< HEAD
     passingrate:Number, // 通过率
     hours:{type:String,default:""}, //营业时间
     introduction :{type:String,default:""}, // 简介
@@ -48,6 +54,23 @@ var DriveSchoolSchema=new Schema({
     businesslicensenumber :{type:String,default:""}, // 营业执照
     organizationcode :{type:String,default:""}, // 组织机构代码
     hotindex:Number//关注度
+=======
+    passingrate:Number, // 閫氳繃鐜�
+    hours:{type:String,default:""}, //钀ヤ笟鏃堕棿
+    introduction :{type:String,default:""}, // 绠�浠�
+    createtime:{type:Date,default:Date.now()}, // 娉ㄥ唽鏃堕棿
+    registertime:{type:Date,default:Date.now()}, // 椹炬牎鎴愮珛鏃堕棿
+    address: {type:String,default:''}, // 鍦板潃
+    responsible:{type:String,default:''}, // 璐熻矗浜�
+    phone:{type:String,default:''},  //鑱旂郴鐢佃瘽
+    websit:{type:String,default:''},  // 缃戝潃
+    schoollevel:String, //椹炬牎鏄熺骇
+    carcount:Number, // 椹炬牎杞﹁締鏁�
+    coachcount:Number,  // 椹炬牎鏁欑粌鏁�
+    maxprice:Number,  // 鏈�楂樹环鏍�
+    minprice:Number   // 鏈�浣庝环鏍�
+
+>>>>>>> 8369ae46e57ba688dd360308cac273a3e836c8d5
 });
 
 /**

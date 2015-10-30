@@ -36,8 +36,21 @@ exports.fetchCode=function(req,res){
 
 };
 
-
-
+// 验证用户是否存在
+exports.verifyUserExists=function(req,res){
+    var usertype=req.query.usertype;
+    var mobile=req.query.mobile;
+    if (usertype===undefined||mobile === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    }
+    userserver.verifyUserExists(usertype,mobile,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.UserLogin=function(req,res){
     //console.log(req.body);
     var usertype=req.body.usertype;
@@ -47,7 +60,7 @@ exports.UserLogin=function(req,res){
     if (usertype===undefined||userinfo.mobile === undefined||
         userinfo.password === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"parms is wrong",""));
+            new BaseReturnInfo(0,"参数错误",""));
     }
     userserver.userlogin(usertype,userinfo,function(err,data){
         if(err){
@@ -69,7 +82,7 @@ exports.postSignUp=function(req,res){
     if (usertype===undefined||userinfo.mobile === undefined||
         userinfo.smscode === undefined||userinfo.password === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     }
 
     userserver.userSignup(usertype,userinfo,function(err,data){
@@ -134,6 +147,24 @@ exports.postApplyExamination=function(req,res){
         }
     });
 }
+
+//  教练查看学生详情页
+exports.getStudentInfo=function(req,res){
+    var userid=req.query.userid;
+    if(userid===undefined){
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    }
+    userserver.getStudentInfo(userid,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,""));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+
+}
 // 获取教练的学生列表
 exports.getStudentList=function(req,res){
     var  coachinfo={
@@ -169,9 +200,9 @@ exports.getCoachClassType=function(req,res){
 exports.postCoachSetClass=function(req,res){
     var classinfo={
         coachid:req.body.coachid,
-        classtypelist:req.body.coachid
+        classtypelist:req.body.classtypelist
     }
-
+    //console.log(req.body)
     if (classinfo.coachid === undefined
         ||classinfo.classtypelist === undefined ) {
         return res.json(
@@ -204,6 +235,24 @@ exports.getUsefulCoachList=function(req,res){
         }
     });
 }
+// 用户获取我的报名状态
+exports.getMyApplyState=function(req,res){
+    var userid =req.query.userid;
+    if(userid===undefined){
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    }
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getMyApplyState(userid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 // 用户报考验证
 exports.postenrollverification=function(req,res){
     var applyinfo= {
@@ -220,7 +269,7 @@ exports.postenrollverification=function(req,res){
         applyinfo.telephone === undefined||applyinfo.userid === undefined
         ||applyinfo.schoolid === undefined||applyinfo.ticketnumber === undefined || applyinfo.studentid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     };
     if(applyinfo.userid!=req.userId){
         return res.json(
@@ -252,7 +301,7 @@ exports.postapplySchool=function(req,res){
         ||applyinfo.schoolid === undefined ||applyinfo.coachid === undefined
         ||applyinfo.carmodel === undefined ||applyinfo.classtypeid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     };
     if(applyinfo.carmodel.modelsid===undefined){
         applyinfo.carmodel=JSON.parse(applyinfo.carmodel.toString());
@@ -323,7 +372,7 @@ exports.coachApplyVerification=function(req,res){
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
         applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(
-            new BaseReturnInfo(0,"params is wrong",""));
+            new BaseReturnInfo(0,"参数不完整",""));
     };
     if(applyinfo.coachid!=req.userId){
         return res.json(

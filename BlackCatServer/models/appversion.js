@@ -15,6 +15,7 @@ var AppversionSchema = new Schema({
 
 AppversionSchema.statics.getVersionInfo = function (clienttype, callback) {
     //console.log('begin select getVersionInfo');
+
     this.findOne(
         {
             'apptype': clienttype

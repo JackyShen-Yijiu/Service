@@ -12,6 +12,7 @@ var sysstemserver=require('../../Server/systemdata_server');
  * 测试api 调用方法
  **/
 exports.TestAPI = function (req, res) {
+
     return  res.json(
         new BaseReturnInfo(1,"","hello, BlackCat v1d"))
 

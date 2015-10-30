@@ -11,9 +11,9 @@ var geolib = require('geolib');
 
 exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
     schoolModel.getNearDriverSchool(latitude, longitude, radius ,function(err ,driveschool){
-        if (err || !driveschool || driveschool.length == 0) {
+        if (err ) {
             console.log(err);
-            callback("get driveschool failed");
+            callback("查找驾校出错："+err);
 
         } else {
             process.nextTick(function(){
@@ -76,7 +76,7 @@ exports.getNeartrainingfield=function(latitude, longitude, radius ,callback){
     trainingfiledModel.getNearTrainingField(latitude, longitude, radius ,function(err ,trainingfield){
         if (err || !trainingfield || trainingfield.length == 0) {
             console.log(err);
-            callback("get trainingfield failed");
+            callback("查询训练场出错");
 
         } else {
             trainingfield.forEach(function(r, idx){
@@ -100,7 +100,21 @@ exports.getSchoolTrainingField=function(schoolid,callback){
         if(err||!data){
             return callback("查询出错："+err);
         }
-        return callback(null,data);
+        process.nextTick(function(){
+            var list=[];
+            data.forEach(function(r,index){
+                var listone={
+                    _id: r._id,
+                    fieldname: r.fieldname,
+                    latitude: r.latitude,
+                    longitude: r.longitude,
+                    address: r.address
+                }
+                list.push(listone);
+            })
+
+            return callback(null,list);
+        })
     })
 }
 //根据驾校id 获取驾校课程类型

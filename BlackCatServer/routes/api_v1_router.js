@@ -42,6 +42,8 @@ v1.get("/trainingcontent",appsystemController.getTrainingContent);
 //======================================用户信息======================================
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
+// 验证用户是否存在
+v1.get("/userinfo/userexists",userController.verifyUserExists);
 // 检验验证码 (用户登后修改验证码使用)
 //v1.post('/Verification/:mobile', userController.fetchCode);
 //用户注册
@@ -52,6 +54,8 @@ v1.post('/userinfo/userlogin', userController.UserLogin);
 v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,userController.postapplySchool);
 // 用户报名验证（对于已经报名的用户）
 v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthorized,userController.postenrollverification);
+// 获取我的报名状态
+v1.get('/userinfo/getmyapplystate',ensureAuthorizedController.ensureAuthorized,userController.getMyApplyState)
 // 用户更新信息
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
@@ -112,6 +116,7 @@ v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 v1.post("/courseinfo/userreservationcourse",ensureAuthorizedController.ensureAuthorized,courseController.postReservation);
 // 获取我的订单 用户
 v1.get("/courseinfo/getmyreservation",ensureAuthorizedController.ensureAuthorized,courseController.getuserresveration);
+v1.get("/courseinfo/userreservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,courseController.userGetReservationInfo)
 //获取课程的详信息
 v1.get("/courseinfo/getcourse/:courseid",ensureAuthorizedController.ensureAuthorized,courseController.getCourseDeatil);
 //用户取消预约
@@ -133,10 +138,12 @@ v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心
 v1.get("/userinfo/coachstudentlist",ensureAuthorizedController.ensureAuthorized,userController.getStudentList);
+// 查看学员详情（预约学员详情页）
+v1.get("/userinfo/studentinfo",ensureAuthorizedController.ensureAuthorized,userController.getStudentInfo);
 // 获取我的选择班级的信息
 v1.get("/userinfo/getcoachclasstype",ensureAuthorizedController.ensureAuthorized,userController.getCoachClassType);
 // 教练设置班型
-v1.get("/userinfo/coachsetclass",ensureAuthorizedController.ensureAuthorized,userController.postCoachSetClass);
+v1.post("/userinfo/coachsetclass",ensureAuthorizedController.ensureAuthorized,userController.postCoachSetClass);
 // 教练请假接口
 v1.post("/courseinfo/putcoachleave",ensureAuthorizedController.ensureAuthorized,courseController.postCoachLeave);
 //教练获取预约列表
