@@ -27,7 +27,6 @@ var DriveSchoolSchema=new Schema({
         width:{type:String,default:""},
         height:{type:String,default:""}
     },
-<<<<<<< HEAD
     passingrate:Number, // 通过率
     hours:{type:String,default:""}, //营业时间
     introduction :{type:String,default:""}, // 简介
