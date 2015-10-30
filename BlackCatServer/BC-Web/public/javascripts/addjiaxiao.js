@@ -76,7 +76,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
     console.log('性别' + $('input:radio[name="Sex"]:checked').val());
     console.log('school: ' + coa_driveschool.value);
     console.log('train field:' + $("#coa_trainfield option:selected").text());
-    var coa_workingtime  = coa_workingtime_from + "-" + coa_workingtime_from_end;
+    var coa_workingtime  = coa_workingtime_from.value + "-" + coa_workingtime_from_end.value;
 
     var serverclasslist = []; 
     $('#coa_serverclasslist :selected').each(function(i, selected){
