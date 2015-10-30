@@ -150,7 +150,7 @@ syncReservationdesc=function(userid,callback){
                     ,"$or":[{reservationstate:appTypeEmun.ReservationState.applying},{reservationstate:appTypeEmun.ReservationState.applyconfirm},
                             {reservationstate:appTypeEmun.ReservationState.unconfirmfinish} ]})
                         .select("coursehour subject")
-                        .sort({finishtime:1})
+                        .sort({begintime:1})
                     .exec(function(err,reservationlist){
                         var   currentcoursecount=userdata.subject.subjectid==2?userdata.subjecttwo.finishcourse :userdata.subjectthree.finishcourse
                         process.nextTick(function(){
@@ -158,7 +158,7 @@ syncReservationdesc=function(userid,callback){
                                 var  tempcount = currentcoursecount+1;
                                 currentcoursecount=currentcoursecount+ r.coursehour;
                                 var tempendcount=currentcoursecount;
-                               var desc=userdata.subject.name +"第"+ (currentcoursecount+1)+" --"+(currentcoursecount+coursecount)+"课时";
+                                var desc=userdata.subject.name +"第"+ (tempcount)+" --"+(tempendcount)+"课时";
                                 reservationmodel.update({_id:new mongodb.ObjectId(r._id)},{$set:{startclassnum:tempcount,
                                     endclassnum:tempendcount, courseprocessdesc:desc}})
                             })
@@ -255,8 +255,8 @@ exports.postReservation=function(reservationinfo,callback){
 
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);
-                    reservation.classdatetimedesc= (new Date(reservationinfo.begintime)).toFormat("YYYY年MM月DD日 HH:00") +"--"
-                        +(new Date(reservationinfo.begintime)).toFormat("HH:00");;
+                    reservation.classdatetimedesc= (new Date(reservationinfo.begintime)).toFormat("YYYY年MM月DD日 HH24:00") +"--"
+                        +(new Date(reservationinfo.endtime)).toFormat("HH24:00");;
                     reservation.subject = userdata.subject;
                     reservation.coursehour = coursecount;
                     arr.forEach(function (r) {
@@ -303,7 +303,7 @@ exports.getuserReservation=function(userid,subjectid,callback){
     reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid})
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc courseprocessdesc trainfieldlinfo")
         .populate("coachid","_id name driveschoolinfo headportrait")
-       .sort({reservationcreatetime:-1})
+       .sort({begintime:-1})
         .exec(function(err,reservationlist){
             if(err){
              return    callback("查询语言信息出错："+err)
