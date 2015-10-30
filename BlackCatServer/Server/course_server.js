@@ -801,8 +801,8 @@ exports.coachHandleInfo=function(handleinfo,callback){
         {
             return callback("不能修改预约信息");
         }
-        if(handleinfo.handletype!==appTypeEmun.ReservationState.applyconfirm &&
-            handleinfo.handletype!==appTypeEmun.ReservationState.applyrefuse)
+        if(handleinfo.handletype!=appTypeEmun.ReservationState.applyconfirm &&
+            handleinfo.handletype!=appTypeEmun.ReservationState.applyrefuse)
         {
             return callback("处理信息类型不对");
         }

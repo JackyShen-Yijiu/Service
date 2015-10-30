@@ -65,10 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/api/', v1);
 
 
-app.use(function(req, res, next) {
-  //log.writeLog(req,"",logType.log);
-  next();
-});
+
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
