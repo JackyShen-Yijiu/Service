@@ -1,7 +1,7 @@
 /**
  * Created by li on 2015/10/20.
  */
-/// Í·ÌõÏûÏ¢  ±£´æÏµÍ³ÍÆ¼öµÄÏûÏ¢
+/// å¤´æ¡æ¶ˆæ¯  ä¿å­˜ç³»ç»Ÿæ¨èçš„æ¶ˆæ¯
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -12,7 +12,7 @@ var HeadlineNewsSchema=new Schema({
         width:{type:String,default:""},
         height:{type:String,default:""}},
     createtime:{type:Date,default:Date.now()},
-    newtype:Number,  // Í·ÌõÀàĞÍ Ä¬ÈÏ1 url  2½ÌÁ· 3 ¼İĞ£ĞÅÏ¢
+    newtype:Number,  // å¤´æ¡ç±»å‹ é»˜è®¤1 url  2æ•™ç»ƒ 3 é©¾æ ¡ä¿¡æ¯
     linkurl:{type:String,default:""},
     is_using:{ type: Boolean, default: true}
 

@@ -97,7 +97,7 @@ function uploadFile(req, res) {
 
         var tmp_path = files.coachImagefile.path;
         var target_path = 'data/upload/' + files.coachImagefile.name;
-        console.log("tmp_path： " + tmp_path);
+        console.log("tmp_path" + tmp_path);
         console.log("target_path " + target_path);
 
         fs.rename(tmp_path, target_path, function(err) {

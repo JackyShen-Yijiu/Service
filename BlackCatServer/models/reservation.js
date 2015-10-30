@@ -8,7 +8,7 @@ var ReservationSchema=new Schema({
     userid :{type: Schema.Types.ObjectId, ref: 'User'},// 预约课程
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'}, //  预约教练
     trainfieldid:{type: Schema.Types.ObjectId, ref: 'trainingfield'}, //  练车场id 同车学员
-    trainfieldlinfo:{name:String,id:String,}, //训练成信息信息
+    trainfieldlinfo:{name:String,id:String}, //训练成信息信息
 
     // 预约状态
     reservationstate:{type:Number,default:0},

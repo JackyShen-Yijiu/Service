@@ -199,6 +199,15 @@ exports.postReservation=function(reservationinfo,callback){
                 if (!coachdata.is_validation){
                     return callback("该教练没有通过验证不能预约：");
                 }
+                // 判断科目、、if(userdata.subject.subjectid==)
+                // 判断车型 C1 C2
+                if(usermodel.carmodel.modelsid!=coachdata.carmodel.modelsid){
+                    return callback("您所报的驾照类型与该教练教的不同，无法报名");
+                }
+                // 判断班级
+                if(coachdata.serverclasslist.indexOf(userdata.applyclasstype)==-1){
+                    return callback("该教练不服务您所报的班级，无法报名");
+                }
 
             }
             VerificationCourse(arr, reservationinfo.userid, function (err) {
@@ -241,7 +250,8 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.reservationcreatetime = new Date();
                     reservation.reservationstate = appTypeEmun.ReservationState.applying;
                     reservation.trainfieldid=coachdata.trainfield;
-                reservation.trainfieldlinfo=coachdata.trainfieldlinfo;
+                reservation.trainfieldlinfo.id=coachdata.trainfieldlinfo.id;
+                reservation.trainfieldlinfo.name=coachdata.trainfieldlinfo.name;
 
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);
@@ -289,8 +299,8 @@ exports.postReservation=function(reservationinfo,callback){
 
 
 //获取用户的预约信息
-exports.getuserReservation=function(userid,callback){
-    reservationmodel.find({userid:new mongodb.ObjectId(userid)})
+exports.getuserReservation=function(userid,subjectid,callback){
+    reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid})
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc courseprocessdesc trainfieldlinfo")
         .populate("coachid","_id name driveschoolinfo headportrait")
        .sort({reservationcreatetime:-1})
@@ -764,7 +774,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject")
         .populate("coachid","_id  name headportrait  driveschoolinfo")
         .exec(function(err,resdata){
             if(err){
