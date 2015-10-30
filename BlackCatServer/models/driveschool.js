@@ -32,7 +32,7 @@ var DriveSchoolSchema=new Schema({
     introduction :{type:String,default:""}, // 简介
     createtime:{type:Date,default:Date.now()}, // 注册时间
     registertime:{type:Date,default:Date.now()}, // 驾校成立时间
-    provice: {type:String,default:''}, // 省
+    province: {type:String,default:''}, // 省
     city: {type:String,default:''}, // 市
     address: {type:String,default:''}, // 地址
     responsible:{type:String,default:''}, // 负责人
