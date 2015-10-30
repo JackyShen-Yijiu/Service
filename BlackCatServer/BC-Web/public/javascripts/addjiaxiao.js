@@ -99,6 +99,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             name: coa_name.value,
             validationstate: $('input:radio[name="coa_validationstate"]:checked').val(),
             Gender: $('input:radio[name="Sex"]:checked').val(),
+            is_validation: $('input:radio[name="is_validation"]:checked').val(),
             province: coa_province.value,
             city: coa_city.value,
             address: coa_address.value,

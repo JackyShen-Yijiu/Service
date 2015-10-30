@@ -32,6 +32,7 @@ function register(req, res){
     coa.name = req.body.name;
     coa.validationstate = req.body.validationstate;
     coa.Gender = req.body.Gender;
+    coa.is_validation = req.body.is_validation;
     coa.province = req.body.province;
     coa.city = req.body.city;
     coa.address = req.body.address;
