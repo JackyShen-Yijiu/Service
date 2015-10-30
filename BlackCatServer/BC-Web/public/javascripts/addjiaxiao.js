@@ -106,7 +106,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             phone: coa_phone.value,
             email: coa_email.value,
             password: coa_password.value,
-            seniority: coa_seniority.value,
+            Seniority: coa_seniority.value,
             idcardnumber: coa_idcardnumber.value,
             drivelicensenumber: coa_drivelicensenumber.value,
             coachnumber: coa_coachnumber.value,
