@@ -179,6 +179,14 @@
                     <input type="text" id="sch_organizationcode" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
                 </div>
                 <div class="input_div">
+                    <span>最高价：</span>
+                    <input type="text" id="sch_maxprice" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
+                    <span>最低价：</span>
+                    <input type="text" id="sch_minprice" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
+                </div>
+                <div class="input_div">
                     <span>图片：</span>
                         <form method="post" enctype="multipart/form-data"  id="fileinfo" name="fileinfo" onsubmit="return uploadSchoolImage();" style="display:inline;">
                           <input type="file" name="uploadedfile" id="file_path" style="font-size:2vmin"/>
@@ -375,6 +383,18 @@
                         <input type="checkbox" name="coa_subject" value="3" style="width:8vmin;">科目三
                     <!--名称<input type="text" id="coa_carmodel_name" class="text" value="" onblur="" onblur="" style="width:25vmin;">
                     编号<input type="text" id="coa_carmodel_code" class="text" value="" onblur="" onblur="" style="width:25vmin;">-->
+                </div>
+                <div class="input_div">
+                    <span>是否接送：</span>
+                    
+                    <input type="radio" name="is_shuttle" value="1" checked="checked" style="width:8vmin;text-align:left;">
+                    是
+                    <input type="radio" name="is_shuttle" value="0" style="width:8vmin">
+                    否
+                </div>
+                <div class="input_div">
+                    <span>接送说明：</span>
+                    <input type="text" id="coa_shuttlemsg" class="text" value="" onblur="if (this.value == '') {this.value = '';}" style="width:30vmin;">
                 </div>
                 <div class="input_div">
                     <span>训练场：</span>

@@ -54,14 +54,15 @@ function register(req, res){
     sch.registertime = req.body.registertime;
     sch.businesslicensenumber = req.body.businesslicensenumber;
     sch.organizationcode = req.body.organizationcode;
+    sch.maxprice = req.body.maxprice;
+    sch.minprice = req.body.minprice;
     
     sch.pictures_path = [req.body.picPath];
 
     sch.latitude= 40.096263;
     sch.longitude=116.127921 ;
     sch.loc.coordinates=[116.127921,40.096263];
-    sch.maxprice=5000;
-    sch.minprice=3000;
+
 
     console.log("new school: " + sch);
 

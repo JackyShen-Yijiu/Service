@@ -32,6 +32,8 @@ function AddSchool(sch_name, sch_address, sch_contact){
             registertime: sch_createtime.value,
             businesslicensenumber: sch_businesslicensenumber.value,
             organizationcode: sch_organizationcode.value,
+            maxprice: sch_maxprice.value,
+            minprice: sch_minprice.value,
             picPath: picPath
         };
         console.log(jiaxiao);
@@ -100,6 +102,8 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             starlevel: coa_starlevel.value,
             workingtime: coa_workingtime.value,
             subject: subject,
+            is_shuttle: $('input:radio[name="is_shuttle"]:checked').val(),
+            shuttlemsg: coa_shuttlemsg.value,
             //subject: [{subjectid:coa_subject.value, name:$("#coa_subject option:selected").text()}],
             carmodel: {modelsid:$("#coa_carmodel option:selected").index() + 1,name:$("#coa_carmodel option:selected").text(),code:coa_carmodel.value},
             //carmodel_name: coa_carmodel_name.value,
