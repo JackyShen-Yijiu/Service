@@ -4,7 +4,7 @@ var mongodb = require('../../models/mongodb');
 var formidable = require('formidable');
 var fs = require('fs');
 var driveSchool = mongodb.DriveSchoolModel;
-
+var qiniu = require('../../Common/qiniuUnit');
 
 router.get('/', function(req, res, next) {
   //res.render('questionlist');
@@ -65,7 +65,8 @@ function register(req, res){
     sch.maxprice = req.body.maxprice;
     sch.minprice = req.body.minprice;
     
-    sch.pictures_path = [req.body.picPath];
+    sch.pictures_path = [req.body.pictures];
+    sch.pictures = [{id:1, originalpic:req.body.pictures}]
 
     sch.latitude= 40.096263;
     sch.longitude=116.127921 ;
@@ -120,9 +121,19 @@ function register(req, res){
                 res.send(JSON.stringify({code:0 }));
                 res.end();
               }
-              res.contentType('json');
-              res.send(JSON.stringify({code:1 }));
-              res.end();
+
+              qiniu.uploadFile(target_path, function(err, pathInQiniu){
+                if(!err){
+                  res.contentType('json');
+                  res.send(JSON.stringify({code:1, pathInQiniu:pathInQiniu }));
+                  res.end();
+                }else{
+                  res.contentType('json');
+                  res.send(JSON.stringify({code:0}));
+                  res.end();
+                }
+
+              });
           });
         });
 

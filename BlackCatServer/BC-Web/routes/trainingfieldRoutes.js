@@ -4,6 +4,7 @@ var mongodb = require('../../models/mongodb');
 var formidable = require('formidable');
 var fs = require('fs');
 var trainingField = mongodb.TrainingFieldModel;
+var qiniu = require('../../Common/qiniuUnit');
 
 
 router.get('/', function(req, res, next) {
@@ -44,10 +45,8 @@ function register(req, res){
     fie.capacity = req.body.capacity;
     fie.fielddesc = req.body.fielddesc;
     var subject = {subjectid:2, name:req.body.subject};
-    fie.subject = [subject];
-    
-   
-    fie.pictures_path = [req.body.picPath];
+    fie.subject = [subject];    
+    fie.pictures = [{id:1, originalpic:req.body.pictures}]
 
     fie.latitude= 40.096263;
     fie.longitude=116.127921 ;
@@ -101,9 +100,17 @@ function register(req, res){
                 res.send(JSON.stringify({code:0 }));
                 res.end();
               }
-              res.contentType('json');
-              res.send(JSON.stringify({code:1 }));
-              res.end();
+              qiniu.uploadFile(target_path, function(err, pathInQiniu){
+                if(!err){
+                  res.contentType('json');
+                  res.send(JSON.stringify({code:1, pathInQiniu:pathInQiniu }));
+                  res.end();
+                }else{
+                  res.contentType('json');
+                  res.send(JSON.stringify({code:0}));
+                  res.end();
+                }
+              });
           });
         });
 

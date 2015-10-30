@@ -4,6 +4,7 @@ var mongodb = require('../../models/mongodb');
 var formidable = require('formidable');
 var fs = require('fs');
 var coach = mongodb.CoachModel;
+var qiniu = require('../../Common/qiniuUnit');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -51,14 +52,15 @@ function register(req, res){
     coa.worktime = [{timeid:1, timespace:"8:00-9:00", begintime:"8:00", endtime:"9:00"}];
     coa.workweek = [1,2,3,4,5];
     coa.worktimespace = {begintimeint:8, endtimeint:17};
+    coa.carmodel = req.body.carmodel;
     coa.subject = req.body.subject;
     coa.is_shuttle = req.body.is_shuttle;
-    coa.shuttlemsg = req.body.shuttlemsg;
-    coa.carmodel = req.body.carmodel;
+    coa.shuttlemsg = req.body.shuttlemsg;    
     coa.trainfield = req.body.trainfield;
     coa.trainfieldlinfo = {name:req.body.trainfieldName,id:req.body.trainfield};
     coa.platenumber = req.body.platenumber;
     coa.serverclasslist = req.body.serverclasslist;
+    coa.headportrait = { originalpic: req.body.pictures};
 
 
     coa.latitude= 40.096263;
@@ -115,9 +117,17 @@ function uploadFile(req, res) {
                 res.send(JSON.stringify({code:0 }));
                 res.end();
               }
-              res.contentType('json');
-              res.send(JSON.stringify({code:1 }));
-              res.end();
+              qiniu.uploadFile(target_path, function(err, pathInQiniu){
+                if(!err){
+                  res.contentType('json');
+                  res.send(JSON.stringify({code:1, pathInQiniu:pathInQiniu }));
+                  res.end();
+                }else{
+                  res.contentType('json');
+                  res.send(JSON.stringify({code:0}));
+                  res.end();
+                }
+              });
           });
         });
 

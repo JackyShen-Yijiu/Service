@@ -49,7 +49,7 @@ function AddSchool(sch_name, sch_address, sch_contact){
             organizationcode: sch_organizationcode.value,
             maxprice: sch_maxprice.value,
             minprice: sch_minprice.value,
-            picPath: picPath
+            pictures: sch_Image
         };
         console.log(jiaxiao);
         $.post(apiHost + "driveSchool/register", 
@@ -116,17 +116,15 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             passrate: coa_passrate.value,
             starlevel: coa_starlevel.value,
             workingtime: coa_workingtime.value,
+            carmodel: {modelsid:$("#coa_carmodel option:selected").index() + 1,name:$("#coa_carmodel option:selected").text(),code:coa_carmodel.value},
             subject: subject,
             is_shuttle: $('input:radio[name="is_shuttle"]:checked').val(),
             shuttlemsg: coa_shuttlemsg.value,
-            //subject: [{subjectid:coa_subject.value, name:$("#coa_subject option:selected").text()}],
-            carmodel: {modelsid:$("#coa_carmodel option:selected").index() + 1,name:$("#coa_carmodel option:selected").text(),code:coa_carmodel.value},
-            //carmodel_name: coa_carmodel_name.value,
-            //carmodel_code: coa_carmodel_code.value,
-            trainfield: coa_trainfield.value,
+            trainfield: coa_trainfield.value,            
             trainfieldName: $("#coa_trainfield option:selected").text(),
             platenumber: coa_platenumber.value,
-            serverclasslist: serverclasslist
+            serverclasslist: serverclasslist,
+            pictures: coach_Image
         };
         console.log(coach);
         $.post(apiHost + "coach/register", 
@@ -164,7 +162,8 @@ function AddField(){
             phone: field_phone.value,
             capacity: field_capacity.value,
             fielddesc: field_fielddesc.value,
-            subject: field_subject.value
+            subject: field_subject.value,
+            pictures: field_Image
         };
         console.log(field);
         $.post(apiHost + "trainingfield/register", 
@@ -375,12 +374,12 @@ $(function() {
         .addClass( "overflow" );
   });
 
-var picPath;
+var sch_Image;
 function uploadSchoolImage() {
     console.log("submit event");
     //picPath = file_path.value;
-    picPath = file_path.value.substring(file_path.value.lastIndexOf("\\") + 1);
-    console.log(picPath);
+    sch_Image = file_path.value.substring(file_path.value.lastIndexOf("\\") + 1);
+    console.log(sch_Image);
     var fd = new FormData(document.getElementById("fileinfo"));
     fd.append("label", "WEBUPLOAD");
     $.ajax({
@@ -394,6 +393,7 @@ function uploadSchoolImage() {
         console.log( data.code );
         if(data.code > 0){
             alert("上传成功！");
+            sch_Image = data.pathInQiniu;
         }else{
             alert("上传失败！");
         }
@@ -420,6 +420,7 @@ function uploadCoachImage() {
         console.log( data.code );
         if(data.code > 0){
             alert("上传成功！");
+            coach_Image = data.pathInQiniu;
         }else{
             alert("上传失败！");
         }
@@ -431,8 +432,8 @@ function uploadFieldImage() {
     console.log("submit event");
     
     //picPath = coachImage_path.value;
-    coach_Image = fieldImage_path.value.substring(fieldImage_path.value.lastIndexOf("\\") + 1);
-    console.log(coach_Image);
+    field_Image = fieldImage_path.value.substring(fieldImage_path.value.lastIndexOf("\\") + 1);
+    console.log(field_Image);
     var fd = new FormData(document.getElementById("fieldImage"));
     fd.append("label", "WEBUPLOAD");
     $.ajax({
@@ -446,6 +447,7 @@ function uploadFieldImage() {
         console.log( data.code );
         if(data.code > 0){
             alert("上传成功！");
+            field_Image = data.pathInQiniu;
         }else{
             alert("上传失败！");
         }
