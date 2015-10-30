@@ -59,7 +59,7 @@
 
     <div class="tabs">
     <ul id="tabs">
-        <li class="tab-nav-action">添加驾校</li>
+        <li class="tab-nav-action" onclick="addschoollist()">添加驾校</li>
         <li class="tab-nav" id="li_addCoach" onclick="showAddCoach()">添加教练</li>
         <li class="tab-nav" id="li_addTrainField" onclick="showAddTrainField()">添加场地</li>
         <li class="tab-nav" id="li_addClassType" onclick="showAddClassType()">添加班型</li>
@@ -67,8 +67,13 @@
     </div>
     <div id="tabs-body" class="tabs-body">
         <div style="display:block;">
-        
-            <div id="div_04" class="div_04" style="min-width:20em;">
+       <div style="width:20%;float: left">
+            <h4>驾校列表:</h4>
+            <table id="schoollist">
+                <tr><td>名称</td><td>编辑</td></tr>
+            </table>
+        </div>
+            <div id="div_04" class="div_04" style="min-width:20em; float: left">
                 <div class="input_div">
                     <span>驾校名称：</span>
                     <input type="text" id="sch_name" class="text" value="" onblur="" style="width:25vmin;">

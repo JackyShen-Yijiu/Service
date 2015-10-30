@@ -4,6 +4,21 @@ $.ajaxSetup({
   crossDomain: true
 });
 
+function editschool(schoolid){
+    //console.log(schoolid);
+    $.get(apiHost + "driveSchool/driveSchoollistinfo/"+schoolid,
+        function(data){
+            console.log(data.name);
+            //$('#sch_name').(data.name);
+            sch_name.value = data.name;
+            sch_province.vale=data.
+            addschoollist();
+            //coa_driveschool_changed();
+        }).fail(function(xHr, status, message){
+            //callback(message, "Fail");
+            console.log(message);
+        });
+}
 function AddSchool(sch_name, sch_address, sch_contact){
     
     if(sch_name.value == ''){
@@ -434,6 +449,38 @@ function uploadFieldImage() {
     return false;
 }
 
+function addschoollist(){
+    console.log('addschoollist');
+    $.get(apiHost + "driveSchool/driveSchoollist",
+        function(data){
+            //callback(data, "OK");
+            $('#schoollist').empty();
+            console.log(data);
+            var txt="";
+            var i=0;
+            for (s in data) {
+              //  console.log(s);
+             var row  =document.getElementById("schoollist").insertRow(i)
+              /*  var cell =row.insertCell(0);
+                cell.innerHTML=data[s]._id;
+                var cell =row.insertCell(1);
+                cell.innerHTML=data[s].name;
+                var cell =row.insertCell(2);
+                cell.innerHTML='<input type="button" value="编辑" onclick=editschool("'+data[s]._id+'")>';*/
+
+                i++;
+                $('#schoollist').append( "<tr><td>"+data[s]._id+"</td></td><td>"+data[s].name+'</td><td>' +
+                    '<input type="button" value="编辑" onclick=editschool("'+data[s]._id+'")></td></tr>');
+            }
+           // console.log(txt);
+
+            //$('#schoollist').ad=txt;
+            //coa_driveschool_changed();
+        }).fail(function(xHr, status, message){
+            //callback(message, "Fail");
+            console.log(message);
+        });
+}
 function showAddCoach(){
     console.log('show add coach');
 
@@ -515,6 +562,7 @@ function showAddClassType(){
         function(data){
           //callback(data, "OK");
           console.log(data);
+            $('#ct_schoolid').innerText="";
           for (s in data) {
                 console.log(s);
                 $('#ct_schoolid').append('<option value="' + data[s]._id + '">' + data[s].name + '</option>');

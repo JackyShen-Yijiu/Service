@@ -123,7 +123,8 @@ exports.userfinishReservation=function(req,res){
     var reservationinfo= {
         userid:req.body.userid,
         reservationid:req.body.reservationid,
-        learningcontent:req.body.learningcontent
+        learningcontent:req.body.learningcontent,
+        contentremarks:req.body.contentremarks
     };
     if (reservationinfo.userid === undefined
         ||reservationinfo.reservationid === undefined) {
@@ -148,8 +149,11 @@ exports.coachfinishReservation=function(req,res){
     var reservationinfo= {
         coachid:req.body.coachid,
         reservationid:req.body.reservationid,
-        learningcontent:req.body.learningcontent
-    };
+        learningcontent:req.body.learningcontent,
+        contentremarks:req.body.contentremarks
+
+
+};
     if (reservationinfo.coachid === undefined
         ||reservationinfo.reservationid === undefined) {
         return res.json(

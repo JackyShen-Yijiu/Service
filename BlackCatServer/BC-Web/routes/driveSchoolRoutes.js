@@ -13,6 +13,14 @@ router.get('/', function(req, res, next) {
 router.post('/register', register);
 router.post('/upload', uploadFile);
 router.get('/driveSchoollist', getDriveSchoolList);
+router.get('/driveSchoollistinfo/:schoolid', getDriveSchoolinfo);
+
+function getDriveSchoolinfo(req,res){
+    var schoolid =req.params.schoolid;
+    driveSchool.findById(new mongodb.ObjectId(schoolid),function(err,data){
+      res.json(data);
+    })
+}
 
 function getDriveSchoolList(req, res) {
   console.log("get coach from mongo");

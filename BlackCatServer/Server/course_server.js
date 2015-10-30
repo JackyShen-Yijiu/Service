@@ -429,6 +429,7 @@ exports.userfinishReservation=function(reservationinfo,callback){
         }
         resdata.reservationstate=appTypeEmun.ReservationState.ucomments;
         resdata.learningcontent=reservationinfo.learningcontent;
+        resdata.contentremarks=reservationinfo.contentremarks;
         resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent +" 第"+ (resdata.startclassnum)+" --"+( resdata.endclassnum)+"课时";
         resdata.finishtime=new Date();
         resdata.save(function(err,newdata){
@@ -804,8 +805,11 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
 exports.coachHandleInfo=function(handleinfo,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(handleinfo.reservationid),
         coachid:new mongodb.ObjectId(handleinfo.coachid)},function(err,resdata){
-        if(err||!resdata){
+        if(err){
             return callback("查询预约信息出粗："+err);
+        }
+        if (!resdata){
+            return callback("没有查到相关预约");
         }
         if(resdata.reservationstate!=appTypeEmun.ReservationState.applying&& resdata.reservationstate!=appTypeEmun.ReservationState.applyconfirm)
         {

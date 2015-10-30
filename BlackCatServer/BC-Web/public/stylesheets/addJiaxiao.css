@@ -1,6 +1,6 @@
 body{padding:0;margin:0;overflow-y: auto;overflow-x:hidden; font-size:62.5%;font-family:'microsoft yahei', Arial, Helvetica, sans-serif;}
 
-.div_04{width:100%;margin:0 auto; text-align: center;}
+.div_04{width:75%;margin:0 auto; text-align: center;}
 
 .button {
     border-radius:10px;
@@ -24,8 +24,8 @@ body{padding:0;margin:0;overflow-y: auto;overflow-x:hidden; font-size:62.5%;font
 
 .div_04{text-align: left;}
 .div_04 .input_div{
-    width: 60%;
-    margin-left: 15%;
+    width: 80%;
+    margin-left: 5%;
     vertical-align: middle;
 }
 .input_div span{

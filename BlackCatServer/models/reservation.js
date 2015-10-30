@@ -53,10 +53,13 @@ var ReservationSchema=new Schema({
     shuttleaddress:String,
    // 学习内容
     learningcontent:String,
+    //
+    contentremarks:String,
     //x学时
     coursehour:Number,
     // 课程进度描述
     courseprocessdesc :String,
+
     // 科目
     subject:{subjectid:{type:Number,default:2},
         name:{type:String,default:"科目二"}},
