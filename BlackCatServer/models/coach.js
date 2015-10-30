@@ -13,7 +13,7 @@ var  CoachSchema=new Schema({
     token:{type:String,default:''},  //登录token
     password:String,   // 密码
     logintime:{type:Date,default:Date.now()}, //最近一次登录时间
-    provice: {type:String,default:''}, // 省
+    province: {type:String,default:''}, // 省
     city: {type:String,default:''}, // 市
     address: String,   // 地址
     introduction:String, // 简介

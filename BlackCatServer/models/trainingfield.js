@@ -25,7 +25,7 @@ var  TrainingFieldSchema=new Schema({
     latitude: {type:Number,default:0},
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
-    provice: {type:String,default:''}, // 省
+    province: {type:String,default:''}, // 省
     city: {type:String,default:''}, // 市
     address: {type:String,default:''}, // 练车场地址
     responsible:{type:String,default:''}, // 负责人
