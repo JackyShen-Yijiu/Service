@@ -593,7 +593,7 @@ exports.setCoachClassInfo=function(classinfo,callback){
                         var idx2=postclasslist.indexOf(r._id);
                         if(idx2>0){
                             r.vipserverlist.forEach(function(server,index2){
-                                if (server.id==1){
+                                if (server.id==0){
                                     is_shuttle=true;
                                    // return;
                                 }
