@@ -52,6 +52,8 @@ function register(req, res){
     coa.workweek = [1,2,3,4,5];
     coa.worktimespace = {begintimeint:8, endtimeint:17};
     coa.subject = req.body.subject;
+    coa.is_shuttle = req.body.is_shuttle;
+    coa.shuttlemsg = req.body.shuttlemsg;
     coa.carmodel = req.body.carmodel;
     coa.trainfield = req.body.trainfield;
     coa.trainfieldlinfo = {name:req.body.trainfieldName,id:req.body.trainfield};
