@@ -326,6 +326,7 @@ exports.postapplySchool=function(req,res){
 
 // 更新用户信息
 exports.updateUserInfo=function(req,res){
+    console.log(req.body);
    var updateuserinfo ={
        userid: req.body.userid,
        name : req.body.name,
