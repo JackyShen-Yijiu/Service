@@ -141,7 +141,7 @@ VerificationCourse=function(courselist,userid,callback){
 }
 
 syncReservationdesc=function(userid,callback){
-    usermodel.findById(new mongodb.ObjectId(reservationinfo.userid))
+    usermodel.findById(new mongodb.ObjectId(userid))
         .select("subject subjecttwo  subjectthree")
         .exec(function(err,userdata) {
             if(userdata){

@@ -65,7 +65,7 @@ DriveSchoolSchema.statics.getNearDriverSchool = function(latitude, longitude, ra
     this.find({loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: radius}}}) //from near to far
       //  .select('name branchName latitude longitude dpUrl logoUrl avgPrice popularity')
 //        .sort({popularity: -1})
-   //     .limit(limit?limit:10)
+        .limit(30)
         .lean()
         .exec(callback);
 };
