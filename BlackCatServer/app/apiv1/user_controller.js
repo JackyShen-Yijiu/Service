@@ -452,7 +452,7 @@ exports.updateCoachInfo=function(req,res){
         headportrait: req.body.headportrait,
         address: req.body.address, // 地址
         subject :req.body.subject,   //科目
-        driveschoolid:req.body.driveschoolid,
+        driveschoolid:req.body.driveschoolinfo,
         Seniority:req.body.Seniority, //教龄
         passrate:req.body.passrate,  //通过率
         //coursestudentcount:req.body.coursestudentcount, // 可供选择学生数量
@@ -460,7 +460,7 @@ exports.updateCoachInfo=function(req,res){
         drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证
         coachnumber :req.body.coachnumber,  // 教练证
         //carmodel:req.body.carmodel,      // 车型 c1 c2
-        trainfield:req.body.trainfield,  // 训练场
+        trainfield:req.body.trainfieldlinfo,  // 训练场
         //is_shuttle:req.body.is_shuttle,  // 是否接送
         platenumber:req.body.platenumber, // 车牌号
         //shuttlemsg:req.body.shuttlemsg  // 车送说明
@@ -473,6 +473,14 @@ exports.updateCoachInfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
+    if(updateuserinfo.driveschoolid.id!=undefined){
+        updateuserinfo.driveschoolid=updateuserinfo.driveschoolid.id;
+        console.log(updateuserinfo.driveschoolid);
+    }
+    if(updateuserinfo.trainfield.id!=undefined){
+        updateuserinfo.trainfield=updateuserinfo.trainfield.id;
+        console.log(updateuserinfo.trainfield);
+    }
     userserver.updateCoachServer(updateuserinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
