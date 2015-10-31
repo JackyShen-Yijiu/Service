@@ -120,7 +120,9 @@ exports.getSchoolTrainingField=function(schoolid,callback){
 }
 //根据驾校id 获取驾校课程类型
 exports.getClassTypeBySchoolId=function(schoolid,callback){
-    classtypeModel.find({"schoolid":new mongodb.ObjectId(schoolid),"is_using":true},function(err,data){
+    classtypeModel.find({"schoolid":new mongodb.ObjectId(schoolid),"is_using":true})
+        .populate(schoolid)
+    .exec(function(err,data){
         if(err||!data){
             return callback("查询出错："+err);
         }else{
@@ -137,9 +139,11 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
                         classdesc: r.classdesc,
                         price: r.price,
                         carmodel: r.carmodel,
-                    cartype:r.cartype,
+                        cartype:r.cartype,
                         classdesc:r.classdesc,
-                    vipserverlist:r.vipserverlist
+                        vipserverlist:r.vipserverlist,
+                        classchedule: r.classchedule,
+                        applycount: r.applycount
 
 
                     }

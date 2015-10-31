@@ -473,11 +473,11 @@ exports.updateCoachInfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    if(updateuserinfo.driveschoolid.id!=undefined){
+    if(updateuserinfo.driveschoolid!=undefined && updateuserinfo.driveschoolid.id!=undefined){
         updateuserinfo.driveschoolid=updateuserinfo.driveschoolid.id;
         console.log(updateuserinfo.driveschoolid);
     }
-    if(updateuserinfo.trainfield.id!=undefined){
+    if(updateuserinfo.trainfield!=undefined && updateuserinfo.trainfield.id!=undefined){
         updateuserinfo.trainfield=updateuserinfo.trainfield.id;
         console.log(updateuserinfo.trainfield);
     }
