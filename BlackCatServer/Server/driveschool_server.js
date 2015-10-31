@@ -131,7 +131,13 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
                 data.forEach(function(r){
                     var oneclass={
                         calssid: r._id,
-                        schoolinfo: r.schoolid,
+                        schoolinfo: {
+                            schoolid: r.schoolid._id,
+                            name: r.schoolid.name,
+                            latitude: r.schoolid.latitude,
+                            longitude: r.schoolid.longitude,
+                            address: r.schoolid.address,
+                        },
                         classname: r.classname,
                         begindate: r.begindate,
                         enddate: r.enddate,
@@ -143,7 +149,8 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
                         classdesc:r.classdesc,
                         vipserverlist:r.vipserverlist,
                         classchedule: r.classchedule,
-                        applycount: r.applycount
+                        applycount: r.applycount,
+
                     }
                     classlist.push(oneclass)
                 })
