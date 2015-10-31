@@ -645,6 +645,7 @@ exports.getCoachClassInfo=function(userid,callback){
                     classlist.forEach(function(r,index){
                         var ind=data.serverclasslist.indexOf(r._id);
                         var listone={
+                            classid: r._id,
                             classname: r.classname,
                             price: r.price,
                             onsaleprice: r.price,
