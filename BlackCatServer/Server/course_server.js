@@ -149,7 +149,7 @@ syncReservationdesc=function(userid,callback){
                     reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":userdata.subject.subjectid
                     ,"$or":[{reservationstate:appTypeEmun.ReservationState.applying},{reservationstate:appTypeEmun.ReservationState.applyconfirm},
                             {reservationstate:appTypeEmun.ReservationState.unconfirmfinish} ]})
-                        .select("coursehour subject")
+                        .select("_id coursehour subject")
                         .sort({begintime:1})
                     .exec(function(err,reservationlist){
                         var   currentcoursecount=userdata.subject.subjectid==2?userdata.subjecttwo.finishcourse :userdata.subjectthree.finishcourse
@@ -160,7 +160,7 @@ syncReservationdesc=function(userid,callback){
                                 var tempendcount=currentcoursecount;
                                 var desc=userdata.subject.name +"第"+ (tempcount)+" --"+(tempendcount)+"课时";
                                 reservationmodel.update({_id:new mongodb.ObjectId(r._id)},{$set:{startclassnum:tempcount,
-                                    endclassnum:tempendcount, courseprocessdesc:desc}})
+                                    endclassnum:tempendcount, courseprocessdesc:desc}},{safe: true, multi: true})
                             })
                         })
                     })
@@ -285,6 +285,7 @@ exports.postReservation=function(reservationinfo,callback){
                             if (err) {
                                 return callback("保存预约出错：" + err);
                             }
+                            syncReservationdesc(data._id);
                             // console.log("返回成果");
                             return callback(null, "success");
                         });

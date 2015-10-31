@@ -95,6 +95,7 @@ exports.getNeartrainingfield=function(latitude, longitude, radius ,callback){
 
 };
 
+// 获取驾校下面的练车场 给教练用
 exports.getSchoolTrainingField=function(schoolid,callback){
     trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,data){
         if(err||!data){
@@ -104,11 +105,11 @@ exports.getSchoolTrainingField=function(schoolid,callback){
             var list=[];
             data.forEach(function(r,index){
                 var listone={
-                    _id: r._id,
-                    fieldname: r.fieldname,
-                    latitude: r.latitude,
-                    longitude: r.longitude,
-                    address: r.address
+                    id: r._id,
+                    name: r.fieldname,
+                    //latitude: r.latitude,
+                    //longitude: r.longitude,
+                   // address: r.address
                 }
                 list.push(listone);
             })
