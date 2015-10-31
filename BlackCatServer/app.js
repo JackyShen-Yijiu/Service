@@ -88,7 +88,7 @@ if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     //console.log(err);
-    log.writeLog(req, err.message, logType.err);
+    log.writeLog(req, err, logType.err);
     res.json(new BaseReturnInfo(0, "服务器内部错误", ""));
     /*res.render('error', {
      message: err.message,
@@ -101,7 +101,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  log.writeLog(req,err,logType.err.message);
+  log.writeLog(req,err,logType.err);
   res.json(new BaseReturnInfo(0,"服务器内部错误",""));
   /*res.render('error', {
     message: err.message,
