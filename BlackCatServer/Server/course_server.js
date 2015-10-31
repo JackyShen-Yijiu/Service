@@ -431,7 +431,14 @@ exports.userfinishReservation=function(reservationinfo,callback){
         resdata.reservationstate=appTypeEmun.ReservationState.ucomments;
         resdata.learningcontent=reservationinfo.learningcontent;
         resdata.contentremarks=reservationinfo.contentremarks;
-        resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent +" 第"+ (resdata.startclassnum)+" --"+( resdata.endclassnum)+"课时";
+        if (resdata.startclassnum!=undefined && resdata.startclassnum !=undefined)
+        {
+        resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent +
+            " 第"+ (resdata.startclassnum)+" --"+( resdata.endclassnum)+"课时";
+        }
+        else{
+            resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent;
+        }
         resdata.finishtime=new Date();
         resdata.save(function(err,newdata){
             if(err){
