@@ -33,18 +33,20 @@ var ReservationSchema=new Schema({
         attitudelevel:Number, //态度级别
         timelevel:Number,  //时间观念星级
         abilitylevel:Number,  // 能力星级
-        commentcontent:String  } , // 评论内容
+        commentcontent:String,
+        commenttime:Date} , // 评论内容
     //教练是否评论
     is_coachcomment:{ type: Boolean, default: false},
     coachcomment:{starlevel :Number, // 星级
         attitudelevel:Number, //态度级别
         timelevel:Number,  //时间观念星级
         abilitylevel:Number,  // 能力星级
-        commentcontent:String  } , // 评论内容
+        commentcontent:String,
+    commenttime:Date} , // 评论内容
     //是否投诉
     is_complaint:{ type: Boolean, default: false},
     // 投诉内容
-    complaint :{reason:String,complaintcontent:String},
+    complaint :{reason:String,complaintcontent:String,complainttime:Date},
     // 取消预约原因
     cancelreason:{reason:String,cancelcontent:String},
     // 是否接送

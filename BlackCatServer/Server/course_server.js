@@ -489,6 +489,7 @@ exports.userComplaint=function(complaintinfo,callback){
         resdata.is_complaint=true;
         resdata.complaint.reason=complaintinfo.reason;
         resdata.complaint.complaintcontent=complaintinfo.complaintcontent;
+        resdata.complaint.complainttime=Date.now();
         resdata.save(function(err,data){
             if(err){
                 return callback("保存投诉出错");
@@ -516,6 +517,7 @@ exports.userComment=function(commnetinfo,callback){
         resdata.comment.timelevel=commnetinfo.timelevel;
         resdata.comment.abilitylevel=commnetinfo.abilitylevel;
         resdata.comment.commentcontent=commnetinfo.commentcontent;
+        resdata.comment.commenttime=Date.now();
         resdata.reservationstate=appTypeEmun.ReservationState.finish;
         resdata.save(function(err,data){
             if(err){
@@ -547,6 +549,7 @@ exports.coachComment=function(commnetinfo,callback){
         resdata.coachcomment.timelevel=commnetinfo.timelevel;
         resdata.coachcomment.abilitylevel=commnetinfo.abilitylevel;
         resdata.coachcomment.commentcontent=commnetinfo.commentcontent;
+        resdata.coachcomment.commenttime=Date.now();
         resdata.save(function(err,data){
             if(err){
                 return callback("保存评论出错");
