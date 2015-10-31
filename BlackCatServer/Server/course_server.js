@@ -568,7 +568,7 @@ exports.getSameTimeStudents=function(reservationid,userid,index,callback){
             return callback("查询预约信息出錯:"+err);
         }
         if (resdata.trainfieldid===undefined){
-            return callback("无法确认用户的练车信息");
+            return callback(null,[]);
         }
         reservationmodel.find({"trainfieldid":new mongodb.ObjectId(resdata.trainfieldid),"begintime":resdata.begintime,
         "reservationstate":{"$ne":2,"$ne":4}})
@@ -864,7 +864,10 @@ exports.coachHandleInfo=function(handleinfo,callback){
                             if(index2!=-1){
                                 coursedata.coursereservation.splice(index2,1);
                             }
-                            coursedata.save(function(err,data){
+                            coursedata.save(function(err){
+                                if(err){
+                                    console.log(err);
+                                }
 
                             });
                         })
