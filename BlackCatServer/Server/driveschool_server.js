@@ -121,7 +121,7 @@ exports.getSchoolTrainingField=function(schoolid,callback){
 //根据驾校id 获取驾校课程类型
 exports.getClassTypeBySchoolId=function(schoolid,callback){
     classtypeModel.find({"schoolid":new mongodb.ObjectId(schoolid),"is_using":true})
-        .populate(schoolid)
+        .populate("schoolid"," name  latitude longitude address")
     .exec(function(err,data){
         if(err||!data){
             return callback("查询出错："+err);
@@ -131,7 +131,7 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
                 data.forEach(function(r){
                     var oneclass={
                         calssid: r._id,
-                        schoolid: r.schoolid,
+                        schoolinfo: r.schoolid,
                         classname: r.classname,
                         begindate: r.begindate,
                         enddate: r.enddate,
@@ -144,8 +144,6 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
                         vipserverlist:r.vipserverlist,
                         classchedule: r.classchedule,
                         applycount: r.applycount
-
-
                     }
                     classlist.push(oneclass)
                 })
