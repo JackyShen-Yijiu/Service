@@ -316,7 +316,7 @@ exports.getuserReservation=function(userid,subjectid,callback){
                     var listone= {
                         _id: r._id,
                         coachid: r.coachid,
-                        reservationstate: is_comment?appTypeEmun.ReservationState.finish: r.reservationstate,
+                        reservationstate: r.is_comment?appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         subject: r.subject,
                         is_shuttle: r.is_shuttle,

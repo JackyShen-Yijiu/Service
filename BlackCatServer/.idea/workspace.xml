@@ -53,11 +53,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="course_server.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="course_server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/course_server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="821" column="50" selection-start-line="821" selection-start-column="50" selection-end-line="821" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.5618497">
+              <caret line="318" column="44" selection-start-line="318" selection-start-column="44" selection-end-line="318" selection-end-column="44" />
               <folding>
                 <element signature="e#0#40#0" expanded="false" />
                 <element signature="e#468#522#0" expanded="false" />
@@ -66,10 +66,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user_server.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="user_server.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/user_server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.87745667">
+            <state vertical-scroll-proportion="0.0">
               <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
               <folding>
                 <element signature="e#20670#21963#0" expanded="false" />
@@ -227,8 +227,8 @@
         <option value="$PROJECT_DIR$/custommodel/returncoachinfo.js" />
         <option value="$PROJECT_DIR$/models/test.js" />
         <option value="$PROJECT_DIR$/app/apiv1/course_controller.js" />
-        <option value="$PROJECT_DIR$/Server/course_server.js" />
         <option value="$PROJECT_DIR$/Server/user_server.js" />
+        <option value="$PROJECT_DIR$/Server/course_server.js" />
       </list>
     </option>
   </component>
@@ -1005,17 +1005,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/course_server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="821" column="50" selection-start-line="821" selection-start-column="50" selection-end-line="821" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#40#0" expanded="false" />
-            <element signature="e#468#522#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.594595">
@@ -1050,11 +1039,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/user_server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87745667">
+        <state vertical-scroll-proportion="0.0">
           <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
           <folding>
             <element signature="e#20670#21963#0" expanded="false" />
             <element signature="e#46083#50230#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/course_server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5618497">
+          <caret line="318" column="44" selection-start-line="318" selection-start-column="44" selection-end-line="318" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
+            <element signature="e#468#522#0" expanded="false" />
           </folding>
         </state>
       </provider>
