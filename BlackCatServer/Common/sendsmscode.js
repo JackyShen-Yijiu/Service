@@ -7,9 +7,23 @@ var request = require('superagent');
 
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
 
+exports.addsmscode=function(mobile,callback){
+    var smscodeInstace=new smsVerifyCodeModel();
+    smscodeInstace.mobile=mobile;
+    smscodeInstace.smsCode=8888;
+    smscodeInstace.createdTime=Date.now();
+    smscodeInstace.save(function(err,user){
+        if(err){
+            if(callback!=undefined){
+                return callback(err);
+            }
+        }
+        return  callback(null,8888);
+    })
+}
 exports.sendsmscode=function(mobile,callback) {
     var smscode=parseInt(Math.random()*90000+10000);
-    console.log("sendsmscode mobile:"+mobile);
+    //console.log("sendsmscode mobile:"+mobile);
     var mobilecode=mobile;
     var smscodeInstace=new smsVerifyCodeModel();
     smscodeInstace.mobile=mobile;

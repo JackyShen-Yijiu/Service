@@ -2,6 +2,7 @@
  * Created by metis on 2015-08-31.
  */
 var smscodemodule=require('../Common/sendsmscode').sendsmscode;
+var addtestsmscode=require('../Common/sendsmscode').addsmscode;
 var mongodb = require('../models/mongodb.js');
 var geolib = require('geolib');
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
@@ -1217,77 +1218,81 @@ exports.personalSetting=function(settingifo,callback){
 }
 //更新教练信息
 exports.updateCoachServer=function(updateinfo,callback){
-    coachmode.findById(new mongodb.ObjectId(updateinfo.coachid),function(err,coachdata){
-        if (err||!coachdata){
-            return  callback("查询教练出错："+err);
-        }
-        coachdata.name=updateinfo.name ? updateinfo.name:coachdata.name;
-        coachdata.Gender=updateinfo.gender ? updateinfo.gender:coachdata.Gender;
-        coachdata.introduction=updateinfo.introduction ? updateinfo.introduction:coachdata.introduction;
-        //coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
-        coachdata.headportrait=updateinfo.headportrait ? updateinfo.headportrait:coachdata.headportrait;
-        coachdata.address=updateinfo.address ? updateinfo.address:coachdata.address;
-        coachdata.subject=updateinfo.subject ? updateinfo.subject:coachdata.subject;
-        coachdata.Seniority=updateinfo.Seniority ? updateinfo.Seniority:coachdata.Seniority;
-        coachdata.passrate=updateinfo.passrate ? updateinfo.passrate:coachdata.passrate;
-        //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
-        //coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
-        coachdata.idcardnumber=updateinfo.idcardnumber ? updateinfo.idcardnumber:coachdata.idcardnumber;
-        coachdata.drivinglicensenumber=updateinfo.drivinglicensenumber ? updateinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
-        coachdata.coachnumber=updateinfo.coachnumber ? updateinfo.coachnumber:coachdata.coachnumber;
-        //coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
-        coachdata.platenumber=updateinfo.platenumber ? updateinfo.platenumber:coachdata.platenumber;
-        //coachdata.shuttlemsg=updateinfo.shuttlemsg ? updateinfo.shuttlemsg:coachdata.shuttlemsg;
-        //coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
-        if (updateinfo.driveschoolid){
-            schoolModel.findById(new mongodb.ObjectId(updateinfo.driveschoolid),function(err,schooldata){
-                if(err||!schooldata){
-                    return callback("查询驾校出错："+err);
-                }
-                coachdata.driveschool=new mongodb.ObjectId(updateinfo.driveschoolid);
-                coachdata.driveschoolinfo.id=updateinfo.driveschoolid;
-                coachdata.driveschoolinfo.name=schooldata.name;
-                coachdata.save(function(err,data){
-                    if(err)
-                    {
-                        return callback("保存教练信息出错："+err);
+    try {
+        coachmode.findById(new mongodb.ObjectId(updateinfo.coachid), function (err, coachdata) {
+            if (err || !coachdata) {
+                return callback("查询教练出错：" + err);
+            }
+            coachdata.name = updateinfo.name ? updateinfo.name : coachdata.name;
+            coachdata.Gender = updateinfo.gender ? updateinfo.gender : coachdata.Gender;
+            coachdata.introduction = updateinfo.introduction ? updateinfo.introduction : coachdata.introduction;
+            //coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
+            coachdata.headportrait = updateinfo.headportrait ? updateinfo.headportrait : coachdata.headportrait;
+            coachdata.address = updateinfo.address ? updateinfo.address : coachdata.address;
+            coachdata.subject = updateinfo.subject ? updateinfo.subject : coachdata.subject;
+            coachdata.Seniority = updateinfo.Seniority ? updateinfo.Seniority : coachdata.Seniority;
+            coachdata.passrate = updateinfo.passrate ? updateinfo.passrate : coachdata.passrate;
+            //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
+            //coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
+            coachdata.idcardnumber = updateinfo.idcardnumber ? updateinfo.idcardnumber : coachdata.idcardnumber;
+            coachdata.drivinglicensenumber = updateinfo.drivinglicensenumber ? updateinfo.drivinglicensenumber : coachdata.drivinglicensenumber;
+            coachdata.coachnumber = updateinfo.coachnumber ? updateinfo.coachnumber : coachdata.coachnumber;
+            //coachdata.carmodel=updateinfo.carmodel ? updateinfo.carmodel:coachdata.carmodel;
+            coachdata.platenumber = updateinfo.platenumber ? updateinfo.platenumber : coachdata.platenumber;
+            //coachdata.shuttlemsg=updateinfo.shuttlemsg ? updateinfo.shuttlemsg:coachdata.shuttlemsg;
+            //coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
+            if (updateinfo.driveschoolid) {
+                schoolModel.findById(new mongodb.ObjectId(updateinfo.driveschoolid), function (err, schooldata) {
+                    if (err || !schooldata) {
+                        return callback("查询驾校出错：" + err);
                     }
-                    return callback(null,"success");
-                })
+                    coachdata.driveschool = new mongodb.ObjectId(updateinfo.driveschoolid);
+                    coachdata.driveschoolinfo.id = updateinfo.driveschoolid;
+                    coachdata.driveschoolinfo.name = schooldata.name;
+                    coachdata.save(function (err, data) {
+                        if (err) {
+                            return callback("保存教练信息出错：" + err);
+                        }
+                        return callback(null, "success");
+                    })
 
-            })
-        } else if (updateinfo.trainfield){
-            trainfieldModel.findById(new mongodb.ObjectId(updateinfo.trainfield),function(err,trainfielddata){
-              if(err||!trainfielddata){
-                   return callback("查询训练场："+err);
-              }
-                coachdata.trainfield =new mongodb.ObjectId(updateinfo.trainfield);
-                coachdata.trainfieldlinfo.id=updateinfo.trainfield;
-                coachdata.trainfieldlinfo.name=trainfielddata.fieldname;
-                coachdata.latitude=trainfielddata.latitude;
-                coachdata.longitude=trainfielddata.longitude;
-                coachdata.loc.coordinates=[trainfielddata.longitude,trainfielddata.latitude];
-                coachdata.save(function(err,data){
-                    if(err)
-                    {
-                        return callback("保存教练信息出错："+err);
+                })
+            } else if (updateinfo.trainfield) {
+                trainfieldModel.findById(new mongodb.ObjectId(updateinfo.trainfield), function (err, trainfielddata) {
+                    if (err || !trainfielddata) {
+                        return callback("查询训练场：" + err);
                     }
-                    return callback(null,"success");
+                    coachdata.trainfield = new mongodb.ObjectId(updateinfo.trainfield);
+                    coachdata.trainfieldlinfo.id = updateinfo.trainfield;
+                    coachdata.trainfieldlinfo.name = trainfielddata.fieldname;
+                    coachdata.latitude = trainfielddata.latitude;
+                    coachdata.longitude = trainfielddata.longitude;
+                    coachdata.loc.coordinates = [trainfielddata.longitude, trainfielddata.latitude];
+                    coachdata.save(function (err, data) {
+                        if (err) {
+                            return callback("保存教练信息出错：" + err);
+                        }
+                        return callback(null, "success");
+                    })
+
                 })
+            }
+            else {
+                coachdata.save(function (err, data) {
+                    if (err) {
+                        return callback("保存教练信息出错：" + err);
+                    }
+                    return callback(null, "success");
+                })
+            }
 
-            })
-        }
-        else{
-            coachdata.save(function(err,data){
-                if(err)
-                {
-                    return callback("保存教练信息出错："+err);
-                }
-                return callback(null,"success");
-            })
-        }
-
-    });
+        });
+    }catch (err)
+    {
+        console.log("保存病人信息错误");
+        console.log(err);
+        return callback("保存病人信息错误:"+err);
+    }
 };
 
 //获取用户信息
