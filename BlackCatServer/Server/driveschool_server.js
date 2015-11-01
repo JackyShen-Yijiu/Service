@@ -24,6 +24,7 @@ exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
                     {latitude: latitude, longitude: longitude},
                     {latitude: r.latitude, longitude: r.longitude},
                     10),
+                    id: r._id,
                     schoolid: r._id,
                     name:r.name,
                     logoimg:r.logoimg,
