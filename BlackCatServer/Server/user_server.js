@@ -51,19 +51,25 @@ exports.getCodebyMolile=function(mobilenumber,callback){
                         if(err){
                             return callback("Error occured while removing: " + err,"");
                         }
+                        if(mobilenumber.substr(0,5)=="12306"){
+                            addtestsmscode(mobilenumber,callback)
+                        }else{
                         smscodemodule(mobilenumber,function(err,response){
                            // console.log('���óɹ�');
                             return  sendSmsResponse(err,response,callback);
-                        });
+                        });}
                     });
                 }
 
             }
             else{
                 // now send
+                if(mobilenumber.substr(0,5)=="12306"){
+                    addtestsmscode(mobilenumber,callback)
+                }else{
                 smscodemodule(mobilenumber, function(error, response){
                  return   sendSmsResponse( error, response,callback);
-                });
+                });}
             }
 
 
