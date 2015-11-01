@@ -57,6 +57,7 @@ exports.getSchoolByName=function(schoolname,callback){
                 driveschoollist=[];
                 driveschool.forEach(function(r, idx){
                     var oneschool= {
+                        id: r._id,
                         schoolid: r._id,
                         name:r.name,
                         logoimg:r.logoimg,
