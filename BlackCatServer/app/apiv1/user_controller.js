@@ -442,7 +442,7 @@ exports.postPersonalSetting=function(req,res){
 }
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
-    console.log(req.body);
+    //console.log(req.body);
     var updateuserinfo ={
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
@@ -473,14 +473,15 @@ exports.updateCoachInfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    if(updateuserinfo.driveschoolid!=undefined && updateuserinfo.driveschoolid.id!=undefined){
-        updateuserinfo.driveschoolid=updateuserinfo.driveschoolid.id;
-        console.log(updateuserinfo.driveschoolid);
+    if(updateuserinfo.driveschoolid!=undefined && updateuserinfo.driveschoolid.schoolid!=undefined){
+        updateuserinfo.driveschoolid=updateuserinfo.driveschoolid.schoolid;
+        //console.log(updateuserinfo.driveschoolid);
     }
     if(updateuserinfo.trainfield!=undefined && updateuserinfo.trainfield.id!=undefined){
         updateuserinfo.trainfield=updateuserinfo.trainfield.id;
         console.log(updateuserinfo.trainfield);
     }
+    //console.log(updateuserinfo)
     userserver.updateCoachServer(updateuserinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
