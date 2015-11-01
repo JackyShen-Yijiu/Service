@@ -302,7 +302,8 @@ exports.postReservation=function(reservationinfo,callback){
 //获取用户的预约信息
 exports.getuserReservation=function(userid,subjectid,callback){
     reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid})
-        .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc courseprocessdesc trainfieldlinfo")
+        .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
+        "courseprocessdesc trainfieldlinfo  is_comment")
         .populate("coachid","_id name driveschoolinfo headportrait")
        .sort({begintime:-1})
         .exec(function(err,reservationlist){
@@ -315,7 +316,7 @@ exports.getuserReservation=function(userid,subjectid,callback){
                     var listone= {
                         _id: r._id,
                         coachid: r.coachid,
-                        reservationstate: r.reservationstate,
+                        reservationstate: is_comment?appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         subject: r.subject,
                         is_shuttle: r.is_shuttle,
@@ -433,11 +434,12 @@ exports.userfinishReservation=function(reservationinfo,callback){
         resdata.contentremarks=reservationinfo.contentremarks;
         if (resdata.startclassnum!=undefined && resdata.startclassnum !=undefined)
         {
-        resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent +
-            " 第"+ (resdata.startclassnum)+" --"+( resdata.endclassnum)+"课时";
+        resdata.courseprocessdesc=resdata.subject.name+
+            " 第"+ (resdata.startclassnum)+" --"+( resdata.endclassnum)+"课时" +"  "+
+        reservationinfo.learningcontent?reservationinfo.learningcontent:"";
         }
         else{
-            resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent;
+            resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent?reservationinfo.learningcontent:"";
         }
         resdata.finishtime=new Date();
         resdata.save(function(err,newdata){
@@ -518,7 +520,9 @@ exports.userComment=function(commnetinfo,callback){
         resdata.comment.abilitylevel=commnetinfo.abilitylevel;
         resdata.comment.commentcontent=commnetinfo.commentcontent;
         resdata.comment.commenttime=Date.now();
-        resdata.reservationstate=appTypeEmun.ReservationState.finish;
+        if(resdata.is_coachcomment){
+            resdata.reservationstate=appTypeEmun.ReservationState.finish;
+        }
         resdata.save(function(err,data){
             if(err){
                 return callback("保存评论出错");
@@ -550,6 +554,9 @@ exports.coachComment=function(commnetinfo,callback){
         resdata.coachcomment.abilitylevel=commnetinfo.abilitylevel;
         resdata.coachcomment.commentcontent=commnetinfo.commentcontent;
         resdata.coachcomment.commenttime=Date.now();
+        if(resdata.is_comment){
+            resdata.reservationstate=appTypeEmun.ReservationState.finish;
+        }
         resdata.save(function(err,data){
             if(err){
                 return callback("保存评论出错");
@@ -681,7 +688,8 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
     var datetomorrow = datenow.addDays(1);
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
-        .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc courseprocessdesc")
+        .select("userid reservationstate reservationcreatetime begintime endtime subject " +
+        "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment")
         .populate( "userid"," _id  name headportrait ")
         .sort({"begintime":1})
         .exec(function(err,data){
@@ -694,7 +702,7 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                     var listone= {
                         _id: r.id,
                         userid: r.userid,
-                        reservationstate: r.reservationstate,
+                        reservationstate: r.is_coachcomment?appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         courseprocessdesc: r.courseprocessdesc,
                         begintime :(r.begintime).toFormat("HH:00"),
@@ -738,11 +746,11 @@ exports.saveCoachLeaveInfo=function(leaveinfo ,callback){
 exports.getCoachReservationList=function(queryinfo,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(queryinfo.coachid)})
         .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
-        " courseprocessdesc trainfieldlinfo")
+        " courseprocessdesc trainfieldlinfo  is_coachcomment")
         .populate("userid","_id  name headportrait")
         .skip((queryinfo.index-1)*10)
         .limit(10)
-        .sort({"begintime":-1})
+        .sort({"reservationcreatetime":-1})
         .exec(function(err,data){
             if(err){
                 return callback("查询数据出错："+err);
@@ -753,7 +761,7 @@ exports.getCoachReservationList=function(queryinfo,callback){
                     var listone= {
                         _id: r._id,
                         userid: r.userid,
-                        reservationstate: r.reservationstate,
+                        reservationstate: r.is_coachcomment?appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         subject: r.subject,
                         is_shuttle: r.is_shuttle,
@@ -786,12 +794,14 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment")
         .populate("coachid","_id  name headportrait  driveschoolinfo")
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
             }
+            resdata.reservationstate=is_comment?appTypeEmun.ReservationState.finish: resdata.reservationstate,
+                resdata.is_comment=undefined;
             return callback(null,resdata);})
 
 }
@@ -799,7 +809,7 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         coachid:new mongodb.ObjectId(coachid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason subject")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason subject is_coachcomment")
         .populate("userid","_id  name headportrait displayuserid")
         .exec(function(err,resdata){
             if(err){
@@ -808,6 +818,8 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
             if(resdata.reservationstate!=appTypeEmun.ReservationState.applycancel&&resdata.reservationstate!=appTypeEmun.ReservationState.applyrefuse){
                 resdata.cancelreason=undefined;
             }
+            resdata.reservationstate=resdata.is_coachcomment?appTypeEmun.ReservationState.finish: resdata.reservationstate,
+                resdata.is_coachcomment=undefined;
            // console.log(resdata);
             return callback(null,resdata);})
 
