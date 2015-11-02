@@ -158,7 +158,15 @@ syncReservationdesc=function(userid,callback){
                                 var  tempcount = currentcoursecount+1;
                                 currentcoursecount=currentcoursecount+ r.coursehour;
                                 var tempendcount=currentcoursecount;
-                                var desc=userdata.subject.name +"第"+ (tempcount)+" --"+(tempendcount)+"课时";
+                                var desc="";
+                                if(tempcount==tempendcount){
+                                    desc=userdata.subject.name +"第"+ (tempcount)+"课时";
+                                }else if(tempendcount-tempcount==1){
+                                    desc=userdata.subject.name +"第"+ (tempcount)+","+(tempendcount)+"课时";
+                                }
+                                else{
+                                    desc=userdata.subject.name +"第"+ (tempcount)+"--"+(tempendcount)+"课时";
+                                }
                                 reservationmodel.update({_id:new mongodb.ObjectId(r._id)},{$set:{startclassnum:tempcount,
                                     endclassnum:tempendcount, courseprocessdesc:desc}},{safe: true, multi: true})
                             })
@@ -434,8 +442,15 @@ exports.userfinishReservation=function(reservationinfo,callback){
         resdata.contentremarks=reservationinfo.contentremarks;
         if (resdata.startclassnum!=undefined && resdata.startclassnum !=undefined)
         {
-        resdata.courseprocessdesc=resdata.subject.name+
-            " 第"+ (resdata.startclassnum)+" --"+( resdata.endclassnum)+"课时" +"  "+
+            var tempstr="";
+            if (resdata.startclassnum ==resdata.endclassnum){
+                tempstr= " 第"+ (resdata.startclassnum)+"课时";
+            }else if(resdata.endclassnum-resdata.startclassnum==1){
+                tempstr= " 第"+ (resdata.startclassnum)+","+( resdata.endclassnum)+"课时";
+            }else{
+                tempstr= " 第"+ (resdata.startclassnum)+"--"+( resdata.endclassnum)+"课时";
+            }
+                resdata.courseprocessdesc=resdata.subject.name+ tempstr+"  "+
         reservationinfo.learningcontent?reservationinfo.learningcontent:"";
         }
         else{
@@ -453,11 +468,13 @@ exports.userfinishReservation=function(reservationinfo,callback){
                     data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
                     data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
                     data.subjecttwo.progress=resdata.courseprocessdesc;
+                    data.subjecttwo.reservationid=reservationinfo.reservationid;
                 }
                 if (newdata.subject.subjectid==3){
                     data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
                     data.subjectthree.finishcourse=data.subjectthree.finishcourse+newdata.coursehour;
                     data.subjectthree.progress=resdata.courseprocessdesc;
+                    data.subjectthree.reservationid=reservationinfo.reservationid;
                 }
                 //console.log(data);
                 data.save(function(err){

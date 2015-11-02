@@ -117,7 +117,8 @@ v1.post("/courseinfo/userreservationcourse",ensureAuthorizedController.ensureAut
 // 获取我的订单 用户
 v1.get("/courseinfo/getmyreservation",ensureAuthorizedController.ensureAuthorized,courseController.getuserresveration);
 // 根据预约id获取详情
-v1.get("/courseinfo/userreservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,courseController.userGetReservationInfo)
+v1.get("/courseinfo/userreservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,
+    courseController.userGetReservationInfo)
 //获取课程的详信息
 v1.get("/courseinfo/getcourse/:courseid",ensureAuthorizedController.ensureAuthorized,courseController.getCourseDeatil);
 //用户取消预约
