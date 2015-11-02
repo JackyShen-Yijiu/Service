@@ -108,6 +108,8 @@ v1.get("/getschoolbyname",driveSchoolController.getSchoolByName);
 
 
 //==============================预约课程(学生端)=========================================
+// 获取我的预约进度
+//v1.get("/userinfo/getmyprogress",ensureAuthorizedController.ensureAuthorized,userController.getMyProgress);
 // 获取我当前可以预约的教练
 v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensureAuthorized,userController.getUsefulCoachList);
 // 获取教练课程安排

@@ -168,7 +168,10 @@ syncReservationdesc=function(userid,callback){
                                     desc=userdata.subject.name +"第"+ (tempcount)+"--"+(tempendcount)+"课时";
                                 }
                                 reservationmodel.update({_id:new mongodb.ObjectId(r._id)},{$set:{startclassnum:tempcount,
-                                    endclassnum:tempendcount, courseprocessdesc:desc}},{safe: true, multi: true})
+                                    endclassnum:tempendcount, courseprocessdesc:desc}},{safe: true, multi: true},
+                                function(err,data){
+                                    console.log(data);
+                                })
                             })
                         })
                     })

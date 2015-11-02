@@ -54,7 +54,9 @@ exports.ReservationState={
     //��ȷ����ɣ�������
     ucomments:6,
     // ����� �γ̽���
-    finish:7
+    finish:7,
+    //系统取消
+    systemcancel:8
 }
 // ����״̬��Ϣ
 exports.ExamintionSatte={
