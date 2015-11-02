@@ -226,7 +226,7 @@ exports.postReservation=function(reservationinfo,callback){
                 if (userdata.subject.subjectid == 2) {
 
                     //判断用户预约课程数量
-                    if (userdata.subjecttwo.reservation + coursecount > userdata.subjecttwo.totalcourse) {
+                    if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation + coursecount > userdata.subjecttwo.totalcourse) {
                         return callback("预约课程数量超出最大课程");
                     }
 
@@ -235,7 +235,7 @@ exports.postReservation=function(reservationinfo,callback){
 
                 }
                 else if (userdata.subject.subjectid == 3) {
-                    if (userdata.subjectthree.reservation + coursecount > userdata.subjectthree.totalcourse) {
+                    if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation + coursecount > userdata.subjectthree.totalcourse) {
                         return callback("预约课程数量超出最大课程");
                     }
                     currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjecttwo.subjectthree;
