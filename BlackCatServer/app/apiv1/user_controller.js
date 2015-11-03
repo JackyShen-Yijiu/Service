@@ -222,6 +222,25 @@ exports.postCoachSetClass=function(req,res){
     });
 
 }
+//获取我的学车进度
+exports.getMyProgress=function(req,res){
+var userid =req.query.userid;
+if(userid===undefined){
+    return res.json(
+        new BaseReturnInfo(0,"参数不完整",""));
+}
+if(userid!=req.userId){
+    return res.json(
+        new BaseReturnInfo(0,"无法确认请求用户",""));
+};
+userserver.getMyProgress(userid,function(err,data){
+    if(err){
+        return res.json(new BaseReturnInfo(0,err,""));
+    }
+    return res.json(new BaseReturnInfo(1,"",data));
+});
+}
+
 // 获取可以预约的教练
 exports.getUsefulCoachList=function(req,res){
     var  index=req.params.index?req.params.index:1;
@@ -294,6 +313,7 @@ exports.postapplySchool=function(req,res){
         schoolid:req.body.schoolid,
         coachid:req.body.coachid,
         classtypeid:req.body.classtypeid,
+        userpic:req.body.userpic,
         carmodel:req.body.carmodel
         };
     if (applyinfo.name===undefined||applyinfo.idcardnumber === undefined||
@@ -307,7 +327,10 @@ exports.postapplySchool=function(req,res){
         applyinfo.carmodel=JSON.parse(applyinfo.carmodel.toString());
        // console.log(applyinfo);
     }
-
+    if(applyinfo.userpic!=undefined &&applyinfo.userpic.length>0){
+        applyinfo.userpic=JSON.parse(applyinfo.userpic);
+        //console.log(updateuserinfo);
+    }
     //console.log(" user apply body:"+req.body.carmodel.modelsid);
     //sconsole.log(" applyinfo:"+applyinfo.carmodel.modelsid);
     if(applyinfo.userid!=req.userId){
@@ -349,7 +372,7 @@ exports.updateUserInfo=function(req,res){
     };
     if(updateuserinfo.headportrait!=undefined &&updateuserinfo.headportrait.length>0){
     updateuserinfo.headportrait=JSON.parse(updateuserinfo.headportrait);
-    console.log(updateuserinfo);
+    //console.log(updateuserinfo);
     }
     userserver.updateUserServer(updateuserinfo,function(err,data){
         if(err){

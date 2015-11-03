@@ -20,6 +20,10 @@ var  UserSchema=new Schema({
         thumbnailpic:{type:String,default:""},
         width:{type:String,default:""},
         height:{type:String,default:""}},
+    userpic:{ originalpic:{type:String,default:""},  //用户报名头像
+        thumbnailpic:{type:String,default:""},
+        width:{type:String,default:""},
+        height:{type:String,default:""}},
     subject:{subjectid:{type:Number,default:0},
         name:{type:String,default:"准备报考"}}, // 要初始化 0 准备报考   当前科目
     carmodel:{modelsid:Number,name:String,code:String}, //报考车型 c1 c2

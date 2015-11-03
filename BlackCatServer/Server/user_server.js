@@ -943,6 +943,18 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
 
     });
 }
+
+// 获取学习进度
+exports.getMyProgress=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("subject subjecttwo subjectthree")
+        .exec(function(err,userdata){
+            if(err){
+                return  callback("查询错误："+err);
+            }
+            return callback(null,userdata);
+        })
+}
 // 获取用户的报名状态
   exports.getMyApplyState=function(userid,callback){
       usermodel.findById(new mongodb.ObjectId(userid))
@@ -1053,7 +1065,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.telephone=applyinfo.telephone;
                   userdata.address=applyinfo.address;
                   userdata.carmodel=applyinfo.carmodel;
-
+                  userdata.userpic=applyinfo.userpic,
                   userdata.applyschool=applyinfo.schoolid;
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
                   userdata.applyschoolinfo.name=schooldata.name;
