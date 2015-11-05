@@ -57,3 +57,6 @@ exports.HeadLineNewsModel=require("./headlinenews");
 exports.UserInfoModel=require("./userinfo");
 exports.QuestionModel=require('./question');
 exports.SystemLogModel=require("./apierrorlog");
+exports.VipServerModel=require("./vipserver");
+exports.SequenceModel=require("./sequence");
+

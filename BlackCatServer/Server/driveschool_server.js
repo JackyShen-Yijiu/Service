@@ -124,6 +124,7 @@ exports.getSchoolTrainingField=function(schoolid,callback){
 exports.getClassTypeBySchoolId=function(schoolid,callback){
     classtypeModel.find({"schoolid":new mongodb.ObjectId(schoolid),"is_using":true})
         .populate("schoolid"," name  latitude longitude address")
+        .populate("vipserverlist"," name  color id")
     .exec(function(err,data){
         if(err||!data){
             return callback("查询出错："+err);

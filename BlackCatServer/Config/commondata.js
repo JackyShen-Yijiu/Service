@@ -62,11 +62,13 @@ exports.carmodels=[
 exports.vipserver=[
     {
         id:0,
-        name:"接送"
+        name:"接送",
+        color:"#FF0000"
     },
     {
         id:1,
-        name:"午餐"
+        name:"午餐",
+        color:"#FF0000"
     },
     {
         id:2,
@@ -182,7 +184,7 @@ exports.worktimes=[
     }
 ]
 exports.examquestioninfo={
-    subjectone:{questionlisturl:"http://123.57.7.30:3600/question",
+    subjectone:{questionlisturl:":http://123.57.7.30:3600/kemuyi.html",
         questiontesturl:"http://123.57.7.30:3600/questiontest",
         questionerrorurl:"http://123.57.7.30:3600/questionwronglist"
     },

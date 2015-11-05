@@ -470,7 +470,7 @@ exports.updateCoachInfo=function(req,res){
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
         introduction: req.body.introduction, // 简介
-        gender:req.body.gender, //性别
+        gender:req.body.Gender, //性别
         //email: req.body.email,  // 邮件
         headportrait: req.body.headportrait,
         address: req.body.address, // 地址

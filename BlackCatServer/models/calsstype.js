@@ -17,7 +17,7 @@ var ClassTypeSchema=new Schema({
     cartype:String, //车品牌  富康、奔驰等
     applycount:Number,  // 该班级报名的数量
     classdesc:{type:String,default:""},  // 课程描述
-    vipserverlist:[{id:Number,name:String}], // 该课程提供的vip 服务列表{接送、包过，1对1}
+    vipserverlist:[{type: Schema.Types.ObjectId, ref: 'vipserver'}], // 该课程提供的vip 服务列表{接送、包过，1对1}
     price:Number, // 价格 原价
     onsaleprice:Number , // 优化价格,
     classchedule:String, // 授课日程   周日/平日/

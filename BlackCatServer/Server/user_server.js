@@ -643,7 +643,9 @@ exports.getCoachClassInfo=function(userid,callback){
             if(err||!data){
                 return callback("查询教练出错"+err);
             }
-            classtypeModel.find({schoolid:data.driveschool,"is_using":true},function(err,classlist){
+            classtypeModel.find({schoolid:data.driveschool,"is_using":true})
+                .populate("vipserverlist"," name  color id")
+                .exec(function(err,classlist){
                 if(err){
                     return callback("查询课程出错");
                 }
