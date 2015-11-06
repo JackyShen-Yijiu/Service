@@ -104,7 +104,11 @@ var  UserSchema=new Schema({
         reservationreminder:{ type: Boolean, default: false}, //预约提醒
         newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
         classremind:{ type: Boolean, default: false}// 开课提醒
-    }
+    },
+    // 用户积分状态
+    integralstate:{type:Number,default:0},
+    // 用户积分发放人员列表
+    integralpaylist:[{id:Number,userid:String,usertype:Number}]
 
 });
 UserSchema.index({mobile: 1}, {unique: true});

@@ -73,3 +73,23 @@ exports.ExamintionSatte={
     //  ����ͨ�� ��������
     pass :5
 }
+// 积分发放状态
+exports.IntegralState={
+    //未发送
+    nopay:0,
+    // 注册发放中
+    registerpaying:1,
+    // 注册发放成功
+    registerpayed:2,
+    // 报名发放中
+    applypaying:3,
+    // 报名发放成功
+    applypayed:4
+}
+// j积分类型
+IntegralType={
+    // 注册发放
+    register:1,
+    // 好友注册发放
+    friendregister:2
+}

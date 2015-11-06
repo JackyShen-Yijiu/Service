@@ -194,3 +194,10 @@ subjectfour:{questionlisturl:"http://123.57.7.30:3600/questionlist-kemusi.html",
     questionerrorurl:"http://123.57.7.30:3600/questionwronglist-kemusi.html"
 }
 }
+exports.integralrule={
+    selfregister:100,  //自己注册奖励
+    // 被别人邀请注册奖励
+    passiveregister:300,
+    // 每级比例分成
+    levelscale:0.5
+}

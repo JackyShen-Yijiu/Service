@@ -71,7 +71,11 @@ var  CoachSchema=new Schema({
     },
 
     // 我所服务的班级列,
-    serverclasslist:[{type: Schema.Types.ObjectId, ref: 'classtype'} ]
+    serverclasslist:[{type: Schema.Types.ObjectId, ref: 'classtype'} ],
+    // 用户积分状态
+    integralstate:{type:Number,default:0},
+    // 用户积分发放人员列表
+    integralpaylist:[{id:Number,userid:String,usertype:Number}]
 });
 
 /**

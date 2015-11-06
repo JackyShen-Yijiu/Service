@@ -194,7 +194,7 @@ exports.userlogin= function(usertype,userinfo,callback){
     }
 };
 exports.userSignup=function(usertype,userinfo,callback){
-    //console.log("�����֤��");
+    console.log(userinfo);
     checkSmsCode(userinfo.mobile,userinfo.smscode,function(err){
         if(err){
             return  callback(err);
