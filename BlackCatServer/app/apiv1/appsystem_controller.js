@@ -76,6 +76,21 @@ exports.GetqiniuupToken=function(req,res){
 exports.getExamQuestion=function (req,res){
    return res.json(new BaseReturnInfo(1,"",commondataServer.examquestioninfo))
 }
+//  获取科目一-科目四的课件信息
+exports.getCourseWare=function (req,res){
+    var  queryinfo={
+        subjectid:req.query.subjectid?req.query.subjectid:0,
+        seqindex:req.query.seqindex?req.query.seqindex:0,
+        count:req.query.seqindex?req.query.count:10,
+    }
+    sysstemserver.getCourseWare( queryinfo,function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
+
 
 exports.getTrainingContent=function(req,res){
     //getTrainingContent

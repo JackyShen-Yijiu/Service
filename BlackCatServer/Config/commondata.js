@@ -189,8 +189,8 @@ exports.examquestioninfo={
         questionerrorurl:"http://123.57.7.30:3600/questionwronglist"
     },
 
-subjectfour:{questionlisturl:"http://123.57.7.30:3600/question",
-    questiontesturl:"http://123.57.7.30:3600/questiontest",
-    questionerrorurl:"http://123.57.7.30:3600/questionwronglist"
+subjectfour:{questionlisturl:"http://192.168.1.102:3600/questionlist-kemusi.html",
+    questiontesturl:"http://192.168.1.102:3600/questiontest-kemusi.html",
+    questionerrorurl:"http://192.168.1.102:3600/questionwronglist-kemusi.html"
 }
 }

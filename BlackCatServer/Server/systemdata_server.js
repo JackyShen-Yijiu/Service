@@ -5,6 +5,7 @@
 var mongodb = require('../models/mongodb.js');
 var feedbackModel=mongodb.FeedBackModel;
 var headLineModel=mongodb.HeadLineNewsModel;
+var courseWareModel=mongodb.CourseWareModel;
 
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
@@ -18,7 +19,7 @@ exports.saveFeedback=function(feedbackinfo,callback){
     //console.log(feedback.createtime);
     feedback.save(function(err){
         if(err){
-            return callback("±£´æ·´À¡ĞÅÏ¢³ö´í£º"+err);
+            return callback("ä¿å­˜åé¦ˆä¿¡æ¯å‡ºé”™ï¼š"+err);
         }
         return callback(null,"success");
     })
@@ -29,8 +30,25 @@ exports.getHeadLineNews=function(callback){
         .sort({createtime: -1 })
         .exec(function(err,data){
             if(err){
-                return callback("²éÑ¯Í·ÌõĞÅÏ¢´íÎó£º"+err);
+                return callback("æŸ¥è¯¢å¤´æ¡ä¿¡æ¯é”™è¯¯ï¼š"+err);
             }
             return  callback (null ,data);
+        })
+}
+
+exports.getCourseWare=function( queryinfo,callback){
+    if (queryinfo.seqindex==0){
+        queryinfo.seqindex=Number.MAX_VALUE;
+    }
+    console.log(queryinfo)
+    courseWareModel.find({"is_using":true,seqindex:{$lt:queryinfo.seqindex},"subject.subjectid":queryinfo.subjectid})
+        .select("name pictures  videourl subject seqindex")
+        .sort({"sqlindex":-1})
+        .limit(queryinfo.count)
+        .exec(function(err,data){
+            if(err){
+                return callback("æŸ¥è¯¢è¯¾ä»¶å‡ºé”™ï¼š"+err);
+            }
+            return callback(null,data)
         })
 }

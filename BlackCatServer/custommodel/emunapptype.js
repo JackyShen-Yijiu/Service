@@ -39,21 +39,21 @@ exports.ApplyState={
     Applying:1, // ������
     Applyed:2 // �����ɹ�
 }
-// ������Ϣ����״̬S
+// 预约状态
 exports.ReservationState={
-    //�γ������д�ȷ��
+   //预约中
    applying:1,
-    // ȡ��ԤԼ(�Լ�ȡ��)
+    // 学生取消
    applycancel:2,
-    // ��ȷ��
+    // 已确定
     applyconfirm:3,
-    //�Ѿܾ�(����ȡ��)
+    //教练（拒绝或者取消）
     applyrefuse:4,
-    //  ���γ̽�������ȷ����ɿγ�
+    //  待确认完成
     unconfirmfinish:5,
-    //��ȷ����ɣ�������
+    //待评论
     ucomments:6,
-    // ����� �γ̽���
+    // 订单完成
     finish:7,
     //系统取消
     systemcancel:8

@@ -33,6 +33,8 @@ v1.get("/info/headlinenews",appsystemController.getHeadLineNews);
 v1.post("/userfeedback",appsystemController.postUserFeedBack);
 // 获取科目二和科目三的训练内容
 v1.get("/trainingcontent",appsystemController.getTrainingContent);
+//  获取课件信息
+v1.get("/getcourseware",appsystemController.getCourseWare);
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 

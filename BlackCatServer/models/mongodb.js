@@ -59,4 +59,5 @@ exports.QuestionModel=require('./question');
 exports.SystemLogModel=require("./apierrorlog");
 exports.VipServerModel=require("./vipserver");
 exports.SequenceModel=require("./sequence");
+exports.CourseWareModel=require("./courseware")
 
