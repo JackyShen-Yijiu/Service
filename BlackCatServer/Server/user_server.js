@@ -51,7 +51,7 @@ exports.getCodebyMolile=function(mobilenumber,callback){
                         if(err){
                             return callback("Error occured while removing: " + err,"");
                         }
-                        if(mobilenumber.substr(0,5)=="12306"){
+                        if(mobilenumber.substr(0,8)=="18444444"){
                             addtestsmscode(mobilenumber,callback)
                         }else{
                         smscodemodule(mobilenumber,function(err,response){
@@ -64,7 +64,7 @@ exports.getCodebyMolile=function(mobilenumber,callback){
             }
             else{
                 // now send
-                if(mobilenumber.substr(0,5)=="12306"){
+                if(mobilenumber.substr(0,8)=="18444444"){
                     addtestsmscode(mobilenumber,callback)
                 }else{
                 smscodemodule(mobilenumber, function(error, response){
