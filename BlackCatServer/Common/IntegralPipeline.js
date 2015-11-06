@@ -17,6 +17,7 @@ payuserIntegral=function(payinfo,callback){
     integralinfo.userid=payinfo.userid;
     integralinfo.usertype=payinfo.usertype;
     integralinfo.amount=payinfo.amount;
+    integralinfo.type=payinfo.type;
     integralinfo.save(function(err,data){
         if(payinfo.usertype==appTypeEmun.UserType.User){
             userModel.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
@@ -43,6 +44,7 @@ Calculationfather=function(fathlist,intotal,scale,callback){
             var payinfo={
                 userid:fathlist[count1].userid,
                 usertype:fathlist[count1].usertype,
+                type:appTypeEmun.IntegralType.friendregister,
                 amount:tempamount
             };
             payuserIntegral(payinfo,function(err,redata){
@@ -125,6 +127,7 @@ try{
                                 var payinfo = {
                                     userid: data._id,
                                     usertype: appTypeEmun.UserType.User,
+                                    type:appTypeEmun.IntegralType.register,
                                     amount: slfeget
                                 };
                                 payuserIntegral(payinfo, function (err, redata) {
@@ -149,6 +152,7 @@ try{
                                 var payinfo = {
                                     userid: data._id,
                                     usertype: appTypeEmun.UserType.User,
+                                    type:appTypeEmun.IntegralType.register,
                                     amount: commonData.selfregister
                                 };
                                 payuserIntegral(payinfo, function (err, redata) {
@@ -206,6 +210,7 @@ try{
                             var payinfo = {
                                 userid: coachdata._id,
                                 usertype: appTypeEmun.UserType.Coach,
+                                type:appTypeEmun.IntegralType.register,
                                 amount: slfeget
                             };
                             payuserIntegral(payinfo, function (err, redata) {
@@ -230,6 +235,7 @@ try{
                             var payinfo = {
                                 userid: coachdata._id,
                                 usertype: appTypeEmun.UserType.Coach,
+                                type:appTypeEmun.IntegralType.register,
                                 amount: commonData.selfregister
                             };
                             payuserIntegral(payinfo, function (err, redata) {

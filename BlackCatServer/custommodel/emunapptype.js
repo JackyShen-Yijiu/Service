@@ -87,7 +87,7 @@ exports.IntegralState={
     applypayed:4
 }
 // j积分类型
-IntegralType={
+exports.IntegralType={
     // 注册发放
     register:1,
     // 好友注册发放
