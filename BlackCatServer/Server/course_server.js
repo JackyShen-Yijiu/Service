@@ -327,7 +327,8 @@ exports.getuserReservation=function(userid,subjectid,callback){
                     var listone= {
                         _id: r._id,
                         coachid: r.coachid,
-                        reservationstate: r.is_comment?appTypeEmun.ReservationState.finish: r.reservationstate,
+                        reservationstate: (r.reservationstate==appTypeEmun.ReservationState.ucomments&&r.is_comment)?
+                            appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         subject: r.subject,
                         is_shuttle: r.is_shuttle,
@@ -540,7 +541,7 @@ exports.userComment=function(commnetinfo,callback){
         resdata.comment.abilitylevel=commnetinfo.abilitylevel;
         resdata.comment.commentcontent=commnetinfo.commentcontent;
         resdata.comment.commenttime=Date.now();
-        if(resdata.is_coachcomment){
+        if(resdata.is_coachcomment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments){
             resdata.reservationstate=appTypeEmun.ReservationState.finish;
         }
         resdata.save(function(err,data){
@@ -574,7 +575,7 @@ exports.coachComment=function(commnetinfo,callback){
         resdata.coachcomment.abilitylevel=commnetinfo.abilitylevel;
         resdata.coachcomment.commentcontent=commnetinfo.commentcontent;
         resdata.coachcomment.commenttime=Date.now();
-        if(resdata.is_comment){
+        if(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments){
             resdata.reservationstate=appTypeEmun.ReservationState.finish;
         }
         resdata.save(function(err,data){
@@ -722,7 +723,8 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                     var listone= {
                         _id: r.id,
                         userid: r.userid,
-                        reservationstate: r.is_coachcomment?appTypeEmun.ReservationState.finish: r.reservationstate,
+                        reservationstate: (r.is_coachcomment&&r.reservationstate==appTypeEmun.ReservationState.ucomments)?
+                            appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         courseprocessdesc: r.courseprocessdesc,
                         begintime :(r.begintime).toFormat("HH:00"),
@@ -781,7 +783,8 @@ exports.getCoachReservationList=function(queryinfo,callback){
                     var listone= {
                         _id: r._id,
                         userid: r.userid,
-                        reservationstate: r.is_coachcomment?appTypeEmun.ReservationState.finish: r.reservationstate,
+                        reservationstate: (r.is_coachcomment&&r.reservationstate==appTypeEmun.ReservationState.ucomments)?
+                            appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         subject: r.subject,
                         is_shuttle: r.is_shuttle,
@@ -820,7 +823,8 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
             if(err){
                 return callback("查询数据出错："+err);
             }
-            resdata.reservationstate=is_comment?appTypeEmun.ReservationState.finish: resdata.reservationstate,
+            resdata.reservationstate=(is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
+                appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_comment=undefined;
             return callback(null,resdata);})
 
@@ -838,7 +842,8 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
             if(resdata.reservationstate!=appTypeEmun.ReservationState.applycancel&&resdata.reservationstate!=appTypeEmun.ReservationState.applyrefuse){
                 resdata.cancelreason=undefined;
             }
-            resdata.reservationstate=resdata.is_coachcomment?appTypeEmun.ReservationState.finish: resdata.reservationstate,
+            resdata.reservationstate=(resdata.is_coachcomment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
+                appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_coachcomment=undefined;
            // console.log(resdata);
             return callback(null,resdata);})
