@@ -9,7 +9,7 @@ var userModel=mongodb.UserModel;
 var coachModel=mongodb.CoachModel;
 var integralListModel=mongodb.IntegralListModel;
 var appTypeEmun=require("../custommodel/emunapptype");
-var commonData=require("../Config/Commondata").integralrule;
+var commonData=require("../Config/commondata").integralrule;
 
 // 发放积分
 payuserIntegral=function(payinfo,callback){
