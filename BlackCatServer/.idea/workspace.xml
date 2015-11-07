@@ -163,11 +163,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="coach.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="coach.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/coach.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5111372">
-              <caret line="98" column="24" selection-start-line="98" selection-start-column="24" selection-end-line="98" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="92" column="111" selection-start-line="92" selection-start-column="111" selection-end-line="92" selection-end-column="111" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="driveschool.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/driveschool.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6905041">
+              <caret line="64" column="114" selection-start-line="64" selection-start-column="114" selection-end-line="64" selection-end-column="114" />
               <folding />
             </state>
           </provider>
@@ -242,7 +252,6 @@
         <option value="$PROJECT_DIR$/BC-Web/routes/driveSchoolRoutes.js" />
         <option value="$PROJECT_DIR$/BC-Web/public/javascripts/addjiaxiao.js" />
         <option value="$PROJECT_DIR$/BC-Web/public/addJiaxiao.html" />
-        <option value="$PROJECT_DIR$/models/driveschool.js" />
         <option value="$PROJECT_DIR$/Config/qiniuconfig.js" />
         <option value="$PROJECT_DIR$/models/reservation.js" />
         <option value="$PROJECT_DIR$/app.js" />
@@ -272,6 +281,7 @@
         <option value="$PROJECT_DIR$/Server/user_server.js" />
         <option value="$PROJECT_DIR$/BC-Web/models/driveschool.js" />
         <option value="$PROJECT_DIR$/models/coach.js" />
+        <option value="$PROJECT_DIR$/models/driveschool.js" />
       </list>
     </option>
   </component>
@@ -979,14 +989,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/driveschool.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.4797688">
-          <caret line="22" column="44" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/courseware.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6566474">
@@ -1181,8 +1183,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/coach.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5111372">
-          <caret line="98" column="24" selection-start-line="98" selection-start-column="24" selection-end-line="98" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="92" column="111" selection-start-line="92" selection-start-column="111" selection-end-line="92" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/driveschool.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6905041">
+          <caret line="64" column="114" selection-start-line="64" selection-start-column="114" selection-end-line="64" selection-end-column="114" />
           <folding />
         </state>
       </provider>
