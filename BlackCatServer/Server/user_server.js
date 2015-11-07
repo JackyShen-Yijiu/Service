@@ -586,7 +586,9 @@ exports.setCoachClassInfo=function(classinfo,callback){
                 return callback("查询教练出错"+err);
             }
             postclasslist=classinfo.classtypelist.split(",");
-            classtypeModel.find({schoolid:data.driveschool,"is_using":true},function(err,classlist){
+            classtypeModel.find({schoolid:data.driveschool,"is_using":true})
+                .populate("vipserverlist")
+                .exec(function(err,classlist){
                 if(err){
                     return callback("查询课程出错");
                 }
@@ -1052,7 +1054,9 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   return callback("不能找到报名的驾校");
               };
               // 检查所报的课程类型
-              classtypeModel.findById(new mongodb.ObjectId(applyinfo.classtypeid),function(err,classtypedata){
+              classtypeModel.findById(new mongodb.ObjectId(applyinfo.classtypeid))
+                  .populate("vipserverlist")
+                  .exec(function(err,classtypedata){
                   if (err|| !classtypedata){
                       return callback("不能找到该申请课程"+err);
                   }
@@ -1084,6 +1088,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applystate=appTypeEmun.ApplyState.Applying;
                   userdata.applyinfo.applytime=new Date();
                   userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
+                  console.log(userdata);
                   // 保存 申请信息
                   userdata.save(function(err,newuserdata){
                       if(err){
