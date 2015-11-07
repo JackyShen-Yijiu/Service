@@ -21,4 +21,5 @@ IntegrallistSchema.plugin(seqlist.plugin, {
     start: 0,
     step: 1
 });
+IntegrallistSchema.index({userid: 1});
 module.exports = mongoose.model('integrallist', IntegrallistSchema);

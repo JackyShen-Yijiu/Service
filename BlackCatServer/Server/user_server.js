@@ -20,6 +20,7 @@ var userCountModel=mongodb.UserCountModel;
 var schoolModel=mongodb.DriveSchoolModel;
 var classtypeModel=mongodb.ClassTypeModel;
 var trainfieldModel=mongodb.TrainingFieldModel;
+var integralListModel=mongodb.IntegralListModel;
 
 var timeout = 60 * 5;
 
@@ -947,7 +948,89 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
 
     });
 }
+ // 获取我的钱包历史
+getMyWalletlist=function(queryinfo,callback){
 
+    if(queryinfo.seqindex==0){
+        queryinfo.seqindex=Number.MAX_VALUE;
+    }
+    integralListModel.find({userid:queryinfo.userid,usertype:queryinfo.usertype,
+        seqindex:{$lt:queryinfo.seqindex}})
+        .sort({seqindex:-1})
+        .limit(queryinfo.count)
+        .exec(function (err,data){
+            if(err){
+                return callback("查找用户出错");
+            }
+            else {
+                var  list =[];
+                data.forEach(function(r,index){
+                    var listone={
+                        createtime: r.createtime,
+                        amount: r.amount,
+                        type: r.type,
+                        seqindex: r.seqindex
+                    }
+                    list.push(listone)
+                })
+                return callback(null,list);
+            }
+        })
+}
+// 获取我的钱包
+exports.getMyWallet=function(queryinfo,callback){
+    if(queryinfo.usertype==appTypeEmun.UserType.User){
+        usermodel.findById(new mongodb.ObjectId(queryinfo.userid))
+            .select(" is_lock wallet")
+            .exec(function(err,data){
+                if(err){
+                    return callback("查询用户出错："+err);
+                }
+                if (!data){
+                    return callback("没有查到此用户的信息");
+                }
+                if(data.is_lock){
+                    return callback("用户已锁定无法获取用户钱包信息");
+                }
+
+                getMyWalletlist(queryinfo,function(err,listdata){
+                    if(err){
+                        return callback(err)
+                    }
+                    var wallet={
+                        wallet:data.wallet,
+                        list:listdata
+                    }
+                    return callback(null,wallet);
+                })
+            })
+
+    } else if(queryinfo.usertype==appTypeEmun.UserType.Coach){
+        coachmode.findById(new mongodb.ObjectId(queryinfo.userid))
+            .select(" is_lock wallet")
+            .exec(function(err,data){
+                if(err){
+                    return callback("查询用户出错："+err);
+                }
+                if (!data){
+                    return callback("没有查到此用户的信息");
+                }
+                if(data.is_lock){
+                    return callback("用户已锁定无法获取用户钱包信息");
+                }
+                getMyWalletlist(queryinfo,function(err,listdata){
+                    if(err){
+                        return callback(err)
+                    }
+                    var wallet={
+                        wallet:data.wallet,
+                        list:listdata
+                    }
+                    return callback(null,wallet);
+                })
+            })
+    }
+}
 // 获取学习进度
 exports.getMyProgress=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))

@@ -75,6 +75,8 @@ v1.post("/userinfo/updatepwd",userController.updatePassword);
 v1.post("/userinfo/updatemobile",ensureAuthorizedController.ensureAuthorized,userController.updateMobile);
 // 获取我的教练，教练端个人中 （我所有预约过教练）
 v1.get("/userinfo/getmycoachlist",ensureAuthorizedController.ensureAuthorized,courseController.getMyCoachList);
+// 获取我的钱包
+v1.get("/userinfo/getmywallet",ensureAuthorizedController.ensureAuthorized,userController.getMyWallet);
 //-----------------------------喜欢的教练操作----------------------------------------
 // 喜欢的教练
 v1.get("/userinfo/favoritecoach",ensureAuthorizedController.ensureAuthorized,userController.getMyFavoritCoach);

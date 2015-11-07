@@ -90,11 +90,11 @@ CoachSchema.statics.getNearCoach = function(latitude, longitude, radius, callbac
     // CAUTION: paramters (lat, lon, radius) in the query must be type of Number.
 //    this.find({loc:{$geoWithin:{ $centerSphere:[[longitude, latitude], radius/6378100.0]}}}) //within cycle of radius
 
-    this.find({loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: radius}},
+    this.find({loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: 100*1000}},
         is_lock:false,is_validation:true}) //from near to far
         //  .select('name branchName latitude longitude dpUrl logoUrl avgPrice popularity')
       //  .sort({capacity: -1})
-        //     .limit(limit?limit:10)
+             .limit(limit?limit:30)
         .lean()
         .exec(callback);
 };

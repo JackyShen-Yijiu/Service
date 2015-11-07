@@ -639,4 +639,28 @@ exports.delFavorrCoach=function(req,res){
 
 }
 
+//  获取我的钱包
+exports.getMyWallet=function(req,res){
+    var  queryinfo={
+        seqindex:req.query.seqindex?req.query.seqindex:0,
+        count:req.query.count?req.query.count:10,
+        userid:req.query.userid,
+        usertype:req.query.usertype
+    }
+    if (queryinfo.userid===undefined||queryinfo.usertype===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getMyWallet(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+
 
