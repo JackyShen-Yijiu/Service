@@ -455,11 +455,13 @@ exports.userfinishReservation=function(reservationinfo,callback){
                 tempstr= " 第"+ (resdata.startclassnum)+"--"+( resdata.endclassnum)+"课时";
             }
                 resdata.courseprocessdesc=resdata.subject.name+ tempstr+"  "+
-        reservationinfo.learningcontent?reservationinfo.learningcontent:"";
+                    (reservationinfo.learningcontent?reservationinfo.learningcontent:"");
+
         }
         else{
-            resdata.courseprocessdesc=resdata.subject.name+"  "+reservationinfo.learningcontent?reservationinfo.learningcontent:"";
+            resdata.courseprocessdesc=resdata.subject.name+"  "+(reservationinfo.learningcontent?reservationinfo.learningcontent:"");
         }
+        //console.log("科目："+resdata.subject.name);
         resdata.finishtime=new Date();
         resdata.save(function(err,newdata){
             if(err){
