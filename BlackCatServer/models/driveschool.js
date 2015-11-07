@@ -47,7 +47,8 @@ var DriveSchoolSchema=new Schema({
     email :{type:String,default:""}, // 电子邮箱
     businesslicensenumber :{type:String,default:""}, // 营业执照
     organizationcode :{type:String,default:""}, // 组织机构代码
-    hotindex:Number//关注度
+    hotindex:Number,//关注度
+    applynotes:String  // 报名须知
 });
 
 /**

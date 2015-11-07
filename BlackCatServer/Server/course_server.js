@@ -448,11 +448,11 @@ exports.userfinishReservation=function(reservationinfo,callback){
         {
             var tempstr="";
             if (resdata.startclassnum ==resdata.endclassnum){
-                tempstr= " 第"+ (resdata.startclassnum)+"课时";
+                tempstr= "第"+ (resdata.startclassnum)+"课时";
             }else if(resdata.endclassnum-resdata.startclassnum==1){
-                tempstr= " 第"+ (resdata.startclassnum)+","+( resdata.endclassnum)+"课时";
+                tempstr= "第"+ (resdata.startclassnum)+","+( resdata.endclassnum)+"课时";
             }else{
-                tempstr= " 第"+ (resdata.startclassnum)+"--"+( resdata.endclassnum)+"课时";
+                tempstr= "第"+ (resdata.startclassnum)+"--"+( resdata.endclassnum)+"课时";
             }
                 resdata.courseprocessdesc=resdata.subject.name+ tempstr+"  "+
                     (reservationinfo.learningcontent?reservationinfo.learningcontent:"");

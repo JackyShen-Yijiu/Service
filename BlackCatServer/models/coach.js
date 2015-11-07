@@ -94,7 +94,7 @@ CoachSchema.statics.getNearCoach = function(latitude, longitude, radius, callbac
         is_lock:false,is_validation:true}) //from near to far
         //  .select('name branchName latitude longitude dpUrl logoUrl avgPrice popularity')
       //  .sort({capacity: -1})
-             .limit(limit?limit:30)
+             .limit(30)
         .lean()
         .exec(callback);
 };

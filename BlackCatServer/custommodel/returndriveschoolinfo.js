@@ -19,4 +19,5 @@ exports.resBaseSchoolInfo=function(school){
     this.websit=school.websit;
     this. maxprice=school.maxprice;
     this.minprice=school.minprice;
+    this.applynotes=school.applynotes;
 };
