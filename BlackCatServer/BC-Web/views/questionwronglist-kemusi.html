@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>我的错题</title>
+    <script src="../javascripts/lib/jquery-2.1.3.min.js"></script>
+    <script src="../javascripts/common.js"></script>
+    <script src="../javascripts/question-common.js"></script>
+    <script src="../javascripts/questionwronglist.js"></script>
+    <link rel="stylesheet" href="../stylesheets/questionlist-new.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body onload="init()">
+    
+
+
+      <div class="topDiv">
+        <span>我的错题</span>
+      </div>
+<!--
+      <div class="right_div">
+        <span id="nav_prev">
+          <a title="上一页" href="#" onclick="preQestion()">&#8249;</a>
+        </span>
+      </div>
+-->
+      <div class="questionDiv">
+
+        <div class="title">
+          <div class="question"><span id="number_title">1</span>、<span id="question_title">驾驶机动车在道路上违反道路交通安全法的行为，属于什么行为？</span></div>
+          <div><img id="question_img" src="../images/kemuyi/img-600/5eb4d75agw1e28yntci5ej.jpg"></div>
+          
+        </div>
+        <div class="options">
+          <ul>
+            <li id="li_answer1">
+              <img class="anImginline" id="img_ans_1" src="../images/default-a.png">
+              <label for="answer1" id="answer1_txt" class="option_label">违法行为</label>
+            </li>
+            <li id="li_answer2">
+              <img class="anImginline" id="img_ans_2" src="../images/default-b.png">
+              <label for="answer2" id="answer2_txt" class="option_label">违法行为</label>
+            </li>
+            <li id="li_answer3">
+              <img class="anImginline" id="img_ans_3" src="../images/default-c.png">
+              <label for="answer3" id="answer3_txt" class="option_label">违法行为</label>
+            </li>
+            <li id="li_answer4">
+              <img class="anImginline" id="img_ans_4" src="../images/default-d.png">
+              <label for="answer4" id="answer4_txt" class="option_label">违法行为</label>
+            </li>
+          </ul>
+        </div>
+        
+
+        <div id="whyDiv">
+          <span class="why_label" id="why_label_txt"> 答案详解</span>
+          <span class="why" id="rightAnswer_txt">《道路运输从业人员管理规定》规定：机动车驾驶人驾驶证有效期满换领驾驶证时，须提交县级以上医疗机构出具的身体条件证明。</span>
+        </div>
+      </div>
+
+      <div class="bottomDiv">
+        <div class="statisticDiv">
+          <img src="../images/s-right.png" style=""><span id="rightCount">0</span>
+          <img src="../images/s-wrong.png"><span id="wrongCount">0</span>
+          <img src="../images/s-rate.png"><span id="rightRate">100%</span>
+          <img src="../images/r-total.png"><span id="questionIndex" style="min-width:10%;">1/100</span>
+        </div>
+        <div class="actionDiv">
+          <button type="button" name="preQ" onclick="preQestion()">上一题</button>
+          <button type="button" class="actBtn" name="nexQ" onclick="nextQestion()" style="margin-left:18px;">下一题</button>
+        </div>
+      </div>
+<!--
+      <div  class="left_div">
+        <span id="nav_next">
+          <a title="下一页" href="#" onclick="nextQestion()">&#8250;</a>
+        </span>
+      </div>
+-->
+  </body>
+</html>

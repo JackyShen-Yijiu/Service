@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>科目一</title>
+    <script src="../javascripts/lib/jquery-2.1.3.min.js"></script>
+    <script src="../javascripts/common.js"></script>
+    <style type="text/css">
+    body{
+      font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+      text-align: center;
+    }
+
+    .questionDiv{
+      float: left;
+      text-align: left;
+      background-color: #EDEDED;
+      width: 100%;
+    }
+     button{
+      font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+      font-size: 4vmin;
+      border-radius:2px;
+      padding-top:2px;
+      padding-bottom:2px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-top: 10px;
+      border: 1px solid #dd962d;
+      display: block;
+
+
+      background-color: #EDEDED;
+      color:#FF7B16;
+
+      box-shadow: none !important;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    </style>
+  </head>
+  <body>
+    <h2>科目一</h2>
+
+
+    <div class="body_div">
+      <div class="actionDiv">
+        <button type="button" name="preQ" onclick="go(1)">1、道路交通安全法律、法规和规章（568题）</button>
+        <button type="button" name="nexQ" onclick="go(2)">2、道路交通信号（312题）</button>
+        <button type="button" name="nexQ" onclick="go(3)">3、安全行车、文明驾驶基础知识（240题）</button>
+        <button type="button" name="nexQ" onclick="go(4)">4、机动车驾驶操作相关基础知识（109题）</button>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    var userID = getUrlParam('userid');
+    function go(chapter){
+        window.location.href = apiHost + 'question' + '?userid=' + userID + '?chapter=' + chapter;
+    }
+    </script>
+  </body>
+</html>

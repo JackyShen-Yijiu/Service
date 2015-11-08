@@ -17,9 +17,9 @@ var async = require('async');
 
 addcourseware=function(){
 var courseware = new  CourseWareModel;
-courseware.name="科目三通过学校";
+courseware.name="科目三靠边停车";
 courseware.pictures="http://7xnjg0.com1.z0.glb.clouddn.com/20151027/155008-5611292a193184140355c49a.png";
-courseware.videourl="http://player.youku.com/embed/XMTM3OTE2NjE4NA==";
+courseware.videourl="http://player.youku.com/embed/XMTM3OTE2MjUzMg==";
 courseware.subject.subjectid=3;
 courseware.subject.name="科目三";
 courseware.save();}
