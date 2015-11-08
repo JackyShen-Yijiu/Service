@@ -43,7 +43,7 @@ exports.getCourseWare=function( queryinfo,callback){
     //console.log(queryinfo)
     courseWareModel.find({"is_using":true,seqindex:{$lt:queryinfo.seqindex},"subject.subjectid":queryinfo.subjectid})
         .select("name pictures  videourl subject seqindex")
-        .sort({"sqlindex" : -1})
+        .sort({"seqindex" : -1})
         .limit(queryinfo.count)
         .exec(function(err,data){
             if(err){
