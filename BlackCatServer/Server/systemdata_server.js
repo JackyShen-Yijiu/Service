@@ -23,7 +23,7 @@ exports.saveFeedback=function(feedbackinfo,callback){
         }
         return callback(null,"success");
     })
-}
+};
 exports.getHeadLineNews=function(callback){
     headLineModel.find({"is_using":"true"})
         .limit(8)
@@ -34,16 +34,16 @@ exports.getHeadLineNews=function(callback){
             }
             return  callback (null ,data);
         })
-}
+};
 
 exports.getCourseWare=function( queryinfo,callback){
     if (queryinfo.seqindex==0){
         queryinfo.seqindex=Number.MAX_VALUE;
     }
-    console.log(queryinfo)
+    //console.log(queryinfo)
     courseWareModel.find({"is_using":true,seqindex:{$lt:queryinfo.seqindex},"subject.subjectid":queryinfo.subjectid})
         .select("name pictures  videourl subject seqindex")
-        .sort({"sqlindex":-1})
+        .sort({"sqlindex" : -1})
         .limit(queryinfo.count)
         .exec(function(err,data){
             if(err){
@@ -51,4 +51,4 @@ exports.getCourseWare=function( queryinfo,callback){
             }
             return callback(null,data)
         })
-}
+};
