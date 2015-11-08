@@ -261,8 +261,8 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.reservationcreatetime = new Date();
                     reservation.reservationstate = appTypeEmun.ReservationState.applying;
                     reservation.trainfieldid=coachdata.trainfield;
-                reservation.trainfieldlinfo.id=coachdata.trainfieldlinfo.id;
-                reservation.trainfieldlinfo.name=coachdata.trainfieldlinfo.name;
+                     reservation.trainfieldlinfo.id=coachdata.trainfieldlinfo.id;
+                     reservation.trainfieldlinfo.name=coachdata.trainfieldlinfo.name;
 
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);
