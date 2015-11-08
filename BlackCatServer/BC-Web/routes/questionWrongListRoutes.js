@@ -55,6 +55,8 @@ function getQuestionByID(req, res) {
 
 function updateWrongQuestion(req, res){
   console.log('update wrong question.');
+  console.log(req.body.kemuyi_wronglist);
+  console.log(req.body.kemusi_wronglist);
 
   userinfo.FindByID(req.body.id, function(err, questions){
     if(!err){
