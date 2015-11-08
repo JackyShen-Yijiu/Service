@@ -241,7 +241,7 @@ exports.postReservation=function(reservationinfo,callback){
                     if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation + coursecount > userdata.subjectthree.totalcourse) {
                         return callback("预约课程数量超出最大课程");
                     }
-                    currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjecttwo.subjectthree;
+                    currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjectthree.reservation;
                     userdata.subjectthree.reservation = userdata.subjectthree.reservation + coursecount;
                 }
                 else {
