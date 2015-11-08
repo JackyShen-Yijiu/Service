@@ -10,7 +10,7 @@ exports.getNearbydriveSchool=function(req,res){
     driverSchool.getNearDriverSchool(latitude,longitude,radius,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -23,7 +23,7 @@ exports.getNearbytrainingfield=function(req,res){
     driverSchool.getNeartrainingfield(latitude,longitude,radius,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -35,7 +35,7 @@ exports.getSchoolByName=function(req,res){
     driverSchool.getSchoolByName(schoolname,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -47,7 +47,7 @@ exports.getSchoolTrainingField=function(req,res){
     var schoolid=req.query.schoolid;
     driverSchool.getSchoolTrainingField(schoolid,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     })
@@ -62,7 +62,7 @@ exports.getSchoolClassType=function(req,res){
     }
     driverSchool.getClassTypeBySchoolId(schoolid,function(err,classtypedata){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",classtypedata));
     });
@@ -76,7 +76,7 @@ exports.getSchoolInfo=function(req,res){
     }
     driverSchool.getSchoolInfoserver(schoolid,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });

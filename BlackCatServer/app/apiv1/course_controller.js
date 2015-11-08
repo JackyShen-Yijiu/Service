@@ -22,7 +22,7 @@ exports.GetCourseByCoach=function(req,res){
     }
     courseserver.GetCoachCourse(coachid,date,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -69,15 +69,15 @@ exports.getuserresveration=function(req,res){
     }
   if(!req.userId){
       return res.json(
-          new BaseReturnInfo(0,"无法验证权限",""));
+          new BaseReturnInfo(0,"无法验证权限",[]));
   }
     if(userid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
     courseserver.getuserReservation(userid,subjectid,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -86,7 +86,7 @@ exports.getCourseDeatil=function(req,res){
     var courseid=req.params.courseid;
     courseserver.getCourseDeatil(courseid,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -236,11 +236,11 @@ exports.getUserComment=function(req,res){
         ||queryinfo.type === undefined||
         queryinfo.index === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"参数不完整",""));
+            new BaseReturnInfo(0,"参数不完整",[]));
     };
     courseserver.GetComment(queryinfo,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -256,7 +256,7 @@ exports.sameTimeStudents=function(req,res){
     }
     courseserver.getSameTimeStudents(reservationid,userid,index,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
 
@@ -296,15 +296,15 @@ exports.getCoachDaysreservation=function(req,res){
     var  coachid=req.query.coachid;
     var  date=req.query.date;
     if (coachid===undefined|| date===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
     }
     if(coachid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
     courseserver.getCoachDaysreservation(coachid,date,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -314,15 +314,15 @@ exports.getCoachDaysreservation=function(req,res){
 exports.getreservationapply=function(req,res){
     var  coachid=req.query.coachid;
     if (coachid===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
     }
     if(coachid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
     courseserver.getreservationapply(coachid,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -335,15 +335,15 @@ exports.getCoachReservationList=function(req,res){
      index:req.query.index
 }
     if (queryinfo.coachid===undefined|| queryinfo.index===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
     }
     if(queryinfo.coachid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
     courseserver.getCoachReservationList(queryinfo,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -382,7 +382,7 @@ exports.userGetReservationInfo=function(req,res){
     }
     courseserver.getUserReservationinfo(reservationid,userid,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -393,11 +393,11 @@ exports.coachGetReservationInfo=function(req,res){
     var reservationid=req.params.reservationid;
     var coachid=req.userId;
     if (reservationid===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+        return res.json(new BaseReturnInfo(0,"获取参数错误",{}));
     }
     courseserver.getCoachReservationinfo(reservationid,coachid,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -434,7 +434,7 @@ exports.getMyCoachList=function(req,res){
     var userid=req.userId;
     courseserver.getMyCoachList(userid,function(err,data){
         if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });

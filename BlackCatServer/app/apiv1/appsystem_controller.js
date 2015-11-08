@@ -46,7 +46,7 @@ exports.appVersion=function(req,res){
      });*/
     Apperversion.getVersionInfo(apptype, function(err, data) {
         if (err) {
-            return res.status(500).send(new BaseReturnInfo(0, "Internal Server Error", err));
+            return res.status(500).send(new BaseReturnInfo(0, "err",[] ));
         }
         //console.log(data);
         return res.json(
@@ -85,7 +85,7 @@ exports.getCourseWare=function (req,res){
     }
     sysstemserver.getCourseWare( queryinfo,function(err ,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     })
@@ -102,7 +102,7 @@ exports.getTrainingContent=function (req,res){
 exports.getHeadLineNews=function (req,res){
     sysstemserver.getHeadLineNews(function(err ,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     })

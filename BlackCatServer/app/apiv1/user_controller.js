@@ -46,7 +46,7 @@ exports.verifyUserExists=function(req,res){
     }
     userserver.verifyUserExists(usertype,mobile,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,0));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -89,7 +89,7 @@ exports.postSignUp=function(req,res){
        // console.log('kaishizhce');
         if(err){
             //console.log('error');
-            return res.json(new  BaseReturnInfo(0,err,""));
+            return res.json(new  BaseReturnInfo(0,err,{}));
         }
         else{
             return res.json(new BaseReturnInfo(1,"",data));
@@ -109,7 +109,7 @@ exports.getNearbyCoach=function(req,res){
     userserver.getNearCoach(latitude,longitude,radius,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -129,7 +129,7 @@ exports.getSchoolCoach=function(req,res){
     userserver.getSchoolCoach(coachinfo,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -158,7 +158,7 @@ exports.getStudentInfo=function(req,res){
     userserver.getStudentInfo(userid,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -173,12 +173,12 @@ exports.getStudentList=function(req,res){
     }
     if(coachinfo.coachid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
     userserver.getCoachStudentList(coachinfo,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -190,7 +190,7 @@ exports.getCoachClassType=function(req,res){
     userserver.getCoachClassInfo(userid,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -235,7 +235,7 @@ if(userid!=req.userId){
 };
 userserver.getMyProgress(userid,function(err,data){
     if(err){
-        return res.json(new BaseReturnInfo(0,err,""));
+        return res.json(new BaseReturnInfo(0,err,{}));
     }
     return res.json(new BaseReturnInfo(1,"",data));
 });
@@ -248,7 +248,7 @@ exports.getUsefulCoachList=function(req,res){
     userserver.getUsefulCoachList(useid,index,function(err,data){
         if (err)
         {
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }else{
             return res.json(new BaseReturnInfo(1,"",data));
         }
@@ -267,7 +267,7 @@ exports.getMyApplyState=function(req,res){
     };
     userserver.getMyApplyState(userid,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -523,7 +523,7 @@ exports.getUserinfo=function(req,res){
     };
     userserver.getUserinfoServer(apptype,userid,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     })
@@ -574,7 +574,7 @@ exports.updateMobile=function(req,res){
 exports.getMyFavoritSchool=function(req,res){
     userserver.FavoritSchoolList(req.userId,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -607,7 +607,7 @@ exports.delFavorrSchool=function(req,res){
 exports.getMyFavoritCoach=function(req,res){
     userserver.FavoritCoachList(req.userId,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -657,7 +657,7 @@ exports.getMyWallet=function(req,res){
     };
     userserver.getMyWallet(queryinfo,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,{}));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
