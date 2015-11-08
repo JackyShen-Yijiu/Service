@@ -187,6 +187,8 @@ function clear(){
   $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
 }
 
+
+/*
 function save(){
   console.log('save wrong question.');
 
@@ -215,7 +217,7 @@ function save(){
           return "0";
       });
 }
-
+*/
 
 
 function tjanswer_m(li_, answer){

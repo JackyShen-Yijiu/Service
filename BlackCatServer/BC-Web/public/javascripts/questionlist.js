@@ -112,7 +112,7 @@ function answerIsWrong(){
   }
 }
 
-
+/*
 function save(){
   console.log('save wrong question.');
 
@@ -140,4 +140,4 @@ function save(){
           console.log('failed.');
           return "0";
       });
-}
+}*/

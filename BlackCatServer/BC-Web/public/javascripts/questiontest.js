@@ -252,6 +252,7 @@ function clear(){
   $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
 }
 
+/*
 function save(){
   console.log('save wrong question.');
 
@@ -278,4 +279,4 @@ function save(){
           console.log('failed.');
           return "0";
       });
-}
+}*/
