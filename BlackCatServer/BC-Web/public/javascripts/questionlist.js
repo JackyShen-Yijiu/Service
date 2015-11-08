@@ -118,7 +118,8 @@ function save(){
 
   var u = {
     id: userID,
-    kemuyi_wronglist: kemuyi_wronglist
+    kemuyi_wronglist: kemuyi_wronglist,
+    kemusi_wronglist: kemusi_wronglist
   }
 
   console.log('kemuyi_wronglist: ' + kemuyi_wronglist);
