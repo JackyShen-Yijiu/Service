@@ -116,7 +116,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             studentcount: coa_studentcount.value,
             passrate: coa_passrate.value,
             starlevel: coa_starlevel.value,
-            workingtime: coa_workingtime.value,
+            workingtime: coa_workingtime,
             carmodel: {modelsid:$("#coa_carmodel option:selected").index() + 1,name:$("#coa_carmodel option:selected").text(),code:coa_carmodel.value},
             subject: subject,
             is_shuttle: $('input:radio[name="is_shuttle"]:checked').val(),
@@ -205,6 +205,12 @@ function AddClassType(){
                         console.log("subject" + v.id + v.name);
                         vipserverlist.push(v);
                      });
+        var classchedule = new Array();
+        $("[name='ct_classchedule']:checked").each(function(index, element) {
+                        var v = $(this).val();
+                        console.log("subject" + v);
+                        classchedule.push(v);
+                     });
         
         var ct = {
             classname: ct_classname.value,
@@ -219,7 +225,8 @@ function AddClassType(){
             classdesc: ct_classdesc.value,
             vipserverlist: vipserverlist,
             price: ct_price.value,
-            onsaleprice: ct_onsaleprice.value
+            onsaleprice: ct_onsaleprice.value,
+            classchedule: classchedule.join("+")
         };
         console.log(ct);
         $.post(apiHost + "classtype/register", 

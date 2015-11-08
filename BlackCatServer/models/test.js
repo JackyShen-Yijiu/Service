@@ -8,8 +8,34 @@ var reservationmodel=mongodb.ReservationModel;
 var classtype = mongodb.ClassTypeModel;
 var schoolModel=mongodb.DriveSchoolModel;
 var schoolclassModel=mongodb.ClassTypeModel;
+var VipServerModel=mongodb.VipServerModel;
+var SequenceModel=mongodb.SequenceModel;
+var CourseWareModel=mongodb.CourseWareModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 require('date-utils');
+var async = require('async');
+
+addcourseware=function(){
+var courseware = new  CourseWareModel;
+courseware.name="科目三通过学校";
+courseware.pictures="http://7xnjg0.com1.z0.glb.clouddn.com/20151027/155008-5611292a193184140355c49a.png";
+courseware.videourl="http://player.youku.com/embed/XMTM3OTE2NjE4NA==";
+courseware.subject.subjectid=3;
+courseware.subject.name="科目三";
+courseware.save();}
+addcourseware();
+/*classtype.find({},function(err,data){
+data.forEach(function(r,index){
+    var  list=[];
+    list.push("563b4520075113ec38f286f2");
+    list.push("563b4527994b335032480542");
+    list.push("563b452a3c5ed25c350ac04a");
+    r.vipserverlist=list;
+    r.save(function(err,data){
+        console.log(data);
+    });
+})
+})*/
 
 
 syncReservationdesc=function(userid,callback){
@@ -21,7 +47,7 @@ syncReservationdesc=function(userid,callback){
                     reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":userdata.subject.subjectid
                         ,"$or":[{reservationstate:appTypeEmun.ReservationState.applying},{reservationstate:appTypeEmun.ReservationState.applyconfirm},
                             {reservationstate:appTypeEmun.ReservationState.unconfirmfinish} ]})
-                        .select("coursehour subject")
+                        .select("_id coursehour subject")
                         .sort({begintime:1})
                         .exec(function(err,reservationlist){
                             var   currentcoursecount=userdata.subject.subjectid==2?userdata.subjecttwo.finishcourse :userdata.subjectthree.finishcourse
@@ -30,9 +56,20 @@ syncReservationdesc=function(userid,callback){
                                     var  tempcount = currentcoursecount+1;
                                     currentcoursecount=currentcoursecount+ r.coursehour;
                                     var tempendcount=currentcoursecount;
-                                    var desc=userdata.subject.name +"第"+ (tempcount)+" --"+(tempendcount)+"课时";
+                                    var desc="";
+                                    if(tempcount==tempendcount){
+                                        desc=userdata.subject.name +"第"+ (tempcount)+"课时";
+                                    }else if(tempendcount-tempcount==1){
+                                        desc=userdata.subject.name +"第"+ (tempcount)+","+(tempendcount)+"课时";
+                                    }
+                                    else{
+                                        desc=userdata.subject.name +"第"+ (tempcount)+"--"+(tempendcount)+"课时";
+                                    }
                                     reservationmodel.update({_id:new mongodb.ObjectId(r._id)},{$set:{startclassnum:tempcount,
-                                        endclassnum:tempendcount, courseprocessdesc:desc}})
+                                        endclassnum:tempendcount, courseprocessdesc:desc}},{safe: true, multi: true},
+                                        function(err,data){
+                                        console.log(data);
+                                    })
                                 })
                             })
                         })
@@ -41,12 +78,68 @@ syncReservationdesc=function(userid,callback){
         });
 }
 
-syncReservationdesc("562b56a1d12df5bb08df4676",function(){
 
-})
+/*reservationmodel.update({userid:new mongodb.ObjectId("5615ce19193184140355c49f"),
+        reservationstate:appTypeEmun.ReservationState.ucomments},
+    {$set:{reservationstate:appTypeEmun.ReservationState.unconfirmfinish,is_comment:false}},{safe: true, multi: true},
+    function(err,data){
+        console.log(data);
+    }) */
+
+addserverlsit=function(){
+    var vipserver=new VipServerModel;
+    vipserver.name="接送";
+        vipserver.color="#FF0000";
+    console.log(vipserver);
+    vipserver.save(function(err,data){
+        if(err){
+            console.log(err);
+        }
+        console.log(data)
+    })
+    VipServerModel.find({},function(err,data){
+        data.forEach(function(r,index){
+            r.name="接送1";
+            r.save();
+        })
+    })
+}
+
+//addserverlsit();
+//syncReservationdesc("5615ce19193184140355c49f",function(){
+
+//})
+
+/*classtype.findById({_id:"56170d9a053d34d82eef8ae8"},function(err,data){
+    data.applycount=100;
+    data.cartype="法拉利"
+    data.classdesc="一年只有一次特惠，赶快报名"
+    data.onsaleprice="0000"
+    data.classchedule="周末+平时",
+        data.carmodel.code="C1";
+    data.save(function(err,daata){
+        console.log(daata)
+    });
+})*/
 // 修改时间
-reservationmodel.find({},function(err,data){
+/*reservationmodel.find({},function(err,data){
     data.forEach(function(r,index){
+        r.is_comment =true;
+        r.comment.starlevel=5;
+        r.comment.attitudelevel=5;
+        r.comment.timelevel=5;
+        r.comment.abilitylevel=5;
+        r.comment.commentcontent="稀饭这个教练，good";
+        r.comment.commenttime=Date.now()
+
+        r.is_coachcomment =true;
+        r.coachcomment.starlevel=5;
+        r.coachcomment.attitudelevel=5;
+        r.coachcomment.timelevel=5;
+        r.coachcomment.abilitylevel=5;
+        r.coachcomment.commentcontent="学生开朗，学习能里快";
+        r.coachcomment.commenttime=Date.now()*/
+
        /* var begintime= r.begintime;
             var endtime = r.endtime;
       //  r.classdatetimedesc= (new Date(r.begintime)).format("yyyy-MM-dd HH:00:00"); +"--"+(new Date(r.endtime)).format("HH:00:00");
@@ -64,11 +157,11 @@ reservationmodel.find({},function(err,data){
 */
        // console.log(r.begintime);
       //  r.classdatetimedesc= r.begintime.toFormat("YYYY年MM月DD日 HH24:00") +"--"+(new Date(r.endtime)).toFormat("HH24:00");
-     //   r.save(function(err,data)
-     //   {console.log(data)});
-    })
+    //  r.save(function(err,data)
+    //  {console.log(data)});
+   // })
 
-})
+//})
 
 /*usermodel.find({},function(err,data) {
     data.forEach(function (r, index) {
@@ -80,6 +173,21 @@ reservationmodel.find({},function(err,data){
         r.save();
     })
 })*/
+
+/*    usermodel.find({},function(err,data) {
+        data.forEach(function (r, index) {
+            r.subjecttwo.progress = "";
+            r.subjecttwo.reservation = 0;
+            r.subjecttwo.finishcourse = 0;
+            r.subjectthree.progress = "";
+            r.subjectthree.reservation = 0;
+            r.subjectthree.finishcourse = 0;
+
+
+            r.save();
+
+        })
+    })*/
 
 // 修改课程类型
 /*classtype.find({},function(err,data){
@@ -133,6 +241,20 @@ coachmode.update({is_validation:false},{$set:{"is_validation":true}},{safe: fals
          }
      })
 });*/
+
+/*coachmode.update({"trainfieldlinfo":null},{$set:{"trainfieldlinfo.name":"海淀练场",
+        "trainfieldlinfo.id":"561636cc21ec29041a9af88e"}},{safe: false, multi: true},
+function(err,data){
+    console.log(data);
+});
+coachmode.find({"trainfieldlinfo":null},function(err,data){
+    data.forEach(function(r,index){
+        r.trainfieldlinfo.name="海淀练场";
+        r.trainfieldlinfo.id="561636cc21ec29041a9af88e";
+        r.save();
+    })
+}); */
+
   console.log(new Date(1446091200*1000))
    // 时间测试
     var temptime=new Date("2015-10-31");

@@ -43,7 +43,7 @@ body{
   bottom:0px;
   background-color: #EDEDED;
 }
-.actionDiv button{
+ button{
   font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
   font-size: 7vmin;
   border-radius:2px;

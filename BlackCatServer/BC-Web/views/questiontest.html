@@ -7,13 +7,47 @@
     <script src="../javascripts/lib/jquery-2.1.3.min.js"></script>
     <link rel="stylesheet" href="../stylesheets/questionlist.css" media="screen" title="no title" charset="utf-8">
     <script src="../javascripts/common.js"></script>
+    <script src="../javascripts/question-common.js"></script>
     <script src="../javascripts/questiontest.js"></script>
 
+
+    <style type="text/css">
+    /* Start by setting display:none to make this hidden.
+       Then we position it in relation to the viewport window
+       with position:fixed. Width, height, top and left speak
+       for themselves. Background we set to 80% white with
+       our animation centered, and no-repeating */
+    .modal {
+        display:    none;
+        position:   fixed;
+        z-index:    1000;
+        margin: 5% auto;
+        left: 0;
+        right: 0;
+        width: 50%;
+        background: #F4F1E8 
+                    
+                    50% 50% 
+                    no-repeat;
+    }
+
+    /* When the body has the loading class, we turn
+       the scrollbar off with overflow:hidden */
+    body.loading {
+        overflow: hidden;   
+    }
+
+    /* Anytime the body has the loading class, our
+       modal element will be visible */
+    body.loading .modal {
+        display: block;
+    }
+    </style>
 
   </head>
   <body onload="init()">
     <h2>科目一测试</h2>
-    <div id="txt"></div>
+    <div id="timer_txt"></div>
 
 
     <div class="body_div">
@@ -31,26 +65,24 @@
         </div>
         <div class="options">
           <ul>
-            <li id="li_answer1" onclick="tjanswer('A');">
-            <!--<div class="Answer_div_inline">-->
+            <li id="li_answer1">
               <img class="anImginline" id="img_ans_1">
-            <!--</div>-->
-              <input onclick="tjanswer('A');" type="radio" value="A" name="answer" id="answer1"/>
+              <input  type="radio" value="A" name="answer" id="answer1"/>
               <label for="answer1" id="answer1_txt">违法行为</label>
             </li>
-            <li id="li_answer2" onclick="tjanswer('B');">
+            <li id="li_answer2">
               <img class="anImginline" id="img_ans_2">
-              <input onclick="tjanswer('B');" type="radio" value="B" name="answer" id="answer2"/>
+              <input type="radio" value="B" name="answer" id="answer2"/>
               <label for="answer2" id="answer2_txt">违法行为</label>
             </li>
-            <li id="li_answer3" onclick="tjanswer('C');">
+            <li id="li_answer3">
               <img class="anImginline" id="img_ans_3">
-              <input onclick="tjanswer('C');" type="radio" value="C" name="answer" id="answer3"/>
+              <input type="radio" value="C" name="answer" id="answer3"/>
               <label for="answer3" id="answer3_txt">违法行为</label>
             </li>
-            <li id="li_answer4" onclick="tjanswer('D');">
+            <li id="li_answer4">
               <img class="anImginline" id="img_ans_4">
-              <input onclick="tjanswer('D');" type="radio" value="D" name="answer" id="answer4"/>
+              <input type="radio" value="D" name="answer" id="answer4"/>
               <label for="answer4" id="answer4_txt">违法行为</label>
             </li>
           </ul>
@@ -63,18 +95,18 @@
             <span id="rightAnswer"><img src="../images/right-check-marks.png"><span>回答正确!</span></span>
             <span id="wrongAnswer"><img src="../images/wrong-check-marks.png"><span>回答错误!</span></span>
           </div>-->
-          <span class="why" id="rightAnswer_txt">《道路运输从业人员管理规定》规定：机动车驾驶人驾驶证有效期满换领驾驶证时，须提交县级以上医疗机构出具的身体条件证明。</span>
+          <!--<span class="why" id="rightAnswer_txt">《道路运输从业人员管理规定》规定：机动车驾驶人驾驶证有效期满换领驾驶证时，须提交县级以上医疗机构出具的身体条件证明。</span>-->
         </div>
       </div>
 
       <div class="actionDiv">
-        <button type="button" name="preQ" onclick="preQestion()">上一题</button>
+        <!--<button type="button" name="preQ" onclick="preQestion()">上一题</button>-->
         <button type="button" name="nexQ" onclick="nextQestion()" style="margin-left:18px;">下一题</button>
         <div class="statisticDiv">
           <span>正确：<span id="rightCount">0</span> 道，</span>
           <span>错误：<span id="wrongCount">0</span> 道，</span>
           <span>正确率：<span id="rightRate">50</span>%，</span>
-          <span>共：<span>50</span>道。</span>
+          <span>共：<span>100</span>道。</span>
         </div>
       </div>
 
@@ -86,6 +118,16 @@
         </span>
       </div>
 -->
+    </div>
+    <div class="modal">
+      <!-- Place at bottom of page -->
+      <h2 style="vertical-align:middle;">测试完毕！</h2>
+      <h2 style="vertical-align:middle;" id="test_result"></h2>
+      <div class="">
+        <button type="button" name="nexQ" onclick="closeInfoDia()" style="margin-left:18px;">我知道了</button>
+        <button type="button" name="nexQ" onclick="testAgain()" style="margin-left:18px;">再试一次</button>
+      </div>
+      <h2 style="vertical-align:middle;" id="test_result"></h2>
     </div>
   </body>
 </html>

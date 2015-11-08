@@ -50,6 +50,7 @@ function register(req, res){
     ct.vipserverlist = req.body.vipserverlist;
     ct.price = req.body.price;
     ct.onsaleprice = req.body.onsaleprice;    
+    ct.classchedule = req.body.classchedule;
    
 
     console.log("new ct: " + ct);

@@ -19,4 +19,6 @@ UserInfoSchema.statics.FindByID = function(_id, callback) {
     });
 };
 
+//UserInfoSchema.statics.Add
+
 module.exports = mongoose.model('UserInfo', UserInfoSchema);

@@ -1,125 +1,179 @@
-$.ajaxSetup({
-  contentType: "application/json; charset=utf-8",
-  crossDomain: true
-});
-
-function getUrlParam(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-    if (r != null) return unescape(r[2]); return null; //返回参数值
-}
-var userID = getUrlParam('userid'); 
-var userInfo;
-console.log(getUrlParam('userid'));
+var ExaminIDs;
 
 function init() {
     console.log('init.');
+
+    CreateExam();
+
+    Allcount = 100;
+    QIndex = 0;
+    currentQuestion;
+    rightCount=0, wrongCount=0;
+    answered=false;
+    min = 45;
+    sec = 0;
+
     startTime();
     nextQestion();
+
+    
 }
 
-function getQuestionList(id, callback){
-    console.log("get question list");
-    $.get(apiHost + "question/questionlist/" + id,
-        function(data){
-          callback(data, "OK");
-        }).fail(function(xHr, status, message){
-        callback(message, "Fail");
-    });
-}
+function CreateExam(){
+  initilizeQuestion();
 
-function getQuestionByID(id, callback){
-    console.log("get question list");
-    $.get(apiHost + "question/questionbyid/" + id,
-        function(data){
-          callback(data, "OK");
-        }).fail(function(xHr, status, message){
-        callback(message, "Fail");
-    });
-}
+  ExaminIDs = new Array();
+  var i = 0;
+  while(ExaminIDs.length < 35){
+    var qid = chap_1_ExamID[getQuestionID(chap_1_count)];
+    if(ExaminIDs.indexOf(qid) == -1){
+      ExaminIDs.push(qid);
+      console.log(i + ':' + qid);
+      i++;
+    }else{
 
-function showQuestions(questoinBody) {
-  console.log("show questoin");
-  answered = false;
-  currentQuestion = questoinBody;
-  $("#question_title").text(questoinBody.question);
-  $("#rightAnswer").hide();
-  $("#wrongAnswer").hide();
-  $("#rightAnswer_txt").hide();
-  $("#answer1").prop("checked", false);
-  $("#answer2").prop("checked", false);
-  $("#answer3").prop("checked", false);
-  $("#answer4").prop("checked", false);
-
-  $("#img_ans_1").attr("src","../images/null-check-marks.png");
-  $("#img_ans_2").attr("src","../images/null-check-marks.png");
-  $("#img_ans_3").attr("src","../images/null-check-marks.png");
-  $("#img_ans_4").attr("src","../images/null-check-marks.png");
-  if(questoinBody.sinaimg != ""){
-    $("#question_img").show();
-    $("#question_img").attr("src","../images/kemuyi/img-600/" + questoinBody.sinaimg);
-  }else{
-    $("#question_img").hide();
+    }
   }
 
-  if(questoinBody.Type == 2){
-    $("#answer1_txt").text("A：" + questoinBody.a);
-    $("#answer2_txt").text("B：" + questoinBody.b);
-    $("#answer3_txt").text("C：" + questoinBody.c);
-    $("#answer4_txt").text("D：" + questoinBody.d);
+  while(ExaminIDs.length < 70){
+    var qid = chap_1_ExamID[getQuestionID(chap_1_count)];
+    if(ExaminIDs.indexOf(qid) == -1){
+      ExaminIDs.push(qid);
+      console.log(i + ':' + qid);
+      i++;
+    }else{
 
-    $("#answer3").show();
-    $("#answer3_txt").show();
-    $("#answer4").show();
-    $("#answer4_txt").show();
-  }else if(questoinBody.Type == 1){
-    $("#answer1_txt").text("正确");
-    $("#answer2_txt").text("错误");
-    $("#answer3").hide();
-    $("#answer3_txt").hide();
-    $("#answer4").hide();
-    $("#answer4_txt").hide();
+    }
   }
 
-  $("#rightAnswer_txt").text(questoinBody.bestanswer);
+  while(ExaminIDs.length < 90){
+    var qid = chap_1_ExamID[getQuestionID(chap_1_count)];
+    if(ExaminIDs.indexOf(qid) == -1){
+      ExaminIDs.push(qid);
+      console.log(i + ':' + qid);
+      i++;
+    }else{
+
+    }
+  }
+
+  while(ExaminIDs.length < 100){
+    var qid = chap_1_ExamID[getQuestionID(chap_1_count)];
+    if(ExaminIDs.indexOf(qid) == -1){
+      ExaminIDs.push(qid);
+      console.log(i + ':' + qid);
+      i++;
+    }else{
+
+    }
+  }
+
+  console.log(ExaminIDs);
+  console.log(ExaminIDs.length);
 }
 
-var chapexamids = [[1,365],[2541,2640],[10923,10925],[10930,10931],[10938,10962],[10964,10971],[10978,10978],[10987,10995],[10998,11009],[11015,11015],[11022,11034],[11046,11046],[11049,11054],[11057,11078]];
-var myExamID = new Array(568);
-var myExamOrder = new Array(568);
-var arri = 0;
+function getQuestionID(per){
+  var r = Math.floor(Math.random() * (per)) ;
+  //console.log(r);
+  return r;
+}
 
-var j = 0;
+var chap_1_ExamID = new Array(chap_1_count);
+var chap_2_ExamID = new Array(chap_2_count);
+var chap_3_ExamID = new Array(chap_3_count);
+var chap_4_ExamID = new Array(chap_4_count);
+function initilizeQuestion(){
+  var arri = 0;
 
-for (var i = 0, len = chapexamids.length; i < len; i++) {
-  for (var minm = chapexamids[i][0], maxm = chapexamids[i][1]; minm <= maxm; minm++) {
-    myExamID[arri] = minm;
-    arri++;
+  var j = 0;
+
+  for (var i = 0, len = chap_1_examids.length; i < len; i++) {
+    for (var minm = chap_1_examids[i][0], maxm = chap_1_examids[i][1]; minm <= maxm; minm++) {
+      chap_1_ExamID[arri] = minm;
+      arri++;
+    }
+  }
+
+  arri = 0;
+
+  j = 0;
+
+  for (var i = 0, len = chap_2_examids.length; i < len; i++) {
+    for (var minm = chap_2_examids[i][0], maxm = chap_2_examids[i][1]; minm <= maxm; minm++) {
+      chap_2_ExamID[arri] = minm;
+      arri++;
+    }
+  }
+
+  arri = 0;
+
+  j = 0;
+
+  for (var i = 0, len = chap_3_examids.length; i < len; i++) {
+    for (var minm = chap_3_examids[i][0], maxm = chap_3_examids[i][1]; minm <= maxm; minm++) {
+      chap_3_ExamID[arri] = minm;
+      arri++;
+    }
+  }
+
+  arri = 0;
+
+  j = 0;
+
+  for (var i = 0, len = chap_4_examids.length; i < len; i++) {
+    for (var minm = chap_4_examids[i][0], maxm = chap_4_examids[i][1]; minm <= maxm; minm++) {
+      chap_4_ExamID[arri] = minm;
+      arri++;
+    }
   }
 }
 
-for ( myExamOrderid = 0; myExamOrderid < 568; myExamOrderid++) {
-  myExamOrder[myExamOrderid] = myExamOrderid + 1
-}
+// chapexamids = [[1,365],[2541,2640],[10923,10925],[10930,10931],[10938,10962],[10964,10971],[10978,10978],[10987,10995],[10998,11009],[11015,11015],[11022,11034],[11046,11046],[11049,11054],[11057,11078]];
+// myExamID = new Array(568);
+// myExamOrder = new Array(568);
+// var arri = 0;
 
-var Allcount = 100;
-var QIndex = 0;
+// var j = 0;
+
+// for (var i = 0, len = chapexamids.length; i < len; i++) {
+//   for (var minm = chapexamids[i][0], maxm = chapexamids[i][1]; minm <= maxm; minm++) {
+//     myExamID[arri] = minm;
+//     arri++;
+//   }
+// }
+
+// for ( myExamOrderid = 0; myExamOrderid < 568; myExamOrderid++) {
+//   myExamOrder[myExamOrderid] = myExamOrderid + 1
+// }
+
+var Allcount;
+var QIndex;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
 var answered=false;
+var kemuyi_wronglist = [];
 
 function nextQestion(){
+  console.log(QIndex + ' ' + Allcount);
   if(QIndex < Allcount){
     console.log("next");
     $("#number_title").text(++QIndex);
-    getQuestionByID(myExamID[QIndex - 1], showQuestions);
+    getQuestionByID(ExaminIDs[QIndex - 1], showQuestions);
+    if(QIndex == 100){
+      $("#btnNext").text("结束");
+    }
+  }else{
+    clearTimeout(t);
+    $("body").addClass("loading");
+    $("#test_result").text(rightCount + "分");
   }
 }
 function preQestion(){
+  $("#btnNext").text("下一题");
   if(QIndex > 1){
     console.log("next");
     $("#number_title").text(--QIndex);
-    getQuestionByID(myExamID[QIndex - 1], showQuestions);
+    getQuestionByID(ExaminIDs[QIndex - 1], showQuestions);
   }
 }
 function answerIsRight(){
@@ -140,81 +194,12 @@ function answerIsWrong(){
       wrongCount++;
       $("#wrongCount").text(wrongCount);
       $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
-  }
-}
-function tjanswer_delete(answer){
-  console.log("tjanswer" + answer + " " + currentQuestion.ta);
-  $("#rightAnswer_txt").show();
-
-  if($("#answer1").is(':visible') == true){
-    $("#img_ans_1").attr("src","../images/wrong-check-marks.png");
-  }
-  if($("#answer2").is(':visible') == true){
-    $("#img_ans_2").attr("src","../images/wrong-check-marks.png");
-  }
-  if($("#answer3").is(':visible') == true){
-    $("#img_ans_3").attr("src","../images/wrong-check-marks.png");
-  }
-  if($("#answer4").is(':visible') == true){
-    $("#img_ans_4").attr("src","../images/wrong-check-marks.png");
-  }
-
-  switch(currentQuestion.ta){
-    case 1:
-      $("#img_ans_1").attr("src","../images/right-check-marks.png");
-      break;
-    case 2:
-      $("#img_ans_2").attr("src","../images/right-check-marks.png");
-      break;
-    case 3:
-      $("#img_ans_3").attr("src","../images/right-check-marks.png");
-      break;
-    case 4:
-      $("#img_ans_4").attr("src","../images/right-check-marks.png");
-      break;
-  }
-
-  switch(answer){
-    case "A":
-      if(currentQuestion.ta == 1){
-        answerIsRight();
-      }else{
-        console.log("A wrong");
-        answerIsWrong();
-      }
-      break;
-    case "B":
-      if(currentQuestion.ta == "2"){
-        $("#img_ans_2").attr("src","../images/right-check-marks.png");
-        answerIsRight();
-      }else{
-        console.log("B wrong");
-        answerIsWrong();
-      }
-      break;
-    case "C":
-      if(currentQuestion.ta == 3){
-        $("#img_ans_3").attr("src","../images/right-check-marks.png");
-        answerIsRight();
-      }else{
-        console.log("C wrong");
-        answerIsWrong();
-      }
-      break;
-    case "D":
-      if(currentQuestion.ta == 4){
-        $("#img_ans_4").attr("src","../images/right-check-marks.png");
-        answerIsRight();
-      }else{
-        console.log("D wrong");
-        answerIsWrong();
-      }
-      break;
+      kemuyi_wronglist.push(ExaminIDs[QIndex - 1]);
   }
 }
 
-var min = 45;
-var sec = 0;
+var min;
+var sec;
 var t;
 
 function startTime()
@@ -229,13 +214,18 @@ function startTime()
 
   if(min < 0){
     clearTimeout(t);
+    $("body").addClass("loading");
+    $("#test_result").text(rightCount + "分");
+  }else{
+    //document.getElementById('timer_txt').innerHTML=checkTime(min)+":"+checkTime(sec);
+    $("#timer_txt").html(checkTime(min)+":"+checkTime(sec));
+    t=setTimeout('startTime()',1000);
   }
 
   // add a zero in front of numbers<10
-  min=checkTime(min);
-  sec=checkTime(sec);
-  document.getElementById('txt').innerHTML=min+":"+sec;
-  t=setTimeout('startTime()',1000);
+  //min=checkTime(min);
+  //sec=checkTime(sec);
+
 }
 
 function checkTime(i)
@@ -243,4 +233,49 @@ function checkTime(i)
   if (i<10) 
     {i="0" + i}
     return i
+}
+
+function closeInfoDia(){
+  $("body").removeClass("loading");
+}
+
+function testAgain(){
+  $("body").removeClass("loading");
+  clear();
+  init();
+}
+
+function clear(){
+  rightCount=0, wrongCount=0;
+  $("#rightCount").text(rightCount);
+  $("#wrongCount").text(wrongCount);
+  $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
+}
+
+function save(){
+  console.log('save wrong question.');
+
+  var u = {
+    id: userID,
+    kemuyi_wronglist: kemuyi_wronglist
+  }
+
+  console.log('kemuyi_wronglist: ' + kemuyi_wronglist);
+
+  $.post(apiHost + "questionwronglist/addWrongQuestion", 
+      JSON.stringify(u), 
+      //res,
+      function(data){
+          
+          console.log(data);
+          if(data.code > 0){
+              //alert("新增驾校成功！");
+              return "1";
+          }else if(data.code == -1){
+              return "0";
+          }
+      }).fail(function(a, b, c) {
+          console.log('failed.');
+          return "0";
+      });
 }

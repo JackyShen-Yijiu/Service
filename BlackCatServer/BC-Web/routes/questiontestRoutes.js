@@ -6,7 +6,7 @@ var question = mongodb.QuestionModel;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('questiontest');
+  res.render('questiontest-new');
 });
 
 router.get('/questionlist/', getQuestionList);

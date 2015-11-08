@@ -6,7 +6,7 @@ var question = mongodb.QuestionModel;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('questionlist');
+  res.render('questionlist-new');
 });
 
 router.get('/questionlist/', getQuestionList);
@@ -27,5 +27,6 @@ function getQuestionByID(req, res) {
     res.json(questions);
   });
 }
+
 
 module.exports = router;
