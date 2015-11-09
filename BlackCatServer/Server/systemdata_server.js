@@ -6,6 +6,7 @@ var mongodb = require('../models/mongodb.js');
 var feedbackModel=mongodb.FeedBackModel;
 var headLineModel=mongodb.HeadLineNewsModel;
 var courseWareModel=mongodb.CourseWareModel;
+var mallProductModel=mongodb.MallProdcutsModel;
 
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
@@ -52,3 +53,61 @@ exports.getCourseWare=function( queryinfo,callback){
             return callback(null,data)
         })
 };
+
+// 获取商城列表
+exports.getMallProduct=function(callback){
+    mallProductModel.find({"is_using":true})
+        .sort({"productprice" : 1})
+        .exec(function(err,productlist){
+            if(err){
+                return callback("查询商品出错："+err)
+            };
+            process.nextTick(function(){
+                var toplist=[];
+                var mainlist=[];
+                productlist.forEach(function(r,index){
+                    var oneproduct={
+                        productid: r._id,
+                        productname: r.productname,
+                        productprice: r.productprice,
+                        productimg: r.productimg,
+                        productdesc: r.productdesc,
+                        viewcount: r.viewcount,
+                        buycount: r.buycount,
+                        detailsimg: r.detailsimg
+                    }
+                    mainlist.push(oneproduct);
+                    if (r.is_top){
+                        toplist.push(oneproduct);
+                    }
+                })
+                return callback(null,{toplist:toplist,mainlist:mainlist})
+            })
+        })
+}
+
+// 获取商品详情
+exports.getProductDetail=function(productid,callback){
+    mallProductModel.findByIdAndUpdate(new mongodb.ObjectId(productid),{$inc:{"viewcount":1}},function(err,data){
+        if(err){
+            return callback("查询产品出错:"+err);
+        }
+        if(data){
+            var oneproduct={
+                productid: data._id,
+                productname: data.productname,
+                productprice: data.productprice,
+                productimg: data.productimg,
+                productdesc: data.productdesc,
+                viewcount: data.viewcount,
+                buycount: data.buycount,
+                detailsimg: data.detailsimg
+            }
+            return callback(null,oneproduct);
+        }else
+        {
+            return callback("没有查到相应的产品");
+        }
+    })
+}
+

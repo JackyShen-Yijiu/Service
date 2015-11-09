@@ -35,6 +35,10 @@ v1.post("/userfeedback",appsystemController.postUserFeedBack);
 v1.get("/trainingcontent",appsystemController.getTrainingContent);
 //  获取课件信息
 v1.get("/getcourseware",appsystemController.getCourseWare);
+// 查看商品列表
+v1.get("/getmailproduct",appsystemController.getMallProductList);
+// 查看商品详情（同时进行商品浏览次数 +1）
+v1.get("/getproductdetail",appsystemController.getProductDetail);
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 
@@ -42,6 +46,8 @@ v1.get("/getcourseware",appsystemController.getCourseWare);
 
 
 //======================================用户信息======================================
+// 用户购买商品
+v1.post("/userinfo/buyproduct",ensureAuthorizedController.ensureAuthorized,userController.userBuyProduct);
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
 // 验证用户是否存在

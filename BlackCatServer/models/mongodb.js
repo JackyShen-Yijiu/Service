@@ -61,4 +61,6 @@ exports.VipServerModel=require("./vipserver");
 exports.SequenceModel=require("./sequence");
 exports.CourseWareModel=require("./courseware");
 exports.IntegralListModel=require("./integrallist");
+exports.MallProdcutsModel=require("./mallproducts");
+exports.MallOrderModel=require("./mallorder");
 
