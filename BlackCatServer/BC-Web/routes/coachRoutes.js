@@ -64,10 +64,13 @@ function register(req, res){
     coa.headportrait = { originalpic: req.body.pictures};
 
 
-    coa.latitude= 40.096263;
-    coa.longitude=116.127921 ;
-    coa.loc.coordinates=[116.127921,40.096263];
-
+    // coa.latitude= 40.096263;
+    // coa.longitude=116.127921 ;
+    // coa.loc.coordinates=[116.127921,40.096263];
+    var latlng = req.body.latlng.split(",");
+    coa.latitude= latlng[1];
+    coa.longitude= latlng[0] ;
+    coa.loc.coordinates=[latlng[0] ,latlng[1]];
 
     console.log("new coach: " + coa);
 

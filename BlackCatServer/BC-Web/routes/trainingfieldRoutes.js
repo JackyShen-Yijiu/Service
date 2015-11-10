@@ -48,9 +48,13 @@ function register(req, res){
     fie.subject = req.body.subject;
     fie.pictures = [{id:1, originalpic:req.body.pictures}]
 
-    fie.latitude= 40.096263;
-    fie.longitude=116.127921 ;
-    fie.loc.coordinates=[116.127921,40.096263];
+    // fie.latitude= 40.096263;
+    // fie.longitude=116.127921 ;
+    // fie.loc.coordinates=[116.127921,40.096263];
+    var latlng = req.body.latlng.split(",");
+    fie.latitude= latlng[1];
+    fie.longitude= latlng[0] ;
+    fie.loc.coordinates=[latlng[0] ,latlng[1]];
 
     console.log("new field: " + fie);
 

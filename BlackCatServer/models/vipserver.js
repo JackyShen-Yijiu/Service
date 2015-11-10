@@ -19,6 +19,12 @@ VipServerSchema.plugin(seqlist.plugin, {
     step: 1
 });
 
+VipServerSchema.statics.getVIPServicesList = function(callback) {
+    this.find({})
+        .lean()
+        .exec(callback);
+};
+
 VipServerSchema.index({name: 1});
 
 

@@ -14,6 +14,7 @@ var questiontest = require('./routes/questiontestRoutes');
 var driveSchool = require('./routes/driveSchoolRoutes');
 var trainingfield = require('./routes/trainingfieldRoutes');
 var classtype = require('./routes/classtypeRoutes');
+var vipservice = require('./routes/vipServicesRoutes');
 
 var app = express();
 
@@ -41,6 +42,7 @@ app.use('/questiontest', questiontest);
 app.use('/driveSchool', driveSchool);
 app.use('/trainingfield', trainingfield);
 app.use('/classtype', classtype);
+app.use('/vipservice', vipservice);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

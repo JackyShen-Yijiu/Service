@@ -30,6 +30,7 @@ function AddSchool(sch_name, sch_address, sch_contact){
             province: sch_province.value,
             city: sch_city.value,
             address: sch_address.value,
+            latlng: sch_latlng.value,
             phone: sch_phone.value,
             responsible: sch_contact.value,
             hours: sch_workingtime.value,
@@ -103,6 +104,7 @@ function AddCoach(coa_name, coa_address, coa_phone, coa_email, coa_password, coa
             province: coa_province.value,
             city: coa_city.value,
             address: coa_address.value,
+            latlng: coa_latlng.value,
             phone: coa_phone.value,
             email: coa_email.value,
             password: coa_password.value,
@@ -166,6 +168,7 @@ function AddField(){
             province: field_province.value,
             city: field_city.value,
             address: field_address.value,
+            latlng: field_latlng.value,
             responsible: field_responsible.value,
             phone: field_phone.value,
             capacity: field_capacity.value,
@@ -200,11 +203,14 @@ function AddClassType(){
     }else{
 
         var vipserverlist = new Array();
-        $("[name='ct_vipserverlist']:checked").each(function(index, element) {
+        /*$("[name='ct_vipserverlist']:checked").each(function(index, element) {
                         var v = vipserver[$(this).val()];
                         console.log("subject" + v.id + v.name);
                         vipserverlist.push(v);
-                     });
+                     });*/
+        $('#vip_serverclasslist :selected').each(function(i, selected){
+          vipserverlist[i] = selected.value; 
+        });
         var classchedule = new Array();
         $("[name='ct_classchedule']:checked").each(function(index, element) {
                         var v = $(this).val();
@@ -245,7 +251,35 @@ function AddClassType(){
             });
         }
 }
+function AddVIPService(){
+    console.log('add vip service.');
 
+    
+    if(vip_servicename.value == ''){
+        //setNameErr(true);
+    }else{
+        var vip={
+            name: vip_servicename.value,
+            color: vip_color.value
+        }
+        console.log(vip);
+        $.post(apiHost + "vipservice/add", 
+            JSON.stringify(vip), 
+            //res,
+            function(data){
+                $("#code_error").hide();
+                console.log(data);
+                if(data.code > 0){
+                    alert("新增VIP服务成功！");
+                }else if(data.code == -1){
+                    
+                }
+            }).fail(function(a, b, c) {
+                console.log('failed.');
+            });
+    }
+
+}
 function resetSchool(){
     sch_name.value = '';
     sch_address.value = '';
@@ -598,9 +632,24 @@ function showAddClassType(){
         //callback(message, "Fail");
             console.log(message);
         });
+    $.get(apiHost + "vipservice/vipServiceList",
+        function(data){
+          //callback(data, "OK");
+          console.log(data);
+          $('#vip_serverclasslist').find('option').remove();
+          for (s in data) {
+                console.log(s);
+                $('#vip_serverclasslist').append('<option value="' + data[s]._id + '">' + data[s].name + '</option>');
+            }
+
+        }).fail(function(xHr, status, message){
+        //callback(message, "Fail");
+            console.log(message);
+        });
 }
 
 function getDriveSchools(){
 
 }
+
 

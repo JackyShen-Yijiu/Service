@@ -67,10 +67,10 @@ function register(req, res){
     
     sch.pictures_path = [req.body.pictures];
     sch.pictures = [{id:1, originalpic:req.body.pictures}]
-
-    sch.latitude= 40.096263;
-    sch.longitude=116.127921 ;
-    sch.loc.coordinates=[116.127921,40.096263];
+    var latlng = req.body.latlng.split(",");
+    sch.latitude= latlng[1];
+    sch.longitude= latlng[0] ;
+    sch.loc.coordinates=[latlng[0] ,latlng[1]];
 
 
     console.log("new school: " + sch);
