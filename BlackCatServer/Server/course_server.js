@@ -710,6 +710,9 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
     var datenow =new Date(date);
     var datetomorrow = datenow.addDays(1);
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
+        ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
+            ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
+        ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish}]
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
         .select("userid reservationstate reservationcreatetime begintime endtime subject " +
         "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment")
