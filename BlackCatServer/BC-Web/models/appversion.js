@@ -23,9 +23,6 @@ AppversionSchema.statics.getVersionInfo = function (clienttype, callback) {
                 return callback(err);
             }
 
-            if(!doc) {
-                return callback('could not find the version data');
-            }
 
             return callback(null, doc);
         }).limit(1).sort({updateTime:-1});

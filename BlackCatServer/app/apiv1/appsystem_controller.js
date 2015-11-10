@@ -46,7 +46,7 @@ exports.appVersion=function(req,res){
      });*/
     Apperversion.getVersionInfo(apptype, function(err, data) {
         if (err) {
-            return res.status(500).send(new BaseReturnInfo(0, "err",[] ));
+            return res.json(new BaseReturnInfo(0, err,[] ));
         }
         //console.log(data);
         return res.json(

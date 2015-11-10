@@ -17,15 +17,15 @@ require('date-utils');
 var async = require('async');
 
 addcourseware=function(){
-/*var courseware = new  CourseWareModel;
-courseware.name="科目三靠边停车";
-courseware.pictures="http://7xnjg0.com1.z0.glb.clouddn.com/20151027/155008-5611292a193184140355c49a.png";
-courseware.videourl="http://player.youku.com/embed/XMTM3OTE2MjUzMg==";
+var courseware = new  CourseWareModel;
+courseware.name="夜间行驶";
+courseware.pictures="http://7xnjg0.com1.z0.glb.clouddn.com/yejianxingshi.png";
+courseware.videourl="http://player.youku.com/embed/XMTM4MjkzNzMyNA==";
 courseware.subject.subjectid=3;
 courseware.subject.name="科目三";
-courseware.save();*/
+courseware.save();
 
- var product  =new  mallProductModel;
+ /*var product  =new  mallProductModel;
     product.productname="iPhone4S 16G";
     product.productprice=5000;
     product.productimg="http://7xnjg0.com1.z0.glb.clouddn.com/qqQQ截图20151109155320.png";
@@ -34,7 +34,7 @@ courseware.save();*/
     product.buycount=2;
     product.detailsimg="http://7xnjg0.com1.z0.glb.clouddn.com/qqQQ截图20151109155351.png";
     product.is_top=false;
-    product.save();
+    product.save();*/
 
 }
 addcourseware();
