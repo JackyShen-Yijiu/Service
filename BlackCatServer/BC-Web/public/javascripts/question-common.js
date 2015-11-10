@@ -69,6 +69,9 @@ function showQuestions(questoinBody, status, enable) {
   if(questoinBody.sinaimg != ""){
     $("#question_img").show();
     $("#question_img").prop("src","../images/kemuyi/img-600/" + questoinBody.sinaimg);
+  }else if(questoinBody.imageurl != ""){
+    $("#question_img").show();
+    $("#question_img").prop("src", questoinBody.imageurl);
   }else{
     $("#question_img").hide();
   }
