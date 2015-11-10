@@ -354,6 +354,7 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.userid =newinstace._id;
+                            usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)}, { $set: { token:token }},{safe: false},function(err,doc){});
                             return callback(null,returnmodel);
 
                         });
@@ -397,7 +398,7 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.mobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.coachid =newinstace._id;
-
+                            coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)}, { $set: { token:token }},{safe: false},function(err,doc){});
                             return callback(null,returnmodel);
 
                         });
