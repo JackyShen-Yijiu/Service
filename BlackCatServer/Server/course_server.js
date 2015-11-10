@@ -241,7 +241,7 @@ exports.postReservation=function(reservationinfo,callback){
                     if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation + coursecount > userdata.subjectthree.totalcourse) {
                         return callback("预约课程数量超出最大课程");
                     }
-                    currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjecttwo.subjectthree;
+                    currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjectthree.reservation;
                     userdata.subjectthree.reservation = userdata.subjectthree.reservation + coursecount;
                 }
                 else {
@@ -261,8 +261,8 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.reservationcreatetime = new Date();
                     reservation.reservationstate = appTypeEmun.ReservationState.applying;
                     reservation.trainfieldid=coachdata.trainfield;
-                reservation.trainfieldlinfo.id=coachdata.trainfieldlinfo.id;
-                reservation.trainfieldlinfo.name=coachdata.trainfieldlinfo.name;
+                     reservation.trainfieldlinfo.id=coachdata.trainfieldlinfo.id;
+                     reservation.trainfieldlinfo.name=coachdata.trainfieldlinfo.name;
 
                     reservation.begintime = new Date(reservationinfo.begintime);
                     reservation.endtime = new Date(reservationinfo.endtime);

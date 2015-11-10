@@ -691,12 +691,12 @@ exports.getUsefulCoachList=function(useid,index,callback){
         {
             return  callback("用户没有报名的权限");
         }
-        if(user.subject.subjectid!=2&&userdata.subject.subjectid!=3){
+        if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
             return  callback("该用户现阶段不能预约课程:"+userdata.subject.name);
         }
         coachmode.find({is_lock:false,is_validation:true,
             driveschool:new mongodb.ObjectId(user.applyschool),
-            "carmodel.modelsid":user.carmodel.modelsid,
+            //"carmodel.modelsid":user.carmodel.modelsid,
         "subject.subjectid":{'$in':[user.subject.subjectid]}})
             .sort({"passrate": -1})
             .skip((index-1)*10)
