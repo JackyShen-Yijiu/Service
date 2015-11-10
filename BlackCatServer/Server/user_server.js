@@ -1477,12 +1477,34 @@ exports.updateCoachServer=function(updateinfo,callback){
                     coachdata.driveschool = new mongodb.ObjectId(updateinfo.driveschoolid);
                     coachdata.driveschoolinfo.id = updateinfo.driveschoolid;
                     coachdata.driveschoolinfo.name = schooldata.name;
+                    if (updateinfo.trainfield) {
+                        trainfieldModel.findById(new mongodb.ObjectId(updateinfo.trainfield), function (err, trainfielddata) {
+                            if (err || !trainfielddata) {
+                                return callback("查询训练场：" + err);
+                            }
+                            coachdata.trainfield = new mongodb.ObjectId(updateinfo.trainfield);
+                            coachdata.trainfieldlinfo.id = updateinfo.trainfield;
+                            coachdata.trainfieldlinfo.name = trainfielddata.fieldname;
+                            coachdata.latitude = trainfielddata.latitude;
+                            coachdata.longitude = trainfielddata.longitude;
+                            coachdata.loc.coordinates = [trainfielddata.longitude, trainfielddata.latitude];
+                            coachdata.save(function (err, data) {
+                                if (err) {
+                                    return callback("保存教练信息出错：" + err);
+                                }
+                                return callback(null, "success");
+                            })
+
+                        })
+                    }
+                    else
+                    {
                     coachdata.save(function (err, data) {
                         if (err) {
                             return callback("保存教练信息出错：" + err);
                         }
                         return callback(null, "success");
-                    })
+                    })}
 
                 })
             } else if (updateinfo.trainfield) {
