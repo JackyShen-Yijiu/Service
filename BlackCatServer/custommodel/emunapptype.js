@@ -91,5 +91,22 @@ exports.IntegralType={
     // 注册发放
     register:1,
     // 好友注册发放
-    friendregister:2
+    friendregister:2,
+    // 购买商品
+    buyproduct:3
+}
+
+// 用户订单的状态
+exports.MallOrderState={
+    // 已申请
+    applying:1,
+    // 已确定 接受
+    applyconfirm:2,
+    //拒绝或者取消）
+    applyrefuse:3,
+    //  已发送
+    sended:4,
+    // 已完成
+    finished:5
+
 }

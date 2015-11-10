@@ -69,6 +69,36 @@ exports.UserLogin=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 };
+//  用户购买商品
+exports.userBuyProduct=function(req,res){
+    var  postinfo={
+        usertype:req.body.usertype,
+        userid:req.body.userid,
+        productid:req.body.productid,
+        name:req.body.name,
+        mobile:req.body.mobile,
+        address:req.body.address,
+    }
+    if (postinfo.usertype === undefined
+        ||postinfo.userid === undefined
+        ||postinfo.productid === undefined ) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    if(postinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.userBuyProduct(postinfo,function(err,data){
+        if(err){
+            return res.json(new  BaseReturnInfo(0,err,{}));
+        }
+        else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    })
+
+}
 exports.postSignUp=function(req,res){
    // console.log(req.body);
     var usertype=req.body.usertype;

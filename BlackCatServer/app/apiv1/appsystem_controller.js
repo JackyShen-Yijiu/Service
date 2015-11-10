@@ -90,7 +90,29 @@ exports.getCourseWare=function (req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     })
 }
+// 获取商城列表
+exports.getMallProductList=function(req,res){
+    sysstemserver.getMallProduct(function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
+// 获取商品详情
+exports.getProductDetail=function(req,res){
+   var  productid= req.query.productid;
+    if (productid===undefined){
+        return   res.json(new BaseReturnInfo(0,"参数错误",{}));
+    }
+    sysstemserver.getProductDetail(productid,function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 
+}
 
 exports.getTrainingContent=function(req,res){
     //getTrainingContent

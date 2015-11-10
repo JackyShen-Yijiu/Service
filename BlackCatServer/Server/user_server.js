@@ -21,6 +21,8 @@ var schoolModel=mongodb.DriveSchoolModel;
 var classtypeModel=mongodb.ClassTypeModel;
 var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
+var mallProductModel=mongodb.MallProdcutsModel
+var mallOrderModel=mongodb.MallOrderModel;
 
 var timeout = 60 * 5;
 
@@ -107,6 +109,123 @@ exports.verifyUserExists=function(usertype,mobile,callback){
                     return callback(null,1);
                 }
             });
+    }
+}
+// 修改记录
+payuserIntegral=function(payinfo,callback){
+    var integralinfo=new integralListModel;
+    integralinfo.userid=payinfo.userid;
+    integralinfo.usertype=payinfo.usertype;
+    integralinfo.amount=payinfo.amount;
+    integralinfo.type=payinfo.type;
+    integralinfo.save(function(err,data){
+        if(err){
+            return callback("保存失败")
+        }
+        if(payinfo.usertype==appTypeEmun.UserType.User){
+            usermodel.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
+                if(err){
+                    return callback("保存失败")
+                }
+              return  callback(null,"suncess");
+            })
+
+        }else if(payinfo.usertype==appTypeEmun.UserType.Coach){
+            coachmode.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
+                if(err){
+                    return callback("保存失败")
+                }
+               return  callback(null,"suncess");
+            })
+        }
+    })
+}
+userpayprocess=function(userdata,info,callback){
+    mallProductModel.findById(new mongodb.ObjectId(info.productid),function(err,productdata){
+        if (err){
+            return callback("查找商品出错:"+err)
+        }
+        if(!productdata){
+            if(!userdata){
+                return callback("没有查找到商品");
+            }
+        }
+        if(userdata.wallet<productdata.productprice){
+            return callback("对不起，您的金币不足，无法购买商品");
+        }
+        var payinfo={
+            userid:userdata._id,
+            usertype:info.usertype,
+            amount:productdata.productprice*(-1),
+            type:appTypeEmun.IntegralType.buyproduct
+        }
+        payuserIntegral(payinfo,function(err,data){
+            if(err){
+                return callback("购买商品失败");
+            }
+            var order= new  mallOrderModel;
+            order.userid=userdata._id;
+            order.usertype=info.usertype;
+            order.productid=productdata._id;
+            order.orderstate=appTypeEmun.MallOrderState.applying;
+            order.receivername=info.name;
+            order.mobile=info.mobile;
+            order.address=info.mobile;
+            order.save(function(err,data){
+                if(err){
+                    return callback("保存订单出错:"+err);
+                }
+                mallProductModel.update({_id:new mongodb.ObjectId(productdata._id)},{$inc: { buycount: 1 }},function(err){});
+                return callback(null,"suncess");
+            })
+        })
+    })
+}
+// 用户购买商品
+exports.userBuyProduct=function(info,callback){
+    if (info.usertype==userTypeEmun.User) {
+        usermodel.findById(new mongodb.ObjectId(info.userid))
+            .select("wallet")
+            .exec(function(err,userdata){
+                if(err){
+                     return callback("查找用户出错误:"+err)
+                }
+                if(!userdata){
+                    return callback("没有查找到用户")
+                }
+                userpayprocess(userdata,info,function(err,data){
+                    if(err){
+                        return callback(err);
+                    }
+                    else{
+                        return callback(null,data);
+                    }
+
+                })
+
+            })
+    }
+    else if(info.usertype==userTypeEmun.Coach){
+        coachmode.findById(new mongodb.ObjectId(info.userid))
+            .select("wallet")
+            .exec(function(err,userdata){
+                if(err){
+                    return callback("查找用户出错误:"+err)
+                }
+                if(!userdata){
+                    return callback("没有查找到用户")
+                }
+                userpayprocess(userdata,info,function(err,data){
+                    if(err){
+                        return callback(err);
+                    }
+                    else{
+                        return callback(null,data);
+                    }
+
+                })
+
+            })
     }
 }
 // 用户登录
