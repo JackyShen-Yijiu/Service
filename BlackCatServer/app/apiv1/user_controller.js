@@ -542,14 +542,28 @@ exports.updateCoachInfo=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 教练登录后获取自己的详细信息 (返回数据和教练登录一样)
+exports.getCoachinfo=function(req,res){
+var userid=req.query.userid;
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getCoachinfoServer(userid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 
+}
 //获取用户信息
 exports.getUserinfo=function(req,res){
     var apptype=req.params.type;
     var userid=req.params.userid;
     if (apptype===undefined||userid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"parms is wrong",""));
+            new BaseReturnInfo(0,"parms is wrong",{}));
     };
     userserver.getUserinfoServer(apptype,userid,function(err,data){
         if(err){
@@ -683,7 +697,7 @@ exports.getMyWallet=function(req,res){
     };
     if(queryinfo.userid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
     };
     userserver.getMyWallet(queryinfo,function(err,data){
         if(err){

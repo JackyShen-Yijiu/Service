@@ -1552,6 +1552,20 @@ exports.getUserinfoServer=function(type,userid,callback){
         return callback("查询用户类型出错")
     }
 };
+exports.getCoachinfoServer=function(userid,callback){
+    coachmode.findById(new mongodb.ObjectId(userid),function(err,coachdata) {
+        if (err || !coachdata) {
+            return callback("查询教练出错：" + err);
+        }
+        var returnmodel=new resbasecoachinfomode(coachdata);
+        returnmodel.token=coachdata.token;
+        returnmodel.usersetting=coachdata.usersetting;
+        returnmodel.idcardnumber=idCardNumberObfuscator(coachdata.idcardnumber);
+        returnmodel.coachid =coachdata._id;
+        return callback(null,returnmodel);
+    });
+}
+
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){
     userCountModel.getUserCountInfo(function(err,data){
