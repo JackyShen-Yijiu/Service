@@ -71,7 +71,7 @@ function showQuestions(questoinBody, status, enable) {
     $("#question_img").prop("src","../images/kemuyi/img-600/" + questoinBody.sinaimg);
   }else if(questoinBody.imageurl != ""){
     $("#question_vedio").show();
-    $("#question_vedio").prop("data", questoinBody.imageurl);
+    $("#question_vedio").prop("src", questoinBody.imageurl);
   }else{
     $("#question_img").hide();
     $("#question_vedio").hide();
