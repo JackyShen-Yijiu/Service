@@ -52,7 +52,7 @@ exports.verifyUserExists=function(req,res){
     });
 }
 exports.UserLogin=function(req,res){
-    //console.log(req.body);
+    console.log(req.body);
     var usertype=req.body.usertype;
     var userinfo=new customUserinfo();
     userinfo.mobile=req.body.mobile;
