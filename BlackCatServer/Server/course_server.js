@@ -828,7 +828,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
             if(err){
                 return callback("查询数据出错："+err);
             }
-            resdata.reservationstate=(is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
+            resdata.reservationstate=(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
                 appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_comment=undefined;
             return callback(null,resdata);})
