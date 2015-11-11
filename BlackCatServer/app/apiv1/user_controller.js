@@ -414,6 +414,7 @@ exports.updateUserInfo=function(req,res){
 
 //教练申请验证
 exports.coachApplyVerification=function(req,res){
+    console.log(req.body)
     var applyinfo={
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
@@ -423,6 +424,7 @@ exports.coachApplyVerification=function(req,res){
         driveschoolid:req.body.driveschoolid, //所在驾校
         referrerCode:req.body.referrerCode  //邀请吗可选
     }
+    console.log(applyinfo)
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
         applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(

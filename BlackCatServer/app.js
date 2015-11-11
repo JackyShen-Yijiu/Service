@@ -8,6 +8,7 @@ var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 //var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
+var apipushtest=require('./routes/api_push_test.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
 //var domain = require('domain');
@@ -70,6 +71,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
+app.use('/api/pushtest', apipushtest);
 
 
 // catch 404 anid forward to error handler
