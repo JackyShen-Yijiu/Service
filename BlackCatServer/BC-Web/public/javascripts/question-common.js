@@ -71,7 +71,7 @@ function showQuestions(questoinBody, status, enable) {
     $("#question_img").prop("src","../images/kemuyi/img-600/" + questoinBody.sinaimg);
   }else if(questoinBody.imageurl != ""){
     $("#question_vedio").show();
-    $("#question_vedio").prop("src", questoinBody.imageurl);
+    $("#question_vedio").prop("src", "http://player.youku.com/embed/" + questoinBody.imageurl);
   }else{
     $("#question_img").hide();
     $("#question_vedio").hide();
