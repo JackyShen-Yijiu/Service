@@ -9,7 +9,7 @@ var log=require("./systemlog");
 
 
 
-addsuer=function(userid,password,callback){
+exports.addsuer=function(userid,password,callback){
     var operation = retry.operation({
         retries: 5,
         factor: 3,
@@ -66,7 +66,7 @@ exports.userupdatepassword=function(userid,password,callback){
 
 }
 
-addsuer("1223","12334",function(err,data){
+/*addsuer("1223","12334",function(err,data){
     console.log(err);
     console.log(data);
-})
+})*/
