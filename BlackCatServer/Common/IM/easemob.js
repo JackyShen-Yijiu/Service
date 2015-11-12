@@ -2,8 +2,7 @@
  * Created by v-lyf on 2015/9/14.
  */
 var https = require('https');
-var request = require("request");
-var Buffer = require('buffer');
+
 var iMconfig=require("../../Config/sysconfig").imConfig;
 var token = '';
 var tokencreatetimestamp ;
@@ -38,7 +37,6 @@ var http_request = function (data, path, method, callback) {
         res.on('end', function () {
             var data = JSON.parse(Buffer.concat(chunks, size).toString());
             if (callback)
-            //console.log(res);
                 callback(res.statusCode,data);
         });
     });
