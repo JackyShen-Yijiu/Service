@@ -70,7 +70,3 @@ exports.userupdatepassword=function(userid,password,callback){
     console.log(err);
     console.log(data);
 })*/
-    userupdatepassword("1223","123344",function(err,data){
-    console.log(err);
-    console.log(data);
-})
