@@ -27,13 +27,13 @@ var pushtype={
 exports.pushNewVersion=function(apptype,callback){
 
     console.log(apptype);
-    if(apptype===undefined){
+    if(apptype===undefined ||(apptype!=2&&apptype!=1)){
         return callback("参数数据");
     }
     var senddata={
         type:pushtype.NewVersion
     }
-    BasePushmessage.PushToStudent(alterinfo.NewVersion,title,null,senddata,1,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.NewVersion,title,undefined,senddata,apptype,function(err,data){
         if(err){
             return callback(err);
         }
@@ -83,7 +83,7 @@ exports.pushApplySuccess=function(userid,callback){
         userid:userid,
         type:pushtype.ApplySuccess
     }
-    BasePushmessage.PushToStudent(alterinfo.ApplySuccess,title,userid,senddata,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.ApplySuccess,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
         if(err){
             return callback(err);
         }
@@ -101,7 +101,7 @@ exports.pushReservationSuccess=function(userid,reservationid,callback){
         reservationid:reservationid,
         type:pushtype.ReservationSuccess
     }
-    BasePushmessage.PushToStudent(alterinfo.ReservationSuccess,title,userid,senddata,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.ReservationSuccess,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
         if(err){
             return callback(err);
         }
@@ -120,7 +120,7 @@ exports.pushReservationCancel=function(userid,reservationid,callback){
         reservationid:reservationid,
         type:pushtype.ReservationCancel
     }
-    BasePushmessage.PushToStudent(alterinfo.ReservationCancel,title,userid,senddata,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.ReservationCancel,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
         if(err){
             return callback(err);
         }
