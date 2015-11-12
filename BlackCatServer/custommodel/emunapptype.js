@@ -6,7 +6,9 @@ exports.LogType={
     log:1,
     err:2,
     info:3,
-    warn:4
+    warn:4,
+    im:5,
+    push:6
 }
 exports.ClientType = {
     AndroidUserClient:1,

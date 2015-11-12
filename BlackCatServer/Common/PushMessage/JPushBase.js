@@ -17,7 +17,9 @@ var android="android";
 
 
 exports.PushToStudent=function(alert,title,userid,data,platformtype,callback){
-
+if(!pushConfig.is_push){
+    return callback(null,"suceess");
+}
     var senddata={
         data:data
     }
@@ -60,6 +62,9 @@ exports.PushToStudent=function(alert,title,userid,data,platformtype,callback){
 
 
 exports.PushToCoach=function(alert,title,userid,data,platformtype,callback){
+    if(!pushConfig.is_push){
+        return callback(null,"suceess");
+    }
     var senddata={
         data:data
     }

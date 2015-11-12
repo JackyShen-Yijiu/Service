@@ -4,7 +4,7 @@ var schoolclassModel=mongodb.ClassTypeModel;
 var trainingfieldModel=mongodb.TrainingFieldModel;
 var usercount=mongodb.UserCountModel;
 var headlinenews=mongodb.HeadLineNewsModel;
-var IM=require('../Common/IM/mobIm');
+var IM=require('../Common/mobIm');
 
 exports.adddriveschool=function(callback){
     var school=new schoolModel();

@@ -10,7 +10,8 @@ var jwt = require('jsonwebtoken');
 var userTypeEmun=require("../custommodel/emunapptype").UserType;
 var resbaseuserinfomodel=require("../custommodel/returnuserinfo").resBaseUserInfo;
 var resbasecoachinfomode=require("../custommodel/returncoachinfo").resBaseCoachInfo;
-var appTypeEmun=require("../custommodel/emunapptype")
+var appTypeEmun=require("../custommodel/emunapptype");
+var regisermobIm=require('../Common/mobIm');
 var appWorkTimes=require("../Config/commondata").worktimes;
 var secretParam= require('./jwt-secret').secretParam;
 var resendTimeout = 60;
@@ -23,6 +24,7 @@ var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
 var mallProductModel=mongodb.MallProdcutsModel
 var mallOrderModel=mongodb.MallOrderModel;
+
 
 var timeout = 60 * 5;
 
@@ -258,6 +260,12 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.userid =newinstace._id;
                            returnmodel.idcardnumber=newinstace.idcardnumber;
                            returnmodel.usersetting=newinstace.usersetting;
+                           if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                               regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                   usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                       { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                               })
+                           }
                            return callback(null,returnmodel);
 
                        });
@@ -298,6 +306,12 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.usersetting=newinstace.usersetting;
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
+                            if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                                regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                    coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                        { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                                })
+                            }
                             return callback(null,returnmodel);
 
                         });
@@ -354,7 +368,12 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.userid =newinstace._id;
-                            usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)}, { $set: { token:token }},{safe: false},function(err,doc){});
+                            usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                { $set: { token:token }},{safe: false},function(err,doc){});
+                            regisermobIm.addsuer(newinstace._id,userinfo.password,function(err,data){
+                                usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            })
                             return callback(null,returnmodel);
 
                         });
@@ -398,7 +417,12 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.mobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.coachid =newinstace._id;
-                            coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)}, { $set: { token:token }},{safe: false},function(err,doc){});
+                            coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                { $set: { token:token }},{safe: false},function(err,doc){});
+                            regisermobIm.addsuer(newinstace._id,userinfo.password,function(err,data){
+                                coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            })
                             return callback(null,returnmodel);
 
                         });
@@ -473,6 +497,10 @@ exports.updatePassword=function(pwdinfo,callback){
              if(err){
                  return  callback("保存用户信息出错："+err);
              }
+             regisermobIm.userupdatepassword(newdata._id,newdata.password,function(err,data){
+                 userdata.update({"_id":new mongodb.ObjectId(newdata._id)},
+                     { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+             })
              return callback(null,"success")
          });
      });
@@ -491,6 +519,10 @@ exports.updatePassword=function(pwdinfo,callback){
                     if(err){
                         return  callback("保存用户信息出错："+err);
                     }
+                    regisermobIm.userupdatepassword(newdata._id,newdata.password,function(err,data){
+                        coachmode.update({"_id":new mongodb.ObjectId(newdata._id)},
+                            { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                    })
                     return callback(null,"success")
                 });
             });

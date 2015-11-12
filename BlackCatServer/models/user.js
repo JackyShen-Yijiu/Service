@@ -108,7 +108,9 @@ var  UserSchema=new Schema({
     // 用户积分状态
     integralstate:{type:Number,default:0},
     // 用户积分发放人员列表
-    integralpaylist:[{id:Number,userid:String,usertype:Number}]
+    integralpaylist:[{id:Number,userid:String,usertype:Number}],
+    //是否已经注册mobim
+    is_registermobim:{type:Number,default:0}
 
 });
 UserSchema.index({mobile: 1}, {unique: true});

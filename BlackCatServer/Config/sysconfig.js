@@ -15,3 +15,18 @@ exports.jpushCofig={
     is_push:true,  // 推送消息
     is_debug:false   //是否是测试状态
 }
+
+// 测试环信im配置地址
+exports.imConfig={
+    client_id:"YXA6In9icIkvEeWcN8Xg9ZIE7w",
+    client_secret:"YXA66Vo2yOfs5iupNCButKMuFmfnTdY",
+    org_name:"black-cat",
+    app_name:"yibuxuechetest"
+}
+// 环信正式版
+/*exports.imConfig={
+    client_id:"YXA663xwEIkuEeW9qmOsf__X8A",
+    client_secret:"YXA6WC4NmA71-YQ49tAKYHHqS4sCRt4",
+    org_name:"black-cat",
+    app_name:"yibuxuecheprod"
+}*/

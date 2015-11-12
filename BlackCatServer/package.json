@@ -23,6 +23,7 @@
     "node-schedule":"*",
     "qiniu":"~6.1.8",
     "async":"*",
-    "jpush-sdk": "*"
+    "jpush-sdk": "*",
+    "retry": "~0.8.0"
   }
 }
