@@ -2,7 +2,7 @@
  * Created by v-lyf on 2015/9/14.
  */
 var https = require('https');
-
+//var request = require('superagent');
 var iMconfig=require("../../Config/sysconfig").imConfig;
 var token = '';
 var tokencreatetimestamp ;
@@ -26,7 +26,7 @@ var http_request = function (data, path, method, callback) {
         }
     };
 
-    var req = https.request(options, function (res) {
+    var req = https.request(options, function (res,body) {
         var chunks = [];
         var size = 0;
         res.setEncoding('utf8');
@@ -34,8 +34,9 @@ var http_request = function (data, path, method, callback) {
             chunks.push(chunk);
             size += chunk.length;
         });
-        res.on('end', function () {
-            var data = JSON.parse(Buffer.concat(chunks, size).toString());
+        res.on('end', function (){
+         var data = JSON.parse(chunks.toString());
+        console.log(data);
             if (callback)
                 callback(res.statusCode,data);
         });
