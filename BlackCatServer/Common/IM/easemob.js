@@ -3,6 +3,7 @@
  */
 var https = require('https');
 var request = require("request");
+var Buffer = require('buffer');
 var iMconfig=require("../../Config/sysconfig").imConfig;
 var token = '';
 var tokencreatetimestamp ;

@@ -24,6 +24,7 @@
     "qiniu":"~6.1.8",
     "async":"*",
     "jpush-sdk": "*",
+    "request": "*",
     "retry": "~0.8.0"
   }
 }
