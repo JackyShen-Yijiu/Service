@@ -2,6 +2,7 @@
  * Created by v-lyf on 2015/9/14.
  */
 var https = require('https');
+var request = require("request");
 var iMconfig=require("../../Config/sysconfig").imConfig;
 var token = '';
 var tokencreatetimestamp ;
