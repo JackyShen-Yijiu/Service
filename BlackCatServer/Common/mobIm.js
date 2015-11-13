@@ -26,7 +26,7 @@ exports.addsuer=function(userid,password,callback){
                 return;
             }
             if(code==200){
-                console.log("环信添加用户成功："+userid);
+                console.log("用户修改密码成功userid："+userid+"密码："+password);
                 console.log(data);
                 return callback(null,"success");
             }
@@ -54,7 +54,7 @@ exports.userupdatepassword=function(userid,password,callback){
                 return;
             }
             if(code==200){
-                console.log("用户修改密码成功："+userid);
+                console.log("用户修改密码成功userid："+userid+"密码："+password);
                 console.log(data);
                 return callback(null,"success");
             }
