@@ -36,7 +36,7 @@ var http_request = function (data, path, method, callback) {
         });
         res.on('end', function (){
          var data = JSON.parse(chunks.toString());
-        console.log(data);
+       // console.log(data);
             if (callback)
                 callback(res.statusCode,data);
         });

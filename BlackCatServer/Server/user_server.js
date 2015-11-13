@@ -498,7 +498,7 @@ exports.updatePassword=function(pwdinfo,callback){
                  return  callback("保存用户信息出错："+err);
              }
              regisermobIm.userupdatepassword(newdata._id,newdata.password,function(err,data){
-                 userdata.update({"_id":new mongodb.ObjectId(newdata._id)},
+                 usermodel.update({"_id":new mongodb.ObjectId(newdata._id)},
                      { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
              })
              return callback(null,"success")
