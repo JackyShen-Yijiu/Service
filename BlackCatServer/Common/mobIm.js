@@ -26,6 +26,8 @@ exports.addsuer=function(userid,password,callback){
                 return;
             }
             if(code==200){
+                console.log("环信添加用户成功："+userid);
+                console.log(data);
                 return callback(null,"success");
             }
            else{
@@ -48,12 +50,12 @@ exports.userupdatepassword=function(userid,password,callback){
     });
     operation.attempt(function () {
         baseIM.upatepassword(userid,password,function(code,data){
-             //console.log(data);
-             // console.log(code);
             if (operation.retry(code==503)) {
                 return;
             }
             if(code==200){
+                console.log("用户修改密码成功："+userid);
+                console.log(data);
                 return callback(null,"success");
             }
             else{
