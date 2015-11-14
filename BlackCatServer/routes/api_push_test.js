@@ -60,6 +60,18 @@ pushtest.get("/student/pushReservationSuccess",function(req,res){
     })
 });
 
+pushtest.get("/student/pushsystemmessage",function(req,res){
+    var userid=req.query.userid;
+    var title=req.query.title;
+    var msg_content=req.query.msg_content;
+    pushstudent.pushSystemMessage(userid,title,msg_content,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+});
+
 pushtest.get("/student/pushReservationCancel",function(req,res){
     var userid=req.query.userid;
     var reservationid=req.query.reservationid;
@@ -146,6 +158,18 @@ pushtest.get("/coach/NewComment",function(req,res){
     })
 });
 //
+pushtest.get("/coach/pushsystemmessage",function(req,res){
+    var userid=req.query.userid;
+    var title=req.query.title;
+    var msg_content=req.query.msg_content;
+    pushcoach.pushCoachSystemMessage(userid,title,msg_content,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+});
+
 
 
 

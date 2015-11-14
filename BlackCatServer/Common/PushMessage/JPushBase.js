@@ -15,13 +15,74 @@ exports.SendPlatform={
 var ios="ios";
 var android="android";
 
+exports.pushMessagetoCoach=function(userid,title,msg_content,data,type,callback){
+    var senddata={
+        data:data,
+        type:type
+    }
+    try{
+        coachClient.push().setPlatform(ios,android)
+            .setAudience(userid? JPush.alias(userid):JPush.ALL)
+            .setMessage(msg_content,title,"text",senddata)
+            .send(function(err, res) {
+                if (err) {
+                    if (err instanceof JPush.APIConnectionError) {
+                        console.log(err.message);
+                        console.log(err.isResponseTimeout);
+                    } else if (err instanceof  JPush.APIRequestError) {
+                        console.log(err.message);
+                    }
+                    console.log(err.message);
+                    return callback(err);
+                } else {
+                    console.log('Sendno: ' + res.sendno);
+                    console.log('Msg_id: ' + res.msg_id);
+                    return callback(null,"suceess");
+                }
+            });}
+    catch(err){
+        console.log(err);
+        return callback(err);
+    }
+}
+exports.pushMessagetoStudent=function(userid,title,msg_content,data,type,callback){
+    var senddata={
+        data:data,
+        type:type
+    }
+    try{
+        studentClient.push().setPlatform(ios,android)
+            .setAudience(userid? JPush.alias(userid):JPush.ALL)
+            .setMessage(msg_content,title,"text",senddata)
+            .send(function(err, res) {
+                if (err) {
+                    if (err instanceof JPush.APIConnectionError) {
+                        console.log(err.message);
+                        console.log(err.isResponseTimeout);
+                    } else if (err instanceof  JPush.APIRequestError) {
+                        console.log(err.message);
+                    }
+                    console.log(err.message);
+                    return callback(err);
+                } else {
+                    console.log('Sendno: ' + res.sendno);
+                    console.log('Msg_id: ' + res.msg_id);
+                    return callback(null,"suceess");
+                }
+            });}
+    catch(err){
+        console.log(err);
+        return callback(err);
+    }
+}
 
-exports.PushToStudent=function(alert,title,userid,data,platformtype,callback){
+exports.PushToStudent=function(alert,title,userid,data,platformtype,type,callback){
 if(!pushConfig.is_push){
     return callback(null,"suceess");
 }
     var senddata={
-        data:data
+        data:data,
+        type:type
     }
     var playform=[]
     if(platformtype==1){
@@ -61,12 +122,13 @@ if(!pushConfig.is_push){
 }
 
 
-exports.PushToCoach=function(alert,title,userid,data,platformtype,callback){
+exports.PushToCoach=function(alert,title,userid,data,platformtype,type,callback){
     if(!pushConfig.is_push){
         return callback(null,"suceess");
     }
     var senddata={
-        data:data
+        data:data,
+        type:type
     }
     var playform=[]
     if(platformtype==1){
@@ -77,12 +139,12 @@ exports.PushToCoach=function(alert,title,userid,data,platformtype,callback){
         playform.push(ios);
         playform.push(android);
     }
+    console.log(userid)
     try{
         coachClient.push().setPlatform(playform)
             .setAudience(userid? JPush.alias(userid):JPush.ALL)
             .setNotification(title, JPush.ios(alert,"sound.caf",1,null,senddata),
             JPush.android(alert,title, 3,senddata))
-            // .setOptions(null)
             .send(function(err, res) {
                 if (err) {
                     if (err instanceof JPush.APIConnectionError) {

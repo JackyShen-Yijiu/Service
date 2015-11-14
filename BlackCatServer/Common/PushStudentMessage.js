@@ -5,6 +5,7 @@
 //向学生端发送
 
 var BasePushmessage=require("./PushMessage/JPushBase");
+
 var title="一步学车";
 var alterinfo={
     ApplySuccess:"您已成功报名驾校，赶快开启学车之旅吧",
@@ -20,9 +21,27 @@ var pushtype={
     ReservationCancel:"reservationcancel",
     CoachComment:"reservationcoachcomment ",
     WalletUpdate:"walletupdate",
-    NewVersion:"newversion"
+    NewVersion:"newversion",
+    SystemMsg:"systemmsg"
 }
+// 发送系统消息
+exports.pushSystemMessage=function(userid,title,msg_content,callback){
+    if(title===undefined|| msg_content===undefined){
+        return callback("参数错误");
+    }
+    var senddata={
+        userid:userid,
+        title:title,
+        msg_content:msg_content
+    }
+    BasePushmessage.pushMessagetoCoach(userid,title,msg_content,senddata,pushtype.SystemMsg,function(err,data){
+        if(err){
 
+            return callback(err);
+        }
+        return callback(null,data);
+    })
+}
 // 发送版本更新
 exports.pushNewVersion=function(apptype,callback){
 
@@ -31,9 +50,9 @@ exports.pushNewVersion=function(apptype,callback){
         return callback("参数数据");
     }
     var senddata={
-        type:pushtype.NewVersion
+
     }
-    BasePushmessage.PushToStudent(alterinfo.NewVersion,title,undefined,senddata,apptype,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.NewVersion,title,undefined,senddata,apptype,pushtype.NewVersion,function(err,data){
         if(err){
             return callback(err);
         }
@@ -47,10 +66,9 @@ exports.pushWalletUpdate=function(userid,callback){
         return callback("参数数据");
     }
     var senddata={
-        userid:userid,
-        type:pushtype.WalletUpdate
+        userid:userid
     }
-    BasePushmessage.PushToStudent(alterinfo.WalletUpdate,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.WalletUpdate,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.WalletUpdate,function(err,data){
         if(err){
             return callback(err);
         }
@@ -64,10 +82,9 @@ exports.pushCoachComment=function(userid,reservationid,callback){
     }
     var senddata={
         userid:userid,
-        reservationid:reservationid,
-        type:pushtype.CoachComment
+        reservationid:reservationid
     }
-    BasePushmessage.PushToStudent(alterinfo.CoachComment,title,userid,senddata,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.CoachComment,title,userid,senddata,senddata,BasePushmessage.SendPlatform.All,pushtype.CoachComment,function(err,data){
         if(err){
             return callback(err);
         }
@@ -80,10 +97,9 @@ exports.pushApplySuccess=function(userid,callback){
         return callback("参数数据");
     }
     var senddata={
-        userid:userid,
-        type:pushtype.ApplySuccess
+        userid:userid
     }
-    BasePushmessage.PushToStudent(alterinfo.ApplySuccess,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.ApplySuccess,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.ApplySuccess,function(err,data){
         if(err){
             return callback(err);
         }
@@ -98,10 +114,9 @@ exports.pushReservationSuccess=function(userid,reservationid,callback){
     }
     var senddata={
         userid:userid,
-        reservationid:reservationid,
-        type:pushtype.ReservationSuccess
+        reservationid:reservationid
     }
-    BasePushmessage.PushToStudent(alterinfo.ReservationSuccess,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.ReservationSuccess,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.ReservationSuccess,function(err,data){
         if(err){
             return callback(err);
         }
@@ -117,10 +132,9 @@ exports.pushReservationCancel=function(userid,reservationid,callback){
     }
     var senddata={
         userid:userid,
-        reservationid:reservationid,
-        type:pushtype.ReservationCancel
+        reservationid:reservationid
     }
-    BasePushmessage.PushToStudent(alterinfo.ReservationCancel,title,userid,senddata,BasePushmessage.SendPlatform.All,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.ReservationCancel,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.ReservationCancel,function(err,data){
         if(err){
             return callback(err);
         }
