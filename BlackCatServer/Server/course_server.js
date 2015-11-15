@@ -8,6 +8,8 @@ var coursemode=mongodb.CourseModel;
 var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
+var pushstudent=require("../Common/PushStudentMessage");
+var pushcoach=require("../Common/PushCoachMessage");
 require('date-utils');
 
 exports.GetCoachCourse=function(coachid,date ,callback){
@@ -297,6 +299,7 @@ exports.postReservation=function(reservationinfo,callback){
                                 return callback("保存预约出错：" + err);
                             }
                             syncReservationdesc(data._id);
+                            pushcoach.pushNewReservation(newreservation.coachid,newreservation._id,function(err,data){});
                             // console.log("返回成果");
                             return callback(null, "success");
                         });
@@ -411,16 +414,19 @@ exports.userCancelReservation=function(reservation,callback){
             // 修改个人信息中的语言信息
                 usermodel.findById(new mongodb.ObjectId(reservation.userid),function(err,data){
                     if (newdata.subject.subjectid==2){
-                        data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
+                        data.subjecttwo.reservation=(data.subjecttwo.reservation-newdata.coursehour)<0?0:
+                        data.subjecttwo.reservation-newdata.coursehour;
                     }
                     if (newdata.subject.subjectid==3){
-                        data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                        data.subjectthree.reservation=(data.subjectthree.reservation-newdata.coursehour)<0?0:
+                        data.subjectthree.reservation-newdata.coursehour;
                     }
                     data.save(function(err){
                         if (err){
                             return callback("取消课程出错");
                         }
                         syncReservationdesc(reservation.userid);
+                        pushcoach.pushReservationCancel(newdata.coachid,newdata._id,function(err,data){});
                         return callback(null,"success");
                     })
                 })
@@ -590,7 +596,9 @@ exports.coachComment=function(commnetinfo,callback){
         resdata.save(function(err,data){
             if(err){
                 return callback("保存评论出错");
+
             }
+            pushstudent.pushCoachComment(data.userid,data._id,function(err,data){});
             return callback(null,"success");
         })
 
@@ -950,15 +958,18 @@ exports.coachHandleInfo=function(handleinfo,callback){
                     // 修改个人信息中的语言信息
                     usermodel.findById(new mongodb.ObjectId(newdata.userid),function(err,data){
                         if (newdata.subject.subjectid==2){
-                            data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
+                            data.subjecttwo.reservation=(data.subjecttwo.reservation-newdata.coursehour)<0?0:
+                                (data.subjecttwo.reservation-newdata.coursehour);
                         }
                         if (newdata.subject.subjectid==3){
-                            data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                            data.subjectthree.reservation=(data.subjectthree.reservation-newdata.coursehour)<0?0:
+                            data.subjectthree.reservation-newdata.coursehour;
                         }
                         data.save(function(err){
                             if (err){
                                 return callback("取消课程出错");
                             }
+                            pushstudent.pushReservationCancel(newdata.userid,newdata._id,function(err,data){});
                             syncReservationdesc(newdata.userid);
                             return callback(null,"success");
                         })
@@ -966,6 +977,9 @@ exports.coachHandleInfo=function(handleinfo,callback){
 
 
                 });
+            }
+            else if(handleinfo.handletype==appTypeEmun.ReservationState.applyconfirm){
+                pushstudent.pushReservationSuccess(newdata.userid,newdata._id,function(err,data){});
             }
             return callback(null,"success");
         })
