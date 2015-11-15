@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10e115d0-3886-4193-b9ce-2b96d7c76dc9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Common/PushMessage/JPushBase.js" afterPath="$PROJECT_DIR$/Common/PushMessage/JPushBase.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Common/PushCoachMessage.js" afterPath="$PROJECT_DIR$/Common/PushCoachMessage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Common/PushStudentMessage.js" afterPath="$PROJECT_DIR$/Common/PushStudentMessage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/api_push_test.js" afterPath="$PROJECT_DIR$/routes/api_push_test.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server/course_server.js" afterPath="$PROJECT_DIR$/Server/course_server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BlackCatServer.iws" />
@@ -31,8 +28,34 @@
         <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="80" column="52" selection-start-line="80" selection-start-column="52" selection-end-line="80" selection-end-column="52" />
+              <caret line="134" column="34" selection-start-line="134" selection-start-column="34" selection-end-line="134" selection-end-column="34" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="course_controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/apiv1/course_controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="397" column="29" selection-start-line="397" selection-start-column="29" selection-end-line="397" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#40#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="course_server.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Server/course_server.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.94219655">
+              <caret line="852" column="32" selection-start-line="852" selection-start-column="32" selection-end-line="852" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#40#0" expanded="false" />
+                <element signature="e#468#522#0" expanded="false" />
+                <element signature="e#4265#4989#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -123,11 +146,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PushStudentMessage.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PushStudentMessage.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Common/PushStudentMessage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2601156">
-              <caret line="24" column="24" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="61" column="1" selection-start-line="61" selection-start-column="1" selection-end-line="61" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -282,7 +305,6 @@
         <option value="$PROJECT_DIR$/BC-Web/models/appversion.js" />
         <option value="$PROJECT_DIR$/app/apiv1/appsystem_controller.js" />
         <option value="$PROJECT_DIR$/Config/DbConfig.js" />
-        <option value="$PROJECT_DIR$/Server/course_server.js" />
         <option value="$PROJECT_DIR$/app/apiv1/user_controller.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/node_modules/jpush-sdk/lib/JPush/PushPayload.js" />
@@ -299,6 +321,7 @@
         <option value="$PROJECT_DIR$/routes/api_push_test.js" />
         <option value="$PROJECT_DIR$/Common/PushMessage/JPushBase.js" />
         <option value="$PROJECT_DIR$/Common/PushCoachMessage.js" />
+        <option value="$PROJECT_DIR$/Server/course_server.js" />
       </list>
     </option>
   </component>
@@ -354,7 +377,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -481,6 +503,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -762,7 +785,13 @@
       <option name="project" value="LOCAL" />
       <updated>1447383940240</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="修改推送">
+      <created>1447512859559</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1447512859559</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -835,7 +864,8 @@
     <MESSAGE value="增加聊天" />
     <MESSAGE value="测试聊天" />
     <MESSAGE value="修改后环信修改密码" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改后环信修改密码" />
+    <MESSAGE value="修改推送" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改推送" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -947,7 +977,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Server/course_server.js</url>
-          <line>857</line>
+          <line>883</line>
           <option name="timeStamp" value="85" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1184,16 +1214,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/apiv1/course_controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.702952">
-          <caret line="382" column="26" selection-start-line="382" selection-start-column="26" selection-end-line="382" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#40#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1206,7 +1226,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3321033">
           <caret line="996" column="0" selection-start-line="996" selection-start-column="0" selection-end-line="996" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1263,18 +1282,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/course_server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3100358">
-          <caret line="837" column="70" selection-start-line="837" selection-start-column="70" selection-end-line="837" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#40#0" expanded="false" />
-            <element signature="e#468#522#0" expanded="false" />
-            <element signature="e#4265#4989#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Config/qiniuconfig.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1302,14 +1309,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="80" column="52" selection-start-line="80" selection-start-column="52" selection-end-line="80" selection-end-column="52" />
           <folding />
         </state>
       </provider>
@@ -1438,9 +1437,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Common/PushStudentMessage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2601156">
-          <caret line="24" column="24" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="61" column="1" selection-start-line="61" selection-start-column="1" selection-end-line="61" selection-end-column="1" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/api_v1_router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="134" column="34" selection-start-line="134" selection-start-column="34" selection-end-line="134" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/apiv1/course_controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="397" column="29" selection-start-line="397" selection-start-column="29" selection-end-line="397" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/course_server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.94219655">
+          <caret line="852" column="32" selection-start-line="852" selection-start-column="32" selection-end-line="852" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
+            <element signature="e#468#522#0" expanded="false" />
+            <element signature="e#4265#4989#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -823,15 +823,38 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
         "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment")
-        .populate("coachid","_id  name headportrait  driveschoolinfo")
+        .populate("coachid","_id  name headportrait  driveschoolinfo ")
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
             }
+            if(!resdata){
+                return callback("没有查询到相应的预约信息");
+            }
             resdata.reservationstate=(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
                 appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_comment=undefined;
-            return callback(null,resdata);})
+            var coachinfo={
+                "coachid":resdata.coachid._id,
+                _id :resdata.coachid._id,
+                name:resdata.coachid.name,
+                headportrait:resdata.coachid.headportrait,
+                driveschoolinfo:resdata.coachid.driveschoolinfo
+            };
+            resdatainfo={
+                reservationstate:resdata.reservationstate,
+                reservationcreatetime:resdata.reservationcreatetime,
+                is_shuttle :resdata.is_shuttle,
+                "shuttleaddress" :resdata.shuttleaddress,
+                courseprocessdesc :resdata.courseprocessdesc,
+                classdatetimedesc :resdata.classdatetimedesc,
+                trainfieldlinfo :resdata.trainfieldlinfo,
+                coachid:coachinfo,
+                subject:resdata.subject
+            }
+            //resdata.coachid=coachinfo;
+            console.log(coachinfo)
+            return callback(null,resdatainfo);})
 
 }
 exports.getCoachReservationinfo=function(reservationid,coachid,callback){
@@ -843,6 +866,9 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
+            }
+            if(!resdata){
+                return callback("没有查询到相应的预约信息");
             }
             if(resdata.reservationstate!=appTypeEmun.ReservationState.applycancel&&resdata.reservationstate!=appTypeEmun.ReservationState.applyrefuse){
                 resdata.cancelreason=undefined;
