@@ -636,15 +636,15 @@ exports.applyExamintion=function(userid,callback){
             if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation<userdata.subjecttwo.totalcourse){
                 return callback("您的学时不够，无法报考");
             }
-            userdata.examquestioninfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
-            userdata.examquestioninfo.subjecttwo.applydate=new Date();
+            userdata.examinationinfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
+            userdata.examinationinfo.subjecttwo.applydate=new Date();
         }else if(userdata.subject.subjectid==3){
 
             if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation<userdata.subjectthree.totalcourse){
                 return callback("您的学时不够，无法报考");
             }
-            userdata.examquestioninfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
-            userdata.examquestioninfo.subjectthree.applydate=new Date();
+            userdata.examinationinfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
+            userdata.examinationinfo.subjectthree.applydate=new Date();
         }
         userdata.save(function(err){
             if (err){
