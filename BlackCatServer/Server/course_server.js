@@ -322,11 +322,18 @@ exports.getuserReservation=function(userid,subjectid,callback){
              return    callback("查询语言信息出错："+err)
             }
             process.nextTick(function(){
-                var list=[]
+                var list=[];
                 reservationlist.forEach(function(r,index){
+                    var coachinfo={
+                        "coachid":r.coachid._id,
+                        _id :r.coachid._id,
+                        name:r.coachid.name,
+                        headportrait:r.coachid.headportrait,
+                        driveschoolinfo:r.coachid.driveschoolinfo
+                    };
                     var listone= {
                         _id: r._id,
-                        coachid: r.coachid,
+                        coachid: coachinfo,
                         reservationstate: (r.reservationstate==appTypeEmun.ReservationState.ucomments&&r.is_comment)?
                             appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
