@@ -1,7 +1,7 @@
 /**
  * Created by li on 2015/11/11.
  */
-// ÏµÍ³ ÅäÖÃÏî
+// ç³»ç»Ÿ é…ç½®é¡¹
 
 exports.jpushCofig={
     Student:{
@@ -12,21 +12,21 @@ exports.jpushCofig={
         AppKey:"02d3ec8bfbcdd85634f0c24d",
         MasterSecret:"acf73174a9fd1a8ba149882f"
     },
-    is_push:true,  // ÍÆËÍÏûÏ¢
-    is_debug:false   //ÊÇ·ñÊÇ²âÊÔ×´Ì¬
+    is_push:true,  // æ¨é€æ¶ˆæ¯
+    is_debug:false   //æ˜¯å¦æ˜¯æµ‹è¯•çŠ¶æ€
 }
 
-// ²âÊÔ»·ĞÅimÅäÖÃµØÖ·
-/*exports.imConfig={
+// æµ‹è¯•ç¯ä¿¡imé…ç½®åœ°å€
+exports.imConfig={
     client_id:"YXA6In9icIkvEeWcN8Xg9ZIE7w",
     client_secret:"YXA66Vo2yOfs5iupNCButKMuFmfnTdY",
     org_name:"black-cat",
     app_name:"yibuxuechetest"
-}*/
-// »·ĞÅÕıÊ½°æ
-exports.imConfig={
+}
+// ç¯ä¿¡æ­£å¼ç‰ˆ
+/*exports.imConfig={
     client_id:"YXA663xwEIkuEeW9qmOsf__X8A",
     client_secret:"YXA6WC4NmA71-YQ49tAKYHHqS4sCRt4",
     org_name:"black-cat",
     app_name:"yibuxuecheprod"
-}
+}*/

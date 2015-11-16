@@ -10,6 +10,8 @@ var coachModel=mongodb.CoachModel;
 var integralListModel=mongodb.IntegralListModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var commonData=require("../Config/commondata").integralrule;
+var pushstudent=require("./PushStudentMessage");
+var pushcoach=require("./PushCoachMessage");
 
 // 发放积分
 payuserIntegral=function(payinfo,callback){
@@ -21,11 +23,14 @@ payuserIntegral=function(payinfo,callback){
     integralinfo.save(function(err,data){
         if(payinfo.usertype==appTypeEmun.UserType.User){
             userModel.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
+                pushstudent.pushWalletUpdate(payinfo.userid,function(err,data){})
               callback(null,"suncess");
+
             })
 
         }else if(payinfo.usertype==appTypeEmun.UserType.Coach){
             coachModel.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
+                pushcoach.pushWalletUpdate(payinfo.userid,function(err,data){})
                 callback(null,"suncess");
             })
         }
