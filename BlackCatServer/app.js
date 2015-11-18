@@ -17,8 +17,6 @@ require('oneapm');
 
 var app = express();
 
-
-
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -90,7 +88,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    //console.log(err);
+    console.log(err);
     log.writeLog(req, err, logType.err);
     res.json(new BaseReturnInfo(0, "服务器内部错误", ""));
     /*res.render('error', {
