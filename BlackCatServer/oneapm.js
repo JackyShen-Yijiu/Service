@@ -6,9 +6,9 @@
  */
 exports.config = {
   /**
-   * Array of application names.
+   * Array of application names. yibuxuecheprod
    */
-  app_name : ['yibuxueche prod'],
+  app_name : ['yibuxuechetest'],
   /**
    * Your OneAPM license key.
    */
