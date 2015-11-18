@@ -11,7 +11,7 @@ var apiRouterV2=require('./routes/api_v2_router.js');
 var apipushtest=require('./routes/api_push_test.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
-require('tingyun');
+require('oneapm');
 //var domain = require('domain');
 
 

@@ -424,7 +424,7 @@ exports.coachApplyVerification=function(req,res){
         driveschoolid:req.body.driveschoolid, //所在驾校
         referrerCode:req.body.referrerCode  //邀请吗可选
     }
-    console.log(applyinfo)
+    //console.log(applyinfo)
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
         applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(

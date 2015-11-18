@@ -2,7 +2,7 @@
  * Created by li on 2015/11/11.
  */
 // 系统 配置项
-
+// 极光推送
 exports.jpushCofig={
     Student:{
         AppKey:"a9d3780a093c23df7e3e2402",
@@ -15,6 +15,21 @@ exports.jpushCofig={
     is_push:true,  // 推送消息
     is_debug:false   //是否是测试状态
 }
+
+// 极光推送正式地址
+/*
+exports.jpushCofig={
+    Student:{
+        AppKey:"d9f9dc8db6bc3dd2c913ced0",
+        MasterSecret:"debb46435e738c43c2a200ef"
+    },
+    Coach:{
+        AppKey:"099332657d28a65d5308af2a",
+        MasterSecret:"a37f1a213d8972963f718ea8"
+    },
+    is_push:true,  // 推送消息
+    is_debug:false   //是否是测试状态
+} */
 
 // 测试环信im配置地址
 exports.imConfig={
