@@ -532,9 +532,15 @@ exports.updateCoachInfo=function(req,res){
         updateuserinfo.driveschoolid=updateuserinfo.driveschoolid.id;
         //console.log(updateuserinfo.driveschoolid);
     }
+    else{
+        updateuserinfo.driveschoolid=undefined;
+    }
     if(updateuserinfo.trainfield!=undefined && updateuserinfo.trainfield.id!=undefined){
         updateuserinfo.trainfield=updateuserinfo.trainfield.id;
         console.log(updateuserinfo.trainfield);
+    }
+    else{
+        updateuserinfo.trainfield=undefined;
     }
     //console.log(updateuserinfo)
     userserver.updateCoachServer(updateuserinfo,function(err,data){
