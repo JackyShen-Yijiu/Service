@@ -7,7 +7,8 @@ exports.resBaseSchoolInfo=function(school){
     this.name=school.name;
     this.latitude=school.latitude;
     this.longitude=school.longitude;
-    this.pictures=school.pictures;
+    //this.pictures=school.pictures;
+    this.pictures=school.pictures_path;
     this.logoimg=school.logoimg;
     this.passingrate =school.passingrate;
     this.hours=school.hours;
@@ -20,5 +21,5 @@ exports.resBaseSchoolInfo=function(school){
     this. maxprice=school.maxprice;
     this.minprice=school.minprice;
     this.applynotes=school.applynotes;
-    this.pictures_path=school.pictures_path;
+    //this.pictures_path=school.pictures_path;
 };
