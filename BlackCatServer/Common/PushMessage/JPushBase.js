@@ -22,7 +22,7 @@ exports.pushMessagetoCoach=function(userid,title,msg_content,data,type,callback)
     }
     try{
         coachClient.push().setPlatform(ios,android)
-            .setAudience(userid? JPush.alias(userid):JPush.ALL)
+            .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setMessage(msg_content,title,"text",senddata)
             .send(function(err, res) {
                 if (err) {
@@ -52,7 +52,7 @@ exports.pushMessagetoStudent=function(userid,title,msg_content,data,type,callbac
     }
     try{
         studentClient.push().setPlatform(ios,android)
-            .setAudience(userid? JPush.alias(userid):JPush.ALL)
+            .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setMessage(msg_content,title,"text",senddata)
             .send(function(err, res) {
                 if (err) {
@@ -95,7 +95,7 @@ if(!pushConfig.is_push){
     }
     try{
     studentClient.push().setPlatform(playform)
-        .setAudience(userid? JPush.alias(userid):JPush.ALL)
+        .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
         .setNotification(title, JPush.ios(alert,"sound.caf",1,null,senddata),
         JPush.android(alert,title, 3,senddata))
        // .setOptions(null)
@@ -142,7 +142,7 @@ exports.PushToCoach=function(alert,title,userid,data,platformtype,type,callback)
     console.log(userid)
     try{
         coachClient.push().setPlatform(playform)
-            .setAudience(userid? JPush.alias(userid):JPush.ALL)
+            .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setNotification(title, JPush.ios(alert,"sound.caf",1,null,senddata),
             JPush.android(alert,title, 3,senddata))
             .send(function(err, res) {
