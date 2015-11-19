@@ -84,7 +84,7 @@ exports.pushCoachComment=function(userid,reservationid,callback){
         userid:userid,
         reservationid:reservationid
     }
-    BasePushmessage.PushToStudent(alterinfo.CoachComment,title,userid,senddata,senddata,BasePushmessage.SendPlatform.All,pushtype.CoachComment,function(err,data){
+    BasePushmessage.PushToStudent(alterinfo.CoachComment,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.CoachComment,function(err,data){
         if(err){
             return callback(err);
         }

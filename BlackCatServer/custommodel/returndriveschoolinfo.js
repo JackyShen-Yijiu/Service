@@ -20,4 +20,5 @@ exports.resBaseSchoolInfo=function(school){
     this. maxprice=school.maxprice;
     this.minprice=school.minprice;
     this.applynotes=school.applynotes;
+    this.pictures_path=school.pictures_path;
 };
