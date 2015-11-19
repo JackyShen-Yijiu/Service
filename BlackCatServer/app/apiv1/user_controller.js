@@ -414,6 +414,7 @@ exports.updateUserInfo=function(req,res){
 
 //教练申请验证
 exports.coachApplyVerification=function(req,res){
+    //console.log(req.body)
     var applyinfo={
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
@@ -423,6 +424,7 @@ exports.coachApplyVerification=function(req,res){
         driveschoolid:req.body.driveschoolid, //所在驾校
         referrerCode:req.body.referrerCode  //邀请吗可选
     }
+    //console.log(applyinfo)
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
         applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(
@@ -530,9 +532,15 @@ exports.updateCoachInfo=function(req,res){
         updateuserinfo.driveschoolid=updateuserinfo.driveschoolid.id;
         //console.log(updateuserinfo.driveschoolid);
     }
+    else{
+        updateuserinfo.driveschoolid=undefined;
+    }
     if(updateuserinfo.trainfield!=undefined && updateuserinfo.trainfield.id!=undefined){
         updateuserinfo.trainfield=updateuserinfo.trainfield.id;
         console.log(updateuserinfo.trainfield);
+    }
+    else{
+        updateuserinfo.trainfield=undefined;
     }
     //console.log(updateuserinfo)
     userserver.updateCoachServer(updateuserinfo,function(err,data){
@@ -542,14 +550,28 @@ exports.updateCoachInfo=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 教练登录后获取自己的详细信息 (返回数据和教练登录一样)
+exports.getCoachinfo=function(req,res){
+var userid=req.query.userid;
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getCoachinfoServer(userid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 
+}
 //获取用户信息
 exports.getUserinfo=function(req,res){
     var apptype=req.params.type;
     var userid=req.params.userid;
     if (apptype===undefined||userid === undefined) {
         return res.json(
-            new BaseReturnInfo(0,"parms is wrong",""));
+            new BaseReturnInfo(0,"parms is wrong",{}));
     };
     userserver.getUserinfoServer(apptype,userid,function(err,data){
         if(err){
@@ -683,7 +705,7 @@ exports.getMyWallet=function(req,res){
     };
     if(queryinfo.userid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
     };
     userserver.getMyWallet(queryinfo,function(err,data){
         if(err){

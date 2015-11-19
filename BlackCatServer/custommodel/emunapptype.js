@@ -6,7 +6,9 @@ exports.LogType={
     log:1,
     err:2,
     info:3,
-    warn:4
+    warn:4,
+    im:5,
+    push:6
 }
 exports.ClientType = {
     AndroidUserClient:1,
@@ -19,25 +21,26 @@ exports.UserType={
     User:1,
     Coach:2
 };
-// ������˵�״̬
+// j教练验证状态
 exports.CoachValidationState={
-    NotValidation:0, // δ�ύ�������
-    Validationing:1, //  �����
-    ValidationRefuse:2, // ���δͨ��
-    Validated:3 //  ���ͨ��
+    NotValidation:0, // 没有验证
+    Validationing:1, //  严重中
+    ValidationRefuse:2, //验证拒绝
+    Validated:3 //  验证成功
 
 };
+// 服务端处理状态
 exports.ApplyHandelState={
-    NotHandel:0,// δ����
-    Handeling:1,//������
-    Handeled:2  // �Ѵ���
-}
+    NotHandel:0,// 没有处理
+    Handeling:1,//处理中
+    Handeled:2  //处理成功
+     }
 
-// ������Ϣ����״̬
+//学员报名状态
 exports.ApplyState={
-    NotApply:0, // δ����
-    Applying:1, // ������
-    Applyed:2 // �����ɹ�
+    NotApply:0, // 没有申请
+    Applying:1, // 申请中
+    Applyed:2 // 申请成功
 }
 // 预约状态
 exports.ReservationState={

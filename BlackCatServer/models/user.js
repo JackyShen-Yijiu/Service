@@ -65,7 +65,7 @@ var  UserSchema=new Schema({
         totalcourse:{type:Number,default:24},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
-        progress:String, // 学习进度
+        progress:{type:String,default:"未开始"}, // 学习进度
         reservationid:String //学习进度id
     },
     // 科目三上课信息
@@ -73,7 +73,7 @@ var  UserSchema=new Schema({
         totalcourse:{type:Number,default:16},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},
-        progress:String, // 学习进度
+        progress:{type:String,default:"未开始"}, // 学习进度
         reservationid:String //学习进度id
     },
     vipserverlist:[{id:Number,name:String}], // 我所享受的vip服务列表
@@ -108,7 +108,9 @@ var  UserSchema=new Schema({
     // 用户积分状态
     integralstate:{type:Number,default:0},
     // 用户积分发放人员列表
-    integralpaylist:[{id:Number,userid:String,usertype:Number}]
+    integralpaylist:[{id:Number,userid:String,usertype:Number}],
+    //是否已经注册mobim
+    is_registermobim:{type:Number,default:0}
 
 });
 UserSchema.index({mobile: 1}, {unique: true});

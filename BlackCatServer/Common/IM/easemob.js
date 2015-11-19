@@ -2,12 +2,15 @@
  * Created by v-lyf on 2015/9/14.
  */
 var https = require('https');
+//var request = require('superagent');
+var iMconfig=require("../../Config/sysconfig").imConfig;
+var token = '';
+var tokencreatetimestamp ;
+var token_expires=5*24*60*60*100;
+var client_id =iMconfig.client_id;
+var client_secret = iMconfig.client_secret;
 
-var token = 'YWMthhFERlqcEeW84Hf9K0P7YgAAAVD_MNP-_KakyMTBST0UmOw3yrHZgDiQ1NE';
-var client_id = 'YXA6tqifEFqREeWheDcRSMT5qg';
-var client_secret = 'YXA6OH-iIkZr8ornGiaGzvqlxH595DI';
-
-//Í¨ÓÃhttpÇëÇóº¯Êý
+//é€šç”¨httpè¯·æ±‚å‡½æ•°
 var http_request = function (data, path, method, callback) {
     data = data || {};
     method = method || 'GET';
@@ -15,7 +18,7 @@ var http_request = function (data, path, method, callback) {
     var postData = JSON.stringify(data);
     var options = {
         host: 'a1.easemob.com',
-        path: '/337605876/blackcat' + path,
+        path: '/'+iMconfig.org_name+'/'+iMconfig.app_name + path,
         method: method,
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +26,7 @@ var http_request = function (data, path, method, callback) {
         }
     };
 
-    var req = https.request(options, function (res) {
+    var req = https.request(options, function (res,body) {
         var chunks = [];
         var size = 0;
         res.setEncoding('utf8');
@@ -31,10 +34,11 @@ var http_request = function (data, path, method, callback) {
             chunks.push(chunk);
             size += chunk.length;
         });
-        res.on('end', function () {
-            var data = JSON.parse(Buffer.concat(chunks, size).toString());
+        res.on('end', function (){
+         var data = JSON.parse(chunks.toString());
+       // console.log(data);
             if (callback)
-                callback(data);
+                callback(res.statusCode,data);
         });
     });
 
@@ -47,31 +51,71 @@ var http_request = function (data, path, method, callback) {
     req.end();
 };
 
-//»ñÈ¡token
+//èŽ·å–token
 var get_token = function (callback) {
     var data = {grant_type: 'client_credentials', client_id: client_id, client_secret: client_secret};
-    http_request(data, '/token', 'POST', function (data) {
+    http_request(data, '/token', 'POST', function (code,data) {
         token = data.access_token;
+        tokencreatetimestamp=(new Date()).getTime();
         //console.log(data);
+        console.log("é‡æ–°èŽ·å– token "+token);
         if (callback)
             callback();
     });
 };
 
-//Ä£¿é³õÊ¼»¯µ÷ÓÃ
+//æ¨¡å—åˆå§‹åŒ–è°ƒç”¨
 //get_token();
 
-// µ÷ÓÃ »ñÈ¡token
-exports.gettoken=function(callback){
-    if(callback){
-        callback(token);
-    }
-}
-//×¢²áIMÓÃ»§[µ¥¸ö]
+
+//æ³¨å†ŒIMç”¨æˆ·[å•ä¸ª]
 exports.user_create = function (username, password, callback) {
     var data = {username: username, password: password};
-    http_request(data, '/user', 'POST', function (data) {
-        if (callback)
-            callback(data);
-    })
+    nowtimespan=(new Date()).getTime();
+    if (token==''||(nowtimespan-tokencreatetimestamp)>token_expires){
+        get_token(function(){
+            http_request(data, '/user', 'POST', function (code,data) {
+                if (callback) {
+                   // console.log(data)
+                    return  callback(code,data);
+                }
+            })
+        })}
+        else
+        {
+            http_request(data, '/users', 'POST', function (code,data) {
+                if (callback) {
+                    //console.log(data)
+                    return   callback(code,data);
+                }
+            })
+        }
+
+
+};
+
+// ä¿®æ”¹å¯†ç 
+exports.upatepassword = function (username, password, callback) {
+    var data = { newpassword: password};
+    nowtimespan=(new Date()).getTime();
+    if (token==''||(nowtimespan-tokencreatetimestamp)>token_expires){
+        get_token(function(){
+            http_request(data, '/users/'+username+'/password', 'PUT', function (code,data) {
+                if (callback) {
+
+                      callback(code,data);
+                }
+            })
+        })}
+    else
+    {
+        http_request(data, '/users/'+username+'/password', 'PUT', function (code,data) {
+            if (callback) {
+                //console.log(data)
+                   callback(code,data);
+            }
+        })
+    }
+
+
 };

@@ -10,7 +10,8 @@ var jwt = require('jsonwebtoken');
 var userTypeEmun=require("../custommodel/emunapptype").UserType;
 var resbaseuserinfomodel=require("../custommodel/returnuserinfo").resBaseUserInfo;
 var resbasecoachinfomode=require("../custommodel/returncoachinfo").resBaseCoachInfo;
-var appTypeEmun=require("../custommodel/emunapptype")
+var appTypeEmun=require("../custommodel/emunapptype");
+var regisermobIm=require('../Common/mobIm');
 var appWorkTimes=require("../Config/commondata").worktimes;
 var secretParam= require('./jwt-secret').secretParam;
 var resendTimeout = 60;
@@ -23,6 +24,7 @@ var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
 var mallProductModel=mongodb.MallProdcutsModel
 var mallOrderModel=mongodb.MallOrderModel;
+
 
 var timeout = 60 * 5;
 
@@ -258,6 +260,12 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.userid =newinstace._id;
                            returnmodel.idcardnumber=newinstace.idcardnumber;
                            returnmodel.usersetting=newinstace.usersetting;
+                           if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                               regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                   usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                       { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                               })
+                           }
                            return callback(null,returnmodel);
 
                        });
@@ -298,6 +306,12 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.usersetting=newinstace.usersetting;
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
+                            if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                                regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                    coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                        { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                                })
+                            }
                             return callback(null,returnmodel);
 
                         });
@@ -354,6 +368,12 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.userid =newinstace._id;
+                            usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                { $set: { token:token }},{safe: false},function(err,doc){});
+                            regisermobIm.addsuer(newinstace._id,userinfo.password,function(err,data){
+                                usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            })
                             return callback(null,returnmodel);
 
                         });
@@ -397,7 +417,12 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.mobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.coachid =newinstace._id;
-
+                            coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                { $set: { token:token }},{safe: false},function(err,doc){});
+                            regisermobIm.addsuer(newinstace._id,userinfo.password,function(err,data){
+                                coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            })
                             return callback(null,returnmodel);
 
                         });
@@ -472,6 +497,10 @@ exports.updatePassword=function(pwdinfo,callback){
              if(err){
                  return  callback("保存用户信息出错："+err);
              }
+             regisermobIm.userupdatepassword(newdata._id,newdata.password,function(err,data){
+                 usermodel.update({"_id":new mongodb.ObjectId(newdata._id)},
+                     { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+             })
              return callback(null,"success")
          });
      });
@@ -490,6 +519,10 @@ exports.updatePassword=function(pwdinfo,callback){
                     if(err){
                         return  callback("保存用户信息出错："+err);
                     }
+                    regisermobIm.userupdatepassword(newdata._id,newdata.password,function(err,data){
+                        coachmode.update({"_id":new mongodb.ObjectId(newdata._id)},
+                            { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                    })
                     return callback(null,"success")
                 });
             });
@@ -603,15 +636,15 @@ exports.applyExamintion=function(userid,callback){
             if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation<userdata.subjecttwo.totalcourse){
                 return callback("您的学时不够，无法报考");
             }
-            userdata.examquestioninfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
-            userdata.examquestioninfo.subjecttwo.applydate=new Date();
+            userdata.examinationinfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
+            userdata.examinationinfo.subjecttwo.applydate=new Date();
         }else if(userdata.subject.subjectid==3){
 
             if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation<userdata.subjectthree.totalcourse){
                 return callback("您的学时不够，无法报考");
             }
-            userdata.examquestioninfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
-            userdata.examquestioninfo.subjectthree.applydate=new Date();
+            userdata.examinationinfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
+            userdata.examinationinfo.subjectthree.applydate=new Date();
         }
         userdata.save(function(err){
             if (err){
@@ -1476,12 +1509,34 @@ exports.updateCoachServer=function(updateinfo,callback){
                     coachdata.driveschool = new mongodb.ObjectId(updateinfo.driveschoolid);
                     coachdata.driveschoolinfo.id = updateinfo.driveschoolid;
                     coachdata.driveschoolinfo.name = schooldata.name;
+                    if (updateinfo.trainfield) {
+                        trainfieldModel.findById(new mongodb.ObjectId(updateinfo.trainfield), function (err, trainfielddata) {
+                            if (err || !trainfielddata) {
+                                return callback("查询训练场：" + err);
+                            }
+                            coachdata.trainfield = new mongodb.ObjectId(updateinfo.trainfield);
+                            coachdata.trainfieldlinfo.id = updateinfo.trainfield;
+                            coachdata.trainfieldlinfo.name = trainfielddata.fieldname;
+                            coachdata.latitude = trainfielddata.latitude;
+                            coachdata.longitude = trainfielddata.longitude;
+                            coachdata.loc.coordinates = [trainfielddata.longitude, trainfielddata.latitude];
+                            coachdata.save(function (err, data) {
+                                if (err) {
+                                    return callback("保存教练信息出错：" + err);
+                                }
+                                return callback(null, "success");
+                            })
+
+                        })
+                    }
+                    else
+                    {
                     coachdata.save(function (err, data) {
                         if (err) {
                             return callback("保存教练信息出错：" + err);
                         }
                         return callback(null, "success");
-                    })
+                    })}
 
                 })
             } else if (updateinfo.trainfield) {
@@ -1552,6 +1607,20 @@ exports.getUserinfoServer=function(type,userid,callback){
         return callback("查询用户类型出错")
     }
 };
+exports.getCoachinfoServer=function(userid,callback){
+    coachmode.findById(new mongodb.ObjectId(userid),function(err,coachdata) {
+        if (err || !coachdata) {
+            return callback("查询教练出错：" + err);
+        }
+        var returnmodel=new resbasecoachinfomode(coachdata);
+        returnmodel.token=coachdata.token;
+        returnmodel.usersetting=coachdata.usersetting;
+        returnmodel.idcardnumber=idCardNumberObfuscator(coachdata.idcardnumber);
+        returnmodel.coachid =coachdata._id;
+        return callback(null,returnmodel);
+    });
+}
+
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){
     userCountModel.getUserCountInfo(function(err,data){

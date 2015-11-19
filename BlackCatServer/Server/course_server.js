@@ -8,6 +8,8 @@ var coursemode=mongodb.CourseModel;
 var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
+var pushstudent=require("../Common/PushStudentMessage");
+var pushcoach=require("../Common/PushCoachMessage");
 require('date-utils');
 
 exports.GetCoachCourse=function(coachid,date ,callback){
@@ -297,6 +299,7 @@ exports.postReservation=function(reservationinfo,callback){
                                 return callback("保存预约出错：" + err);
                             }
                             syncReservationdesc(data._id);
+                            pushcoach.pushNewReservation(newreservation.coachid,newreservation._id,function(err,data){});
                             // console.log("返回成果");
                             return callback(null, "success");
                         });
@@ -322,11 +325,18 @@ exports.getuserReservation=function(userid,subjectid,callback){
              return    callback("查询语言信息出错："+err)
             }
             process.nextTick(function(){
-                var list=[]
+                var list=[];
                 reservationlist.forEach(function(r,index){
+                    var coachinfo={
+                        "coachid":r.coachid._id,
+                        _id :r.coachid._id,
+                        name:r.coachid.name,
+                        headportrait:r.coachid.headportrait,
+                        driveschoolinfo:r.coachid.driveschoolinfo
+                    };
                     var listone= {
                         _id: r._id,
-                        coachid: r.coachid,
+                        coachid: coachinfo,
                         reservationstate: (r.reservationstate==appTypeEmun.ReservationState.ucomments&&r.is_comment)?
                             appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
@@ -404,16 +414,19 @@ exports.userCancelReservation=function(reservation,callback){
             // 修改个人信息中的语言信息
                 usermodel.findById(new mongodb.ObjectId(reservation.userid),function(err,data){
                     if (newdata.subject.subjectid==2){
-                        data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
+                        data.subjecttwo.reservation=(data.subjecttwo.reservation-newdata.coursehour)<0?0:
+                        data.subjecttwo.reservation-newdata.coursehour;
                     }
                     if (newdata.subject.subjectid==3){
-                        data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                        data.subjectthree.reservation=(data.subjectthree.reservation-newdata.coursehour)<0?0:
+                        data.subjectthree.reservation-newdata.coursehour;
                     }
                     data.save(function(err){
                         if (err){
                             return callback("取消课程出错");
                         }
                         syncReservationdesc(reservation.userid);
+                        pushcoach.pushReservationCancel(newdata.coachid,newdata._id,function(err,data){});
                         return callback(null,"success");
                     })
                 })
@@ -583,7 +596,9 @@ exports.coachComment=function(commnetinfo,callback){
         resdata.save(function(err,data){
             if(err){
                 return callback("保存评论出错");
+
             }
+            pushstudent.pushCoachComment(data.userid,data._id,function(err,data){});
             return callback(null,"success");
         })
 
@@ -710,6 +725,9 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
     var datenow =new Date(date);
     var datetomorrow = datenow.addDays(1);
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
+        ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
+            ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
+        ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish}]
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
         .select("userid reservationstate reservationcreatetime begintime endtime subject " +
         "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment")
@@ -820,15 +838,38 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
         "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment")
-        .populate("coachid","_id  name headportrait  driveschoolinfo")
+        .populate("coachid","_id  name headportrait  driveschoolinfo ")
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
             }
-            resdata.reservationstate=(is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
+            if(!resdata){
+                return callback("没有查询到相应的预约信息");
+            }
+            resdata.reservationstate=(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
                 appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_comment=undefined;
-            return callback(null,resdata);})
+            var coachinfo={
+                "coachid":resdata.coachid._id,
+                _id :resdata.coachid._id,
+                name:resdata.coachid.name,
+                headportrait:resdata.coachid.headportrait,
+                driveschoolinfo:resdata.coachid.driveschoolinfo
+            };
+            resdatainfo={
+                reservationstate:resdata.reservationstate,
+                reservationcreatetime:resdata.reservationcreatetime,
+                is_shuttle :resdata.is_shuttle,
+                "shuttleaddress" :resdata.shuttleaddress,
+                courseprocessdesc :resdata.courseprocessdesc,
+                classdatetimedesc :resdata.classdatetimedesc,
+                trainfieldlinfo :resdata.trainfieldlinfo,
+                coachid:coachinfo,
+                subject:resdata.subject
+            }
+            //resdata.coachid=coachinfo;
+            console.log(coachinfo)
+            return callback(null,resdatainfo);})
 
 }
 exports.getCoachReservationinfo=function(reservationid,coachid,callback){
@@ -840,6 +881,9 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
+            }
+            if(!resdata){
+                return callback("没有查询到相应的预约信息");
             }
             if(resdata.reservationstate!=appTypeEmun.ReservationState.applycancel&&resdata.reservationstate!=appTypeEmun.ReservationState.applyrefuse){
                 resdata.cancelreason=undefined;
@@ -914,15 +958,18 @@ exports.coachHandleInfo=function(handleinfo,callback){
                     // 修改个人信息中的语言信息
                     usermodel.findById(new mongodb.ObjectId(newdata.userid),function(err,data){
                         if (newdata.subject.subjectid==2){
-                            data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
+                            data.subjecttwo.reservation=(data.subjecttwo.reservation-newdata.coursehour)<0?0:
+                                (data.subjecttwo.reservation-newdata.coursehour);
                         }
                         if (newdata.subject.subjectid==3){
-                            data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                            data.subjectthree.reservation=(data.subjectthree.reservation-newdata.coursehour)<0?0:
+                            data.subjectthree.reservation-newdata.coursehour;
                         }
                         data.save(function(err){
                             if (err){
                                 return callback("取消课程出错");
                             }
+                            pushstudent.pushReservationCancel(newdata.userid,newdata._id,function(err,data){});
                             syncReservationdesc(newdata.userid);
                             return callback(null,"success");
                         })
@@ -930,6 +977,9 @@ exports.coachHandleInfo=function(handleinfo,callback){
 
 
                 });
+            }
+            else if(handleinfo.handletype==appTypeEmun.ReservationState.applyconfirm){
+                pushstudent.pushReservationSuccess(newdata.userid,newdata._id,function(err,data){});
             }
             return callback(null,"success");
         })

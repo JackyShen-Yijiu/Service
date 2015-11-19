@@ -23,6 +23,19 @@ exports.writeLog=function(req ,errmsg,logType){
     });
 }
 
+exports.writeimLog=function(name, code ,errmsg, senddata,logType){
+    var loginfo=new logModel;
+    loginfo.apiname=name;
+    loginfo.queryparameter=senddata;
+    loginfo.pathparameter=code;
+    //loginfo.bodyparameter=req.body.toString();
+    loginfo.errmsg=errmsg;
+    loginfo.logtype=logType;
+    loginfo.save(function(err){
+        //  console.log(err)
+    });
+}
+
 function getClientIp(req) {
     return req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress ||

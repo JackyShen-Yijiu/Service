@@ -8,14 +8,14 @@ var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 //var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
+var apipushtest=require('./routes/api_push_test.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
+require('oneapm');
 //var domain = require('domain');
 
 
 var app = express();
-
-
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -70,6 +70,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
+app.use('/api/pushtest', apipushtest);
 
 
 // catch 404 anid forward to error handler
@@ -87,7 +88,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    //console.log(err);
+    console.log(err);
     log.writeLog(req, err, logType.err);
     res.json(new BaseReturnInfo(0, "服务器内部错误", ""));
     /*res.render('error', {
@@ -101,6 +102,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
+  console.log(err.status)
   log.writeLog(req,err,logType.err);
   res.json(new BaseReturnInfo(0,"服务器内部错误",""));
   /*res.render('error', {
