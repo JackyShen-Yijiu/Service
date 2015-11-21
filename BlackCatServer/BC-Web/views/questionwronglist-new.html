@@ -9,6 +9,60 @@
     <script src="../javascripts/question-common.js"></script>
     <script src="../javascripts/questionwronglist.js"></script>
     <link rel="stylesheet" href="../stylesheets/questionlist-new.css" media="screen" title="no title" charset="utf-8">
+
+    <style type="text/css">
+    /* Start by setting display:none to make this hidden.
+       Then we position it in relation to the viewport window
+       with position:fixed. Width, height, top and left speak
+       for themselves. Background we set to 80% white with
+       our animation centered, and no-repeating */
+    .modal {
+        display:    none;
+        position:   fixed;
+        z-index:    1000;
+        margin: 35% auto;
+        left: 0;
+        right: 0;
+        width: 300px;
+        color: #FFFFFF;
+        border-radius:5px;
+        background: #FFFFFF
+                    
+                    50% 50% 
+                    no-repeat;
+    }
+
+    .cover {
+        display:    none;
+        position:   fixed;
+        z-index:    99;
+        top:        0;
+        left:       0;
+        height:     100%;
+        width:      100%;
+        background: rgba( 0, 0, 0, .5 ) 
+                    
+                    50% 50% 
+                    no-repeat;
+    }
+
+
+    /* When the body has the loading class, we turn
+       the scrollbar off with overflow:hidden */
+    body.loading {
+        overflow: hidden;   
+    }
+
+    /* Anytime the body has the loading class, our
+       modal element will be visible */
+    body.loading .modal {
+        display: block;
+    }
+
+    body.loading .cover {
+        display: block;
+    }
+    </style>
   </head>
   <body onload="init()">
     
@@ -78,5 +132,19 @@
         </span>
       </div>
 -->
+      <div class="modal">
+        <style type="text/css">
+          #res_title{
+            font-size: 18px;
+            background: #FF6633;
+            border-radius:5px;
+            height: 88px;
+            display: block;
+            line-height: 44px;
+          }
+        </style>
+          <span id="res_title">您目前还没有错题<br>先看看其他地方吧？</span>
+      </div>
+      <div class="cover"></div>
   </body>
 </html>

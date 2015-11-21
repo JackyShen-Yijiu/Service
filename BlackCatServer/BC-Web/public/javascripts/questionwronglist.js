@@ -11,10 +11,20 @@ function getUserInfo(id, callback){
     $.get(apiHost + "questionwronglist/userinfo/" + userID,
         function(data){
           userInfo = data;
-          myExamID = userInfo.kemuyi_wronglist;
-          Allcount = myExamID.length;
-          console.log("userinfo: " + userInfo);
-          callback(data, "OK");
+          if(userInfo == null){
+            $("body").addClass("loading");
+          }else{
+            myExamID = userInfo.kemuyi_wronglist;
+            Allcount = myExamID.length;
+            console.log("userinfo: " + userInfo);
+            console.log("Allcount: " + Allcount);
+            if(Allcount > 0){
+              $("body").removeClass("loading");
+              callback(data, "OK");
+            }else{
+              $("body").addClass("loading");
+            }
+          }
         }).fail(function(xHr, status, message){
         callback(message, "Fail");
     });
