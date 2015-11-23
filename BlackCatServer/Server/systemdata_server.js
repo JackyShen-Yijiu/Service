@@ -76,11 +76,13 @@ exports.getMallProduct=function(callback){
                         buycount: r.buycount,
                         detailsimg: r.detailsimg
                     }
-                    mainlist.push(oneproduct);
+
                     if (r.is_top){
                         toplist.push(oneproduct);
-                    }
-                })
+                    }else
+                    {
+                        mainlist.push(oneproduct);
+                    }})
                 return callback(null,{toplist:toplist,mainlist:mainlist})
             })
         })
