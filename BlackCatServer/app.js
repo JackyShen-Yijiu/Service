@@ -9,6 +9,7 @@ var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
 //var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
+var apiRouterHeadMaster=require('./routes/api_headmaster_router.js');
 var apipushtest=require('./routes/api_push_test.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
@@ -21,11 +22,9 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
-
   if (req.method.toUpperCase() === 'OPTIONS') {
     return res.end();
   }
-
   next();
 });
 
@@ -70,6 +69,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
+app.use('/api/headmaster', apiRouterHeadMaster);
 app.use('/api/pushtest', apipushtest);
 
 

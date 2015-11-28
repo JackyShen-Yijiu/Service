@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 //鏁欑粌鐨勮绋嬩俊鎭�
 var CourseSchema=new Schema({
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'},  // 教练
+    driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     coursedate:Date,  //  课程日期
     coursebegintime:Date,  // 课程开始时间
     courseendtime:Date,  // 课程的结束时间

@@ -48,3 +48,11 @@ exports.imConfig={
 //    org_name:"black-cat",
 //    app_name:"yibuxuecheprod"
 //}
+
+
+// redis 配置， 测试库
+exports.redisConfig={
+    redis_host: "101.200.204.240",
+    redis_port: 6379,
+    redis_db: 0
+}

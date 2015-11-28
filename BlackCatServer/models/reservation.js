@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var ReservationSchema=new Schema({
     userid :{type: Schema.Types.ObjectId, ref: 'User'},// 预约课程
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'}, //  预约教练
+    driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     trainfieldid:{type: Schema.Types.ObjectId, ref: 'trainingfield'}, //  练车场id 同车学员
     trainfieldlinfo:{name:String,id:String}, //训练成信息信息
 
