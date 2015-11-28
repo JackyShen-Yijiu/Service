@@ -104,7 +104,8 @@ exports.getIndustryNews=function(searchinfo,callback){
                         logimg: r.logimg,
                         description: r.description,
                         contenturl: r.contenturl,
-                        createtime: r.createtime
+                        createtime: r.createtime,
+                        seqindex: r.seqindex
                     }
                     newslist.push(news);
                 })
