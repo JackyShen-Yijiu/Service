@@ -10,6 +10,7 @@ var client = new Redis({
     port: config.redisConfig.redis_port,
     host: config.redisConfig.redis_host,
     db: config.redisConfig.redis_db,
+    password:config.redisConfig.redis_password
 });
 
 client.on('error', function (err) {

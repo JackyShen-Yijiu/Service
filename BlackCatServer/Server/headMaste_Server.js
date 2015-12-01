@@ -78,6 +78,9 @@ exports.headMasterLogin=function(userinfo,callback){
 
             });
         }
+        else{
+            return callback("密码错误");
+        }
     })
 
 

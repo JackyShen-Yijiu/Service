@@ -65,3 +65,4 @@ exports.MallProdcutsModel=require("./mallproducts");
 exports.MallOrderModel=require("./mallorder");
 exports.HeadMasterModel=require("./headmaster");
 exports.IndustryNewsModel=require("./industrynews");
+exports.SchoolDaySummaryModel=require("./schooldaylysummary");

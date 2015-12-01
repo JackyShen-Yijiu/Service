@@ -9,7 +9,10 @@ var schedule = require('node-schedule');
 var rule = new schedule.RecurrenceRule();
 var mongodb = require('../models/mongodb.js');
 var reservationmodel=mongodb.ReservationModel;
+var driveschoolmodel=mongodb.DriveSchoolModel;
+var schooldaylysummary=mongodb.SchoolDaySummaryModel;
 var appTypeEmun=require("../custommodel/emunapptype");
+var statistics=require("../Server/headmaster_operation_server").statisticsTodayinfo;
 require('date-utils');
 var times = [];
 
@@ -50,3 +53,63 @@ var j = schedule.scheduleJob(rule, function(){
 } catch(e){
        console.log(new Date().toString()+'更新预约状态error..'+ e.message);
      }
+
+
+//===============================================================================================================================
+// 每天统计驾校信息
+var rule2 = new schedule.RecurrenceRule();
+
+rule2.dayOfWeek = [0, new schedule.Range(1, 6)];
+
+rule2.hour = 23;
+
+rule2.minute = 30;
+try{
+    var j = schedule.scheduleJob(rule2, function()
+     {
+        var datanow = new Date();
+        var begintime=(new Date()).clearTime();
+        var endtime = (new Date()).addDays(1).clearTime();
+        console.log(new Date().toString()+"开始统计驾校信息");
+
+        driveschoolmodel.find()
+            .select("_id")
+            .exec(function(err,data) {
+                if (err) {
+                    console.log(new Date().toString() + "开始统计驾校信息,查询驾校新出错" + err);
+                }
+                process.nextTick(function () {
+                    data.forEach(function (r, index) {
+                        schooldaylysummary.remove({
+                            "driveschool": new mongodb.ObjectId(r._id),
+                            summarytime: {$gte: begintime, $lt: endtime}
+                        }, function (err, data) {
+                            statistics(r._id, begintime, endtime, function (err, data) {
+                                if (err) {
+                                    console.log(new Date().toString() + "统计驾校信息出错：" + err + r._id);
+                                }
+                                var tempsummary = schooldaylysummary();
+                                tempsummary.driveschool = r._id;
+                                tempsummary.applystudentcount = data.applystudentcount;
+                                tempsummary.applyingstudentcount = 0;
+                                tempsummary.goodcommentcount = data.commentstudentcount.goodcommentcount;
+                                tempsummary.generalcomment = data.commentstudentcount.generalcomment;
+                                tempsummary.badcommentcount = data.commentstudentcount.badcommentcount;
+                                tempsummary.complaintcount = data.complaintstudentcount;
+                                tempsummary.totalcoursecount = data.coachstotalcoursecount;
+                                tempsummary.reservationcoursecount = data.reservationcoursecountday;
+                                tempsummary.summarytime = datanow;
+                                tempsummary.save(function (err, tempdata) {
+                                });
+                            })
+                        })
+
+
+                    })
+                    console.log(new Date().toString() + "统计驾校信息完成");
+                })
+            })
+    });
+}catch(e){
+    console.log(new Date().toString()+'更新驾校统计信息出错..'+ e.message);
+}
