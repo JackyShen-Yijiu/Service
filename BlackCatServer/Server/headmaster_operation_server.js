@@ -115,7 +115,7 @@ var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callbac
 }
 // 按时段统计一天的好评数
 var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback){
-    cache.get('getCommentTimely:'+schoolid+beginDate, function(err,data) {
+    cache.get('getCommentTimely:'+schoolid+beginDate+commentlevel[0], function(err,data) {
         if (err) {
             return callback(err);
         }
@@ -149,7 +149,7 @@ var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback)
                             commentlist.push(listone);
                         })
                     }
-                    cache.set('getCommentTimely:'+schoolid+beginDate, commentlist,60*1,function(){});
+                    cache.set('getCommentTimely:'+schoolid+beginDate+commentlevel[0], commentlist,60*1,function(){});
                     return callback(null,commentlist);
                 })
 
@@ -168,7 +168,7 @@ var getGroupCoachCourseDay=function (schoolid,beginDate,endDate,callback){
             return callback(null,data);
         }else{
             reservationmodel.aggregate([{$match:{
-                    // "driveschool":new mongodb.ObjectId(schoolid),
+                    "driveschool":new mongodb.ObjectId(schoolid),
                     "begintime": { $gte: beginDate, $lt:endDate}
                     ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
                         {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
@@ -181,23 +181,50 @@ var getGroupCoachCourseDay=function (schoolid,beginDate,endDate,callback){
                         return callback(err);
                     }
                     var  coachgrouplist=[];
+                    var  havecoursecoachcount=0;
                     if(data &&　data.length>0){
                         data.forEach(function(r,index){
                             onelist={
                                 coursecount: r._id,
                                 coachcount: r.coachcout
                             }
+                            havecoursecoachcount=havecoursecoachcount+r.coachcout;
                             coachgrouplist.push(onelist);
                         })
+                    };
+                    coachmodel.aggregate([{$match:{
+                            "driveschool":new mongodb.ObjectId(schoolid),
+                            "is_validation": true
+                        }}
+                            ,{$group:{_id:"null",coachcount : {$sum : 1}}}
+                        ],function(err,coachdata){
+                        if (err){
+                            return callback(err);
+                        }
+                        var nocoursecoachcount=0;
+                        if(coachdata&&coachdata.length>0){
+                            nocoursecoachcount=(coachdata[0].coachcount-havecoursecoachcount)>0 ?
+                                (coachdata[0].coachcount-havecoursecoachcount):0;
+                        }
+                        if (nocoursecoachcount!=0) {
+                            onelist={
+                                coursecount:0,
+                                coachcount:nocoursecoachcount
+                            }
+                            coachgrouplist.push(onelist);
+                        }
+                        cache.set('getGroupCoachCourseDay:'+schoolid+beginDate, coachgrouplist,60*1,function(){});
+                         return callback(null,coachgrouplist);
 
-                    }
-                    cache.set('getGroupCoachCourseDay:'+schoolid+beginDate, coachgrouplist,60*1,function(){});
-                    return callback(null,coachgrouplist);
+                    })
+
+
                 }
             )
         }
     });
 }
+
 
 //统计某一驾校科目一二三四 在学 学生人数
 var getSchoolStudentCount=function(schoolid,callback){
@@ -795,6 +822,11 @@ var  getMainpageWeekData=function(schoolid,type,callback){
 
 }
 
+//var  endtime = (new Date("2015-11-6")).addDays(1).clearTime();
+//var begintime=(new Date("2015-11-6")).clearTime();
+//getApplyStudentCountTimely("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
+//  console.log(data)
+//})
 // 更多数据中统计今天昨天的数据
 var  getMoreDataToday=function(schoolid,type,callback){
     if (type==appTypeEmun.StatisitcsType.day){
@@ -807,7 +839,35 @@ var  getMoreDataToday=function(schoolid,type,callback){
     }
     var proxy = new eventproxy();
     proxy.fail(callback);
+    // 按时段统计报名人数
     getApplyStudentCountTimely(schoolid,begintime,endtime,proxy.done("ApplyStudentCountTimely"));
+    // 按时段统计预约人数
+    getReservationCourseCountTimely(schoolid,begintime,endtime,proxy.done("ReservationCourseCountTimely"));
+    //统计教练的授课数
+    getGroupCoachCourseDay(schoolid,begintime,endtime,proxy.done("GroupCoachCourseDay"));
+    // 经济好评、中差评、
+    getCommentTimely(schoolid,begintime,endtime,[4,5],proxy.done("GoodCommentTimely"));
+    getCommentTimely(schoolid,begintime,endtime,[2,3],proxy.done("BadCommentTimely"));
+    getCommentTimely(schoolid,begintime,endtime,[0,1],proxy.done("GeneralCommentTimely"));
+    // 获取投诉数量
+    getStudentComplaintTimely(schoolid,begintime,endtime,proxy.done("StudentComplaintTimely"));
+    proxy.all('ApplyStudentCountTimely',"ReservationCourseCountTimely","GroupCoachCourseDay","GoodCommentTimely"
+        ,"BadCommentTimely","GeneralCommentTimely","StudentComplaintTimely",
+        function (ApplyStudentCountTimely,ReservationCourseCountTimely,GroupCoachCourseDay,GoodCommentTimely,BadCommentTimely,
+                  GeneralCommentTimely,StudentComplaintTimely
+        ) {
+            var daymroedatainfo={
+                "applystuentlist":ApplyStudentCountTimely,
+            "reservationstudentlist":ReservationCourseCountTimely,
+            "coachcourselist":GroupCoachCourseDay,
+            "goodcommentlist":GoodCommentTimely,
+            "badcommentlist":BadCommentTimely,
+                "generalcommentlist":GeneralCommentTimely,
+                "complaintlist":StudentComplaintTimely,
+
+            }
+            return callback(null, daymroedatainfo);
+        });
 
 }
 // 获取主页数据
@@ -827,12 +887,14 @@ exports.getMainPageData=function(queryinfo,callback){
 
 // 更多数据中统计
 exports.getMoreStatisitcsdata=function(queryinfo,callback){
-    if(queryinfo.searchtype==appTypeEmun.StatisitcsType.day||queryinfo.searchtype==appTypeEmun.StatisitcsType.yesterday){
-        getMainpageToadyData(queryinfo.schoolid,queryinfo.searchtype,callback)
+    if(queryinfo.searchtype==appTypeEmun.StatisitcsType.day
+        ||queryinfo.searchtype==appTypeEmun.StatisitcsType.yesterday){
+        console.log("开通统计数据");
+        getMoreDataToday(queryinfo.schoolid,queryinfo.searchtype,callback)
     }else if( queryinfo.searchtype==appTypeEmun.StatisitcsType.week){
         // 统计一周总的约课数据  和开课数据
         // 统计 好中差评数据
-        getMainpageWeekData(queryinfo.schoolid,queryinfo.searchtype,callback)
+      //  getMainpageWeekData(queryinfo.schoolid,queryinfo.searchtype,callback)
     }else{
         return callback("查询参数错误");
     }

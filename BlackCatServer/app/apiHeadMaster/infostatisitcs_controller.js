@@ -8,17 +8,17 @@ var headMasterOperation=require("../../Server/headmaster_operation_server");
 /*
   获取更多统计数据
  */
-exports.getMoreData=function(req,res){
-    var  userid=req.query.userid;
-    var  searchtype=req.query.searchtype;
-    if (userid===undefined|| searchtype===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
-    }
-    if(userid!=req.userId){
-        return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
-    };
-}
+//exports.getMoreData=function(req,res){
+//    var  userid=req.query.userid;
+//    var  searchtype=req.query.searchtype;
+//    if (userid===undefined|| searchtype===undefined){
+//        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+//    }
+//    if(userid!=req.userId){
+//        return res.json(
+//            new BaseReturnInfo(0,"无法确认请求用户",""));
+//    };
+//}
 
 // 统计主页数据
 exports.getMainPageData=function(req,res){
