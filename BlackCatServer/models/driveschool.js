@@ -63,7 +63,10 @@ DriveSchoolSchema.statics.getNearDriverSchool = function(latitude, longitude, ra
     // CAUTION: paramters (lat, lon, radius) in the query must be type of Number.
 //    this.find({loc:{$geoWithin:{ $centerSphere:[[longitude, latitude], radius/6378100.0]}}}) //within cycle of radius
 
-    this.find({loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: 100000}}}) //from near to far
+    this.find(
+            //修改了苹果审核能拿到数据
+        //loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: 100000}}}
+        ) //from near to far
       //  .select('name branchName latitude longitude dpUrl logoUrl avgPrice popularity')
 //        .sort({popularity: -1})
         .limit(30)
