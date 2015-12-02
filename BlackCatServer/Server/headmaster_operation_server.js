@@ -15,61 +15,204 @@ var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 require('date-utils');
 
 
-// 获取今天或者昨天的更多统计数据
-var getMoreDatalatest=function(schoolid,beginDate,endDate,callback){
-    // 按时间段获取今日申请人数
-
-    //按时段统计约课人数
-    coursemode.aggregate([{$match:{
-            "driveschool":new mongodb.ObjectId(schoolid),
-            "coursebegintime": { $gte: beginDate, $lt:endDate}
-            ,"selectedstudentcount":{$gte:1}
-        }},
-            {"$project":{
-                "hours":{"$add":[{"$hour":"$coursebegintime"},8]},
-                selectedstudentcount:1
-            }}
-            ,{$group:{_id:"$hours",studentcount : {$sum : "$selectedstudentcount"}}}
-        ],
-        function(err,data){
-            console.log(data);
+//更多数据 周统计  教练授课
+var getCoachCourseByWeek=function(schoolid,beginDate,endDate,callback){
+    cache.get("getCoachCourseByWeek"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
         }
-    )
-    //  统计教练 授课
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "summarytime": { $gte: beginDate, $lt:endDate}
 
-    // 统计好评评论
-    reservationmodel.aggregate([{$match:{
-            // "driveschool":new mongodb.ObjectId(schoolid),
-            "is_comment":true,
-            "comment.commenttime": { $gte: beginDate, $lt:endDate}
-            ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
-                {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
-        }}
-            ,{$group:{_id:"$comment.starlevel",commentcount : {$sum : 1}}}
-        ],
-        function(err,data){
-            console.log(data);
+                }}
+                ,{"$unwind":"$coachcoursecount"}
+                     ,{$group:{_id:"$coachcoursecount.coachid",cousrsecount : {$sum : "$coachcoursecount.coursecount"}}}
+                 ,{$group:{_id:"$cousrsecount",coachcount : {$sum : 1}}}
+                ],function(err,data){
+                if(err){
+                    return callback(err);
+                }
+                var  coachgrouplist=[];
+                if(data &&　data.length>0){
+                    data.forEach(function(r,index){
+                        onelist={
+                            coursecount: r._id,
+                            coachcount: r.coachcount
+                        }
+                        coachgrouplist.push(onelist);
+                    })
+                };
+                cache.set("getCoachCourseByWeek"+schoolid+beginDate, coachgrouplist,60*1,function(){});
+                    return callback(null,coachgrouplist);
+                }
+            )
         }
-    );
-    // 获取 投诉
-    reservationmodel.aggregate([{$match:{
-            // "driveschool":new mongodb.ObjectId(schoolid),
-            "is_complaint":true,
-            "complaint.complainttime": { $gte: beginDate, $lt:endDate}
-            ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
-                {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
-        }},
-            {"$project":{
-                "hours":{"$add":[{"$hour":"$complaint.complainttime"},8]}
-            }}
-            ,{$group:{_id:"$hours",complaintcount : {$sum : 1}}}
-        ],
-        function(err,data){
-            console.log(data);
-        }
-    );
+    })
+}
 
-};
+//var  begintime = (new Date()).addDays(-7).clearTime();
+//var endtime=(new Date()).addDays(7).clearTime();
+//getCoachCourseByWeek("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
+//  console.log(data);
+//})
+// 周统计 周统计招生人数
+var getMoreApplyStudentByWeek=function(schoolid,beginDate,endDate,callback){
+    cache.get("getMoreApplyStudentByWeek"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                "driveschool":new mongodb.ObjectId(schoolid),
+                "summarytime": { $gte: beginDate, $lt:endDate}
+
+            }},
+                {"$project":{
+                    "day":{"$dayOfWeek":"$summarytime"}
+                    ,"applystudentcount":"$applystudentcount"
+                    ,"reservationcoursecount":"$reservationcoursecount"
+                    ,"goodcommentcount":"$goodcommentcount"
+                    ,"badcommentcount":"$badcommentcount"
+                    ,"generalcomment":"$generalcomment"
+                    ,"complaintcount":"$complaintcount"
+                    ,"summarytime":"$summarytime"
+                    ,"_id":0
+                }}
+               // ,{$group:{_id:"$week",applystudentcount : {$sum : "$selectedstudentcount"}}}
+            ],function(err,schooldata){
+                    if(err){
+                        return callback(err);
+                    }
+                    cache.set("getMoreApplyStudentByWeek"+schoolid+beginDate, schooldata,60*1,function(){});
+                return callback(null,schooldata);
+            }
+            )
+        }
+    })
+}
+// 更多数据 月统计
+var getMoreDataStudentByMonth=function(schoolid,beginDate,endDate,callback){
+    cache.get("getMoreDataStudentByMonth"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "summarytime": { $gte: beginDate, $lt:endDate}
+
+                }},
+                    {"$project":{
+                        "week":{"$substr": [{"$divide":[{"$subtract":[{"$dayOfMonth":"$summarytime"},1]},7]},0,1]}
+                        ,"applystudentcount":"$applystudentcount"
+                        ,"reservationcoursecount":"$reservationcoursecount"
+                        ,"goodcommentcount":"$goodcommentcount"
+                        ,"badcommentcount":"$badcommentcount"
+                        ,"generalcomment":"$generalcomment"
+                        ,"complaintcount":"$complaintcount"
+                        ,"summarytime":"$summarytime"
+                        ,"_id":0
+                    }}
+                     ,{$group:{_id:"$week",
+                    applystudentcount : {$sum : "$applystudentcount"},
+                    reservationcoursecount : {$sum : "$reservationcoursecount"},
+                    goodcommentcount : {$sum : "$goodcommentcount"},
+                    badcommentcount : {$sum : "$badcommentcount"},
+                    generalcomment : {$sum : "$generalcomment"},
+                    complaintcount : {$sum : "$complaintcount"},}}
+                ],function(err,schooldata){
+                if(err){
+                    return callback(err);
+                }
+                var datalist=[];
+                if (schooldata&&schooldata.length>0){
+                    schooldata.forEach(function(r,index){
+                        var listone={
+                            weekindex:parseInt(r._id)+1,
+                            applystudentcount:r.applystudentcount,
+                            reservationcoursecount:r.reservationcoursecount,
+                            goodcommentcount:r.goodcommentcount,
+                            badcommentcount:r.badcommentcount,
+                            generalcomment:r.generalcomment,
+                            complaintcount:r.complaintcount,
+                        }
+                        datalist.push(listone);
+                    })
+                }
+                cache.set("getMoreDataStudentByMonth"+schoolid+beginDate, datalist,60*1,function(){});
+                    return callback(null,datalist);
+                }
+            )
+        }
+    })
+}
+// 更多数据 年统计
+var getMoreDataStudentByYear=function(schoolid,beginDate,endDate,callback){
+    cache.get("getMoreDataStudentByYear"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "summarytime": { $gte: beginDate, $lt:endDate}
+
+                }},
+                    {"$project":{
+                        "month":{"$month":"$summarytime"}
+                        ,"applystudentcount":"$applystudentcount"
+                        ,"reservationcoursecount":"$reservationcoursecount"
+                        ,"goodcommentcount":"$goodcommentcount"
+                        ,"badcommentcount":"$badcommentcount"
+                        ,"generalcomment":"$generalcomment"
+                        ,"complaintcount":"$complaintcount"
+                        ,"summarytime":"$summarytime"
+                        ,"_id":0
+                    }}
+                    ,{$group:{_id:"$month",applystudentcount : {$sum : "$applystudentcount"},
+                        reservationcoursecount : {$sum : "$reservationcoursecount"},
+                        goodcommentcount : {$sum : "$goodcommentcount"},
+                        badcommentcount : {$sum : "$badcommentcount"},
+                        generalcomment : {$sum : "$generalcomment"},
+                        complaintcount : {$sum : "$complaintcount"},}}
+                ],function(err,schooldata){
+                if(err){
+                    return callback(err);
+                }
+                var datalist=[];
+                if (schooldata&&schooldata.length>0){
+                    schooldata.forEach(function(r,index){
+                        var listone={
+                            month:r._id,
+                            applystudentcount:r.applystudentcount,
+                            reservationcoursecount:r.reservationcoursecount,
+                            goodcommentcount:r.goodcommentcount,
+                            badcommentcount:r.badcommentcount,
+                            generalcomment:r.generalcomment,
+                            complaintcount:r.complaintcount,
+                        }
+                        datalist.push(listone);
+                    })
+                }
+                cache.set("getMoreDataStudentByYear"+schoolid+beginDate, datalist,60*1,function(){});
+                    return callback(null,datalist);
+                }
+            )
+        }
+    })
+}
+
+
 
 // 按时段统计今天 的预约人数
 var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callback){
@@ -557,9 +700,9 @@ var  getReservationCourseCountDay=function(schoolid,beginDate,endDate,callback){
     })
 }
 
-//var begintime=(new Date("2015-11-8")).clearTime();
-//var endtime=(new Date("2015-11-9")).clearTime();
-//getReservationCourseCountDay("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
+//var begintime=(new Date("2015-11-14")).clearTime();
+//var endtime=(new Date("2015-11-15")).clearTime();
+//getReservationCourseCountDay("56306293f3001f6e21f6e520" ,begintime,endtime,function(err,data){
 //    console.log(data)
 //});
 
@@ -827,6 +970,40 @@ var  getMainpageWeekData=function(schoolid,type,callback){
 //getApplyStudentCountTimely("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
 //  console.log(data)
 //})
+// 更多数据中统计 一周的数据
+var getMoreDataWeek=function(schoolid,type,callback){
+    var begintime=(new Date()).addDays(-7).clearTime();
+    var  datenow=new Date();
+    if (type==appTypeEmun.StatisitcsType.week){
+        begintime=(new Date()).addDays(-7).clearTime();
+    } else if (type==appTypeEmun.StatisitcsType.month){
+
+        begintime=(new Date(datenow.getFullYear(),datenow.getMonth(),1))
+    }
+    else if(type==appTypeEmun.StatisitcsType.year){
+        begintime=(new Date(datenow.getFullYear(),1,1))
+    }
+    var  endtime = (new Date()).clearTime();
+    var proxy = new eventproxy();
+    proxy.fail(callback);
+    if (type==appTypeEmun.StatisitcsType.week){
+    getMoreApplyStudentByWeek(schoolid,begintime,endtime,proxy.done("ApplyStudentByWeek"));
+    } else if(type==appTypeEmun.StatisitcsType.month){
+        getMoreDataStudentByMonth(schoolid,begintime,endtime,proxy.done("ApplyStudentByWeek"));
+    }else if(type==appTypeEmun.StatisitcsType.year){
+        getMoreDataStudentByYear(schoolid,begintime,endtime,proxy.done("ApplyStudentByWeek"));
+    }
+    getCoachCourseByWeek(schoolid,begintime,endtime,proxy.done("CoachCourseByWeek"));
+    proxy.all('ApplyStudentByWeek',"CoachCourseByWeek",
+        function (ApplyStudentByWeek,CoachCourseByWeek){
+            var weekmroedatainfo= {
+                datalist:ApplyStudentByWeek,
+                coursedata:CoachCourseByWeek
+            };
+            return callback(weekmroedatainfo);
+        });
+
+}
 // 更多数据中统计今天昨天的数据
 var  getMoreDataToday=function(schoolid,type,callback){
     if (type==appTypeEmun.StatisitcsType.day){
@@ -889,12 +1066,13 @@ exports.getMainPageData=function(queryinfo,callback){
 exports.getMoreStatisitcsdata=function(queryinfo,callback){
     if(queryinfo.searchtype==appTypeEmun.StatisitcsType.day
         ||queryinfo.searchtype==appTypeEmun.StatisitcsType.yesterday){
-        console.log("开通统计数据");
         getMoreDataToday(queryinfo.schoolid,queryinfo.searchtype,callback)
-    }else if( queryinfo.searchtype==appTypeEmun.StatisitcsType.week){
+    }else if( queryinfo.searchtype==appTypeEmun.StatisitcsType.week
+    ||queryinfo.searchtype==appTypeEmun.StatisitcsType.month
+        ||queryinfo.searchtype==appTypeEmun.StatisitcsType.year){
         // 统计一周总的约课数据  和开课数据
         // 统计 好中差评数据
-      //  getMainpageWeekData(queryinfo.schoolid,queryinfo.searchtype,callback)
+        getMoreDataWeek(queryinfo.schoolid,queryinfo.searchtype,callback);
     }else{
         return callback("查询参数错误");
     }

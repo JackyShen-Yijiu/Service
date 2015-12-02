@@ -16,6 +16,25 @@ var mallProductModel=mongodb.MallProdcutsModel;
 require('date-utils');
 var async = require('async');
 
+
+
+var updataschool=function(){
+    coachmode.find()
+        .select("_id driveschool")
+        .exec(function(err,data){
+            data.forEach(function(r,index){
+                reservationmodel.update({coachid: r._id} ,
+                    { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+                        console.log(doc);
+                    })
+                coursemode.update({coachid: r._id} ,
+                    { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+                        console.log(doc);
+                    })
+            })
+        })
+}
+updataschool();
 addcourseware=function(){
 var courseware = new  CourseWareModel;
 courseware.name="夜间行驶";
@@ -37,7 +56,7 @@ courseware.save();
     product.save();*/
 
 }
-addcourseware();
+//addcourseware();
 /*classtype.find({},function(err,data){
 data.forEach(function(r,index){
     var  list=[];

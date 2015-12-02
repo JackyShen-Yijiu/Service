@@ -4,23 +4,9 @@
 
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var headMasterOperation=require("../../Server/headmaster_operation_server");
-// 信息统计
-/*
-  获取更多统计数据
- */
-//exports.getMoreData=function(req,res){
-//    var  userid=req.query.userid;
-//    var  searchtype=req.query.searchtype;
-//    if (userid===undefined|| searchtype===undefined){
-//        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
-//    }
-//    if(userid!=req.userId){
-//        return res.json(
-//            new BaseReturnInfo(0,"无法确认请求用户",""));
-//    };
-//}
 
-// 统计主页数据
+
+// 鑾峰彇涓婚〉鏁版嵁
 exports.getMainPageData=function(req,res){
     var  queryinfo={
         userid:req.query.userid,
@@ -29,11 +15,11 @@ exports.getMainPageData=function(req,res){
     }
     if (queryinfo.searchtype===undefined|| queryinfo.userid===undefined
         ||queryinfo.schoolid===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+        return res.json(new BaseReturnInfo(0,"鍙傛暟閿欒",""));
     }
     if(queryinfo.userid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"鏃犳硶纭璇锋眰鐢ㄦ埛",""));
     };
     headMasterOperation.getMainPageData(queryinfo,function(err,data){
         if(err){
@@ -43,7 +29,7 @@ exports.getMainPageData=function(req,res){
     })
 }
 
-//统计详情数据 详情统计数据
+//鑾峰彇璇︽儏椤垫暟鎹紝鏇村鏁版嵁
 exports.getMoreData=function(req,res){
     var  queryinfo={
         userid:req.query.userid,
@@ -52,11 +38,11 @@ exports.getMoreData=function(req,res){
     }
     if (queryinfo.searchtype===undefined|| queryinfo.userid===undefined
         ||queryinfo.schoolid===undefined){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+        return res.json(new BaseReturnInfo(0,"鍙傛暟閿欒",""));
     }
     if(queryinfo.userid!=req.userId){
         return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
+            new BaseReturnInfo(0,"鏃犳硶纭璇锋眰鐢ㄦ埛",""));
     };
     headMasterOperation.getMoreStatisitcsdata(queryinfo,function(err,data){
         if(err){

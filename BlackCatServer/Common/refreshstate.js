@@ -11,6 +11,7 @@ var mongodb = require('../models/mongodb.js');
 var reservationmodel=mongodb.ReservationModel;
 var driveschoolmodel=mongodb.DriveSchoolModel;
 var schooldaylysummary=mongodb.SchoolDaySummaryModel;
+var coachmodel=mongodb.CoachModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var statistics=require("../Server/headmaster_operation_server").statisticsTodayinfo;
 require('date-utils');
@@ -56,6 +57,66 @@ var j = schedule.scheduleJob(rule, function(){
 
 
 //===============================================================================================================================
+   //统计驾校 下面每个教练每天的工作时长
+var getCoachCourse=function (schoolid,beginDate,endDate,callback){
+    reservationmodel.aggregate([{$match:{
+        "driveschool":new mongodb.ObjectId(schoolid),
+        "begintime": { $gte: beginDate, $lt:endDate}
+        ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+            {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
+    }}
+        ,{$group:{_id:"$coachid",coursecount : {$sum : "$coursehour"}}}
+    ],function(err,coursereservationdata){
+        if(err){
+            return callback(err);
+        }
+        coachmodel.find({"driveschool":new mongodb.ObjectId(schoolid),
+        "is_validation":true})
+            .select("_id")
+            .exec(function(err,coachdata){
+                if(err){
+                    return callback(err);
+                }
+                process.nextTick(function(){
+                    var coachidlist=[];
+                    var coursereservationlist=[];
+                    for(i=0;i<coachdata.length;i++){
+                        coachidlist.push(coachdata[i]._id);
+                    }
+                    //console.log(schoolid);
+                    //console.log(coachidlist);
+                    //console.log(coachdata);
+                    if (coursereservationdata&&coursereservationdata.length>0){
+                            coursereservationdata.forEach(function(r,indx){
+                                var listone={
+                                    coachid: r._id,
+                                    coursecount: r.coursecount
+                                };
+                                coursereservationlist.push(listone);
+                                var idx = coachidlist.indexOf(r._id);
+                                if (idx != -1) {
+                                    coachidlist.splice(idx, 1);
+                                }
+                        })
+                    }
+                    for(i=0;i<coachidlist.length;i++){
+                        var listone={
+                            coachid: coachidlist[i],
+                            coursecount:0
+                        };
+                        coursereservationlist.push(listone);
+                    }
+                    return callback(null,coursereservationlist);
+                })
+
+
+
+        });
+
+    });
+}
+
+//-----------------------------------------------------------------------
 // 每天统计驾校信息
 var rule2 = new schedule.RecurrenceRule();
 
@@ -68,15 +129,18 @@ try{
     var j = schedule.scheduleJob(rule2, function()
      {
         var datanow = new Date();
-        var begintime=(new Date()).clearTime();
-        var endtime = (new Date()).addDays(1).clearTime();
+         var begintime=(new Date()).clearTime();
+         var endtime = (new Date()).addDays(1).clearTime();
+         //var datanow = new Date().addDays(-19);
+         //var begintime=(new Date()).addDays(-19).clearTime();
+         //var endtime = (new Date()).addDays(-18).clearTime();
         console.log(new Date().toString()+"开始统计驾校信息");
 
         driveschoolmodel.find()
             .select("_id")
             .exec(function(err,data) {
                 if (err) {
-                    console.log(new Date().toString() + "开始统计驾校信息,查询驾校新出错" + err);
+                    console.error(new Date().toString() + "开始统计驾校信息,查询驾校新出错" + err);
                 }
                 process.nextTick(function () {
                     data.forEach(function (r, index) {
@@ -86,7 +150,7 @@ try{
                         }, function (err, data) {
                             statistics(r._id, begintime, endtime, function (err, data) {
                                 if (err) {
-                                    console.log(new Date().toString() + "统计驾校信息出错：" + err + r._id);
+                                    console.error(new Date().toString() + "统计驾校信息出错：" + err + r._id);
                                 }
                                 var tempsummary = schooldaylysummary();
                                 tempsummary.driveschool = r._id;
@@ -99,8 +163,17 @@ try{
                                 tempsummary.totalcoursecount = data.coachstotalcoursecount;
                                 tempsummary.reservationcoursecount = data.reservationcoursecountday;
                                 tempsummary.summarytime = datanow;
-                                tempsummary.save(function (err, tempdata) {
-                                });
+                                getCoachCourse(r._id,begintime, endtime,function(err,data){
+                                    if(err){
+                                        console.error(new Date().toString() + "统计教练约车信息：" + err + r._id);
+                                    }
+                                    else {
+                                        tempsummary.coachcoursecount=data;
+                                        tempsummary.save(function (err, tempdata) {
+                                        });
+                                    }
+                                })
+
                             })
                         })
 
@@ -109,7 +182,11 @@ try{
                     console.log(new Date().toString() + "统计驾校信息完成");
                 })
             })
-    });
+    }
+
+    );
+
+
 }catch(e){
-    console.log(new Date().toString()+'更新驾校统计信息出错..'+ e.message);
+    console.error(new Date().toString()+'更新驾校统计信息出错..'+ e.message);
 }

@@ -2,26 +2,26 @@
  * Created by li on 2015/11/30.
  */
 
-// ¼ÝÐ£Ã¿ÌìÊý¾Ý×Ü½á
+//
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SchoolDaylySummarySchema = new Schema({
-    driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// ËùÔÚÑ§Ð£
-    applystudentcount:{type:Number,default:0}, //½ñÌìÉêÇëÑ§ÉúÊýÁ¿
-    applyingstudentcount:{type:Number,default:0}, // ÉêÇë×´Ì¬µÄÑ§ÉúµÄÊýÁ¿
-    goodcommentcount:{type:Number,default:0}, // ºÃÆÀÊýÁ¿
-    badcommentcount:{type:Number,default:0},  // ²îÆÀÊýÁ¿
-    generalcomment:{type:Number,default:0},   //ÖÐÆÀÊýÁ¿
-    complaintcount:{type:Number,default:0},   // Í¶ËßÊýÁ¿
-    totalcoursecount:{type:Number,default:0},   // ×Ü¹²¿Î³ÌÊý¾Ý
-    reservationcoursecount:{type:Number,default:0},  // Ô¤Ô¼¿Î³ÌÊý¾Ý
+    driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// ï¿½ï¿½ï¿½ï¿½Ñ§Ð£
+    applystudentcount:{type:Number,default:0}, //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    applyingstudentcount:{type:Number,default:0}, // ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    goodcommentcount:{type:Number,default:0}, // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    badcommentcount:{type:Number,default:0},  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    generalcomment:{type:Number,default:0},   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    complaintcount:{type:Number,default:0},   // Í¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    totalcoursecount:{type:Number,default:0},   // ï¿½Ü¹ï¿½ï¿½Î³ï¿½ï¿½ï¿½ï¿½ï¿½
+    reservationcoursecount:{type:Number,default:0},  // Ô¤Ô¼ï¿½Î³ï¿½ï¿½ï¿½ï¿½ï¿½
     coachcoursecount:[{
-        coachid:{type: Schema.Types.ObjectId, ref: 'coach'} , //½ÌÁ·id
-        coursecount:{type:Number,default:0}  // ½ÌÁ·ÉÏ¿Î
+        coachid:{type: Schema.Types.ObjectId, ref: 'coach'} , //ï¿½ï¿½ï¿½ï¿½id
+        coursecount:{type:Number,default:0}  // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½
     }],
-    summarytime:{type:Date, required:true}            // Í³¼ÆÊ±¼ä
+    summarytime:{type:Date, required:true}            // Í³ï¿½ï¿½Ê±ï¿½ï¿½
 });
 
 
