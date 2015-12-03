@@ -6,9 +6,11 @@ var jwt = require('jsonwebtoken');
 var headMasterModle=mongodb.HeadMasterModel;
 var driveSchoolModel=mongodb.DriveSchoolModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
+var schoolBulletin=mongodb.SchoolBulletin;
 var regisermobIm=require('../Common/mobIm');
 var cache=require('../Common/cache');
 var secretParam= require('./jwt-secret').secretParam;
+var appTypeEmun=require("../custommodel/emunapptype");
 
 
 exports.headMasterLogin=function(userinfo,callback){
@@ -86,6 +88,58 @@ exports.headMasterLogin=function(userinfo,callback){
 
 }
 
+//发布公告
+exports.publishBulletin=function(bulletioninfo,callback){
+    if(bulletioninfo.bulletobject!=appTypeEmun.UserType.Coach &&
+        bulletioninfo.bulletobject!=appTypeEmun.UserType.User){
+        return callback("发布对象错误");
+    }
+    var bulletion=new  schoolBulletin();
+    bulletion.headmaster=new mongodb.ObjectId(bulletioninfo.userid);
+    bulletion.driveschool=new mongodb.ObjectId(bulletioninfo.schoolid);
+    bulletion.content=bulletioninfo.content;
+    bulletion.bulletobject=bulletioninfo.bulletobject;
+    bulletion.save(function(err,data){
+        if(err){
+            return callback("发布消息出错："+err);
+        }
+        return callback(null,"发布成功");
+    })
+}
+
+// 查询发布的公告
+exports.getSchoolBulletin=function(searchinfo,callback){
+    if(searchinfo.seqindex==0){
+        searchinfo.seqindex=Number.MAX_VALUE;
+    };
+    console.log(searchinfo);
+    schoolBulletin.find({"seqindex":{$lt:searchinfo.seqindex},
+    "headmaster":new mongodb.ObjectId(searchinfo.userid),
+    "driveschool":new mongodb.ObjectId(searchinfo.shcoolid)
+    })
+        .sort({seqindex:-1})
+        .limit(searchinfo.count)
+        .exec(function(err,data){
+            console.log(data);
+            if(err){
+                return  callback("查询公告出错："+err);
+            }
+            process.nextTick(function(){
+                var bulletionlist=[];
+                data.forEach(function(r,indx){
+                    var bulletin={
+                        bulletinid:r._id,
+                        content: r.content,
+                        createtime: r.createtime,
+                        bulletobject: r.bulletobject,
+                        seqindex: r.seqindex
+                    }
+                    bulletionlist.push(bulletin);
+                })
+                return callback(null,bulletionlist);
+            })
+        })
+}
 // 获取行业资讯
 exports.getIndustryNews=function(searchinfo,callback){
     if(searchinfo.seqindex==0){

@@ -176,8 +176,6 @@ try{
 
                             })
                         })
-
-
                     })
                     console.log(new Date().toString() + "统计驾校信息完成");
                 })

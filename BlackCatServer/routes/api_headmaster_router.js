@@ -17,6 +17,10 @@ router.get('/test',function(req,res){
 
 //校长登录
 router.post('/userinfo/userlogin', userCenterController.headMasterLogin);
+// 发布公告
+router.post("/userinfo/publishbulletin",ensureAuthorizedController.ensureAuthorized,userCenterController.postBulletin);
+// 获取历史公告
+router.get("/userinfo/getbulletin",ensureAuthorizedController.ensureAuthorized,userCenterController.getBulletin)
 
 // 获取更多数据
 //router.get('/statistics/getmoredata', userCenterController.getmoredata);
@@ -26,6 +30,7 @@ router.get("/statistics/getmainpagedata",ensureAuthorizedController.ensureAuthor
 
 // 统计更多数据详情数据 日/昨天/周/月/年
 router.get("/statistics/getmoredata",ensureAuthorizedController.ensureAuthorized,statisitcsController.getMoreData);
+
 
 
 
