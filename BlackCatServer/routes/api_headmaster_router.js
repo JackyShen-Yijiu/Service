@@ -22,14 +22,20 @@ router.post("/userinfo/publishbulletin",ensureAuthorizedController.ensureAuthori
 // 获取历史公告
 router.get("/userinfo/getbulletin",ensureAuthorizedController.ensureAuthorized,userCenterController.getBulletin)
 
-// 获取更多数据
-//router.get('/statistics/getmoredata', userCenterController.getmoredata);
 
 //统计主页数据  / 天昨天 周
 router.get("/statistics/getmainpagedata",ensureAuthorizedController.ensureAuthorized,statisitcsController.getMainPageData);
 
 // 统计更多数据详情数据 日/昨天/周/月/年
 router.get("/statistics/getmoredata",ensureAuthorizedController.ensureAuthorized,statisitcsController.getMoreData);
+
+// 获取投诉详情
+router.get("/statistics/complaintdetails",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getComplaintDetails);
+
+// 处理投诉(校长)
+router.post("/statistics/handlecomplaint",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.handleComplaint);
 
 
 

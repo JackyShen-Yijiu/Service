@@ -120,7 +120,7 @@ exports.getSchoolBulletin=function(searchinfo,callback){
         .sort({seqindex:-1})
         .limit(searchinfo.count)
         .exec(function(err,data){
-            console.log(data);
+           // console.log(data);
             if(err){
                 return  callback("查询公告出错："+err);
             }
@@ -141,6 +141,35 @@ exports.getSchoolBulletin=function(searchinfo,callback){
         })
 }
 // 获取行业资讯
+exports.getIndustryNews=function(searchinfo,callback){
+    if(searchinfo.seqindex==0){
+        searchinfo.seqindex=Number.MAX_VALUE;
+    };
+    industryNewsModel.find({seqindex:{$lt:searchinfo.seqindex}})
+        .sort({seqindex:-1})
+        .limit(searchinfo.count)
+        .exec(function (err,data){
+            if(err){
+                return  callback("查询资讯出错："+err);
+            }
+            process.nextTick(function(){
+                var newslist=[];
+                data.forEach(function(r,indx){
+                    var news={
+                        newsid:r._id,
+                        title: r.title,
+                        logimg: r.logimg,
+                        description: r.description,
+                        contenturl: r.contenturl,
+                        createtime: r.createtime,
+                        seqindex: r.seqindex
+                    }
+                    newslist.push(news);
+                })
+                return callback(null,newslist);
+            })
+        })
+}
 exports.getIndustryNews=function(searchinfo,callback){
     if(searchinfo.seqindex==0){
         searchinfo.seqindex=Number.MAX_VALUE;

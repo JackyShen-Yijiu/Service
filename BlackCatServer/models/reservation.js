@@ -48,6 +48,12 @@ var ReservationSchema=new Schema({
     is_complaint:{ type: Boolean, default: false},
     // 投诉内容
     complaint :{reason:String,complaintcontent:String,complainttime:Date},
+    complainthandinfo:{
+        handlestate:{ type: Number, default: 0},  // 0 没有处理 ， 1 处理结束 2 处理完成
+        handlemessage:{ type: String, default: ""}, // 处理消息
+        operator:{ type: String, default: ""}, // 处理人
+        handledatetime:Date      //处理时间
+    },
     // 取消预约原因
     cancelreason:{reason:String,cancelcontent:String},
     // 是否接送
