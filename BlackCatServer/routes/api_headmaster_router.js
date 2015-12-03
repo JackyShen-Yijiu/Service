@@ -36,6 +36,9 @@ router.get("/statistics/complaintdetails",ensureAuthorizedController.ensureAutho
 // 处理投诉(校长)
 router.post("/statistics/handlecomplaint",ensureAuthorizedController.ensureAuthorized,
     statisitcsController.handleComplaint);
+// 获取评论详情
+router.get("/statistics/commentdetails",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getCommentDetail);
 
 
 

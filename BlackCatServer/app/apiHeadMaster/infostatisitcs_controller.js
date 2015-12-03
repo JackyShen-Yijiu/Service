@@ -101,4 +101,28 @@ exports.handleComplaint=function(req,res){
         return res.json(new BaseReturnInfo(1, "", data));
     })
 
+};
+
+exports.getCommentDetail=function(req,res){
+    queryinfo = {
+        userid: req.query.userid,
+        schoolid: req.query.schoolid,
+        searchtype:req.query.searchtype,
+        index:req.query.index? req.query.index :1,
+        count:req.query.count? req.query.count :10
+    };
+    if (queryinfo.searchtype===undefined|| queryinfo.userid===undefined
+        ||queryinfo.schoolid===undefined){
+        return res.json(new BaseReturnInfo(0,"参数错误",""));
+    }
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    headMasterOperation.getCommentDetails(queryinfo, function (err, data) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err, {}));
+        }
+        return res.json(new BaseReturnInfo(1, "", data));
+    })
 }

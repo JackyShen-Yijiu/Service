@@ -1165,7 +1165,7 @@ exports.getComplaintDetails=function(queryinfo,callback){
         .populate("userid","mobile name  headportrait applyclasstypeinfo")
         .populate("coachid"," name mobile headportrait ")
         .sort({"complaint.complainttime":-1})
-        .skip((queryinfo.index-1)*10)
+        .skip((queryinfo.index-1)*queryinfo.count)
         .limit(queryinfo.count)
         .exec(function(err,data){
             if(err){
@@ -1181,6 +1181,55 @@ exports.getComplaintDetails=function(queryinfo,callback){
                         complaintDateTime: r.complaint.complainttime,
                         complainthandlestate: r.complainthandinfo.handlestate?r.complainthandinfo.handlestate:0,
                         complainthandlemessage: r.complainthandinfo.handlemessage? r.complainthandinfo.handlemessage:"",
+                        subject: r.subject,
+                        studentinfo:{
+                            userid: r.userid._id,
+                            moblie: r.userid.moblie,
+                            name:r.userid.name,
+                            headportrait:r.userid.headportrait,
+                            classtype:r.userid.applyclasstypeinfo
+                        },
+                        coachinfo:{
+                            coachid: r.coachid._id,
+                            moblie: r.coachid.moblie,
+                            name:r.coachid.name,
+                            headportrait:r.coachid.headportrait,
+
+                        }
+                    }
+                    complaintlist.push(complaintinfo);
+                });
+                return callback(null,complaintlist);
+            })
+        })
+};
+/*
+* 查询评论详情*/
+exports.getCommentDetails=function(queryinfo,callback){
+    reservationmodel.find(
+        {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
+            "is_comment":true
+            ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+            {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
+        .select("userid coachid is_comment  comment subject  ")
+        .populate("userid","mobile name  headportrait applyclasstypeinfo")
+        .populate("coachid"," name mobile headportrait ")
+        .sort({"comment.commenttime":-1})
+        .skip((queryinfo.index-1)*queryinfo.count)
+        .limit(queryinfo.count)
+        .exec(function(err,data){
+            if(err){
+                return call("查询投诉信息出错："+err)
+            }
+            process.nextTick(function(){
+                var complaintlist=[];
+                data.forEach(function(r,index){
+                    complaintinfo={
+                        reservationid: r._id,
+                        commentstarlevel: r.comment.starlevel,
+                        commenttime: r.comment.commenttime,
+                        commentcontent: r.comment.commentcontent,
+                        subject: r.subject,
                         studentinfo:{
                             userid: r.userid._id,
                             moblie: r.userid.moblie,

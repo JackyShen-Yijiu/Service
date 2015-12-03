@@ -79,8 +79,6 @@ exports.userBuyProduct=function(req,res){
         mobile:req.body.mobile,
         address:req.body.address,
     }
-    console.log(postinfo);
-    console.log(req.body);
     if (postinfo.usertype === undefined
         ||postinfo.userid === undefined
         ||postinfo.productid === undefined ) {
