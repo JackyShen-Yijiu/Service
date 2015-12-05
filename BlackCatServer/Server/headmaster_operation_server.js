@@ -1206,11 +1206,25 @@ exports.getComplaintDetails=function(queryinfo,callback){
 /*
 * 查询评论详情*/
 exports.getCommentDetails=function(queryinfo,callback){
+    var begintime=(new Date()).clearTime();
     var enddate=(new Date()).addDays(1).clearTime();
-    var commentlevel;
+    var datenow=new Date();
     if(queryinfo.searchtype==appTypeEmun.StatisitcsType.yesterday){
+        begintime=(new Date()).addDays(-1).clearTime();
         enddate=(new Date()).clearTime();
+    }else
+    if (queryinfo.searchtype==appTypeEmun.StatisitcsType.week){
+        begintime=(new Date()).addDays(-7).clearTime();
+    } else if (queryinfo.searchtype==appTypeEmun.StatisitcsType.month){
+
+        begintime=(new Date(datenow.getFullYear(),datenow.getMonth(),1))
     }
+    else if(queryinfo.searchtype==appTypeEmun.StatisitcsType.year){
+        begintime=(new Date(datenow.getFullYear(),1,1))
+    }
+
+    var commentlevel;
+
     if(queryinfo.commentlevel==1){
         commentlevel=[0,1];
     } else if (queryinfo.commentlevel==2){
@@ -1263,7 +1277,17 @@ exports.getCommentDetails=function(queryinfo,callback){
                     }
                     complaintlist.push(complaintinfo);
                 });
-                return callback(null,complaintlist);
+                getStudentCommentDayly(queryinfo.schoolid,begintime,enddate, function(err,data){
+                    if(err){
+                        return callback("统计出错");
+                    }
+                    var returnlist={
+                        commentcount:data,
+                        commentlist:complaintlist
+                    }
+                    return callback(null,returnlist);
+                })
+
             })
         })
 };

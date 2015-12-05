@@ -41,7 +41,7 @@ router.get("/statistics/commentdetails",ensureAuthorizedController.ensureAuthori
     statisitcsController.getCommentDetail);
 // 获取每个教练授课详情
 router.get("/statistics/coachcoursedetails",ensureAuthorizedController.ensureAuthorized,
-    statisitcsController.getCoachCourseDetails)
+    statisitcsController.getCoachCourseDetails);
 
 
 
