@@ -103,11 +103,13 @@ exports.handleComplaint=function(req,res){
 
 };
 
+// 获取评论详情
 exports.getCommentDetail=function(req,res){
     queryinfo = {
         userid: req.query.userid,
         schoolid: req.query.schoolid,
         searchtype:req.query.searchtype,
+        commentlevel:req.query.commentlevel?req.query.commentlevel:3,
         index:req.query.index? req.query.index :1,
         count:req.query.count? req.query.count :10
     };
@@ -126,3 +128,29 @@ exports.getCommentDetail=function(req,res){
         return res.json(new BaseReturnInfo(1, "", data));
     })
 }
+
+//获取教练授课详情
+exports.getCoachCourseDetails=function(req,res){
+    queryinfo = {
+        userid: req.query.userid,
+        schoolid: req.query.schoolid,
+        searchtype:req.query.searchtype,
+        index:req.query.index? req.query.index :1,
+        count:req.query.count? req.query.count :10
+    };
+    if (queryinfo.searchtype===undefined|| queryinfo.userid===undefined
+        ||queryinfo.schoolid===undefined){
+        return res.json(new BaseReturnInfo(0,"参数错误",""));
+    }
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    headMasterOperation.getCoachCourseDetails(queryinfo, function (err, data) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err, {}));
+        }
+        return res.json(new BaseReturnInfo(1, "", data));
+    })
+}
+

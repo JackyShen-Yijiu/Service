@@ -572,7 +572,12 @@ exports.getNearCoach=function(latitude, longitude, radius,callback){
 };
 // 获取学校下面的教练
 exports.getSchoolCoach=function(coachinfo,callback){
-    coachmode.find({"driveschool":new mongodb.ObjectId(coachinfo.schoolid)})
+    //{"name":new RegExp(schoolname)}
+    var searchinfo={"driveschool":new mongodb.ObjectId(coachinfo.schoolid)};
+    if (coachinfo.name&&coachinfo.name!=""){
+        searchinfo.name=new RegExp(coachinfo.name);
+    }
+    coachmode.find(searchinfo)
         .where("is_lock").equals("false")
         .where("is_validation").equals("true")
         .skip((coachinfo.index-1)*10)
@@ -591,7 +596,6 @@ exports.getSchoolCoach=function(coachinfo,callback){
                 coachlist.forEach(function (r, idx) {
                     var returnmodel  = { //new resbasecoachinfomode(r);
                         coachid : r._id,
-
                         name: r.name,
                         driveschoolinfo: r.driveschoolinfo,
                         headportrait:r.headportrait,

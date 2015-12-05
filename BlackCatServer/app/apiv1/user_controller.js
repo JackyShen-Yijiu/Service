@@ -149,7 +149,8 @@ exports.getNearbyCoach=function(req,res){
 exports.getSchoolCoach=function(req,res){
     var  coachinfo={
         schoolid:req.params.schoolid,
-        index:req.params.index
+        index:req.params.index,
+        name:req.query.name
     }
     //sconsole.log(coachinfo);
     if (coachinfo.schoolid===undefined||coachinfo.index === undefined) {

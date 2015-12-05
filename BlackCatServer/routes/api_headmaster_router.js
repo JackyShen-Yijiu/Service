@@ -39,6 +39,10 @@ router.post("/statistics/handlecomplaint",ensureAuthorizedController.ensureAutho
 // 获取评论详情
 router.get("/statistics/commentdetails",ensureAuthorizedController.ensureAuthorized,
     statisitcsController.getCommentDetail);
+// 获取每个教练授课详情
+router.get("/statistics/coachcoursedetails",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getCoachCourseDetails)
+
 
 
 

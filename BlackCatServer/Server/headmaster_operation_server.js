@@ -1001,7 +1001,7 @@ var getMoreDataWeek=function(schoolid,type,callback){
                 datalist:ApplyStudentByWeek,
                 coursedata:CoachCourseByWeek
             };
-            return callback(weekmroedatainfo);
+            return callback(null,weekmroedatainfo);
         });
 
 }
@@ -1149,7 +1149,7 @@ exports.handleComplaint=function(handleinfo,callback){
                 })
 
         }else{
-            return callback("没有查询到校长信息");
+            return callback("没有查询到信息");
         }
     });
 }
@@ -1206,9 +1206,24 @@ exports.getComplaintDetails=function(queryinfo,callback){
 /*
 * 查询评论详情*/
 exports.getCommentDetails=function(queryinfo,callback){
+    var enddate=(new Date()).addDays(1).clearTime();
+    var commentlevel;
+    if(queryinfo.searchtype==appTypeEmun.StatisitcsType.yesterday){
+        enddate=(new Date()).clearTime();
+    }
+    if(queryinfo.commentlevel==1){
+        commentlevel=[0,1];
+    } else if (queryinfo.commentlevel==2){
+        commentlevel=[2,3];
+    }
+    else {
+        commentlevel=[4,5];
+    }
     reservationmodel.find(
         {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
             "is_comment":true
+             ,"comment.starlevel":{$in:commentlevel}
+             ,"comment.commenttime": {  $lte:enddate}
             ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
             {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
         .select("userid coachid is_comment  comment subject  ")
@@ -1221,6 +1236,7 @@ exports.getCommentDetails=function(queryinfo,callback){
             if(err){
                 return call("查询投诉信息出错："+err)
             }
+
             process.nextTick(function(){
                 var complaintlist=[];
                 data.forEach(function(r,index){
@@ -1252,5 +1268,133 @@ exports.getCommentDetails=function(queryinfo,callback){
         })
 };
 
+/* 查询评论详情*/
+exports.getCoachCourseDetails=function(queryinfo,callback){
+
+}
+//==================================教练课时详情==================================================
+//查询教练的课时学
+var getCoachCourseDetial=function (schoolid,beginDate,endDate,callback){
+    cache.get('getCoachCourseDetial:'+schoolid+beginDate, function(err,data) {
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            reservationmodel.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "begintime": { $gte: beginDate, $lt:endDate}
+                    ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+                        {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
+                }}
+                    ,{$group:{_id:"$coachid",coursecount : {$sum : "$coursehour"}}}
+                ,{"$sort":{coursecount:-1}}
+                ],
+                function(err,data){
+                    if(err){
+                        return callback(err);
+                    }
+                    cache.set('getCoachCourseDetial:'+schoolid+beginDate, coachgrouplist,60*1,function(){});
+                    return callback(null,coachgrouplist);
+                }
+            )
+        }
+    });
+}
+var  getCommentCoachCourseDetial=function(schoolid,beginDate,endDate,commentlevel,callback){
+    cache.get('getCommentCoachCourseDetial:'+schoolid+beginDate+commentlevel[0], function(err,data) {
+        if (err) {
+            return callback(err);
+        }
+        if(data){
+            return callback (null,data)
+        } else {
+            reservationmodel.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "is_comment":true
+                    ,"comment.starlevel":{$in:commentlevel}
+                    ,"comment.commenttime": { $gte:beginDate, $lte:endDate}
+                    ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+                        {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
+                }}
+                    ,{$group:{_id:"$coachid",commnetcount : {$sum : 1}}}
+                ],
+                function (err,data) {
+                    if (err){
+                        return callback(err);
+                    }
+                    cache.set('getCommentCoachCourseDetial:'+schoolid+beginDate+commentlevel[0], data,60*1,function(){});
+                    return callback(null,data);
+                })
+
+        }
+    })
+}
+var  getComplaintCoachCourseDetial=function(schoolid,beginDate,endDate,callback){
+    cache.get('getComplaintCoachCourseDetial:'+schoolid+beginDate, function(err,data) {
+        if (err) {
+            return callback(err);
+        }
+        if(data){
+            return callback (null,data)
+        } else {
+            reservationmodel.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "is_complaint":true
+                    ,"complaint.complainttime": { $gte:beginDate, $lte:endDate}
+                    ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+                        {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
+                }}
+                    ,{$group:{_id:"$coachid",complaintcount : {$sum : 1}}}
+                ],
+                function (err,data) {
+                    if (err){
+                        return callback(err);
+                    }
+                    cache.set('getComplaintCoachCourseDetial:'+schoolid+beginDate, data,60*1,function(){});
+                    return callback(null,data);
+                })
+
+        }
+    })
+}
+//查询驾校所有教练
+var getSchoolallCoach=function(shcoolid,callback){
+    cache.get("schoolcoach"+schoolid,function(err,data){
+        if (err) {
+            return callback(err);
+        }
+        if(data){
+            return callback(null,data);
+        }else{
+            coachmodel.find({"driveschool":new mongodb.ObjectId(shcoolid),
+            "is_validation":true})
+                .select("_id name  mobile headportrait  starlevel")
+                .sort({"starlevel":-1})
+                .exec(function(err,coachdata){
+                    if(err){
+                        return callback(err);
+                    }
+                    cache.set("schoolcoach"+schoolid, coachdata,60*20,function(){});
+                    return callback(null,coachdata);
+                })
+        }
+    })
+}
+
+var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
+    var proxy = new eventproxy();
+    proxy.fail(callback);
+
+    proxy.all('coachCount',"coachCourseCount","goodCommentCount","badCommentCount",
+        "generalCommentCount","complaintcount",
+        function(coachCount,coachCourseCount,goodCommentCount,badCommentCount,generalCommentCount,complaintcount
+        ){
+
+            return callback(null, daymroedatainfo);
+
+        });
+}
 
 

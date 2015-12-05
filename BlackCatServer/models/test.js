@@ -23,14 +23,18 @@ var updataschool=function(){
         .select("_id driveschool")
         .exec(function(err,data){
             data.forEach(function(r,index){
-                reservationmodel.update({coachid: r._id} ,
+                coachmode.update({_id: r._id} ,
+                    { $set: { starlevel: 5 }},{safe: false, multi: true},function(err,doc){
+                        console.log(doc);
+                    })
+             /*   reservationmodel.update({coachid: r._id} ,
                     { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
                         console.log(doc);
                     })
                 coursemode.update({coachid: r._id} ,
                     { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
                         console.log(doc);
-                    })
+                    })*/
             })
         })
 }
