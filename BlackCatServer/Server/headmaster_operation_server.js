@@ -1179,7 +1179,8 @@ exports.getComplaintDetails=function(queryinfo,callback){
                         complaintreason: r.complaint.reason,
                         complaintcontent: r.complaint.complaintcontent,
                         complaintDateTime: r.complaint.complainttime,
-                        complainthandlestate: r.complainthandinfo.handlestate?r.complainthandinfo.handlestate:0,
+                        complainthandlestate: (r.complainthandinfo.handlestate&&r.complainthandinfo.handlestate>0) ?
+                            1:0,
                         complainthandlemessage: r.complainthandinfo.handlemessage? r.complainthandinfo.handlemessage:"",
                         subject: r.subject,
                         studentinfo:{
@@ -1410,6 +1411,14 @@ var getSchoolallCoach=function(shcoolid,callback){
 var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
     var proxy = new eventproxy();
     proxy.fail(callback);
+    // 学校教练
+    getSchoolallCoach(shcoolid,proxy.done("coachCount"));
+    ///
+    getCoachCourseDetial(schoolid,beginDate,endDate,proxy.done("coachCourseCount"));
+    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[0,1],proxy.done("coachCourseCount"));
+    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[2,3],proxy.done("generalCommentCount"));
+    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[4,5],proxy.done("badCommentCount"));
+    getComplaintCoachCourseDetial(schoolid,beginDate,endDate,proxy.done("complaintcount"));
 
     proxy.all('coachCount',"coachCourseCount","goodCommentCount","badCommentCount",
         "generalCommentCount","complaintcount",
@@ -1419,6 +1428,7 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
             return callback(null, daymroedatainfo);
 
         });
+
 }
 
 
