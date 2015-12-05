@@ -13,6 +13,7 @@ var coachmodel=mongodb.CoachModel;
 var headmastermodel=mongodb.HeadMasterModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
+var _ = require("underscore");
 require('date-utils');
 
 
@@ -1320,8 +1321,8 @@ var getCoachCourseDetial=function (schoolid,beginDate,endDate,callback){
                     if(err){
                         return callback(err);
                     }
-                    cache.set('getCoachCourseDetial:'+schoolid+beginDate, coachgrouplist,60*1,function(){});
-                    return callback(null,coachgrouplist);
+                    cache.set('getCoachCourseDetial:'+schoolid+beginDate, data,60*1,function(){});
+                    return callback(null,data);
                 }
             )
         }
@@ -1385,7 +1386,7 @@ var  getComplaintCoachCourseDetial=function(schoolid,beginDate,endDate,callback)
     })
 }
 //查询驾校所有教练
-var getSchoolallCoach=function(shcoolid,callback){
+var getSchoolallCoach=function(schoolid,callback){
     cache.get("schoolcoach"+schoolid,function(err,data){
         if (err) {
             return callback(err);
@@ -1393,7 +1394,7 @@ var getSchoolallCoach=function(shcoolid,callback){
         if(data){
             return callback(null,data);
         }else{
-            coachmodel.find({"driveschool":new mongodb.ObjectId(shcoolid),
+            coachmodel.find({"driveschool":new mongodb.ObjectId(schoolid),
             "is_validation":true})
                 .select("_id name  mobile headportrait  starlevel")
                 .sort({"starlevel":-1})
@@ -1412,23 +1413,40 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
     var proxy = new eventproxy();
     proxy.fail(callback);
     // 学校教练
-    getSchoolallCoach(shcoolid,proxy.done("coachCount"));
+    getSchoolallCoach(schoolid,proxy.done("coachCount"));
     ///
     getCoachCourseDetial(schoolid,beginDate,endDate,proxy.done("coachCourseCount"));
-    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[0,1],proxy.done("coachCourseCount"));
+    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[0,1],proxy.done("badCommentCount"));
     getCommentCoachCourseDetial(schoolid,beginDate,endDate,[2,3],proxy.done("generalCommentCount"));
-    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[4,5],proxy.done("badCommentCount"));
+    getCommentCoachCourseDetial(schoolid,beginDate,endDate,[4,5],proxy.done("goodCommentCount"));
     getComplaintCoachCourseDetial(schoolid,beginDate,endDate,proxy.done("complaintcount"));
 
     proxy.all('coachCount',"coachCourseCount","goodCommentCount","badCommentCount",
         "generalCommentCount","complaintcount",
         function(coachCount,coachCourseCount,goodCommentCount,badCommentCount,generalCommentCount,complaintcount
         ){
-
-            return callback(null, daymroedatainfo);
+            coachlist=  _.map(coachCount,function(item,i){
+                var coachinfo={
+                   coachid:item._id,
+                    name:item.name,
+                    headportrait:item.headportrait,
+                    starlevel:item.starlevel
+                }
+               courescount= _.find(coachCourseCount,function(itemcourse){
+                    return itemcourse._id==item._id;
+                });
+                coachinfo.coursecount=courescount?courescount.coursecount:0;
+                return coachinfo;
+            });
+            console.log(coachlist);
+            return callback(null, coachCount);
 
         });
 
 }
 
-
+var  endtime = (new Date("2015-11-10")).addDays(1).clearTime();
+var begintime=(new Date("2015-8-10")).clearTime();
+statisitcsCourseDetails("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
+  //console.log(data)
+})
