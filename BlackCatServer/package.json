@@ -26,6 +26,7 @@
     "jpush-sdk": "*",
     "retry": "~0.8.0",
     "eventproxy": "0.3.4",
-    "ioredis": "1.11.1"
+    "ioredis": "1.11.1",
+    "underscore":"1.8.3"
   }
 }

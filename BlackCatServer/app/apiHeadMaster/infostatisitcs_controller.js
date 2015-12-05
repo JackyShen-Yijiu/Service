@@ -86,7 +86,8 @@ exports.handleComplaint=function(req,res){
         complainthandlemessage:req.body.complainthandlemessage
     }
     if (handleinfo.userid === undefined|| handleinfo.reservationid === undefined
-        ||handleinfo.complainthandlemessage === undefined) {
+      //  ||handleinfo.complainthandlemessage === undefined
+    ) {
         return res.json(
             new BaseReturnInfo(0,"参数错误",{}));
     }
