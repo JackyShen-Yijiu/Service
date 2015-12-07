@@ -73,6 +73,24 @@ exports.headMasterLogin=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+exports.postPersonalSetting=function(req,res){
+    var settinginfo={
+        userid:req.body.userid,
+        complaintreminder:req.body.complaintreminder?req.body.complaintreminder:0,
+        newmessagereminder:req.body.newmessagereminder?req.body.newmessagereminder:0,
+        applyreminder:req.body.applyreminder?req.body.applyreminder:0
+    };
+    if(settinginfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userCenterServer.personalSetting(settinginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.getIndustryNews=function(req,res) {
     var searchinfo = {
         seqindex: req.query.seqindex ? req.query.seqindex : 0,

@@ -17,6 +17,7 @@ router.get('/test',function(req,res){
 
 //校长登录
 router.post('/userinfo/userlogin', userCenterController.headMasterLogin);
+router.post("/userinfo/personalsetting",ensureAuthorizedController.ensureAuthorized,userCenterController.postPersonalSetting);
 // 发布公告
 router.post("/userinfo/publishbulletin",ensureAuthorizedController.ensureAuthorized,userCenterController.postBulletin);
 // 获取历史公告

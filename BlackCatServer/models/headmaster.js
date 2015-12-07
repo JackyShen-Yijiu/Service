@@ -17,7 +17,13 @@ var  HeadMasterSchema = new Schema({
     driveschoollist: [{type: Schema.Types.ObjectId, default:null, ref: 'DriveSchool'}],
     is_lock: { type: Boolean, default: false} , //用户是否锁定
     //是否已经注册mobim
-    is_registermobim:{type:Number,default:0}
+    is_registermobim:{type:Number,default:0},
+    //个人设置
+    usersetting:{
+        complaintreminder:{ type: Boolean, default: true}, //投诉消息提醒
+        newmessagereminder:{ type: Boolean, default: true},  //  新消息提醒
+        applyreminder:{ type: Boolean, default: true}// 报名申请提醒
+    }
 })
 
 HeadMasterSchema.index({mobile: 1}, {unique: true});

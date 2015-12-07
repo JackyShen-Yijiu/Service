@@ -58,6 +58,7 @@ exports.headMasterLogin=function(userinfo,callback){
                             token:newinstace.token,
                             mobile:newinstace.mobile,
                             headportrait:newinstace.headportrait,
+                            usersetting:newinstace.usersetting,
                             driveschool:{
                                 schoolid:driveschooldata._id,
                                 name:driveschooldata.name
@@ -86,6 +87,26 @@ exports.headMasterLogin=function(userinfo,callback){
     })
 
 
+}
+exports.personalSetting=function(settinginfo,callback){
+    headMasterModle.findById(new mongodb.ObjectId(settinginfo.userid),function(err,data){
+        if (err){
+            return  callback("查找用户出错："+err);
+        }
+        if(!data){
+            return callback("没有查询到相关用户信息");
+        }
+        data.usersetting.applyreminder=settinginfo.applyreminder;
+        data.usersetting.newmessagereminder=settinginfo.newmessagereminder;
+        data.usersetting.complaintreminder=settinginfo.complaintreminder;
+        data.save(function(err){
+            if (err){
+                return callback("保存设置失败："+err);
+            }
+            return callback(null,"success");
+        })
+
+    })
 }
 
 //发布公告
