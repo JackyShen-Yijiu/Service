@@ -8,6 +8,7 @@ var commondataServer=require('../../Config/commondata');
 var qiniu=require("../../Common/qiniuUnit");
 var  Apperversion= mongodb.AppVersionModel;
 var sysstemserver=require('../../Server/systemdata_server');
+var qr=require("qr-image");
 /**
  * 测试api 调用方法
  **/
@@ -17,6 +18,18 @@ exports.TestAPI = function (req, res) {
         new BaseReturnInfo(1,"","hello, BlackCat v1d"))
 
 };
+exports.createQrcode =function(req,res){
+    var text = req.query.text;
+    var sizedata=Number(req.query.size?req.query.size:10);
+    try {
+        var img = qr.image(text,{size :sizedata});
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        img.pipe(res);
+    } catch (e) {
+        res.writeHead(414, {'Content-Type': 'text/html'});
+        res.end('NOT Found');
+    }
+}
 /*
  获取app的版本信息
  */

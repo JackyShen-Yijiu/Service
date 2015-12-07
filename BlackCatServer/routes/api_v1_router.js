@@ -14,6 +14,8 @@ var v1 = express.Router();
 //================================================ v1 api=================
 //测试接口
 v1.get('/test',appsystemController.TestAPI);
+//获取二维码
+v1.get('/create_qrcode',appsystemController.createQrcode);
 // app版本信息
 v1.get('/appversion/:type', appsystemController.appVersion);
 
