@@ -1296,7 +1296,24 @@ exports.getCommentDetails=function(queryinfo,callback){
 
 /* 查询评论详情*/
 exports.getCoachCourseDetails=function(queryinfo,callback){
+    var begintime=(new Date()).clearTime();
+    var enddate=(new Date()).addDays(1).clearTime();
+    var datenow=new Date();
+    if(queryinfo.searchtype==appTypeEmun.StatisitcsType.yesterday){
+        begintime=(new Date()).addDays(-1).clearTime();
+        enddate=(new Date()).clearTime();
+    }else
+    if (queryinfo.searchtype==appTypeEmun.StatisitcsType.week){
+        begintime=(new Date()).addDays(-7).clearTime();
+    } else if (queryinfo.searchtype==appTypeEmun.StatisitcsType.month){
 
+        begintime=(new Date(datenow.getFullYear(),datenow.getMonth(),1))
+    }
+    else if(queryinfo.searchtype==appTypeEmun.StatisitcsType.year){
+        begintime=(new Date(datenow.getFullYear(),1,1))
+    }
+
+    return statisitcsCourseDetails(queryinfo.schoolid,begintime,enddate,callback);
 }
 //==================================教练课时详情==================================================
 //查询教练的课时学
@@ -1419,11 +1436,11 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
     getCommentCoachCourseDetial(schoolid,beginDate,endDate,[0,1],proxy.done("badCommentCount"));
     getCommentCoachCourseDetial(schoolid,beginDate,endDate,[2,3],proxy.done("generalCommentCount"));
     getCommentCoachCourseDetial(schoolid,beginDate,endDate,[4,5],proxy.done("goodCommentCount"));
-    getComplaintCoachCourseDetial(schoolid,beginDate,endDate,proxy.done("complaintcount"));
+    getComplaintCoachCourseDetial(schoolid,beginDate,endDate,proxy.done("complaintCount"));
 
     proxy.all('coachCount',"coachCourseCount","goodCommentCount","badCommentCount",
-        "generalCommentCount","complaintcount",
-        function(coachCount,coachCourseCount,goodCommentCount,badCommentCount,generalCommentCount,complaintcount
+        "generalCommentCount","complaintCount",
+        function(coachCount,coachCourseCount,goodCommentCount,badCommentCount,generalCommentCount,complaintCount
         ){
             coachlist=  _.map(coachCount,function(item,i){
                 var coachinfo={
@@ -1435,7 +1452,23 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
                courescount= _.find(coachCourseCount,function(itemcourse){
                     return itemcourse._id==item._id;
                 });
+                goodcommentcount= _.find(goodCommentCount,function(itemcourse){
+                    return itemcourse._id==item._id;
+                });
+                badcommentcount= _.find(badCommentCount,function(itemcourse){
+                    return itemcourse._id==item._id;
+                });
+                generalcommentcount= _.find(generalCommentCount,function(itemcourse){
+                    return itemcourse._id==item._id;
+                });
+                complaintcount= _.find(complaintCount,function(itemcourse){
+                    return itemcourse._id==item._id;
+                });
                 coachinfo.coursecount=courescount?courescount.coursecount:0;
+                coachinfo.goodcommentcount=goodcommentcount?goodcommentcount.commnetcount:0;
+                coachinfo.badcommentcount=badcommentcount?badcommentcount.commnetcount:0;
+                coachinfo.generalcommentcount=generalcommentcount?generalcommentcount.commnetcount:0;
+                coachinfo.complaintcount=complaintcount?complaintcount.complaintcount:0;
                 return coachinfo;
             });
             console.log(coachlist);
@@ -1445,8 +1478,8 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
 
 }
 
-var  endtime = (new Date("2015-11-10")).addDays(1).clearTime();
-var begintime=(new Date("2015-8-10")).clearTime();
-statisitcsCourseDetails("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
-  //console.log(data)
-})
+//var  endtime = (new Date("2015-12-10")).addDays(1).clearTime();
+//var begintime=(new Date("2015-8-10")).clearTime();
+//statisitcsCourseDetails("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
+//  //console.log(data)
+//})
