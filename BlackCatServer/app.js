@@ -6,11 +6,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
-//var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
 var apiRouterHeadMaster=require('./routes/api_headmaster_router.js');
 var apipushtest=require('./routes/api_push_test.js');
+var index=require('./routes/index.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
 //var domain = require('domain');
@@ -42,11 +42,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//test git
-//app.use('/', routes);
-//app.use('/users', users);
-//app.use('/api/v1', v1);
-//app.use('/api/', v1);
 
 
 //引入一个domain的中间件，将每一个请求都包裹在一个独立的domain中
@@ -71,6 +66,8 @@ app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
 app.use('/api/headmaster', apiRouterHeadMaster);
 app.use('/api/pushtest', apipushtest);
+
+app.use('/validation/', index);
 
 
 // catch 404 anid forward to error handler
