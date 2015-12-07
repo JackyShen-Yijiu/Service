@@ -1471,8 +1471,8 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
                 coachinfo.complaintcount=complaintcount?complaintcount.complaintcount:0;
                 return coachinfo;
             });
-            console.log(coachlist);
-            return callback(null, coachCount);
+            //console.log(coachlist);
+            return callback(null, coachlist);
 
         });
 
