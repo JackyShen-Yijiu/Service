@@ -1,0 +1,85 @@
+<header>
+    <i class="logo"></i>
+    <p>一步商城消费信息</p>
+    <% if(type===0) {%>
+    <p class="baomcg"><%= msg%></p>
+    <% } %>
+</header>
+<div class="xfxx">
+    <%
+    if(type===1) {%>
+    <form class="biaodan clearfix" action="">
+
+        <ul>
+            <input type="hidden" id="orderid"  value="<%=data.orderid%>">
+            <input type="hidden" id="productid"  value="<%=data.productid%>">
+            <input type="hidden" id="merchantid"  value="<%=data.merchantid%>"/>
+            <li><span class="span1">商品名称：</span><span class="span2"><%=data.productname%></span></li>
+            <li><span class="span1">商家名称：</span><span class="span2"><%=data.merchantname%></span></li>
+            <li><span class="span1">商家地址：</span><span class="span2"><%=data.merchantaddress%></span></li>
+            <li><span class="span1">消费用户：</span><span class="span2"><%=data.username%></span></li>
+            <li><span class="span1">联系电话：</span><span class="span2"><%=data.usermobile%></span></li>
+            <li><span class="span1">购买日期：</span><span class="span2"><%=data.orerdertime%></span></li>
+            <li><span class="span1">截止日期：</span><span class="span2"><%=data.endtime%></span></li>
+        </ul>
+        <%
+        if(data.alreadaduit===0) {%>
+
+        <!-- 隐藏 -->
+        <div id="infosubmit">
+            <input class="querenma" type="text"id="mobile" value placeholder="输入手机号码"/>
+            <input onclick="sendMerchantcode(this);" type="button" id="mm" class="querenma2" value="获取验证码" /><br><br>
+            <input class="querenma" type="text" id="confirmnum" value placeholder="商家确认码输入" required/>
+            <input type="button"value="确认消费"id="confirmsubmit"  class="button">
+        </div>
+        <% }else {%>
+        <br/>
+        <div class="yiqueren"style="display: block">已消费</div>
+        <%}%>
+        <!-- 弹框 -->
+        <div class="tankuang" style="display:none;">
+            <i class="weizhuce"></i>
+            <p>信息确认失败</p>
+        </div>
+        <div class="yiqueren">已确认</div>
+
+    </form>
+    <%}%>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#confirmsubmit").click(function(){
+            var orderid= $("#orderid").val();
+            var merchantid= $("#merchantid").val();
+            var confirmnum= $("#confirmnum").val();
+            var mobile= $("#mobile").val();
+            var index = layer.load();
+            $.post("/validation/doordervalidation",
+                    {orderid:orderid,
+                        merchantid:merchantid,
+                        confirmnum:confirmnum,
+                        mobile:mobile
+                    },
+                    function(data,status){
+                        if(status=="success"){
+                            layer.close(index);
+                            if(data.type==1){
+                                $("#infosubmit").css('display','none');
+                                $('.yiqueren').css('display','block');
+                            }
+                            else{
+                                layer.msg(data.msg,{
+                                    icon: 2,
+                                    time: 2000
+                                });
+                            }
+                        }else{
+                            layer.msg("审核失败",{
+                                icon: 2,
+                                time: 2000
+                            });
+                        }
+                    });
+        });
+    })
+</script>

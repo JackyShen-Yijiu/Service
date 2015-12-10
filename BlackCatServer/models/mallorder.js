@@ -1,7 +1,7 @@
 /**
  * Created by li on 2015/11/9.
  */
-// ÉÌ³Ç¶©µ¥±í
+// ï¿½Ì³Ç¶ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 var mongoose = require('mongoose');
@@ -9,15 +9,17 @@ var seqlist=require("./idautoinc");
 var Schema = mongoose.Schema;
 
 var  MallOrderSchema = new Schema({
-    userid:String, // ÓÃ»§id
-    createtime:{type:Date,default:Date.now()},//  ¶©µ¥Ê±¼ä
+    userid:String, // ï¿½Ã»ï¿½id
+    createtime:{type:Date,default:Date.now()},//  ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
     finishtime:Date,
-    usertype:Number, // 1 Ñ§Ô± 2 ½ÌÁ·
-    productid:{type: Schema.Types.ObjectId, ref: 'mallproduct'}, //·¢·ÅÊıÁ¿
-    orderstate:{type:Number,default:1}, // ¶©µ¥×´Ì¬ 1 ÉêÇëÖĞ£¬
-    receivername:String, // ÊÕ¼şÈËĞÕÃû
-    mobile:String,  //ÊÖ»úºÅ
-    address:String  //ÊÕ¼şµØÖ·
+    usertype:Number, // 1 Ñ§Ô± 2 ï¿½ï¿½ï¿½ï¿½
+    productid:{type: Schema.Types.ObjectId, ref: 'mallproduct'}, //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    orderstate:{type:Number,default:1}, // ï¿½ï¿½ï¿½ï¿½×´Ì¬ 1 ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½
+    receivername:String, // ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    mobile:String,  //ï¿½Ö»ï¿½ï¿½ï¿½
+    address:String,  //ï¿½Õ¼ï¿½ï¿½ï¿½Ö·
+    orderscanaduiturl:String, // è®¢å•æ‰«ç ç¡®è®¤url
+    is_confirmbyscan:{ type: Boolean, default: false}
 });
 
 MallOrderSchema.plugin(seqlist.plugin, {

@@ -99,6 +99,32 @@ exports.userBuyProduct=function(req,res){
     })
 
 }
+// 获取我的订单历史
+exports.getMyorderList=function(req,res){
+    var searchinfo={
+        userid:req.query.userid,
+        index:req.query.index?req.query.index:1,
+        count:req.query.count?req.query.count:10
+    }
+    if (searchinfo.userid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    }
+    if(searchinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getMyorderList(searchinfo,function(err,data){
+        if(err){
+            return res.json(new  BaseReturnInfo(0,err,{}));
+        }
+        else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    })
+
+}
+// 用户注册
 exports.postSignUp=function(req,res){
    // console.log(req.body);
     var usertype=req.body.usertype;

@@ -230,6 +230,43 @@ exports.userBuyProduct=function(info,callback){
             })
     }
 }
+
+// 获取用户购买商品列表
+exports.getMyorderList=function(searchinfo,callback){
+    mallOrderModel.find({userid:searchinfo.userid})
+        .populate("productid","_id productname  productprice productimg")
+        .skip((searchinfo.index-1)*10)
+        .limit(searchinfo.count)
+        .sort({"createtime":-1})
+        .exec(function(err ,orderdata){
+            if(err){
+                return  callback("查询订单出错："+err);
+            }
+            process.nextTick(function(){
+                var orderlist=[];
+                orderdata.forEach(function(r,index){
+                    var orderone={
+                        orderid: r._id,
+                        createtime: r.createtime,
+                        finishtime: r.finishtime,
+                        orderstate: r.orderstate,
+                        receivername: r.receivername,
+                        mobile: r.mobile,
+                        address: r.address,
+                        orderscanaduiturl: r.orderscanaduiturl,
+                        is_confirmbyscan: r.is_confirmbyscan,
+                        productid: r.productid._id,
+                        productname:r.productid.productname,
+                        productprice:r.productid.productprice,
+                        productimg:r.productid.productimg
+                    };
+                    orderlist.push(orderone);
+                })
+                return callback(null,orderlist);
+            })
+        });
+
+}
 // 用户登录
 exports.userlogin= function(usertype,userinfo,callback){
     if (usertype==userTypeEmun.User) {
@@ -1642,7 +1679,6 @@ var  getUserCount=function(callback){
                    return callback(errsave);
                }
                 return callback(null,savedata);
-
             });
         }
         else{
@@ -1651,7 +1687,7 @@ var  getUserCount=function(callback){
     });
 }
 // ��֤�ֻ���֤��
-var checkSmsCode=function(mobile,code,callback){
+var  checkSmsCode=function(mobile,code,callback){
     smsVerifyCodeModel.findOne({mobile:mobile,smsCode:code, verified: false},function(err,instace){
         if(err)
         {

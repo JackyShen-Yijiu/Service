@@ -48,7 +48,10 @@ var DriveSchoolSchema=new Schema({
     businesslicensenumber :{type:String,default:""}, // 营业执照
     organizationcode :{type:String,default:""}, // 组织机构代码
     hotindex:Number,//关注度
-    applynotes:String  // 报名须知
+    applynotes:String,  // 报名须知
+    confirmmobilelist:[String],// 驾校能进行驾校报名验证 的手机号列表
+    // 确认学生验证码
+    confirmnum:String
 });
 
 /**

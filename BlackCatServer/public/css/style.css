@@ -1,0 +1,30 @@
+body{width:100%;height:100%;background:url(../images/bj.jpg) no-repeat;background-size:cover ; }
+*{box-sizing:border-box;}
+span{display:block;}
+header{position:relative;}
+header a{width:50px;height:50px;margin:0 auto;display:block;text-align: center}
+header .logo{width:22px;height:22px;display:block;background-size:100% 100%;position:absolute;top:10px;left:10px;}
+header p{width:77%;float:left;text-align:center;margin-top:40px;color:#fff; margin-left:15px;}
+.xfxx{margin-top:40px;float:left; }
+.baomcg{width:40%;color:#ffffff;;text-align:center;background:#fff;line-height:40px;margin-top: 10px;border-radius:3px; background-color: #00c729;margin-left:20%;}
+.biaodan{width:85%;padding:0px 10px;margin:0 auto;}
+.biaodan ul{width:100%;margin-top:10px;}
+.biaodan ul li{width:100%;line-height:40px;float:left;color:#fff;}
+.biaodan ul li .span1{float:left;width:90px;}
+.biaodan ul li .span2{width:100%;padding-left:90px;}
+.querenma{width:120px;height:30px;text-align:center;}
+.button{width:100%;height:40px;display:block;margin:0px auto;margin-top:20px;background:#ff3c00;font-size:18px;color:#fff;line-height:40px;text-align:center;border-radius:5px;}
+.wanc{width:100px;border:1px solid #ccc;border-radius:100px;line-height:100px;text-align:center;margin:0px auto;clear:both;margin-top:20px;}
+/* 隐藏 */
+.yincang{display:block;clear:both;}
+/* 已确认 */
+.yiqueren{width:68px;height:68px;background:#00c729;border-radius:100%;font-size:18px;color:#fff;line-height:68px;text-align:center;margin:0px auto;clear:both;display:none;}
+.tankuang{width:75%;margin:0 auto;background:#fff;height:180px;position:absolute;top:270px;opacity:0.9;border:1px solid #fff;border-radius:20px;}
+.tankuang i{width:50px;height:50px;display:block;background:url(../images/kulian.png) no-repeat;background-size:50px 50px;position:absolute;top:20px;left:40%;}
+.tankuang P{text-align:center;margin-top:100px;color:#CC051A;font-size:16px;font-weight:bold;}
+
+
+
+
+
+

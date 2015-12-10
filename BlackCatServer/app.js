@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+/*模板引擎*/
+var partials = require('express-partials');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
@@ -32,6 +34,7 @@ app.use(function(req, res, next) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(partials());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -67,7 +70,7 @@ app.use('/api/v2', apiRouterV2);
 app.use('/api/headmaster', apiRouterHeadMaster);
 app.use('/api/pushtest', apipushtest);
 
-app.use('/validation/', index);
+app.use('/validation', index);
 
 
 // catch 404 anid forward to error handler
@@ -99,7 +102,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  console.log(err.status)
+  console.log(err.status);
   log.writeLog(req,err,logType.err);
   res.json(new BaseReturnInfo(0,"服务器内部错误",""));
   /*res.render('error', {
