@@ -28,7 +28,7 @@
     "eventproxy": "0.3.4",
     "ioredis": "1.11.1",
     "underscore":"1.8.3",
-    "qr-imag":"3.1.0",
+    "qr-image":"3.1.0",
     "express-partials": "*"
   }
 }
