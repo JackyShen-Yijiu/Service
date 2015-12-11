@@ -261,7 +261,7 @@ exports.getMyorderList=function(searchinfo,callback){
                         productimg:r.productid.productimg
                     };
                     orderlist.push(orderone);
-                })
+                });
                 return callback(null,orderlist);
             })
         });
