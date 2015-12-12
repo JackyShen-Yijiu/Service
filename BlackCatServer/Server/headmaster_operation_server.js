@@ -445,7 +445,7 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         })
 
                     }
-                    console.log(applyStudentList);
+                    //console.log(applyStudentList);
                     cache.set('ApplyStudentCountTimely:'+schoolid+beginDate, applyStudentList,60*1,function(){});
                     return callback(null,applyStudentList);
                 }
@@ -478,7 +478,7 @@ var getApplyStudentCountDayly=function(schoolid,beginDate,endDate,callback){
                     if(data &&　data.length>0){
                         applyStudentcount=data[0].applystudentcount;
                     }
-                    cache.set('ApplyStudentCountTimely:'+schoolid+beginDate, applyStudentcount,60*1,function(){});
+                    cache.set('getApplyStudentCountDayly:'+schoolid+beginDate, applyStudentcount,60*1,function(){});
                     return callback(null,applyStudentcount);
                 }
             )
