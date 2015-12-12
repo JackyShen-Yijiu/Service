@@ -445,6 +445,7 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         })
 
                     }
+                    console.log(applyStudentList);
                     cache.set('ApplyStudentCountTimely:'+schoolid+beginDate, applyStudentList,60*1,function(){});
                     return callback(null,applyStudentList);
                 }
