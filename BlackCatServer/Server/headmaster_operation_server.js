@@ -251,6 +251,7 @@ var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callbac
                         })
 
                     }
+                    ReservationCourseCountList= _.sortBy(ReservationCourseCountList,'hour');
                     cache.set('getReservationCourseCountTimely:'+schoolid+beginDate, ReservationCourseCountList,60*1,function(){});
                     return callback(null,ReservationCourseCountList);
                 }
@@ -294,6 +295,7 @@ var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback)
                             commentlist.push(listone);
                         })
                     }
+                    commentlist= _.sortBy(commentlist,'hour');
                     cache.set('getCommentTimely:'+schoolid+beginDate+commentlevel[0], commentlist,60*1,function(){});
                     return callback(null,commentlist);
                 })
@@ -445,7 +447,8 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         })
 
                     }
-                    //console.log(applyStudentList);
+                    //
+                    applyStudentList= _.sortBy(applyStudentList,'hour');
                     cache.set('ApplyStudentCountTimely:'+schoolid+beginDate, applyStudentList,60*1,function(){});
                     return callback(null,applyStudentList);
                 }
@@ -528,6 +531,7 @@ var  getStudentComplaintTimely=function(schoolid,beginDate,endDate,callback){
                             complaintlist.push(listone);
                         })
                     }
+                    complaintlist= _.sortBy(complaintlist,'hour');
                     cache.set('getStudentComplaintTimely:'+schoolid+beginDate, complaintlist,60*1,function(){});
                     return callback(null,complaintlist);
                 })
