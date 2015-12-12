@@ -1027,8 +1027,8 @@ var  getMoreDataToday=function(schoolid,type,callback){
     getGroupCoachCourseDay(schoolid,begintime,endtime,proxy.done("GroupCoachCourseDay"));
     // 经济好评、中差评、
     getCommentTimely(schoolid,begintime,endtime,[4,5],proxy.done("GoodCommentTimely"));
-    getCommentTimely(schoolid,begintime,endtime,[2,3],proxy.done("BadCommentTimely"));
-    getCommentTimely(schoolid,begintime,endtime,[0,1],proxy.done("GeneralCommentTimely"));
+    getCommentTimely(schoolid,begintime,endtime,[0,1],proxy.done("BadCommentTimely"));
+    getCommentTimely(schoolid,begintime,endtime,[2,3],proxy.done("GeneralCommentTimely"));
     // 获取投诉数量
     getStudentComplaintTimely(schoolid,begintime,endtime,proxy.done("StudentComplaintTimely"));
     proxy.all('ApplyStudentCountTimely',"ReservationCourseCountTimely","GroupCoachCourseDay","GoodCommentTimely"
