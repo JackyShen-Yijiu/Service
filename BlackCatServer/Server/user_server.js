@@ -13,6 +13,7 @@ var resbasecoachinfomode=require("../custommodel/returncoachinfo").resBaseCoachI
 var appTypeEmun=require("../custommodel/emunapptype");
 var regisermobIm=require('../Common/mobIm');
 var appWorkTimes=require("../Config/commondata").worktimes;
+var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
@@ -24,7 +25,7 @@ var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
 var mallProductModel=mongodb.MallProdcutsModel
 var mallOrderModel=mongodb.MallOrderModel;
-
+require('date-utils');
 
 var timeout = 60 * 5;
 
@@ -145,7 +146,7 @@ payuserIntegral=function(payinfo,callback){
 userpayprocess=function(userdata,info,callback){
     mallProductModel.findById(new mongodb.ObjectId(info.productid),function(err,productdata){
         if (err){
-            return callback("查找商品出错:"+err)
+            return  ("查找商品出错:"+err)
         }
         if(!productdata){
             if(!userdata){
@@ -177,6 +178,9 @@ userpayprocess=function(userdata,info,callback){
                 if(err){
                     return callback("保存订单出错:"+err);
                 }
+                mallOrderModel.update({_id:new mongodb.ObjectId(data._id)},
+                    { $set: { "orderscanaduiturl":auditurl.producturl+data._id }},function(err){});
+                userdata.scanauditurl=auditurl.applyurl+userdata._id;
                 mallProductModel.update({_id:new mongodb.ObjectId(productdata._id)},{$inc: { buycount: 1 }},function(err){});
                 return callback(null,"suncess");
             })
@@ -231,39 +235,91 @@ exports.userBuyProduct=function(info,callback){
     }
 }
 
+// 获取用户信息
+var getUserinfo=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("_id  name mobile applystate applyinfo scanauditurl ")
+        .populate("applyschool"," name logoimg  phone address")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错");
+            }
+            if (!data){
+                return callback(null,{});
+            }
+            console.log(data.applyschool);
+            var userinfo={
+                userid:data._id,
+                name: data.name,
+                mobile:data.mobile,
+                applytime:(data.applyinfo.applytime).toFormat("YYYY-MM-DD"),
+                endtime:(data.applyinfo.applytime).addMonths(1).toFormat("YYYY-MM-DD"),
+                 applystate:data.applystate,
+                is_confirmbyscan:data.is_confirmbyscan,
+                scanauditurl:data.scanauditurl,
+                schoolid:data.applyschool? data.applyschool._id:"",
+                schoolname:data.applyschool?data.applyschool.name:"",
+                schoollogoimg:data.applyschool?data.applyschool.logoimg:"",
+                schoolphone:data.applyschool?data.applyschool.phone:"",
+                schooladdress:data.applyschool?data.applyschool.address:""
+            };
+            return callback(null,userinfo);
+        })
+}
 // 获取用户购买商品列表
 exports.getMyorderList=function(searchinfo,callback){
     mallOrderModel.find({userid:searchinfo.userid})
-        .populate("productid","_id productname  productprice productimg")
+        .populate("productid","_id productname  productprice productimg  merchantid")
+       // .populate("productid.merchantid","name  mobile address")
         .skip((searchinfo.index-1)*10)
         .limit(searchinfo.count)
         .sort({"createtime":-1})
         .exec(function(err ,orderdata){
             if(err){
                 return  callback("查询订单出错："+err);
-            }
-            process.nextTick(function(){
-                var orderlist=[];
-                orderdata.forEach(function(r,index){
-                    var orderone={
-                        orderid: r._id,
-                        createtime: r.createtime,
-                        finishtime: r.finishtime,
-                        orderstate: r.orderstate,
-                        receivername: r.receivername,
-                        mobile: r.mobile,
-                        address: r.address,
-                        orderscanaduiturl: r.orderscanaduiturl,
-                        is_confirmbyscan: r.is_confirmbyscan,
-                        productid: r.productid._id,
-                        productname:r.productid.productname,
-                        productprice:r.productid.productprice,
-                        productimg:r.productid.productimg
-                    };
-                    orderlist.push(orderone);
-                });
-                return callback(null,orderlist);
-            })
+            };
+            var opts = [{
+                path   : 'productid.merchantid',
+                select : 'name  mobile address',
+                model  : 'merchant'
+            }];
+
+            mallOrderModel.populate(orderdata, opts, function(err, populatedDocs) {
+               if(err){
+                   return  callback("查询订单出错："+err);
+               };
+                getUserinfo(searchinfo.userid,function(err,userdata){
+                process.nextTick(function(){
+                    var orderlist=[];
+                    populatedDocs.forEach(function(r,index){
+                        var orderone={
+                            orderid: r._id,
+                            createtime: (r.createtime).toFormat("YYYY-MM-DD"),
+                            endtime: (r.createtime).addMonths(1).toFormat("YYYY-MM-DD"),
+                            finishtime: r.finishtime,
+                            orderstate: r.orderstate,
+                            receivername: r.receivername,
+                            mobile: r.mobile,
+                            address: r.address,
+                            orderscanaduiturl: r.orderscanaduiturl,
+                            is_confirmbyscan: r.is_confirmbyscan,
+                            productid: r.productid._id,
+                            productname:r.productid.productname,
+                            productprice:r.productid.productprice,
+                            productimg:r.productid.productimg,
+                            merchantid:r.productid.merchantid._id,
+                            merchantname:r.productid.merchantid.name,
+                            merchantmobile:r.productid.merchantid.mobile,
+                            merchantaddress:r.productid.merchantid.address
+                        };
+                        orderlist.push(orderone);
+                    });
+                    return callback(null,{ordrelist:orderlist,userdata:userdata});
+                })
+                })
+            });
+
+
         });
 
 }
@@ -1364,7 +1420,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applystate=appTypeEmun.ApplyState.Applying;
                   userdata.applyinfo.applytime=new Date();
                   userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
-                  console.log(userdata);
+                      userdata.scanauditurl=auditurl.applyurl+userdata._id;
+                  //console.log(userdata);
                   // 保存 申请信息
                   userdata.save(function(err,newuserdata){
                       if(err){

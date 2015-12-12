@@ -4,33 +4,26 @@
 // 系统 配置项
 // 极光推送
 
+
+
+// 极光推送正式地址
+
 exports.jpushCofig={
     Student:{
-        AppKey:"a9d3780a093c23df7e3e2402",
-        MasterSecret:"5494f71312c9ffe366f7bb9f"
+        AppKey:"d9f9dc8db6bc3dd2c913ced0",
+        MasterSecret:"debb46435e738c43c2a200ef"
     },
     Coach:{
-        AppKey:"02d3ec8bfbcdd85634f0c24d",
-        MasterSecret:"acf73174a9fd1a8ba149882f"
+        AppKey:"099332657d28a65d5308af2a",
+        MasterSecret:"a37f1a213d8972963f718ea8"
+    },
+    HeadMaster:{
+        AppKey:"ad6f3ad01c2fad2ead8f9b08",
+        MasterSecret:"d1e2f9048d82ddb5383f3ff2"
     },
     is_push:true,  // 推送消息
     is_debug:false   //是否是测试状态
 }
-
-// 极光推送正式地址
-
-//exports.jpushCofig={
-//    Student:{
-//        AppKey:"d9f9dc8db6bc3dd2c913ced0",
-//        MasterSecret:"debb46435e738c43c2a200ef"
-//    },
-//    Coach:{
-//        AppKey:"099332657d28a65d5308af2a",
-//        MasterSecret:"a37f1a213d8972963f718ea8"
-//    },
-//    is_push:true,  // 推送消息
-//    is_debug:false   //是否是测试状态
-//}
 
 // 测试环信im配置地址
 
@@ -62,4 +55,9 @@ exports.redisConfig={
 exports.weatherConfig={
     url:"http://apis.baidu.com/showapi_open_bus/weather_showapi/address?area=",
     key:"d059452d2ba517351f77c848a51428c6"
+}
+
+exports.validationurl={
+    applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
+    producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid="
 }

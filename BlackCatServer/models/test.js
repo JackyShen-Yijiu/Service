@@ -11,20 +11,32 @@ var schoolclassModel=mongodb.ClassTypeModel;
 var VipServerModel=mongodb.VipServerModel;
 var SequenceModel=mongodb.SequenceModel;
 var CourseWareModel=mongodb.CourseWareModel;
+var order=mongodb.MallOrderModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var mallProductModel=mongodb.MallProdcutsModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
+var auditurl=require("../Config/sysconfig").validationurl;
 require('date-utils');
 var async = require('async');
 
-var test= new industryNewsModel();
-test.title="邢台14岁“驾驶员”超载驾车为“练手",
-test.logimg="http://www.bjjatd.com/images/img05.jpg",
-test.description="河北新闻网邢台电(燕赵都市报记者张会武 通讯员王宏屹、崔信行)12月1日上午，" +
-    "一少年无证驾驶两轮摩托车超员载人，并在受到执勤民警查纠时强行闯红灯逃离";
-test.contenturl="http://www.bjjatd.com/content.aspx?cateid=12&articleid=20";
-test.save();
+//var test= new industryNewsModel();
+//test.title="邢台14岁“驾驶员”超载驾车为“练手",
+//test.logimg="http://www.bjjatd.com/images/img05.jpg",
+//test.description="河北新闻网邢台电(燕赵都市报记者张会武 通讯员王宏屹、崔信行)12月1日上午，" +
+//    "一少年无证驾驶两轮摩托车超员载人，并在受到执勤民警查纠时强行闯红灯逃离";
+//test.contenturl="http://www.bjjatd.com/content.aspx?cateid=12&articleid=20";
+//test.save();
 
+updateuserinfo=function(){
+    order.find({},function(err,data){
+        data.forEach(function(r,index){
+            order.update({_id: r._id},
+            { $set: { "orderscanaduiturl":auditurl.producturl+ r._id}},
+                function(err,data){})
+        });
+    })
+}
+//updateuserinfo();
 var updataschool=function(){
     coachmode.find()
         .select("_id driveschool")
@@ -34,15 +46,15 @@ var updataschool=function(){
                 //    { $set: { starlevel: 5 }},{safe: false, multi: true},function(err,doc){
                 //        console.log(doc);
                 //    })
-                reservationmodel.update({coachid: r._id} ,
-                    { $set: { "comment.commentcontent": "教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好" +
-                    "" }},{safe: false, multi: true},function(err,doc){
-                        console.log(doc);
-                    })
-                //coursemode.update({coachid: r._id} ,
-                //    { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+                //reservationmodel.update({coachid: r._id} ,
+                //    { $set: { "comment.commentcontent": "教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好" +
+                //    "" }},{safe: false, multi: true},function(err,doc){
                 //        console.log(doc);
                 //    })
+                coursemode.update({coachid: r._id} ,
+                    { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+                        console.log(doc);
+                    })
             })
         })
 }
