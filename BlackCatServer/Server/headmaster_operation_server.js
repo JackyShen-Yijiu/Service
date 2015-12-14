@@ -1250,14 +1250,14 @@ exports.getComplaintDetails=function(queryinfo,callback){
                         subject: r.subject,
                         studentinfo:{
                             userid: r.userid._id,
-                            moblie: r.userid.moblie,
+                            mobile: r.userid.mobile,
                             name:r.userid.name,
                             headportrait:r.userid.headportrait,
                             classtype:r.userid.applyclasstypeinfo
                         },
                         coachinfo:{
                             coachid: r.coachid._id,
-                            moblie: r.coachid.moblie,
+                            mobile: r.coachid.mobile,
                             name:r.coachid.name,
                             headportrait:r.coachid.headportrait,
 
