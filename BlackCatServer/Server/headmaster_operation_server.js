@@ -262,13 +262,11 @@ var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callbac
                         endint=21;
                     }
                     for( i=8 ;i<endint;i++){
-                        for(j=0;j<ReservationCourseCountList.length;j++){
-                            if (Number(ReservationCourseCountList[j]).hour==i){
-                                break;
-                            }
+                        if(!getlistcontant(ReservationCourseCountList,i)){
+                            ReservationCourseCountList.push({ hour: i,
+                                studentcount:0})
                         }
-                        ReservationCourseCountList.push({ hour: i,
-                            studentcount:0})
+
                     }
                     ReservationCourseCountList= _.sortBy(ReservationCourseCountList,'hour');
                     cache.set('getReservationCourseCountTimely:'+schoolid+beginDate, ReservationCourseCountList,60*1,function(){});
@@ -319,14 +317,11 @@ var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback)
                         endint=21;
                     }
                     for( i=8 ;i<endint;i++){
-                        for(j=0;j<commentlist.length;j++){
-                            if (Number(commentlist[j].hour)==i){
-                                break;
-                            }
-
+                        if(!getlistcontant(commentlist,i)){
+                            commentlist.push({ hour: i,
+                                commnetcount:0});
                         }
-                        commentlist.push({ hour: i,
-                            commnetcount:0});
+
                     }
                     commentlist= _.sortBy(commentlist,'hour');
                     cache.set('getCommentTimely:'+schoolid+beginDate+commentlevel[0], commentlist,60*1,function(){});
@@ -485,13 +480,11 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         endint=21;
                     }
                     for( i=8 ;i<endint;i++){
-                        for(j=0;j<applyStudentList.length;j++){
-                            if (Number(applyStudentList[j]).hour==i){
-                                break;
-                            }
+                        if(!getlistcontant(applyStudentList,i)){
+                            applyStudentList.push({ hour: i,
+                                applystudentcount:0})
                         }
-                        applyStudentList.push({ hour: i,
-                            applystudentcount:0})
+
                     }
                     applyStudentList= _.sortBy(applyStudentList,'hour');
                     cache.set('ApplyStudentCountTimely:'+schoolid+beginDate, applyStudentList,60*1,function(){});
@@ -501,7 +494,15 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
         }
     });
 }
-
+var getlistcontant=function(list,i){
+    for(j=0;j<list.length;j++){
+        if (Number(list[j]).hour==i){
+            return true;
+            break;
+        }
+    }
+    return false;
+}
 // 统计驾校今天总的申请人数
 var getApplyStudentCountDayly=function(schoolid,beginDate,endDate,callback){
 
@@ -581,13 +582,11 @@ var  getStudentComplaintTimely=function(schoolid,beginDate,endDate,callback){
                         endint=21;
                     }
                     for( i=8 ;i<endint;i++){
-                        for(j=0;j<complaintlist.length;j++){
-                            if (Number(complaintlist[j].hour)==i){
-                                break;
-                            }
+                        if(!getlistcontant(complaintlist,i)){
+                            complaintlist.push({ hour: i,
+                                complaintcount:0});
                         }
-                        complaintlist.push({ hour: i,
-                            complaintcount:0});
+
                     }
                     complaintlist= _.sortBy(complaintlist,'hour');
                     cache.set('getStudentComplaintTimely:'+schoolid+beginDate, complaintlist,60*1,function(){});
