@@ -496,7 +496,7 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
 }
 var getlistcontant=function(list,i){
     for(j=0;j<list.length;j++){
-        if (Number(list[j]).hour==i){
+        if (Number(list[j].hour)==i){
             return true;
             break;
         }
