@@ -251,7 +251,7 @@ var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callbac
                         })
 
                     }
-                    for( i=8 ;i<21;i++){
+                    for( i=8 ;i<new Date().getHours();i++){
                         for(j=0;j<ReservationCourseCountList.length;j++){
                             if (ReservationCourseCountList[j].hour==i){
                                 break;
@@ -304,7 +304,7 @@ var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback)
                             commentlist.push(listone);
                         })
                     }
-                    for( i=8 ;i<21;i++){
+                    for( i=8 ;i<new Date().getHours();i++){
                         for(j=0;j<commentlist.length;j++){
                             if (commentlist[j].hour==i){
                                 break;
@@ -466,7 +466,7 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         })
 
                     }
-                    for( i=8 ;i<21;i++){
+                    for( i=8 ;i<new Date().getHours();i++){
                         for(j=0;j<applyStudentList.length;j++){
                             if (applyStudentList[j].hour==i){
                                 break;
@@ -558,7 +558,7 @@ var  getStudentComplaintTimely=function(schoolid,beginDate,endDate,callback){
                             complaintlist.push(listone);
                         })
                     }
-                    for( i=8 ;i<21;i++){
+                    for( i=8 ;i<new Date().getHours();i++){
                         for(j=0;j<complaintlist.length;j++){
                             if (complaintlist[j].hour==i){
                                 break;
