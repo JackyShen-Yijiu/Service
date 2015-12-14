@@ -90,9 +90,13 @@ var getMoreApplyStudentByWeek=function(schoolid,beginDate,endDate,callback){
             ],function(err,schooldata){
                     if(err){
                         return callback(err);
-                    }
-                    cache.set("getMoreApplyStudentByWeek"+schoolid+beginDate, schooldata,60*1,function(){});
-                return callback(null,schooldata);
+                    };
+                    schooldata.forEach(function(r,index){
+                        r.day= (r.day-1)==0?7:(r.day-1);
+                    })
+                    schooldataList= _.sortBy(schooldata,'summarytime');
+                    cache.set("getMoreApplyStudentByWeek"+schoolid+beginDate, schooldataList,60*1,function(){});
+                return callback(null,schooldataList);
             }
             )
         }
