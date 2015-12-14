@@ -15,6 +15,7 @@ var order=mongodb.MallOrderModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var mallProductModel=mongodb.MallProdcutsModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
+var shcoolsummary =mongodb.SchoolDaySummaryModel;
 var auditurl=require("../Config/sysconfig").validationurl;
 require('date-utils');
 var async = require('async');
@@ -38,25 +39,38 @@ updateuserinfo=function(){
 }
 //updateuserinfo();
 var updataschool=function(){
-    coachmode.find()
-        .select("_id driveschool")
+    shcoolsummary.find()
         .exec(function(err,data){
             data.forEach(function(r,index){
-                //coachmode.update({_id: r._id} ,
-                //    { $set: { starlevel: 5 }},{safe: false, multi: true},function(err,doc){
-                //        console.log(doc);
-                //    })
-                //reservationmodel.update({coachid: r._id} ,
-                //    { $set: { "comment.commentcontent": "教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好" +
-                //    "" }},{safe: false, multi: true},function(err,doc){
-                //        console.log(doc);
-                //    })
-                coursemode.update({coachid: r._id} ,
-                    { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
-                        console.log(doc);
-                    })
-            })
-        })
+            //shcoolsummary.update({_id: data._id} ,
+            //               { $set: { goodcommentcount: 0, badcommentcount:0}},{safe: false, multi: true},function(err,doc){
+            //                    console.log(doc);
+            //                })
+                r.goodcommentcount=0;
+                r.badcommentcount=0;
+
+                r.save();
+                    })});
+
+    //coachmode.find()
+    //    .select("_id driveschool")
+    //    .exec(function(err,data){
+    //        data.forEach(function(r,index){
+    //            //coachmode.update({_id: r._id} ,
+    //            //    { $set: { starlevel: 5 }},{safe: false, multi: true},function(err,doc){
+    //            //        console.log(doc);
+    //            //    })
+    //            //reservationmodel.update({coachid: r._id} ,
+    //            //    { $set: { "comment.commentcontent": "教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好，教练不错，教的好" +
+    //            //    "" }},{safe: false, multi: true},function(err,doc){
+    //            //        console.log(doc);
+    //            //    })
+    //            coursemode.update({coachid: r._id} ,
+    //                { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+    //                    console.log(doc);
+    //                })
+    //        })
+    //    })
 }
 updataschool();
 addcourseware=function(){

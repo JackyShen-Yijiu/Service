@@ -257,9 +257,13 @@ var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callbac
                         })
 
                     }
-                    for( i=8 ;i<new Date().getHours();i++){
+                    var  endint=new Date().getHours();
+                    if(new Date().getDay()!=beginDate.getDate() ||(endint>21)){
+                        endint=21;
+                    }
+                    for( i=8 ;i<endint;i++){
                         for(j=0;j<ReservationCourseCountList.length;j++){
-                            if (ReservationCourseCountList[j].hour==i){
+                            if (Number(ReservationCourseCountList[j]).hour==i){
                                 break;
                             }
                         }
@@ -310,9 +314,13 @@ var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback)
                             commentlist.push(listone);
                         })
                     }
-                    for( i=8 ;i<new Date().getHours();i++){
+                    var  endint=new Date().getHours();
+                    if(new Date().getDay()!=beginDate.getDate() ||(endint>21)){
+                        endint=21;
+                    }
+                    for( i=8 ;i<endint;i++){
                         for(j=0;j<commentlist.length;j++){
-                            if (commentlist[j].hour==i){
+                            if (Number(commentlist[j].hour)==i){
                                 break;
                             }
 
@@ -472,9 +480,13 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         })
 
                     }
-                    for( i=8 ;i<new Date().getHours();i++){
+                    var  endint=new Date().getHours();
+                    if(new Date().getDay()!=beginDate.getDate() ||(endint>21)){
+                        endint=21;
+                    }
+                    for( i=8 ;i<endint;i++){
                         for(j=0;j<applyStudentList.length;j++){
-                            if (applyStudentList[j].hour==i){
+                            if (Number(applyStudentList[j]).hour==i){
                                 break;
                             }
                         }
@@ -536,7 +548,7 @@ var  getStudentComplaintTimely=function(schoolid,beginDate,endDate,callback){
             return callback(err);
         }
         if(data){
-            return callback (null,data)
+            return callback (null,data);
         } else {
             reservationmodel.aggregate([{$match:{
                     "driveschool":new mongodb.ObjectId(schoolid),
@@ -563,10 +575,14 @@ var  getStudentComplaintTimely=function(schoolid,beginDate,endDate,callback){
                             }
                             complaintlist.push(listone);
                         })
+                    };
+                    var  endint=new Date().getHours();
+                    if(new Date().getDay()!=beginDate.getDate() ||(endint>21)){
+                        endint=21;
                     }
-                    for( i=8 ;i<new Date().getHours();i++){
+                    for( i=8 ;i<endint;i++){
                         for(j=0;j<complaintlist.length;j++){
-                            if (complaintlist[j].hour==i){
+                            if (Number(complaintlist[j].hour)==i){
                                 break;
                             }
                         }
