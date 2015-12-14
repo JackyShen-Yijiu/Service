@@ -1093,7 +1093,7 @@ exports.statisticsTodayinfo=function(schoolid,begintime,endtime,callback){
         proxy.all('SchoolStudentCount', "ApplyStudentCount", "CommentStudentCount", "ComplaintStudentCount",
             "CocahsTotalCourseCount", "ReservationCourseCountDay",
             function (SchoolStudentCount, ApplyStudentCount, CommentStudentCount, ComplaintStudentCount, CocahsTotalCourseCount,
-                      ReservationCourseCountDay, FinishReservationNow, CoachCourseNow, CourseStudnetNow) {
+                      ReservationCourseCountDay) {
                 var info = {
                     "schoolstudentcount": SchoolStudentCount,
                     "applystudentcount": ApplyStudentCount,

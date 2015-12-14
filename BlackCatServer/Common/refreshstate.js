@@ -122,7 +122,7 @@ var rule2 = new schedule.RecurrenceRule();
 
 rule2.dayOfWeek = [0, new schedule.Range(1, 6)];
 
-rule2.hour = 23;
+rule2.hour = [0, new schedule.Range(1, 23)];
 
 rule2.minute = 30;
 try{

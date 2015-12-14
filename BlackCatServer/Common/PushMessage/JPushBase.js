@@ -25,6 +25,7 @@ exports.pushMessagetoCoach=function(userid,title,msg_content,data,type,callback)
         coachClient.push().setPlatform(ios,android)
             .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setMessage(msg_content,title,"text",senddata)
+            .setOptions(null, null,null,true)
             .send(function(err, res) {
                 if (err) {
                     if (err instanceof JPush.APIConnectionError) {
@@ -55,6 +56,7 @@ exports.pushMessagetoStudent=function(userid,title,msg_content,data,type,callbac
         studentClient.push().setPlatform(ios,android)
             .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setMessage(msg_content,title,"text",senddata)
+            .setOptions(null, null,null,true)
             .send(function(err, res) {
                 if (err) {
                     if (err instanceof JPush.APIConnectionError) {
@@ -83,6 +85,7 @@ exports.pushMessagetoHeadMaster=function(userid,title,msg_content,data,type,call
         headmasterClient.push().setPlatform(ios,android)
             .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setMessage(msg_content,title,"text",senddata)
+            .setOptions(null, null,null,true)
             .send(function(err, res) {
                 if (err) {
                     if (err instanceof JPush.APIConnectionError) {
@@ -124,6 +127,7 @@ if(!pushConfig.is_push){
         .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
         .setNotification(title, JPush.ios(alert,"sound.caf",1,null,senddata),
         JPush.android(alert,title, 3,senddata))
+        .setOptions(null, null,null,true)
        // .setOptions(null)
         .send(function(err, res) {
             if (err) {
@@ -171,6 +175,7 @@ exports.PushToCoach=function(alert,title,userid,data,platformtype,type,callback)
             .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setNotification(title, JPush.ios(alert,"sound.caf",1,null,senddata),
             JPush.android(alert,title, 3,senddata))
+            .setOptions(null, null,null,true)
             .send(function(err, res) {
                 if (err) {
                     if (err instanceof JPush.APIConnectionError) {
@@ -216,6 +221,7 @@ exports.PushToHeadMaster=function(alert,title,userid,data,platformtype,type,call
             .setAudience(userid? JPush.alias(userid.toString()):JPush.ALL)
             .setNotification(title, JPush.ios(alert,"sound.caf",1,null,senddata),
                 JPush.android(alert,title, 3,senddata))
+            .setOptions(null, null,null,true)
             .send(function(err, res) {
                 if (err) {
                     if (err instanceof JPush.APIConnectionError) {
@@ -231,7 +237,8 @@ exports.PushToHeadMaster=function(alert,title,userid,data,platformtype,type,call
                     console.log('Msg_id: ' + res.msg_id);
                     return callback(null,"suceess");
                 }
-            });}
+            });
+    }
     catch(err){
         console.log(err);
         return callback(err);
