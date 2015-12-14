@@ -156,9 +156,9 @@ try{
                                 tempsummary.driveschool = r._id;
                                 tempsummary.applystudentcount = data.applystudentcount;
                                 tempsummary.applyingstudentcount = 0;
-                                tempsummary.goodcommentcount = data.commentstudentcount.goodcommentcount;
+                                tempsummary.goodcommentcount = data.commentstudentcount.goodcommnent;
                                 tempsummary.generalcomment = data.commentstudentcount.generalcomment;
-                                tempsummary.badcommentcount = data.commentstudentcount.badcommentcount;
+                                tempsummary.badcommentcount = data.commentstudentcount.badcomment;
                                 tempsummary.complaintcount = data.complaintstudentcount;
                                 tempsummary.totalcoursecount = data.coachstotalcoursecount;
                                 tempsummary.reservationcoursecount = data.reservationcoursecountday;

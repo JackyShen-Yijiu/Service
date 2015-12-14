@@ -153,6 +153,7 @@ var getMoreDataStudentByMonth=function(schoolid,beginDate,endDate,callback){
                         datalist.push(listone);
                     })
                 }
+                datalist= _.sortBy(datalist,'weekindex');
                 cache.set("getMoreDataStudentByMonth"+schoolid+beginDate, datalist,60*1,function(){});
                     return callback(null,datalist);
                 }
@@ -210,6 +211,7 @@ var getMoreDataStudentByYear=function(schoolid,beginDate,endDate,callback){
                         datalist.push(listone);
                     })
                 }
+                datalist= _.sortBy(datalist,'month');
                 cache.set("getMoreDataStudentByYear"+schoolid+beginDate, datalist,60*1,function(){});
                     return callback(null,datalist);
                 }
