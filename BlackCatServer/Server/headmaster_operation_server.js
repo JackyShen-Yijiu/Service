@@ -251,6 +251,15 @@ var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callbac
                         })
 
                     }
+                    for( i=8 ;i<21;i++){
+                        for(j=0;j<ReservationCourseCountList.length;j++){
+                            if (ReservationCourseCountList[j].hour==i){
+                                break;
+                            }
+                            ReservationCourseCountList.push({ hour: i,
+                                applystudentcounti:0})
+                        }
+                    }
                     ReservationCourseCountList= _.sortBy(ReservationCourseCountList,'hour');
                     cache.set('getReservationCourseCountTimely:'+schoolid+beginDate, ReservationCourseCountList,60*1,function(){});
                     return callback(null,ReservationCourseCountList);
@@ -294,6 +303,15 @@ var  getCommentTimely=function(schoolid,beginDate,endDate,commentlevel,callback)
                             }
                             commentlist.push(listone);
                         })
+                    }
+                    for( i=8 ;i<21;i++){
+                        for(j=0;j<commentlist.length;j++){
+                            if (commentlist[j].hour==i){
+                                break;
+                            }
+                            commentlist.push({ hour: i,
+                                applystudentcounti:0})
+                        }
                     }
                     commentlist= _.sortBy(commentlist,'hour');
                     cache.set('getCommentTimely:'+schoolid+beginDate+commentlevel[0], commentlist,60*1,function(){});
@@ -447,7 +465,15 @@ var getApplyStudentCountTimely=function(schoolid,beginDate,endDate,callback){
                         })
 
                     }
-                    //
+                    for( i=8 ;i<21;i++){
+                        for(j=0;j<applyStudentList.length;j++){
+                            if (applyStudentList[j].hour==i){
+                                break;
+                            }
+                            applyStudentList.push({ hour: i,
+                                applystudentcounti:0})
+                        }
+                    }
                     applyStudentList= _.sortBy(applyStudentList,'hour');
                     cache.set('ApplyStudentCountTimely:'+schoolid+beginDate, applyStudentList,60*1,function(){});
                     return callback(null,applyStudentList);
@@ -530,6 +556,15 @@ var  getStudentComplaintTimely=function(schoolid,beginDate,endDate,callback){
                             }
                             complaintlist.push(listone);
                         })
+                    }
+                    for( i=8 ;i<21;i++){
+                        for(j=0;j<complaintlist.length;j++){
+                            if (complaintlist[j].hour==i){
+                                break;
+                            }
+                            complaintlist.push({ hour: i,
+                                applystudentcounti:0})
+                        }
                     }
                     complaintlist= _.sortBy(complaintlist,'hour');
                     cache.set('getStudentComplaintTimely:'+schoolid+beginDate, complaintlist,60*1,function(){});
@@ -981,8 +1016,10 @@ var  getMainpageWeekData=function(schoolid,type,callback){
 var getMoreDataWeek=function(schoolid,type,callback){
     var begintime=(new Date()).addDays(-7).clearTime();
     var  datenow=new Date();
+    var  endtime = (new Date()).addDays(1).clearTime();
     if (type==appTypeEmun.StatisitcsType.week){
-        begintime=(new Date()).addDays(-7).clearTime();
+        begintime=(new Date()).addDays(-6).clearTime();
+        //endtime = (new Date()).clearTime();
     } else if (type==appTypeEmun.StatisitcsType.month){
 
         begintime=(new Date(datenow.getFullYear(),datenow.getMonth(),1))
@@ -990,7 +1027,7 @@ var getMoreDataWeek=function(schoolid,type,callback){
     else if(type==appTypeEmun.StatisitcsType.year){
         begintime=(new Date(datenow.getFullYear(),1,1))
     }
-    var  endtime = (new Date()).clearTime();
+
     var proxy = new eventproxy();
     proxy.fail(callback);
     if (type==appTypeEmun.StatisitcsType.week){
