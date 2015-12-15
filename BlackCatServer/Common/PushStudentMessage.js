@@ -34,7 +34,7 @@ exports.pushSystemMessage=function(userid,title,msg_content,callback){
         title:title,
         msg_content:msg_content
     }
-    BasePushmessage.pushMessagetoCoach(userid,title,msg_content,senddata,pushtype.SystemMsg,function(err,data){
+    BasePushmessage.pushMessagetoStudent(userid,title,msg_content,senddata,pushtype.SystemMsg,function(err,data){
         if(err){
 
             return callback(err);

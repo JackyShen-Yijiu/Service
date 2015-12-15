@@ -113,3 +113,12 @@ exports.MallOrderState={
     finished:5
 
 }
+
+//统计查询类型
+exports.StatisitcsType={
+    day:1,
+    yesterday:2,
+    week:3,
+    month:4,
+    year:5
+}

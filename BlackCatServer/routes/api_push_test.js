@@ -6,7 +6,51 @@ var pushtest = express.Router();
 var pushstudent=require("../Common/PushStudentMessage");
 var pushcoach=require("../Common/PushCoachMessage");
 
+var pushHeadMaster=require("../Common/PushHeadMasterMessage.js");
+
 var BaseReturnInfo = require('../custommodel/basereturnmodel.js');
+
+pushtest.get("/headmaster/pushNewVersion",function(req,res){
+    var apptype=req.query.apptype;
+    pushHeadMaster.pushNewVersion(apptype,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+});
+pushtest.get("/headmaster/pushSystemMessage",function(req,res){
+    var userid=req.query.userid;
+    var title=req.query.title;
+    var msg_content=req.query.msg_content;
+    pushHeadMaster.pushSystemMessage(userid,title,msg_content,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+});
+
+pushtest.get("/headmaster/pushStudentApply",function(req,res){
+    var userid=req.query.userid;
+    var studentid=req.query.studentid;
+    pushHeadMaster.pushStudentApply(userid,studentid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+});
+pushtest.get("/headmaster/pushComplaintToHeadMaster",function(req,res){
+    var userid=req.query.userid;
+    var reservationid=req.query.reservationid;
+    pushHeadMaster.pushComplaintToHeadMaster(userid,reservationid  ,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+});
 
 pushtest.get("/student/pushNewVersion",function(req,res){
     var apptype=req.query.apptype;

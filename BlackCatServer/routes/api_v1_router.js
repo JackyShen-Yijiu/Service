@@ -14,6 +14,8 @@ var v1 = express.Router();
 //================================================ v1 api=================
 //测试接口
 v1.get('/test',appsystemController.TestAPI);
+//获取二维码
+v1.get('/create_qrcode',appsystemController.createQrcode);
 // app版本信息
 v1.get('/appversion/:type', appsystemController.appVersion);
 
@@ -48,6 +50,8 @@ v1.get("/getproductdetail",appsystemController.getProductDetail);
 //======================================用户信息======================================
 // 用户购买商品
 v1.post("/userinfo/buyproduct",ensureAuthorizedController.ensureAuthorized,userController.userBuyProduct);
+// 用户获取我购买的商品列表
+v1.get("/userinfo/getmyorderlist",ensureAuthorizedController.ensureAuthorized,userController.getMyorderList);
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
 // 验证用户是否存在

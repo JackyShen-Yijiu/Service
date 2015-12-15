@@ -93,6 +93,7 @@ var savecourse=function(coachdata,coachid,date,callback){
             var course = new coursemode;
             course.coachid = new mongodb.ObjectId(coachid);
             course.coursedate = new Date(date);
+            course.driveschool=coachdata.driveschool;
             course.coursestudentcount = coachdata.coursestudentcount ? coachdata.coursestudentcount : 1;
             course.coursetime.timeid = r.timeid;
             course.coursebegintime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.begintime);
@@ -258,6 +259,7 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.courseprocessdesc=userdata.subject.name +" 第"+ (currentcoursecount+1)+" --"+(currentcoursecount+coursecount)+"课时";
                     reservation.userid = new mongodb.ObjectId(reservationinfo.userid);
                     reservation.coachid = new mongodb.ObjectId(reservationinfo.coachid);
+                    reservation.driveschool=coachdata.driveschool;
                     reservation.is_shuttle = reservationinfo.is_shuttle ? (reservationinfo.is_shuttle == 1 ? true : false) : false;
                     reservation.shuttleaddress = reservationinfo.address ? reservationinfo.address : "";
                     reservation.reservationcreatetime = new Date();

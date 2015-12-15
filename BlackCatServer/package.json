@@ -24,6 +24,11 @@
     "qiniu":"~6.1.8",
     "async":"*",
     "jpush-sdk": "*",
-    "retry": "~0.8.0"
+    "retry": "~0.8.0",
+    "eventproxy": "0.3.4",
+    "ioredis": "1.11.1",
+    "underscore":"1.8.3",
+    "qr-image":"3.1.0",
+    "express-partials": "*"
   }
 }

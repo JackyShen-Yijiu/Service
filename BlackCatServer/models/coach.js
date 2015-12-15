@@ -51,7 +51,7 @@ var  CoachSchema=new Schema({
     idcardnumber:String ,// 身份证
     drivinglicensenumber:String,  // 驾驶证
     coachnumber:String,//教练证
-    starlevel :Number, // 星级
+    starlevel :{type:Number,default:5}, // 星级
     carmodel:{modelsid:Number,name:String,code:String},  // 负责教的车型
     trainfield:{type: Schema.Types.ObjectId, ref: 'trainingfield'} ,//训练场
     trainfieldlinfo:{name:String,id:String}, //训练成信息信息

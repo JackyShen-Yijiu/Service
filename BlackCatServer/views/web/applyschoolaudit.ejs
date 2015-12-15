@@ -1,0 +1,87 @@
+<header>
+    <i class="logo"></i>
+    <p>一步驾校报名信息</p>
+    <% if(type===0) {%>
+    <p class="baomcg"><%= msg%></p>
+    <% } %>
+</header>
+<div class="xfxx">
+
+
+    <%
+    if(type===1) {%>
+    <form class="biaodan clearfix" action="">
+
+        <ul>
+            <input type="hidden" id="userid"  value="<%=data.userid%>">
+            <input type="hidden" id="schoolid"  value="<%=data.applyschoolinfo.id%>">
+            <li><span class="span1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：</span><span class="span2"><%=data.name%></span></li>
+            <li><span class="span1">联系电话：</span><span class="span2"><%=data.mobile%></span></li>
+            <li><span class="span1">报名驾校：</span><span class="span2"><%=data.applyschoolinfo.name%></span></li>
+            <li><span class="span1">报名班型：</span><span class="span2"><%=data.applyclasstypeinfo.name%></span></li>
+            <li><span class="span1">驾照类型：</span><span class="span2"><%=data.carmodel.name%></span></li>
+            <li><span class="span1">报名教练：</span><span class="span2"><%=data.applycoachinfo.name?data.applycoachinfo.name:""%></span></li>
+            <li><span class="span1">报名日期：</span><span class="span2"><%=data.applytime%></span></li>
+            <li><span class="span1">截止日期：</span><span class="span2"><%=data.endtime%></span></li>
+        </ul>
+        <%
+        if(data.alreadaduit===0) {%>
+
+        <!-- 隐藏 -->
+        <div id="infosubmit">
+            <input class="querenma" type="text"id="mobile" value placeholder="输入手机号码"/>
+            <input onclick="countDown(this,60);" type="button" id="mm" class="querenma2" value="获取验证码" /><br><br>
+            <input class="querenma" type="text" id="confirmnum" value placeholder="驾校确认码输入" required/>
+            <input type="button"value="确认报名"id="confirmsubmit"  class="button">
+        </div>
+        <% }else {%>
+        <br/>
+        <div class="yiqueren"style="display: block">已确认</div>
+        <%}%>
+        <!-- 弹框 -->
+        <div class="tankuang" style="display:none;">
+            <i class="weizhuce"></i>
+            <p>信息确认失败</p>
+        </div>
+        <div class="yiqueren">已确认</div>
+
+    </form>
+    <%}%>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#confirmsubmit").click(function(){
+            var userid= $("#userid").val();
+            var schoolid= $("#schoolid").val();
+            var confirmnum= $("#confirmnum").val();
+            var mobile= $("#mobile").val();
+            var index = layer.load();
+            $.post("/validation/doapplyvalidation",
+                    {userid:userid,
+                        schoolid:schoolid,
+                        confirmnum:confirmnum,
+                        mobile:mobile
+                    },
+                    function(data,status){
+                        if(status=="success"){
+                            layer.close(index);
+                            if(data.type==1){
+                                $("#infosubmit").css('display','none');
+                                $('.yiqueren').css('display','block');
+                            }
+                            else{
+                                layer.msg(data.msg,{
+                                    icon: 2,
+                                 time: 2000
+                                });
+                            }
+                        }else{
+                            layer.msg("审核失败",{
+                                icon: 2,
+                                time: 2000
+                            });
+                        }
+                    });
+        });
+    })
+</script>

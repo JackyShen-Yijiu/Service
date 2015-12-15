@@ -6,7 +6,7 @@
  */
 exports.config = {
   /**
-   * Array of application names. yibuxuecheprod
+   * Array of application names. yibuxuecheprod  yibuxuechetest
    */
   app_name : ['yibuxuecheprod'],
   /**

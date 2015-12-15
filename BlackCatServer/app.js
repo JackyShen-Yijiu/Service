@@ -3,13 +3,16 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+/*模板引擎*/
+var partials = require('express-partials');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var BaseReturnInfo = require('./custommodel/basereturnmodel.js');
-//var apijson=require('./API');
 var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
+var apiRouterHeadMaster=require('./routes/api_headmaster_router.js');
 var apipushtest=require('./routes/api_push_test.js');
+var index=require('./routes/index.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
 //var domain = require('domain');
@@ -21,11 +24,9 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
-
   if (req.method.toUpperCase() === 'OPTIONS') {
     return res.end();
   }
-
   next();
 });
 
@@ -33,6 +34,7 @@ app.use(function(req, res, next) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(partials());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -43,11 +45,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//test git
-//app.use('/', routes);
-//app.use('/users', users);
-//app.use('/api/v1', v1);
-//app.use('/api/', v1);
 
 
 //引入一个domain的中间件，将每一个请求都包裹在一个独立的domain中
@@ -70,7 +67,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
+app.use('/api/headmaster', apiRouterHeadMaster);
 app.use('/api/pushtest', apipushtest);
+
+app.use('/validation', index);
 
 
 // catch 404 anid forward to error handler
@@ -102,7 +102,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  console.log(err.status)
+  console.log(err.status);
   log.writeLog(req,err,logType.err);
   res.json(new BaseReturnInfo(0,"服务器内部错误",""));
   /*res.render('error', {

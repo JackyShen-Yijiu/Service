@@ -37,10 +37,15 @@ var  UserSchema=new Schema({
     invitationcode:{type:String},  // 要初始化  邀请码
     referrerCode: String,   // 被邀请码
     applystate:{type:Number,default:0}, //报名状态  0 未报名 1 申请中 2 申请成功
+    //是否进行扫描验证码报名
+    is_confirmbyscan:{ type: Boolean, default: false},
+    // 扫描地址
+    scanauditurl:String,
     // 报名信息
     applyinfo:{applytime:{type:Date,default:Date.now()},
      handelstate:{type:Number,default:0}, //处理状态 0 未处理 1 处理中 2 处理成功
-        handelmessage:[String]
+        handelmessage:[String],
+        handeltime:Date
     },
     applyschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 申请学校
     applyschoolinfo:{name:String,id:String}, //申请学校信息

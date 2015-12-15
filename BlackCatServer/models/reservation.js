@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var ReservationSchema=new Schema({
     userid :{type: Schema.Types.ObjectId, ref: 'User'},// 预约课程
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'}, //  预约教练
+    driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     trainfieldid:{type: Schema.Types.ObjectId, ref: 'trainingfield'}, //  练车场id 同车学员
     trainfieldlinfo:{name:String,id:String}, //训练成信息信息
 
@@ -47,6 +48,12 @@ var ReservationSchema=new Schema({
     is_complaint:{ type: Boolean, default: false},
     // 投诉内容
     complaint :{reason:String,complaintcontent:String,complainttime:Date},
+    complainthandinfo:{
+        handlestate:{ type: Number, default: 0},  // 0 没有处理 ， 1 处理结束 2 处理完成
+        handlemessage:{ type: String, default: ""}, // 处理消息
+        operator:{ type: String, default: ""}, // 处理人
+        handledatetime:Date      //处理时间
+    },
     // 取消预约原因
     cancelreason:{reason:String,cancelcontent:String},
     // 是否接送
