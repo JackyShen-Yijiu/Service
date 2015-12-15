@@ -1223,7 +1223,7 @@ exports.getComplaintDetails=function(queryinfo,callback){
     reservationmodel.find(
         {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
         "is_complaint":true
-        //,"complaint.complainttime": { $gte:beginDate, $lte:endDate}
+        ,"complaint.complainttime": { $gte:beginDate, $lte:endDate}
         ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
             {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
         .select("userid coachid is_complaint  complaint subject complainthandinfo ")
