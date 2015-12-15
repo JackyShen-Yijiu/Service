@@ -973,8 +973,8 @@ var  getMainpageToadyData=function(schoolid,type,callback){
 }
 // 主页中统计一周的数据
 var  getMainpageWeekData=function(schoolid,type,callback){
-    var begintime=(new Date()).addDays(-7).clearTime();
-    var  endtime = (new Date()).clearTime();
+    var begintime=(new Date()).addDays(-6).clearTime();
+    var  endtime = (new Date()).addDays(1).clearTime();
     var proxy = new eventproxy();
     proxy.fail(callback);
     cache.get("getMainpageWeekData"+schoolid+begintime,proxy.done(function(weekdata){
