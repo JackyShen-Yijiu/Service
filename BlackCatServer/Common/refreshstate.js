@@ -127,13 +127,14 @@ rule2.hour = [0, new schedule.Range(1, 23)];
 rule2.minute = 30;
 try{
     var j = schedule.scheduleJob(rule2, function()
+   // var test=function(  i)
      {
-        var datanow = new Date();
+         var datanow = new Date();
          var begintime=(new Date()).clearTime();
          var endtime = (new Date()).addDays(1).clearTime();
-         //var datanow = new Date().addDays(-19);
-         //var begintime=(new Date()).addDays(-19).clearTime();
-         //var endtime = (new Date()).addDays(-18).clearTime();
+         //var datanow = new Date().addDays(-1*i);
+         //var begintime=(new Date()).addDays(-1*i).clearTime();
+         //var endtime = (new Date()).addDays(-1*i+1).clearTime();
         console.log(new Date().toString()+"开始统计驾校信息");
 
         driveschoolmodel.find()
@@ -183,8 +184,9 @@ try{
     }
 
     );
-
-
+    //for(i=1;i<30;i++) {
+    //    test(i);
+    //}
 }catch(e){
     console.error(new Date().toString()+'更新驾校统计信息出错..'+ e.message);
 }
