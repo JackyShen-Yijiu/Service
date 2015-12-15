@@ -21,6 +21,7 @@ var DriveSchoolSchema=new Schema({
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
     pictures:[ImgInfo], //  驾校的宣传图片地址
     pictures_path:[{type:String, default:''}],
+    schoolalbum:[{type:String, default:''}],// 驾校相册
     logoimg:{     // 驾校log
         originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
@@ -34,17 +35,31 @@ var DriveSchoolSchema=new Schema({
     registertime:{type:Date,default:Date.now()}, // 驾校成立时间
     province: {type:String,default:''}, // 省
     city: {type:String,default:''}, // 市
+    county:{type:String,default:''},// 县
     address: {type:String,default:''}, // 地址
     responsible:{type:String,default:''}, // 负责人
     phone:{type:String,default:''},  //联系电话
+    phonelist:[{type:String,default:''}],  //联系电话
     website:{type:String,default:''},  // 网址
+    is_validation: { type: Boolean, default: false} , //驾校是否通过验证
     schoollevel:String, //驾校星级
     carcount:Number, // 驾校车辆数
     coachcount:Number,  // 驾校教练数
     studentcount:Number,  // 驾校学生数
+    examhallcount:Number, //考场数量
+    cartype:[String], //车品牌  富康、奔驰等
+    licensetype:[String],//驾照类型
+    worktime :{type:String,default:""},  //工作时间
+    workbegintime:String,
+    workendtime:String,
     maxprice:Number,  // 最高价格
     minprice:Number,  // 最低价格
     email :{type:String,default:""}, // 电子邮箱
+    vipserver:[String], //特色服务列表
+    privilegelevel:{type:Number,default:1},// 权限等级
+    valueaddedservice:{type:String,default:""}, // 增值服务
+    superiorservice:{type:String,default:""}, //  优势服务
+    shuttleroute:{type:String,default:""}, //  班车路线
     businesslicensenumber :{type:String,default:""}, // 营业执照
     organizationcode :{type:String,default:""}, // 组织机构代码
     hotindex:Number,//关注度
@@ -54,7 +69,7 @@ var DriveSchoolSchema=new Schema({
     confirmnum:String
 });
 
-/**
+/**0
  * Get restaurants near a given location/radius.
  * @param latitude
  * @param longitude

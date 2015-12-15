@@ -6,9 +6,9 @@ module.exports = {
 
     db: {
         //uri: process.env.MONGODB || 'mongodb://123.57.7.30:27300/BlackCat_Prod',
-        //uri: process.env.MONGODB || 'mongodb://10.171.52.27:27300/BlackCat_Prod',
+        uri: process.env.MONGODB || 'mongodb://10.171.52.27:27300/BlackCat_Prod',
 
-         uri: process.env.MONGODB || 'mongodb://123.57.7.30:27300/BlackCat',
+        // uri: process.env.MONGODB || 'mongodb://123.57.7.30:27300/BlackCat',
 
         //uri: process.env.MONGODB || 'mongodb://123.57.7.30:27300/BlackCat',
 
@@ -20,7 +20,7 @@ module.exports = {
             //pass: 'chiKuang!5040!'
         }
     }
-  //123.57.7.30 (¹«)
+  //123.57.7.30 (ï¿½ï¿½)
 
- //   10.171.52.27 (ÄÚ)
+ //   10.171.52.27 (ï¿½ï¿½)
 };
