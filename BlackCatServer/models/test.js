@@ -39,15 +39,15 @@ updateuserinfo=function(){
 }
 //updateuserinfo();
 var updataschool=function(){
-    shcoolsummary.find()
+    reservationmodel.find()
         .exec(function(err,data){
             data.forEach(function(r,index){
             //shcoolsummary.update({_id: data._id} ,
             //               { $set: { goodcommentcount: 0, badcommentcount:0}},{safe: false, multi: true},function(err,doc){
             //                    console.log(doc);
             //                })
-                r.goodcommentcount=0;
-                r.badcommentcount=0;
+                r.complainthandinfo.handlestate=0;
+              //  r.badcommentcount=0;
 
                 r.save();
                     })});
