@@ -1510,6 +1510,7 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
                 var coachinfo={
                    coachid:item._id,
                     name:item.name,
+                    mobile:item.mobile,
                     headportrait:item.headportrait,
                     starlevel:item.starlevel
                 }
