@@ -1292,18 +1292,18 @@ exports.getCommentDetails=function(queryinfo,callback){
     var commentlevel;
 
     if(queryinfo.commentlevel==1){
-        commentlevel=[0,1];
+        commentlevel=[4,5];
     } else if (queryinfo.commentlevel==2){
         commentlevel=[2,3];
     }
     else {
-        commentlevel=[4,5];
+        commentlevel=[0,1];
     }
     reservationmodel.find(
         {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
             "is_comment":true
              ,"comment.starlevel":{$in:commentlevel}
-             ,"comment.commenttime": {  $lte:enddate}
+             ,"comment.commenttime": {$gte: begintime,  $lte:enddate}
             ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
             {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
         .select("userid coachid is_comment  comment subject  ")
