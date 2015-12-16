@@ -45,16 +45,16 @@ exports.imConfig={
 
 // redis 配置， 测试库
 // exports.redisConfig={
-    // redis_host: "101.200.204.240",
-    // redis_port: 6379,
-    // redis_db: 0,
-    // redis_password:"yibuxueche"
+//     redis_host: "101.200.204.240",
+//     redis_port: 6379,
+//     redis_db: 0,
+//     redis_password:"yibuxueche"
 // }
 
 // redis 正式
 
 exports.redisConfig={
-    redis_host: "127.0.0.1",
+    redis_host: "123.57.63.15",
     redis_port: 6379,
     redis_db: 0,
     redis_password:"yibuxueche"
@@ -66,14 +66,14 @@ exports.weatherConfig={
 }
 
 // 验证地址 test
-// exports.validationurl={
-    // applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
-    // producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid="
-// }
+ exports.validationurl={
+     applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
+     producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid="
+ }
 
 
 // 验证地址 正式
-exports.validationurl={
-    applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
-    producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid="
-}
+//exports.validationurl={
+//    applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
+//    producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid="
+//}
