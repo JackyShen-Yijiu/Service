@@ -121,6 +121,8 @@ v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach);
 v1.get("/getschooltrainingfield",driveSchoolController.getSchoolTrainingField);
 //根据名称模糊查询练车场
 v1.get("/getschoolbyname",driveSchoolController.getSchoolByName);
+//用户获取开通个城市列表
+v1.get("/getopencity",appsystemController.getOpenCitylist);
 
 
 //==============================预约课程(学生端)=========================================

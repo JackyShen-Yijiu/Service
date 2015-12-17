@@ -127,6 +127,17 @@ exports.getProductDetail=function(req,res){
 
 }
 
+//  获取开通城市列表
+exports.getOpenCitylist=function(req,res){
+    sysstemserver.getOpenCitylist(function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+
+}
+
 exports.getTrainingContent=function(req,res){
     //getTrainingContent
 }
