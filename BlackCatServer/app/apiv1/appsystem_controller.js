@@ -86,6 +86,12 @@ exports.GetqiniuupToken=function(req,res){
     var token =qiniu.getQiniuUpToken();
     return res.json(new BaseReturnInfo(1,'',token));
 }
+exports.GetqiniuupToken2=function(req,res){
+    var token =qiniu.getQiniuUpToken();
+    res.json({
+        uptoken: token
+    })
+}
 exports.getExamQuestion=function (req,res){
    return res.json(new BaseReturnInfo(1,"",commondataServer.examquestioninfo))
 }

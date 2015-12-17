@@ -121,6 +121,8 @@ v1.get("/getschoolcoach/:schoolid/:index",userController.getSchoolCoach);
 v1.get("/getschooltrainingfield",driveSchoolController.getSchoolTrainingField);
 //根据名称模糊查询练车场
 v1.get("/getschoolbyname",driveSchoolController.getSchoolByName);
+// 按 条件查询驾校列表
+v1.get("/searchschool",driveSchoolController.searchSchool);
 //用户获取开通个城市列表
 v1.get("/getopencity",appsystemController.getOpenCitylist);
 
@@ -182,8 +184,7 @@ v1.post("/courseinfo/coachcomment",ensureAuthorizedController.ensureAuthorized,c
 v1.post("/courseinfo/coachfinishreservation",ensureAuthorizedController.ensureAuthorized,courseController.coachfinishReservation);
 //教练获取没有处理的预约（在消息模块）
 v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthorized,courseController.getreservationapply);
-//------------------------IM---------------
-v1.get('/gettoken', testController.gettoken);
+
 //-------------------------------------------------------------
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
