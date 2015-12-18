@@ -74,6 +74,7 @@ var defaultFun={
             workendtime:req.body.workendtime,
             phonelist:req.body.phonelist
         }
+        schoolinfo.licensetype= schoolinfo.licensetype.toUpperCase();
         schoolinfo.loc={type:"Point",coordinates:[schoolinfo.longitude,schoolinfo.latitude]};
         schoolinfo.phonelist=schoolinfo.phonelist.split("||");
         schoolinfo.licensetype=schoolinfo.licensetype.split("||");
@@ -103,7 +104,6 @@ var defaultFun={
     }
         filedinfo.loc={type:"Point",coordinates:[filedinfo.longitude,filedinfo.latitude]};
         schoolinfo.pictures=filedinfo.pictures.split("||");
-
         return filedinfo;
     },
 }
@@ -250,6 +250,7 @@ exports.getSchoolist=function(req,res){
 
 exports.saveSchoolInfo=function(req,res){
     schoolinfo=defaultFun.getschoolinfo(req);
+    console.log(schoolinfo);
     var schoolmodel=new schoolModel(schoolinfo);
     schoolmodel.save(function(err,data){
         if(err){

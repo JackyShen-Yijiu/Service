@@ -128,6 +128,8 @@ v1.get("/getopencity",appsystemController.getOpenCitylist);
 
 
 //==============================预约课程(学生端)=========================================
+// 获取的报名结果信息
+v1.get("/userinfo/getapplyschoolinfo",ensureAuthorizedController.ensureAuthorized,userController.getapplyschoolinfo);
 // 获取我的预约进度
 v1.get("/userinfo/getmyprogress",ensureAuthorizedController.ensureAuthorized,userController.getMyProgress);
 // 获取我当前可以预约的教练

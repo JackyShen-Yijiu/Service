@@ -1280,6 +1280,40 @@ exports.getMyWallet=function(queryinfo,callback){
             })
     }
 }
+exports.getapplyschoolinfo=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("_id  name mobile applystate applyinfo   scanauditurl applyschool" +
+            " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo")
+        .populate("applyschool"," _id  applynotes")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错");
+            }
+            if (!data){
+                return callback("没有查询到用户的相关信息");
+            }
+            if(data.applystate==appTypeEmun.ApplyState.NotApply){
+                return callback("该用户没有提交报名申请");
+            }
+            console.log(data)
+            var userinfo={
+                userid:data._id,
+                name: data.name,
+                mobile:data.mobile,
+                scanauditurl:data.scanauditurl,
+                applystate:data.applystate,
+                applytime:(data.applyinfo.applytime).toFormat("YYYY-MM-DD"),
+                endtime:(data.applyinfo.applytime).addMonths(1).toFormat("YYYY-MM-DD"),
+                applyschoolinfo:data.applyschoolinfo,
+                applycoachinfo:data.applycoachinfo,
+                carmodel:data.carmodel,
+                applyclasstypeinfo:data.applyclasstypeinfo,
+                applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
+            }
+            return callback(null,userinfo);
+        })
+}
+
 // 获取学习进度
 exports.getMyProgress=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))

@@ -279,6 +279,26 @@ exports.postCoachSetClass=function(req,res){
     });
 
 }
+// 获取我的报名结果
+ exports.getapplyschoolinfo=function(req,res){
+     var userid =req.query.userid;
+     if(userid===undefined){
+         return res.json(
+             new BaseReturnInfo(0,"参数不完整",""));
+     }
+     if(userid!=req.userId){
+         return res.json(
+             new BaseReturnInfo(0,"无法确认请求用户",""));
+     };
+     userserver.getapplyschoolinfo(userid,function(err,data){
+         if(err){
+             return res.json(new BaseReturnInfo(0,err,{}));
+         }
+         return res.json(new BaseReturnInfo(1,"",data));
+     });
+ }
+
+
 //获取我的学车进度
 exports.getMyProgress=function(req,res){
 var userid =req.query.userid;
