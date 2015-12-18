@@ -1406,8 +1406,10 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
+      if (applyinfo.applyagain!=1){
       if(userdata.applystate>appTypeEmun.ApplyState.NotApply){
           return  callback("此用户已经报名，请查看报名详情页");
+      }
       }
       // 检查报名驾校和教练
       coachmode.findById(new mongodb.ObjectId(applyinfo.coachid),function(err,coachdata){

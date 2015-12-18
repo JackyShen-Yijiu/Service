@@ -391,7 +391,8 @@ exports.postapplySchool=function(req,res){
         coachid:req.body.coachid,
         classtypeid:req.body.classtypeid,
         userpic:req.body.userpic,
-        carmodel:req.body.carmodel
+        carmodel:req.body.carmodel,
+        applyagain:req.body.applyagain?req.body.applyagain:0
         };
     if (applyinfo.name===undefined||applyinfo.idcardnumber === undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined
