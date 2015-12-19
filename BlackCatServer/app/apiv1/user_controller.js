@@ -617,7 +617,7 @@ exports.updateCoachInfo=function(req,res){
         introduction: req.body.introduction, // 简介
         gender:req.body.Gender, //性别
         //email: req.body.email,  // 邮件
-        headportrait:JSON.parse(req.body.headportrait),
+        headportrait:req.body.headportrait,
         address: req.body.address, // 地址
         subject :req.body.subject,   //科目
         driveschoolid:req.body.driveschoolinfo,
