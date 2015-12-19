@@ -1560,13 +1560,24 @@ exports.applyVerification=function(applyinfo,callback){
 }
 // 更新教练的工作时间
 exports.coachSetWorkTime=function(timeinfo,callback){
+    var weekdesc="";
+    if (timeinfo.workweek.length==7){
+        weekdesc="全周";
+    }
+    else{
+        for(i=0;i<timeinfo.workweek.length;i++){
+            weekdesc=weekdesc+appTypeEmun.weeks[timeinfo.workweek[i]];
+        }
+    }
+    weekdesc =weekdesc +" "+timeinfo.begintimeint+":00--"+timeinfo.endtimeint+":00";
+
     coachmode.findById(new mongodb.ObjectId(timeinfo.coachid),function(err,coachdata){
         if (err||!coachdata){
             return  callback("查询教练出错："+err);
         }
        var   weeklist=timeinfo.workweek.split(",");
         coachdata.workweek=weeklist;
-        coachdata.worktimedesc=timeinfo.worktimedesc;
+        coachdata.worktimedesc=weekdesc;
         coachdata.worktimespace.begintimeint=timeinfo.begintimeint;
         coachdata.worktimespace.endtimeint=timeinfo.endtimeint;
         var worktimes=[];

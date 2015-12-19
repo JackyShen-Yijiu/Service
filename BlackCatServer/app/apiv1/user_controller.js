@@ -523,12 +523,13 @@ exports.coachSetWorkTime=function(req,res){
         worktimedesc:req.body.worktimedesc,
         begintimeint:req.body.begintimeint,
         endtimeint:req.body.endtimeint,
-    }
-    if (timeinfo.coachid===undefined|| timeinfo.workweek===undefined|| timeinfo.worktimedesc===undefined||
+    };
+    if (timeinfo.coachid===undefined|| timeinfo.workweek===undefined||
         timeinfo.begintimeint===undefined||timeinfo.endtimeint===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完成",""));
     };
+
     if(timeinfo.coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));

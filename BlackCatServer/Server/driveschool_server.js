@@ -22,7 +22,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
     if (searchinfo.schoolname!=""){
         searchcondition.name=new RegExp(searchinfo.schoolname);
     }
-    if (searchinfo.licensetype!=""){
+    if (searchinfo.licensetype!=""&&parseInt(searchinfo.licensetype)!=0){
         searchcondition.licensetype={"$in":[searchinfo.licensetype]}
     }
     var ordercondition={};
