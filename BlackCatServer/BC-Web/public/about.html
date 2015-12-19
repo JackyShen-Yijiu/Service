@@ -12,9 +12,30 @@
     <title>Title</title>
 </head>
 <body>
+    <div class="main">
+        <img src="img/gy.png" alt="">
+        <p class="yb">一步学车</p>
+        <p>做有态度的驾校培训</p>
+        <a href=""  id="ver">v1.0.0</a>
+    </div>
     <div class="footer">
         <a href="http://www.yibuxueche.com/userAgreement.html">许可服务协议</a>
         <p>Copyright All Rights Resrved</p>
     </div>
+	<script>
+        var myurl=GetQueryString("ver");
+        if(myurl !=null && myurl.toString().length>1)
+        {
+            document.getElementById("ver").innerHTML=myurl;
+           // alert(GetQueryString("url"));
+        }
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+    </script>
 </body>
+
 </html>
