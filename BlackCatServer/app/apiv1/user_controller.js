@@ -618,11 +618,13 @@ exports.updateCoachInfo=function(req,res){
         updateuserinfo.trainfield=undefined;
     }
     //console.log(updateuserinfo)
-    userserver.updateCoachServer(updateuserinfo,function(err,data){
+    userserver.updateCoachServer(updateuserinfo,function(err,data,subject){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(1,"",data));
+        var returninfo=new BaseReturnInfo(1,"",data);
+        returninfo.subject=subject;
+        return res.json(returninfo);
     });
 }
 // 教练登录后获取自己的详细信息 (返回数据和教练登录一样)
