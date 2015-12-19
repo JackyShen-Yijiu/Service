@@ -207,8 +207,8 @@ exports.getSchoolist=function(req,res){
     //
     schoolModel.find({"name":new RegExp(schoolname)})
         .select("_id name address  createtime")
-        .skip((index-1)*10)
-        .limit(10)
+        .skip((index-1)*2)
+        .limit(2)
         .sort({createtime:-1})
         .exec(function(err,data) {
             defaultFun.getSchoolcount(schoolname,function (err, schoolcount) {
@@ -239,7 +239,7 @@ exports.getSchoolist=function(req,res){
                     });
                     returninfo = {
                         schoolcount: schoolcount,
-                        pagecount: Math.floor(schoolcount/10)+1,
+                        pagecount: Math.floor(schoolcount/2 )+1,
                         schoollist: schoolinfo
                     }
                     res.json(new BaseReturnInfo(1, "", returninfo));
