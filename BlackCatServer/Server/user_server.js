@@ -44,18 +44,18 @@ exports.getCodebyMolile=function(mobilenumber,callback){
         {
             if(err)
             {
-                return callback("Error occured: " + err);
+                return callback("发送验证码错误: " + err);
             }
             if(instace){
                 var  now= new Date();
                 //console.log(now-instace.createdTime);
                 if ((now-instace.createdTime)<resendTimeout*1000){
-                    return callback("Wait a moment to send again");
+                    return callback("您发送过于频繁，请稍后再发");
                 }
                 else{
                     instace.remove(function(err){
                         if(err){
-                            return callback("Error occured while removing: " + err,"");
+                            return callback("发送验证码错误: " + err);
                         }
                         if(mobilenumber.substr(0,8)=="18444444"){
                             addtestsmscode(mobilenumber,callback)
@@ -1642,7 +1642,7 @@ exports.updateCoachServer=function(updateinfo,callback){
             //coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
             coachdata.headportrait = updateinfo.headportrait ? updateinfo.headportrait : coachdata.headportrait;
             coachdata.address = updateinfo.address ? updateinfo.address : coachdata.address;
-            coachdata.subject = updateinfo.subject ? updateinfo.subject : coachdata.subject;
+            coachdata.subject = updateinfo.subject ? JSON.parse(updateinfo.subject) : coachdata.subject;
             coachdata.Seniority = updateinfo.Seniority ? updateinfo.Seniority : coachdata.Seniority;
             coachdata.passrate = updateinfo.passrate ? updateinfo.passrate : coachdata.passrate;
             //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
