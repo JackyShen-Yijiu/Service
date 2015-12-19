@@ -51,11 +51,10 @@ exports.imConfig={
     // redis_password:"yibuxueche"
 // }
 
-// redis 正式123.57.7.30
+// redis 正式
 
 exports.redisConfig={
-    //redis_host: "127.0.0.1",
-    redis_host: "123.57.63.15",
+    redis_host: "127.0.0.1",
     redis_port: 6379,
     redis_db: 0,
     redis_password:"yibuxueche"

@@ -13,6 +13,7 @@ var resbasecoachinfomode=require("../custommodel/returncoachinfo").resBaseCoachI
 var appTypeEmun=require("../custommodel/emunapptype");
 var regisermobIm=require('../Common/mobIm');
 var appWorkTimes=require("../Config/commondata").worktimes;
+var subjectlist=require("../Config/commondata").subject;
 var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
 var resendTimeout = 60;
@@ -1401,7 +1402,91 @@ exports.enrollverification=function(applyinfo,callback){
 
     });
 }
+exports.postenrollverificationv2=function(applyinfo,callback){
+    usermodel.findById(new mongodb.ObjectId(applyinfo.userid),function(err,userdata){
+        if(err|!userdata)
+        {
+            return  callback("不能找到此用户");
+        }
+        //判断用户状态
+        if(userdata.is_lock==true)
+        {
+            return  callback("此用户已锁定，请联系客服");
+        }
+        if (applyinfo.applyagain!=1){
+            if(userdata.applystate>appTypeEmun.ApplyState.NotApply){
+                return  callback("此用户已经报名，请查看报名详情页");
+            }
+        }
+        // 检查报名驾校和教练
+        coachmode.findById(new mongodb.ObjectId(applyinfo.coachid),function(err,coachdata){
+            if(err||!coachdata){
+                return callback("不能找到报名的教练");
+            }
+            // 检查教练
+            schoolModel.findById(new mongodb.ObjectId(applyinfo.schoolid),function(err,schooldata){
+                if(err||!schooldata){
+                    return callback("不能找到报名的驾校");
+                };
+                // 检查所报的课程类型
+                classtypeModel.findById(new mongodb.ObjectId(applyinfo.classtypeid))
+                    .populate("vipserverlist")
+                    .exec(function(err,classtypedata){
+                        if (err|| !classtypedata){
+                            return callback("不能找到该申请课程"+err);
+                        }
+                        // 判断 报的车型与课程里面的课程是否一样
+                        if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
+                            return callback("所报车型与课程的类型不同，请重新选择");
+                        }
+                        for (i=0;i<subjectlist.length;i++){
+                            if(subjectlist[i].subjectid==applyinfo.subjectid){
+                                userdata.subject=subjectlist[i];
+                                break;
+                            }
+                        }
+                        userdata.name =applyinfo.name;
+                        userdata.telephone=applyinfo.telephone;
+                        userdata.carmodel=applyinfo.carmodel;
+                            userdata.applyschool=applyinfo.schoolid;
+                        userdata.applyschoolinfo.id=applyinfo.schoolid;
+                        userdata.applyschoolinfo.name=schooldata.name;
 
+                        userdata.applycoach=applyinfo.coachid;
+                        userdata.applycoachinfo.id=applyinfo.coachid;
+                        userdata.applycoachinfo.name=coachdata.name;
+                        userdata.is_enrollverification=true;
+
+                        userdata.applyclasstype=applyinfo.classtypeid;
+                        userdata.applyclasstypeinfo.id=applyinfo.classtypeid;
+                        userdata.applyclasstypeinfo.name=classtypedata.classname;
+                        userdata.applyclasstypeinfo.price=classtypedata.price;
+                        userdata.vipserverlist=classtypedata.vipserverlist;
+                        userdata.applystate=appTypeEmun.ApplyState.Applying;
+                        userdata.applyinfo.applytime=new Date();
+                        userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
+                        //userdata.scanauditurl=auditurl.applyurl+userdata._id;
+                        //console.log(userdata);
+                        // 保存 申请信息
+                        userdata.save(function(err,newuserdata){
+                            if(err){
+                                return   callback("保存申请信息错误："+err);
+                            }
+                            classtypedata.applycount=classtypedata.applycount+1;
+                            coachdata.studentcoount=coachdata.studentcoount+1;
+                            classtypedata.save();
+                            coachdata.save();
+                            return callback(null,"success");
+                        });
+
+                    });
+            });
+
+        });
+
+
+    });
+}
 //报名申请
 exports.applyschoolinfo=function(applyinfo,callback){
   usermodel.findById(new mongodb.ObjectId(applyinfo.userid),function(err,userdata){
@@ -1473,6 +1558,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       }
                       classtypedata.applycount=classtypedata.applycount+1;
                       coachdata.studentcoount=coachdata.studentcoount+1;
+                      classtypedata.save();
+                      coachdata.save();
                       return callback(null,"success");
                   });
 

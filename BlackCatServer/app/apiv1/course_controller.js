@@ -261,7 +261,19 @@ exports.sameTimeStudents=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
 
     });
+}
+exports.sameTimeStudentsv2=function(req,res){
+    var index =req.query.index;
+    var coachid = req.query.coachid;
+    var begintime=req.query.begintime;
+    var endtime=req.query.endtime;
+    courseserver.getSameTimeStudentsv2(coachid,begintime,endtime,index,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
 
+    });
 }
 // 教练评论
 exports.postCoachComment=function(req,res){
@@ -364,7 +376,7 @@ exports.postCoachLeave=function(req,res){
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
     if(Date.now()>new Date(leaveinfo.begintime*1000)|| new Date(leaveinfo.begintime*1000)>new Date(leaveinfo.endtime*1000)){
-        return res.json(new BaseReturnInfo(0,"请假时间错误"));
+        return res.json(new BaseReturnInfo(0,"该时段不能请假"));
     }
     courseserver.saveCoachLeaveInfo(leaveinfo ,function(err,data){
         if (err){

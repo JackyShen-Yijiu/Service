@@ -48,6 +48,8 @@ v1.get("/getproductdetail",appsystemController.getProductDetail);
 
 
 //======================================用户信息======================================
+//  用户报名验证 v1.1 版
+v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,userController.postenrollverificationv2);
 // 用户购买商品
 v1.post("/userinfo/buyproduct",ensureAuthorizedController.ensureAuthorized,userController.userBuyProduct);
 // 用户获取我购买的商品列表
@@ -128,6 +130,7 @@ v1.get("/getopencity",appsystemController.getOpenCitylist);
 
 
 //==============================预约课程(学生端)=========================================
+
 // 获取的报名结果信息
 v1.get("/userinfo/getapplyschoolinfo",ensureAuthorizedController.ensureAuthorized,userController.getapplyschoolinfo);
 // 获取我的预约进度
@@ -142,7 +145,7 @@ v1.post("/courseinfo/userreservationcourse",ensureAuthorizedController.ensureAut
 v1.get("/courseinfo/getmyreservation",ensureAuthorizedController.ensureAuthorized,courseController.getuserresveration);
 // 根据预约id获取详情
 v1.get("/courseinfo/userreservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,
-    courseController.userGetReservationInfo)
+    courseController.userGetReservationInfo);
 //获取课程的详信息
 v1.get("/courseinfo/getcourse/:courseid",ensureAuthorizedController.ensureAuthorized,courseController.getCourseDeatil);
 //用户取消预约
@@ -160,6 +163,9 @@ v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",
 // 用户报考
 v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized,userController.postApplyExamination);
 
+
+//获取同时段学员
+v1.get("/courseinfo/sametimestudentsv2",courseController.sameTimeStudentsv2);
 
 //=========================================教练端处理预约请求========================================================================================
 // 教练获取学员列表个人信息中心

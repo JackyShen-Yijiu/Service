@@ -375,6 +375,44 @@ exports.getMyApplyState=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 用户报考验证v2
+exports.postenrollverificationv2=function(req,res){
+    var applyinfo= {
+        name : req.body.name,
+        telephone : req.body.telephone,
+        code:req.body.code,
+        userid:req.body.userid,
+        schoolid:req.body.schoolid,
+        coachid:req.body.coachid,
+        classtypeid:req.body.classtypeid,
+        carmodel:req.body.carmodel,
+        subjectid:req.body.subjectid
+    };
+    if (applyinfo.name===undefined||applyinfo.code === undefined||
+        applyinfo.telephone === undefined||applyinfo.userid === undefined
+        ||applyinfo.schoolid === undefined ||applyinfo.coachid === undefined
+        ||applyinfo.carmodel === undefined ||applyinfo.subjectid === undefined
+        ||applyinfo.classtypeid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    if(applyinfo.carmodel.modelsid===undefined){
+        applyinfo.carmodel=JSON.parse(applyinfo.carmodel.toString());
+    }
+    if(applyinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.postenrollverificationv2(applyinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
+}
+
+
 // 用户报考验证
 exports.postenrollverification=function(req,res){
     var applyinfo= {
