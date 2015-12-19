@@ -624,6 +624,7 @@ exports.updateCoachInfo=function(req,res){
         }
         var returninfo=new BaseReturnInfo(1,"",data);
         returninfo.subject=subject;
+        console.log(returninfo);
         return res.json(returninfo);
     });
 }
