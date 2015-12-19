@@ -607,8 +607,39 @@ exports.coachComment=function(commnetinfo,callback){
 
     });
 };
+exports.getSameTimeStudentsv2=function(coachid,begintime,endtime,index,callback){
+    coachmode.findById(new mongodb.ObjectId(coachid))
+        .select("driveschool")
+        .exec(function(err,coachdata){
+            if(err){
+                return callback("查询教练出错："+err);
+            }
+            if(!coachdata){
+                return  callback("不存在教练信息");
+            }
+            if (coachdata.driveschool===undefined){
+                return callback(null,[]);
+            }
+            console.log( new  Date(begintime*1000));
+            console.log( new  Date(endtime*1000));
+            reservationmodel.find({"driveschool":new mongodb.ObjectId(coachdata.driveschool),
+                "begintime": { $gte: new  Date(begintime*1000), $lte:new Date(endtime*1000)},
+                    "reservationstate":{"$ne":2,"$ne":4}})
+                .select("userid")
+                .populate("userid","_id  name headportrait ")
+                .skip((index-1)*10)
+                .limit(10)
+                .exec(function(err,data){
+                    if(err){
+                        return callback("查询同时段学员出錯:"+t);
+                    }
+                    callback(null,data);
+                })
+
+        })
+        }
 // 获取同时段学员
-exports.getSameTimeStudents=function(reservationid,userid,index,callback){
+ exports.getSameTimeStudents=function(reservationid,userid,index,callback){
 
     reservationmodel.findById(new mongodb.ObjectId(reservationid),function(err,resdata){
         if(err||!resdata){
