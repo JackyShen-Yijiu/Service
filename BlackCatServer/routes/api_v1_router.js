@@ -57,7 +57,7 @@ v1.get('/code/:mobile', userController.fetchCode);
 // 验证用户是否存在
 v1.get("/userinfo/userexists",userController.verifyUserExists);
 // 检验验证码 (用户登后修改验证码使用)
-//v1.post('/Verification/:mobile', userController.fetchCode);
+v1.get('/Verificationsmscode', userController.verificationSmscode);
 //用户注册
 v1.post('/userinfo/signup', userController.postSignUp);
 //用户登录

@@ -113,6 +113,14 @@ exports.verifyUserExists=function(usertype,mobile,callback){
                 }
             });
     }
+};
+exports.verificationSmscode=function(mobile,code,callback){
+    checkSmsCode(mobile,code,function(err) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(null,"suncess");
+    })
 }
 // 修改记录
 payuserIntegral=function(payinfo,callback){
@@ -1788,7 +1796,7 @@ var  checkSmsCode=function(mobile,code,callback){
         }
         if (!instace)
         {
-            return callback("没有查询到此手机号");
+            return callback("验证码错误，请重新发送");
         }
         //console.log(instace);
         var  now=new Date();

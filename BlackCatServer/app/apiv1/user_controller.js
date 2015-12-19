@@ -4,20 +4,46 @@ var userserver=require('../../Server/user_server');
 
 
 var mobileVerify = /^1\d{10}$/;
+exports.verificationSmscode=function(req,res){
+    var mobile = req.query.mobile;
+    var code = req.query.code;
+    if (mobile === undefined||code===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"手机号错误",""));
+    }
+    var number = mobileVerify.exec(mobile);
+    if (number != mobile) {
+        return res.status(400).json(
+            new BaseReturnInfo(0,"手机号错误","")
+        );
+    }
+
+    userserver.verificationSmscode(mobile,code,function(err){
+        if(err){
+            return  res.json(
+                new BaseReturnInfo(0,err,""));
+        }
+        else
+        {
+            return  res.json(
+                new BaseReturnInfo(1,"","send success"));
+        }
+    });
+}
 // ???????????
 exports.fetchCode=function(req,res){
     var mobile = req.params.mobile;
 
     if (mobile === undefined) {
         //req.log.warn({err: 'no mobile in query string'});
-        return; res.status(400).json(
-            new BaseReturnInfo(0,"No mobile number",""));
+        return res.json(
+            new BaseReturnInfo(0,"手机号错误",""));
     }
     var number = mobileVerify.exec(mobile);
     if (number != mobile) {
         //req.log.warn({err: 'invalid mobile number'});
         return res.status(400).json(
-            new BaseReturnInfo(0,"Bad mobile number","")
+            new BaseReturnInfo(0,"手机号错误","")
         );
     }
     //  console.log("fetchCode mobile:"+mobile)
