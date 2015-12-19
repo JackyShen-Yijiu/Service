@@ -617,14 +617,14 @@ exports.updateCoachInfo=function(req,res){
     else{
         updateuserinfo.trainfield=undefined;
     }
-    //console.log(updateuserinfo)
+    console.log(updateuserinfo)
     userserver.updateCoachServer(updateuserinfo,function(err,data,subject){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
         var returninfo=new BaseReturnInfo(1,"",data);
         returninfo.subject=subject;
-        console.log(returninfo);
+        //console.log(returninfo);
         return res.json(returninfo);
     });
 }
