@@ -1654,7 +1654,6 @@ exports.updateCoachServer=function(updateinfo,callback){
             coachdata.platenumber = updateinfo.platenumber ? updateinfo.platenumber : coachdata.platenumber;
             //coachdata.shuttlemsg=updateinfo.shuttlemsg ? updateinfo.shuttlemsg:coachdata.shuttlemsg;
             //coachdata.is_shuttle=updateinfo.is_shuttle ? (updateinfo.carmodel==0? false:true) :coachdata.carmodel;
-            console.log(coachdata);
             if (updateinfo.driveschoolid) {
                 schoolModel.findById(new mongodb.ObjectId(updateinfo.driveschoolid), function (err, schooldata) {
                     if (err || !schooldata) {
