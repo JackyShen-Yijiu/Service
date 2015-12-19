@@ -1,7 +1,7 @@
 /**
  * Created by v-lyf on 2015/8/16.
  */
-
+exports.weeks=["周一","周二","周三","周四","周五","周六","周日"];
 exports.LogType={
     log:1,
     err:2,

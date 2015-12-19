@@ -4,20 +4,46 @@ var userserver=require('../../Server/user_server');
 
 
 var mobileVerify = /^1\d{10}$/;
+exports.verificationSmscode=function(req,res){
+    var mobile = req.query.mobile;
+    var code = req.query.code;
+    if (mobile === undefined||code===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"手机号错误",""));
+    }
+    var number = mobileVerify.exec(mobile);
+    if (number != mobile) {
+        return res.status(400).json(
+            new BaseReturnInfo(0,"手机号错误","")
+        );
+    }
+
+    userserver.verificationSmscode(mobile,code,function(err){
+        if(err){
+            return  res.json(
+                new BaseReturnInfo(0,err,""));
+        }
+        else
+        {
+            return  res.json(
+                new BaseReturnInfo(1,"","send success"));
+        }
+    });
+}
 // ???????????
 exports.fetchCode=function(req,res){
     var mobile = req.params.mobile;
 
     if (mobile === undefined) {
         //req.log.warn({err: 'no mobile in query string'});
-        return; res.status(400).json(
-            new BaseReturnInfo(0,"No mobile number",""));
+        return res.json(
+            new BaseReturnInfo(0,"手机号错误",""));
     }
     var number = mobileVerify.exec(mobile);
     if (number != mobile) {
         //req.log.warn({err: 'invalid mobile number'});
         return res.status(400).json(
-            new BaseReturnInfo(0,"Bad mobile number","")
+            new BaseReturnInfo(0,"手机号错误","")
         );
     }
     //  console.log("fetchCode mobile:"+mobile)
@@ -279,6 +305,26 @@ exports.postCoachSetClass=function(req,res){
     });
 
 }
+// 获取我的报名结果
+ exports.getapplyschoolinfo=function(req,res){
+     var userid =req.query.userid;
+     if(userid===undefined){
+         return res.json(
+             new BaseReturnInfo(0,"参数不完整",""));
+     }
+     if(userid!=req.userId){
+         return res.json(
+             new BaseReturnInfo(0,"无法确认请求用户",""));
+     };
+     userserver.getapplyschoolinfo(userid,function(err,data){
+         if(err){
+             return res.json(new BaseReturnInfo(0,err,{}));
+         }
+         return res.json(new BaseReturnInfo(1,"",data));
+     });
+ }
+
+
 //获取我的学车进度
 exports.getMyProgress=function(req,res){
 var userid =req.query.userid;
@@ -371,7 +417,8 @@ exports.postapplySchool=function(req,res){
         coachid:req.body.coachid,
         classtypeid:req.body.classtypeid,
         userpic:req.body.userpic,
-        carmodel:req.body.carmodel
+        carmodel:req.body.carmodel,
+        applyagain:req.body.applyagain?req.body.applyagain:0
         };
     if (applyinfo.name===undefined||applyinfo.idcardnumber === undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined
@@ -476,12 +523,13 @@ exports.coachSetWorkTime=function(req,res){
         worktimedesc:req.body.worktimedesc,
         begintimeint:req.body.begintimeint,
         endtimeint:req.body.endtimeint,
-    }
-    if (timeinfo.coachid===undefined|| timeinfo.workweek===undefined|| timeinfo.worktimedesc===undefined||
+    };
+    if (timeinfo.coachid===undefined|| timeinfo.workweek===undefined||
         timeinfo.begintimeint===undefined||timeinfo.endtimeint===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完成",""));
     };
+
     if(timeinfo.coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
@@ -570,11 +618,13 @@ exports.updateCoachInfo=function(req,res){
         updateuserinfo.trainfield=undefined;
     }
     //console.log(updateuserinfo)
-    userserver.updateCoachServer(updateuserinfo,function(err,data){
+    userserver.updateCoachServer(updateuserinfo,function(err,data,subject){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(1,"",data));
+        var returninfo=new BaseReturnInfo(1,"",data);
+        returninfo.subject=subject;
+        return res.json(returninfo);
     });
 }
 // 教练登录后获取自己的详细信息 (返回数据和教练登录一样)

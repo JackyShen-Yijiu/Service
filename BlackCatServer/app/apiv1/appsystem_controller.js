@@ -86,6 +86,12 @@ exports.GetqiniuupToken=function(req,res){
     var token =qiniu.getQiniuUpToken();
     return res.json(new BaseReturnInfo(1,'',token));
 }
+exports.GetqiniuupToken2=function(req,res){
+    var token =qiniu.getQiniuUpToken();
+    res.json({
+        uptoken: token
+    })
+}
 exports.getExamQuestion=function (req,res){
    return res.json(new BaseReturnInfo(1,"",commondataServer.examquestioninfo))
 }
@@ -119,6 +125,17 @@ exports.getProductDetail=function(req,res){
         return   res.json(new BaseReturnInfo(0,"参数错误",{}));
     }
     sysstemserver.getProductDetail(productid,function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+
+}
+
+//  获取开通城市列表
+exports.getOpenCitylist=function(req,res){
+    sysstemserver.getOpenCitylist(function(err ,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));
         }

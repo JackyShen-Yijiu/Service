@@ -1,6 +1,6 @@
 
 
-var mongodb = require('./mongodb.js');
+var mongodb =     require('./mongodb.js');
 var coachmode=mongodb.CoachModel;
 var coursemode=mongodb.CourseModel;
 var usermodel=mongodb.UserModel;
@@ -16,17 +16,31 @@ var appTypeEmun=require("../custommodel/emunapptype");
 var mallProductModel=mongodb.MallProdcutsModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
 var shcoolsummary =mongodb.SchoolDaySummaryModel;
+var   cityinfo=mongodb.CityiInfoModel;
 var auditurl=require("../Config/sysconfig").validationurl;
 require('date-utils');
 var async = require('async');
+var fs=require("fs");
 
-var test= new industryNewsModel();
+cityinfo.find({"is_open":true})
+    .select("indexid name")
+    .sort({index:1})
+    .exec(function(err,data){
+        console.log(data);
+    })
+//var JsonObj=JSON.parse(fs.readFileSync('./test.json'));
+//console.log(JsonObj);
+//JsonObj.forEach(function(r,index){
+//    var one=new cityinfo(r);
+//    one.save();
+//});
+/*var test= new industryNewsModel();
 test.title="邢台14岁“驾驶员”超载驾车为“练手",
 test.logimg="http://www.bjjatd.com/images/img05.jpg",
 test.description="河北新闻网邢台电(燕赵都市报记者张会武 通讯员王宏屹、崔信行)12月1日上午，" +
     "一少年无证驾驶两轮摩托车超员载人，并在受到执勤民警查纠时强行闯红灯逃离";
 test.contenturl="http://www.bjjatd.com/content.aspx?cateid=12&articleid=20";
-test.save();
+test.save();*/
 
 updateuserinfo=function(){
     order.find({},function(err,data){

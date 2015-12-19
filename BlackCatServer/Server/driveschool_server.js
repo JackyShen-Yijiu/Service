@@ -8,7 +8,78 @@ var schoolModel=mongodb.DriveSchoolModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var classtypeModel=mongodb.ClassTypeModel;
 var geolib = require('geolib');
+var _ = require("underscore");
 
+exports.searchDriverSchool=function(searchinfo,callback){
+
+    var searchcondition= {};
+    if (searchinfo.cityname!=""){
+        searchcondition.city=new RegExp(searchinfo.cityname);
+    }else{
+        searchcondition.loc={$nearSphere:{$geometry:{type:'Point',
+            coordinates:[searchinfo.longitude, searchinfo.latitude]}, $maxDistance: 100000}}
+    }
+    if (searchinfo.schoolname!=""){
+        searchcondition.name=new RegExp(searchinfo.schoolname);
+    }
+    if (searchinfo.licensetype!=""&&parseInt(searchinfo.licensetype)!=0){
+        searchcondition.licensetype={"$in":[searchinfo.licensetype]}
+    }
+    var ordercondition={};
+    // 0 默认 1距离 2 评分  3 价格
+    if(searchinfo.ordertype==2){
+        ordercondition.schoollevel=-1;
+    }else if (searchinfo.ordertype==2){
+        ordercondition.minprice=1;
+    }
+    console.log(searchcondition);
+    console.log(ordercondition);
+    console.log(searchinfo);
+    schoolModel.find(searchcondition)
+        .select("")
+        .sort(ordercondition)
+        .skip((searchinfo.index-1)*10)
+        .limit(searchinfo.count)
+        .exec(function(err,driveschool){
+            if (err ) {
+                console.log(err);
+                callback("查找驾校出错："+err);
+            } else {
+                process.nextTick(function(){
+                    driveschoollist=[];
+                    driveschool.forEach(function(r, idx){
+                        var oneschool= {
+                            distance : geolib.getDistance(
+                                {latitude: searchinfo.latitude, longitude: searchinfo.longitude},
+                                {latitude: r.latitude, longitude: r.longitude},
+                                10),
+                            id: r._id,
+                            schoolid: r._id,
+                            name:r.name,
+                            logoimg:r.logoimg,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            address: r.address,
+                            maxprice: r.maxprice,
+                            minprice: r.minprice,
+                            schoollevel: r.schoollevel,
+                            coachcount: r.coachcount? r.coachcount:0,
+                            commentcount: r.commentcount? r.commentcount:0,
+                            passingrate: r.passingrate
+                        }
+                        driveschoollist.push(oneschool);
+                        //  r.restaurantId = r._id;
+                        // delete(r._id);
+                    });
+                     if (searchinfo.ordertype==0)
+                     {
+                         driveschoollist=  _.sortBy(driveschoollist,"distance")
+                     }
+                    callback(null,driveschoollist);
+                });
+            }
+        })
+}
 exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
     schoolModel.getNearDriverSchool(latitude, longitude, radius ,function(err ,driveschool){
         if (err ) {
@@ -35,7 +106,7 @@ exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
                     minprice: r.minprice,
                     passingrate: r.passingrate
                    }
-                driveschoollist.push(oneschool)
+                driveschoollist.push(oneschool);
               //  r.restaurantId = r._id;
                // delete(r._id);
             });

@@ -113,6 +113,14 @@ exports.verifyUserExists=function(usertype,mobile,callback){
                 }
             });
     }
+};
+exports.verificationSmscode=function(mobile,code,callback){
+    checkSmsCode(mobile,code,function(err) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(null,"suncess");
+    })
 }
 // 修改记录
 payuserIntegral=function(payinfo,callback){
@@ -1280,6 +1288,40 @@ exports.getMyWallet=function(queryinfo,callback){
             })
     }
 }
+exports.getapplyschoolinfo=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("_id  name mobile applystate applyinfo   scanauditurl applyschool" +
+            " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo")
+        .populate("applyschool"," _id  applynotes")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错");
+            }
+            if (!data){
+                return callback("没有查询到用户的相关信息");
+            }
+            if(data.applystate==appTypeEmun.ApplyState.NotApply){
+                return callback("该用户没有提交报名申请");
+            }
+            console.log(data)
+            var userinfo={
+                userid:data._id,
+                name: data.name,
+                mobile:data.mobile,
+                scanauditurl:data.scanauditurl,
+                applystate:data.applystate,
+                applytime:(data.applyinfo.applytime).toFormat("YYYY-MM-DD"),
+                endtime:(data.applyinfo.applytime).addMonths(1).toFormat("YYYY-MM-DD"),
+                applyschoolinfo:data.applyschoolinfo,
+                applycoachinfo:data.applycoachinfo,
+                carmodel:data.carmodel,
+                applyclasstypeinfo:data.applyclasstypeinfo,
+                applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
+            }
+            return callback(null,userinfo);
+        })
+}
+
 // 获取学习进度
 exports.getMyProgress=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
@@ -1372,8 +1414,10 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
+      if (applyinfo.applyagain!=1){
       if(userdata.applystate>appTypeEmun.ApplyState.NotApply){
           return  callback("此用户已经报名，请查看报名详情页");
+      }
       }
       // 检查报名驾校和教练
       coachmode.findById(new mongodb.ObjectId(applyinfo.coachid),function(err,coachdata){
@@ -1516,13 +1560,24 @@ exports.applyVerification=function(applyinfo,callback){
 }
 // 更新教练的工作时间
 exports.coachSetWorkTime=function(timeinfo,callback){
+    var weekdesc="";
+    if (timeinfo.workweek.length==7){
+        weekdesc="全周";
+    }
+    else{
+        for(i=0;i<timeinfo.workweek.length;i++){
+            weekdesc=weekdesc+appTypeEmun.weeks[timeinfo.workweek[i]];
+        }
+    }
+    weekdesc =weekdesc +" "+timeinfo.begintimeint+":00--"+timeinfo.endtimeint+":00";
+
     coachmode.findById(new mongodb.ObjectId(timeinfo.coachid),function(err,coachdata){
         if (err||!coachdata){
             return  callback("查询教练出错："+err);
         }
        var   weeklist=timeinfo.workweek.split(",");
         coachdata.workweek=weeklist;
-        coachdata.worktimedesc=timeinfo.worktimedesc;
+        coachdata.worktimedesc=weekdesc;
         coachdata.worktimespace.begintimeint=timeinfo.begintimeint;
         coachdata.worktimespace.endtimeint=timeinfo.endtimeint;
         var worktimes=[];
@@ -1622,7 +1677,7 @@ exports.updateCoachServer=function(updateinfo,callback){
                                 if (err) {
                                     return callback("保存教练信息出错：" + err);
                                 }
-                                return callback(null, "success");
+                                return callback(null, "success",data.subject);
                             })
 
                         })
@@ -1652,7 +1707,8 @@ exports.updateCoachServer=function(updateinfo,callback){
                         if (err) {
                             return callback("保存教练信息出错：" + err);
                         }
-                        return callback(null, "success");
+
+                        return callback(null, "success",data.subject);
                     })
 
                 })
@@ -1752,7 +1808,7 @@ var  checkSmsCode=function(mobile,code,callback){
         }
         if (!instace)
         {
-            return callback("没有查询到此手机号");
+            return callback("验证码错误，请重新发送");
         }
         //console.log(instace);
         var  now=new Date();

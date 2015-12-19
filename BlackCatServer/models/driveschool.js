@@ -38,6 +38,7 @@ var DriveSchoolSchema=new Schema({
     county:{type:String,default:''},// 县
     address: {type:String,default:''}, // 地址
     responsible:{type:String,default:''}, // 负责人
+    responsiblelist:[{type:String,default:''}],// 负责人列表
     phone:{type:String,default:''},  //联系电话
     phonelist:[{type:String,default:''}],  //联系电话
     website:{type:String,default:''},  // 网址

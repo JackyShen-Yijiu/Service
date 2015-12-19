@@ -3,10 +3,13 @@
  */
 
 var mongodb = require('../models/mongodb.js');
+var cache=require("../Common/cache");
+var _ = require("underscore");
 var feedbackModel=mongodb.FeedBackModel;
 var headLineModel=mongodb.HeadLineNewsModel;
 var courseWareModel=mongodb.CourseWareModel;
 var mallProductModel=mongodb.MallProdcutsModel;
+var cityInfoModel=mongodb.CityiInfoModel;
 
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
@@ -111,5 +114,37 @@ exports.getProductDetail=function(productid,callback){
             return callback("没有查到相应的产品");
         }
     })
+}
+
+
+exports.getOpenCitylist=function(callback){
+   cache.get("opencitylist",function(err,data){
+       if(err){
+           return callback(err);
+       }
+       if (data) {
+           return callback(null,data);
+       }else{
+           cityInfoModel.find({"is_open":true})
+               .select("indexid name")
+               .sort({index:1})
+               .exec(function(err,data){
+                   if(err){
+                       return callback("查找出错："+err);
+                   }
+                   console.log(data);
+                   list= _.map(data,function(item,i){
+                       var one={
+                           id:item.indexid,
+                           name:item.name
+                       }
+                       return one;
+                   });
+                   cache.set("opencitylist",list,60*5,function(err){});
+                   return callback(null,list);
+               })
+       }
+   })
+
 }
 
