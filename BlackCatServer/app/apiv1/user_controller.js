@@ -464,7 +464,7 @@ exports.updateUserInfo=function(req,res){
        gender:req.body.gender,
        signature:req.body.signature
    }
-    console.log(updateuserinfo);
+    //console.log(updateuserinfo);
 
     if (updateuserinfo.userid===undefined) {
         return res.json(
@@ -595,7 +595,7 @@ exports.updateCoachInfo=function(req,res){
         platenumber:req.body.platenumber, // 车牌号
         //shuttlemsg:req.body.shuttlemsg  // 车送说明
     }
-    console.log(updateuserinfo)
+    console.log(updateuserinfo);
     if (updateuserinfo.coachid===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数错误",""));
