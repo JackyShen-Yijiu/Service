@@ -610,14 +610,14 @@ exports.postPersonalSetting=function(req,res){
 }
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
-    //console.log(req.body);
+    console.log(req.body);
     var updateuserinfo ={
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
         introduction: req.body.introduction, // 简介
         gender:req.body.Gender, //性别
         //email: req.body.email,  // 邮件
-        headportrait: req.body.headportrait,
+        headportrait:JSON.parse(req.body.headportrait),
         address: req.body.address, // 地址
         subject :req.body.subject,   //科目
         driveschoolid:req.body.driveschoolinfo,
