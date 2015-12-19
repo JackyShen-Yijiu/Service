@@ -705,7 +705,21 @@ exports.GetComment=function(queryinfo,callback){
                 if(err){
                     return callback("查询评论出错："+err);
                 }
-                return callback(null,data);
+                process.nextTick(function(){
+                    var commnetlist=[];
+                    data.forEach(function(r,index){
+                        var onecommnet={
+                            _id: r._id,
+                            coachid : r.coachid,
+                            coachcomment: r.coachcomment,
+                            finishtime: r.finishtime,
+                            timestamp:(new Date(r.finishtime)).getTime()
+                        }
+                        commnetlist.push(onecommnet);
+                    })
+                    return callback(null,commnetlist);
+                });
+
             })
     }else if(queryinfo.type==appTypeEmun.UserType.Coach){
         reservationmodel.find({"coachid":new mongodb.ObjectId(queryinfo.userid),"is_comment":"true"})
@@ -718,7 +732,21 @@ exports.GetComment=function(queryinfo,callback){
                 if(err){
                     return callback("查询评论出错："+err);
                 }
-                return callback(null,data);
+                process.nextTick(function(){
+                    var commnetlist=[];
+                    data.forEach(function(r,index){
+                        var onecommnet={
+                            _id: r._id,
+                            userid : r.userid,
+                            comment: r.comment,
+                            finishtime: r.finishtime,
+                            timestamp:(new Date(r.finishtime)).getTime()
+                        }
+                        commnetlist.push(onecommnet);
+                    })
+                    return callback(null,commnetlist);
+                });
+
             })
     }
 }

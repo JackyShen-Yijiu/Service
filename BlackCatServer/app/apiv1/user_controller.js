@@ -572,7 +572,7 @@ exports.postPersonalSetting=function(req,res){
 }
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
-    console.log(req.body);
+    //console.log(req.body);
     var updateuserinfo ={
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
@@ -595,7 +595,6 @@ exports.updateCoachInfo=function(req,res){
         platenumber:req.body.platenumber, // 车牌号
         //shuttlemsg:req.body.shuttlemsg  // 车送说明
     }
-    console.log(updateuserinfo);
     if (updateuserinfo.coachid===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数错误",""));

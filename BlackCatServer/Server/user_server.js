@@ -44,18 +44,18 @@ exports.getCodebyMolile=function(mobilenumber,callback){
         {
             if(err)
             {
-                return callback("Error occured: " + err);
+                return callback("发送验证码错误: " + err);
             }
             if(instace){
                 var  now= new Date();
                 //console.log(now-instace.createdTime);
                 if ((now-instace.createdTime)<resendTimeout*1000){
-                    return callback("Wait a moment to send again");
+                    return callback("您发送过于频繁，请稍后再发");
                 }
                 else{
                     instace.remove(function(err){
                         if(err){
-                            return callback("Error occured while removing: " + err,"");
+                            return callback("发送验证码错误: " + err);
                         }
                         if(mobilenumber.substr(0,8)=="18444444"){
                             addtestsmscode(mobilenumber,callback)
