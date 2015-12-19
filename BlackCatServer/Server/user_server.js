@@ -1688,7 +1688,7 @@ exports.updateCoachServer=function(updateinfo,callback){
                         if (err) {
                             return callback("保存教练信息出错：" + err);
                         }
-                        return callback(null, "success");
+                        return callback(null, "success",data.subject);
                     })}
 
                 })
