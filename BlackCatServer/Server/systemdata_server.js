@@ -78,7 +78,7 @@ exports.getMallProduct=function(callback){
                         viewcount: r.viewcount,
                         buycount: r.buycount,
                         detailsimg: r.detailsimg,
-                        is_scanconsumption: data.is_scanconsumption?data.is_scanconsumption:false
+                        is_scanconsumption: r.is_scanconsumption?r.is_scanconsumption:false
                     }
 
                     if (r.is_top){
