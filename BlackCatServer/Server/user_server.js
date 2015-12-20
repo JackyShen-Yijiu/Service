@@ -212,12 +212,12 @@ exports.userBuyProduct=function(info,callback){
                 if(!userdata){
                     return callback("没有查找到用户")
                 }
-                userpayprocess(userdata,info,function(err,data){
+                userpayprocess(userdata,info,function(err,data,extrainfo){
                     if(err){
                         return callback(err);
                     }
                     else{
-                        return callback(null,data);
+                        return callback(null,data,extrainfo);
                     }
 
                 })
@@ -1733,7 +1733,7 @@ exports.updateCoachServer=function(updateinfo,callback){
             //coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
             coachdata.headportrait = updateinfo.headportrait ? updateinfo.headportrait : coachdata.headportrait;
             coachdata.address = updateinfo.address ? updateinfo.address : coachdata.address;
-            coachdata.subject = updateinfo.subject ? JSON.parse(updateinfo.subject) : coachdata.subject;
+            coachdata.subject = updateinfo.subject ? JSON.parse(updateinfo.subject.toString()) : coachdata.subject;
             coachdata.Seniority = updateinfo.Seniority ? updateinfo.Seniority : coachdata.Seniority;
             coachdata.passrate = updateinfo.passrate ? updateinfo.passrate : coachdata.passrate;
             //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
