@@ -648,7 +648,7 @@ exports.updateCoachInfo=function(req,res){
     else{
         updateuserinfo.driveschoolid=undefined;
     }
-    if (updateuserinfo.subject!=undefined && updateuserinfo.subject.id===subjectid){
+    if (updateuserinfo.subject!=undefined && updateuserinfo.subject[0].subjectid===undefined){
         updateuserinfo.subject=JSON.parse(updateuserinfo.subject);
     }
     if(updateuserinfo.trainfield!=undefined && updateuserinfo.trainfield.id!=undefined){
