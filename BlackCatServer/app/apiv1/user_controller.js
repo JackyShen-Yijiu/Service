@@ -115,12 +115,12 @@ exports.userBuyProduct=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    userserver.userBuyProduct(postinfo,function(err,data){
+    userserver.userBuyProduct(postinfo,function(err,data,extrainfo){
         if(err){
             return res.json(new  BaseReturnInfo(0,err,{}));
         }
         else{
-            return res.json(new BaseReturnInfo(1,"",data));
+            return res.json(new BaseReturnInfo(1,"",data,extrainfo));
         }
     })
 

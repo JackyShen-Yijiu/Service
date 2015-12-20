@@ -77,7 +77,8 @@ exports.getMallProduct=function(callback){
                         productdesc: r.productdesc,
                         viewcount: r.viewcount,
                         buycount: r.buycount,
-                        detailsimg: r.detailsimg
+                        detailsimg: r.detailsimg,
+                        is_scanconsumption: data.is_scanconsumption?data.is_scanconsumption:false
                     }
 
                     if (r.is_top){
@@ -106,7 +107,8 @@ exports.getProductDetail=function(productid,callback){
                 productdesc: data.productdesc,
                 viewcount: data.viewcount,
                 buycount: data.buycount,
-                detailsimg: data.detailsimg
+                detailsimg: data.detailsimg,
+                is_scanconsumption:data.is_scanconsumption?data.is_scanconsumption:false
             }
             return callback(null,oneproduct);
         }else
