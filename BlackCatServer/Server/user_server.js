@@ -191,7 +191,11 @@ userpayprocess=function(userdata,info,callback){
                     { $set: { "orderscanaduiturl":auditurl.producturl+data._id }},function(err){});
                 userdata.scanauditurl=auditurl.applyurl+userdata._id;
                 mallProductModel.update({_id:new mongodb.ObjectId(productdata._id)},{$inc: { buycount: 1 }},function(err){});
-                return callback(null,"suncess");
+                var  orderinfo={
+                    orderid:data._id,
+                    orderscanaduiturl:auditurl.producturl+data._id
+                }
+                return callback(null,"suncess",orderinfo);
             })
         })
     })

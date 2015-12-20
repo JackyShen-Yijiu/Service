@@ -1,12 +1,13 @@
 /**
  * Created by v-lyf on 2015/8/16.
  */
-/*¶¨Òå ·µ»ØÊý¾ÝµÄÀàÐÍ*/
+/*ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½*/
 
-function BaseReturnInfo(type,msg,data){
+function BaseReturnInfo(type,msg,data,extrainfo){
     this.type=type;
     this.msg=msg;
     this.data=data;
+    this.extra=extrainfo;
 }
 
 module.exports=BaseReturnInfo;
