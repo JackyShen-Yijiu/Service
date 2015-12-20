@@ -1727,16 +1727,13 @@ exports.updateCoachServer=function(updateinfo,callback){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
             }
-            console.log((updateinfo.subject));
-            console.log(JSON.stringify(updateinfo.subject));
-            console.log(JSON.parse(JSON.stringify(updateinfo.subject)));
             coachdata.name = updateinfo.name ? updateinfo.name : coachdata.name;
             coachdata.Gender = updateinfo.gender ? updateinfo.gender : coachdata.Gender;
             coachdata.introduction = updateinfo.introduction ? updateinfo.introduction : coachdata.introduction;
             //coachdata.email=updateinfo.email ? updateinfo.email:coachdata.email;
             coachdata.headportrait = updateinfo.headportrait ? updateinfo.headportrait : coachdata.headportrait;
             coachdata.address = updateinfo.address ? updateinfo.address : coachdata.address;
-            coachdata.subject = updateinfo.subject ? JSON.parse(JSON.stringify(updateinfo.subject)) : coachdata.subject;
+            coachdata.subject = updateinfo.subject ? updateinfo.subject : coachdata.subject;
             coachdata.Seniority = updateinfo.Seniority ? updateinfo.Seniority : coachdata.Seniority;
             coachdata.passrate = updateinfo.passrate ? updateinfo.passrate : coachdata.passrate;
             //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
