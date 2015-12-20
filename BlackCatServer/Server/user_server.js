@@ -1727,6 +1727,9 @@ exports.updateCoachServer=function(updateinfo,callback){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
             }
+            console.log((updateinfo.subject));
+            console.log(JSON.stringify(updateinfo.subject));
+            console.log(JSON.parse(JSON.stringify(updateinfo.subject)));
             coachdata.name = updateinfo.name ? updateinfo.name : coachdata.name;
             coachdata.Gender = updateinfo.gender ? updateinfo.gender : coachdata.Gender;
             coachdata.introduction = updateinfo.introduction ? updateinfo.introduction : coachdata.introduction;
