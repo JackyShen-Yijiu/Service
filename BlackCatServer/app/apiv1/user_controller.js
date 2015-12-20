@@ -610,7 +610,7 @@ exports.postPersonalSetting=function(req,res){
 }
 //更新教练的基本信息
 exports.updateCoachInfo=function(req,res){
-    //console.log(req.body);
+    console.log(req.body);
     var updateuserinfo ={
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
