@@ -1651,18 +1651,14 @@ exports.applyVerification=function(applyinfo,callback){
 }
 // 更新教练的工作时间
 exports.coachSetWorkTime=function(timeinfo,callback){
+    var   weeklist=timeinfo.workweek.split(",");
     var weekdesc="";
-    console.log(timeinfo.workweek);
-    if (timeinfo.workweek.length==7){
+    if (weeklist.length==7){
         weekdesc="全周";
     }
     else{
-        console.log(timeinfo.workweek.length);
-        for(i=0;i<timeinfo.workweek.length;i++){
-            console.log(weekdesc);
-            console.log(timeinfo.workweek[i]-1);
-            console.log(appTypeEmun.weeks[timeinfo.workweek[i]-1]);
-            weekdesc=weekdesc+appTypeEmun.weeks[timeinfo.workweek[i]-1];
+        for(i=0;i<weeklist.length;i++){
+            weekdesc=weekdesc+appTypeEmun.weeks[weeklist[i]-1];
         }
     }
     weekdesc =weekdesc +" "+timeinfo.begintimeint+":00--"+timeinfo.endtimeint+":00";
