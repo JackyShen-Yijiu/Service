@@ -69,7 +69,7 @@ v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,
 // 用户报名验证（对于已经报名的用户）
 v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthorized,userController.postenrollverification);
 // 获取我的报名状态
-v1.get('/userinfo/getmyapplystate',ensureAuthorizedController.ensureAuthorized,userController.getMyApplyState)
+v1.get('/userinfo/getmyapplystate',ensureAuthorizedController.ensureAuthorized,userController.getMyApplyState);
 // 用户更新信息
 v1.post('/userinfo/updateuserinfo',ensureAuthorizedController.ensureAuthorized,userController.updateUserInfo);
 v1.post('/userinfo/updatecoachinfo',ensureAuthorizedController.ensureAuthorized,userController.updateCoachInfo);
