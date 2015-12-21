@@ -1514,9 +1514,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
           searchcoachinfo.driveschool=new mongodb.ObjectId(applyinfo.schoolid);
           searchcoachinfo.is_validation=true
       }else{
-      var searchcoachinfo={
-          _id:new mongodb.ObjectId(applyinfo.coachid)
-      }}
+          searchcoachinfo._id=new mongodb.ObjectId(applyinfo.coachid)
+      }
       // 检查报名驾校和教练
       coachmode.findOne(searchcoachinfo,function(err,coachdata){
           if(err||!coachdata){
