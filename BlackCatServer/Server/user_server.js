@@ -1658,7 +1658,9 @@ exports.coachSetWorkTime=function(timeinfo,callback){
     }
     else{
         for(i=0;i<weeklist.length;i++){
-            weekdesc=weekdesc+appTypeEmun.weeks[weeklist[i]-1];
+
+            if(appTypeEmun.weeks[weeklist[i]-1]!=undefined){
+            weekdesc=weekdesc+appTypeEmun.weeks[weeklist[i]-1];}
         }
     }
     weekdesc =weekdesc +" "+timeinfo.begintimeint+":00--"+timeinfo.endtimeint+":00";
