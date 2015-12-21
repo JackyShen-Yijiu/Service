@@ -1657,8 +1657,11 @@ exports.coachSetWorkTime=function(timeinfo,callback){
         weekdesc="全周";
     }
     else{
+        console.log(timeinfo.workweek.length);
         for(i=0;i<timeinfo.workweek.length;i++){
             console.log(weekdesc);
+            console.log(timeinfo.workweek[i]-1);
+            console.log(appTypeEmun.weeks[timeinfo.workweek[i]-1]);
             weekdesc=weekdesc+appTypeEmun.weeks[timeinfo.workweek[i]-1];
         }
     }
@@ -1678,8 +1681,8 @@ exports.coachSetWorkTime=function(timeinfo,callback){
         for(var i=parseInt(timeinfo.begintimeint);i<=parseInt(timeinfo.endtimeint);i++){
             console.log(i.toString()+":00:00");
             appWorkTimes.forEach(function(r,index){
-                console.log(r.begintime);
-                console.log(i.toString()+":00:00");
+                //console.log(r.begintime);
+                //console.log(i.toString()+":00:00");
                 if(r.begintime== i.toString()+":00:00"){
                     worktimes.push(appWorkTimes[index]);
                 }
