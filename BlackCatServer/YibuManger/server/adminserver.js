@@ -73,17 +73,18 @@ var defaultFun={
             workbegintime:req.body.workbegintime,
             workendtime:req.body.workendtime,
             phonelist:req.body.phonelist
-        }
-        schoolinfo.licensetype= schoolinfo.licensetype.toUpperCase();
+        };
+console.log(schoolinfo.cartype);
         schoolinfo.loc={type:"Point",coordinates:[schoolinfo.longitude,schoolinfo.latitude]};
-        schoolinfo.phonelist=schoolinfo.phonelist.split("||");
-        schoolinfo.licensetype=schoolinfo.licensetype.split("||");
-        schoolinfo.cartype=schoolinfo.cartype.split("||");
-        schoolinfo.schoolalbum=schoolinfo.schoolalbum.split("||");
-        schoolinfo.responsiblelist=schoolinfo.responsiblelist.split("||");
+        schoolinfo.licensetype=schoolinfo.licensetype?schoolinfo.licensetype.split("||"):undefined;
+        schoolinfo.cartype=schoolinfo.cartype?schoolinfo.cartype.split("||"):undefined;
+        schoolinfo.schoolalbum=schoolinfo.schoolalbum?schoolinfo.schoolalbum.split("||"):undefined;
+
+        schoolinfo.responsiblelist=schoolinfo.responsiblelist?schoolinfo.responsiblelist.split("||"):undefined;
         if(schoolinfo.responsiblelist&&schoolinfo.responsiblelist.length>0){
             schoolinfo.responsible=schoolinfo.responsiblelist[0];
         }
+
         return schoolinfo;
 },
     getfiledinfo:function(req){
@@ -264,22 +265,28 @@ exports.saveSchoolInfo=function(req,res){
 }
 
 exports.updateSchoolInfo=function(req,res){
-    var schoolid= req.body.schoolid;
-    if (schoolid===undefined||schoolid==""){
-        res.json(new BaseReturnInfo(0, "参数错误", ""));
-    }
-    schoolinfo=defaultFun.getschoolinfo(req);
-
-    var conditions = {_id : schoolid};
-    req.body.updateDate = new Date();
-    var update = {$set : schoolinfo};
-    schoolModel.update(conditions, update,function(err,data){
-        if(err){
-            return res.json(new BaseReturnInfo(0, "修改驾校信息出错："+err, "") );
-        }else{
-            return res.json(new BaseReturnInfo(1, "", "sucess") );
+    //console.log(req.body);
+    try {
+        var schoolid = req.body.schoolid;
+        if (schoolid === undefined || schoolid == "") {
+            res.json(new BaseReturnInfo(0, "参数错误", ""));
         }
-    })
+        schoolinfo = defaultFun.getschoolinfo(req);
+        console.log(schoolinfo);
+        var conditions = {_id: schoolid};
+        req.body.updateDate = new Date();
+        var update = {$set: schoolinfo};
+        schoolModel.update(conditions, update, function (err, data) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, "修改驾校信息出错：" + err, ""));
+            } else {
+                return res.json(new BaseReturnInfo(1, "", "sucess"));
+            }
+        })
+    }
+    catch (ex){
+        return res.json(new BaseReturnInfo(0, "修改驾校信息出错：" + ex.message, ""));
+    }
 
 
 }
@@ -310,7 +317,7 @@ exports.getSchoolInfoById=function(req,res){
             website:schooldata.website,
             email:schooldata.email,
             businesslicensenumber:schooldata.businesslicensenumber,
-            organizationcode:schooldatay.organizationcode,
+            organizationcode:schooldata.organizationcode,
             registertime:schooldata.registertime,
             schoollevel:schooldata.schoollevel,
             is_validation:schooldata.is_validation,
@@ -321,12 +328,12 @@ exports.getSchoolInfoById=function(req,res){
             coachcount:schooldata.coachcount,
             carcount:schooldata.carcount,
             licensetype:schooldata.licensetype,
-            cartype:schooldatay.cartype,
+            cartype:schooldata.cartype,
             vipserver:schooldata.vipserver,
             valueaddedservice:schooldata.valueaddedservice,
             superiorservice:schooldata.superiorservice,
             shuttleroute:schooldata.shuttleroute,
-            introduction:schooldatay.introduction,
+            introduction:schooldata.introduction,
             schoolalbum:schooldata.schoolalbum,
             workbegintime:schooldata.workbegintime,
             workendtime:schooldata.workendtime,
