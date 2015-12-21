@@ -1652,11 +1652,13 @@ exports.applyVerification=function(applyinfo,callback){
 // 更新教练的工作时间
 exports.coachSetWorkTime=function(timeinfo,callback){
     var weekdesc="";
+    console.log(timeinfo.workweek);
     if (timeinfo.workweek.length==7){
         weekdesc="全周";
     }
     else{
         for(i=0;i<timeinfo.workweek.length;i++){
+            console.log(weekdesc);
             weekdesc=weekdesc+appTypeEmun.weeks[timeinfo.workweek[i]-1];
         }
     }
