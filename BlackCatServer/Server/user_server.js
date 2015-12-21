@@ -1510,7 +1510,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
 
       }
       var searchcoachinfo={};
-      if(applyinfo.coachid==-1||applyinfo.coachid=='-1'|| applyinfo.coachid.length<5){
+      if(applyinfo.coachid==-1||applyinfo.coachid=="-1"|| applyinfo.coachid.length<5){
           searchcoachinfo.driveschool=new mongodb.ObjectId(applyinfo.schoolid);
           searchcoachinfo.is_validation=true
       }else{
@@ -1521,6 +1521,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
           if(err||!coachdata){
               return callback("不能找到报名的教练");
           }
+          applyinfo.coachid=coachdata._id;
           // 检查教练
           schoolModel.findById(new mongodb.ObjectId(applyinfo.schoolid),function(err,schooldata){
               if(err||!schooldata){
