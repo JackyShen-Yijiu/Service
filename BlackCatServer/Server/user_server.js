@@ -1510,7 +1510,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
 
       }
       var searchcoachinfo={};
-      if(applyinfo.coachid==-1||applyinfo.coachid=='-1'){
+      if(applyinfo.coachid==-1||applyinfo.coachid=='-1'|| applyinfo.coachid.length<5){
           searchcoachinfo.driveschool=new mongodb.ObjectId(applyinfo.schoolid);
           searchcoachinfo.is_validation=true
       }else{
