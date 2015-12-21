@@ -1507,9 +1507,18 @@ exports.applyschoolinfo=function(applyinfo,callback){
       if(userdata.applystate>appTypeEmun.ApplyState.NotApply){
           return  callback("此用户已经报名，请查看报名详情页");
       }
+
       }
+      var searchcoachinfo={};
+      if(applyinfo.coachid==-1){
+          searchcoachinfo.driveschool=new mongodb.ObjectId(applyinfo.schoolid);
+          searchcoachinfo.is_validation=true
+      }else{
+      var searchcoachinfo={
+          _id:new mongodb.ObjectId(applyinfo.coachid)
+      }}
       // 检查报名驾校和教练
-      coachmode.findById(new mongodb.ObjectId(applyinfo.coachid),function(err,coachdata){
+      coachmode.findOne(searchcoachinfo,function(err,coachdata){
           if(err||!coachdata){
               return callback("不能找到报名的教练");
           }
