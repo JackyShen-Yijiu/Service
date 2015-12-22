@@ -13,6 +13,7 @@ var validator = require('validator');
 var settings = require("../models/config/settings");
 //数据库操作对象
 var DbOpt = require("../models/Dbopt");
+var adminFunc = require("../models/adminFunc");
 var PW = require('png-word');
 var RW = require('../util/randomWord');
 var rw = RW('abcdefghijklmnopqrstuvwxyz1234567890');
@@ -84,6 +85,14 @@ var  returnAdminRouter=function(io) {
             }
         }
     });
+
+    router.get('/manage/schoollsit', function(req, res, next) {
+        res.render('manger/schooollist2',adminFunc.setPageInfo(req,res,"/admin/manage/schoollsit"));
+});
+    router.get('/manage/editschool', function(req, res, next) {
+        res.render('manger/editSchool', {layout:"public/adminTemple"});
+    });
+
     router.get("/manage/getstatic",function(req,res){
         res.json("test");
     });

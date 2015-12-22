@@ -1,0 +1,246 @@
+
+<div class="main">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>驾校列表</h3>
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th> 驾校名称 </th>
+                                <th> 地址</th>
+                                <th> 今日新学员</th>
+                                <th> 今日订单</th>
+                                <th> 今日投诉</th>
+                                <th> 录入时间</th>
+                                <th class="td-actions"> 操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tobody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /widget-content -->
+                </div>
+
+
+
+
+
+                <div id="my_page">
+                    <ul class="pagination" id="page">
+
+                    </ul>
+                </div>
+                </div>
+
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /main-inner -->
+</div>
+<script type="text/javascript">
+    console.log("开始请求数据");
+    $(document).ready(function(){
+        $.ajax({
+            url : "http://192.168.1.102/admin/manage/getschoollist?index=1",
+            type : "get",
+            dataType : "json",
+            success : function(data){
+                console.log(data);
+                //总记录数
+                var totalsize = data.data.schoolcount;
+                //总页数
+                var totalpage = data.data.pagecount;
+
+                //每页显示的条数
+                var pagesize = data.data.schoollist.length;
+                //当前页
+                var presentpage = 1;
+                //存放记录的数组
+                var recordArray = data.data.schoollist;
+
+                //循环遍历记录，并显示
+                for(var i =0; i< pagesize; i++){
+                    var step = 0;
+
+                    $("#tobody").append('<tr id=tr'+i+'></tr>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=25%>'+data.data.schoollist[i].name+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=25%>'+data.data.schoollist[i].address+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].applyingstudentcount+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].reservationcoursecount+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].complaintcount+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].createtime+'</td>');
+                    $("#tr"+i).append('<td class="td-actions"><a href="javascript:;" class="btn btn-small btn-success" edit('+data.data.schoollist[i].shcoolid+')><i class="btn-icon-only icon-ok"> </i></a></td>');
+                }
+                //创建分页按钮
+                initPage(presentpage,totalpage);
+            }
+        });
+    });
+
+    //创建分页按钮
+    function initPage (presentpage,totalpage){
+        $("#page").empty();
+        var temp = presentpage + 4;
+
+        if(temp < totalpage){
+
+            $("#page").append('<li class=active id=active0></li>');
+            $('#active0').append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+1+','+totalpage+')>&laquo;</a>');
+            //上一页
+            if(presentpage - 1 > 0){
+                var pre = presentpage -1;
+                $("#page").append('<li class=active id=prepage > <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+ pre +','+totalpage+')>上一页</a> </li>');
+            }else{
+                $("#page").append('<li class=active id=prepage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+1+','+totalpage+')>上一页</a> </li>');
+            }
+
+
+            for(var i=presentpage;i<=temp;i++){
+                //给当前页添加按钮颜色
+                if(i == presentpage){
+                    $("#page").append('<li id=active'+i+'><a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+i+','+totalpage+')><b>'+i+'</b></a></li>');
+                }else{
+                    $("#page").append('<li class=active id=active'+i+'></li>');
+                    $('#active'+i).append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+i+','+totalpage+')>'+i+'</a>');
+                }
+            }
+
+            $("#page").append('<li class=active id=active'+totalpage+'></li>');
+            $('#active'+totalpage).append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+totalpage+','+totalpage+')>'+totalpage+'</a>');
+
+            $('#active'+totalpage).before('<li > <a href=javascript:void(0) >...</a>  </li>' );
+
+            $('#active'+totalpage).after('<li id="end" class=active><a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+totalpage+','+totalpage+')>&raquo;</a></li>');
+            //下一页
+            if(presentpage + 1 >=totalpage){
+                $("#end").before('<li class=active id=nextpage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+totalpage+','+totalpage+')>下一页</a>    </li>');
+            }else{
+                var next = presentpage + 1;
+                $("#end").before('<li class=active id=nextpage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+ next+','+totalpage+')>下一页</a>    </li>');
+            }
+
+
+        }else if(temp >= totalpage){
+
+            if(totalpage - 5 <0){
+                $("#page").append('<li class=active id=active0></li>');
+                $('#active0').append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+1+','+totalpage+')>&laquo;</a>');
+
+                for(var i =1;i<=5;i++){
+                    if(i<=totalpage){
+                        $("#page").append('<li class=active id=active'+i+'></li>');
+                        $('#active'+i).append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+i+','+totalpage+')>'+i+'</a>');
+                    }else{
+                        //不能点击
+                        $("#page").append('<li class=active id=active'+i+'></li>');
+                        $('#active'+i).append('<a href=javascript:void(0) style="disabled=disabled" >'+i+'</a>');
+
+                    }
+                }
+
+                $("#page").append('<li class=active id=active'+i+'></li>');
+                $('#active'+i).append('<a href=javascript:void(0) style="disabled=disabled">'+i+'</a>');
+
+                $('#active'+i).before('<li > <a href=javascript:void(0) >...</a>  </li>' );
+                $('#active'+i).after(' <li class=active id="end"><a href=javascript:void(0) style="disabled=disabled" >&raquo;</a></li>');
+
+
+            }else{
+                $("#page").append('<li class=active id=active0></li>');
+                $('#active0').append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+1+','+totalpage+')>&laquo;</a>');
+
+                //上一页
+                if(presentpage - 1 > 0){
+                    var pre = presentpage -1;
+                    $("#page").append('<li class=active id=prepage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+pre +','+totalpage+')>上一页</a>    </li>');
+                }else{
+                    $("#page").append('<li class=active id=prepage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+1+','+totalpage+')>上一页</a> </li>');
+                }
+
+                for(var i=totalpage-4;i<=totalpage;i++ ){
+                    //给当前页添加按钮颜色
+                    if(i == presentpage){
+                        $("#page").append('<li id=active'+i+'></li>');
+                        $('#active'+i).append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+i+','+totalpage+')><b>'+i+'</b></a>');
+                    }else{
+                        $("#page").append('<li class=active id=active'+i+'></li>');
+                        $('#active'+i).append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+i+','+totalpage+')>'+i+'</a>');
+                    }
+
+                }
+                var total = totalpage +1;
+                $("#page").append('<li class=active id=active'+total+'></li>');
+
+                $('#active'+total).append('<a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+totalpage+','+totalpage+')>'+totalpage+'</a>');
+
+                $('#active'+total).before('<li > <a href=javascript:void(0) >...</a>  </li>' );
+                $('#active'+total).after('<li id="end" class=active> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+totalpage+','+totalpage+')>&raquo;</a></li>');
+                //下一页
+                if(presentpage + 1 >=totalpage){
+                    $("#end").before('<li class=active id=nextpage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+totalpage+','+totalpage+')>下一页</a>    </li>');
+                }else{
+                    var next = presentpage + 1;
+                    $("#end").before('<li class=active id=nextpage> <a href=javascript:void(0) style="cursor:pointer;" onclick=changepage('+next+','+totalpage+')>下一页</a>    </li>');
+                }
+
+            }
+        }
+    }
+
+
+
+    function changepage(presentpage,totalpage){
+        $.ajax({
+            url : "http://192.168.1.102/admin/manage/getschoollist?index="+presentpage,
+            type : "get",
+            dataType : "json",
+            success : function(data){
+
+                //总记录数
+                var totalsize = data.data.schoolcount;
+                //总页数
+                var totalpage = data.data.pagecount;
+                //每页显示的条数
+                var pagesize = data.data.schoollist.length;
+
+                //存放记录的数组
+                var recordArray = data.data.schoollist;
+                $('#tobody').empty();
+                //循环遍历记录，并显示
+                for(var i =0; i< pagesize; i++){
+
+                    var step = 0;
+                    $("#tobody").append('<tr id=tr'+i+'></tr>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=25%>'+data.data.schoollist[i].name+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=25%>'+data.data.schoollist[i].address+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].applyingstudentcount+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].reservationcoursecount+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].complaintcount+'</td>');
+                    $("#tr"+i).append('<td id=td'+step+++' width=10%>'+data.data.schoollist[i].createtime+'</td>');
+                    $("#tr"+i).append('<td class="td-actions"><a href="javascript:;" class="btn btn-small btn-success" edit('+data.data.schoollist[i].shcoolid+')><i class="btn-icon-only icon-ok"> </i></a></td>');
+                }
+
+                //创建分页按钮
+                initPage(presentpage,totalpage);
+
+            }
+        });
+
+    }
+
+    //修改
+    function edit(shcoolid){
+
+    }
+
+</script>

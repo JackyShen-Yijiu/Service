@@ -41,7 +41,7 @@ var defaultFun={
     getschoolinfo:function(req){
         var schoolinfo={
             name:req.body.name,
-            "logoimg.originalpic":req.body.logimg,
+            logoimg:{},
             province:req.body.province,
             city:req.body.city,
             county:req.body.county,
@@ -74,13 +74,13 @@ var defaultFun={
             workendtime:req.body.workendtime,
             phonelist:req.body.phonelist
         };
-console.log(schoolinfo.cartype);
         schoolinfo.loc={type:"Point",coordinates:[schoolinfo.longitude,schoolinfo.latitude]};
-        schoolinfo.licensetype=schoolinfo.licensetype?schoolinfo.licensetype.split("||"):undefined;
-        schoolinfo.cartype=schoolinfo.cartype?schoolinfo.cartype.split("||"):undefined;
-        schoolinfo.schoolalbum=schoolinfo.schoolalbum?schoolinfo.schoolalbum.split("||"):undefined;
+        schoolinfo.logoimg.originalpic=req.body.logoimg;
+        //schoolinfo.licensetype=schoolinfo.licensetype?schoolinfo.licensetype.split("||"):undefined;
+        //schoolinfo.cartype=schoolinfo.cartype?schoolinfo.cartype.split("||"):undefined;
+        //.schoolalbum=schoolinfo.schoolalbum?schoolinfo.schoolalbum.split("||"):undefined;
 
-        schoolinfo.responsiblelist=schoolinfo.responsiblelist?schoolinfo.responsiblelist.split("||"):undefined;
+        //schoolinfo.responsiblelist=schoolinfo.responsiblelist?schoolinfo.responsiblelist.split("||"):undefined;
         if(schoolinfo.responsiblelist&&schoolinfo.responsiblelist.length>0){
             schoolinfo.responsible=schoolinfo.responsiblelist[0];
         }
@@ -204,12 +204,14 @@ exports.updateTrainingField=function(req,res){
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
     var index=req.query.index?req.query.index:0;
-    var schoolname=req.query.schoolname?req.query.schoolname:"";
+    var limit=req.query.limit?req.query.limit:10;
+    var schoolname=req.query.searchKey?req.query.searchKey:"";
+    console.log(schoolname);
     //
     schoolModel.find({"name":new RegExp(schoolname)})
         .select("_id name address  createtime")
-        .skip((index-1)*2)
-        .limit(2)
+        .skip((index-1)*limit)
+        .limit(limit)
         .sort({createtime:-1})
         .exec(function(err,data) {
             defaultFun.getSchoolcount(schoolname,function (err, schoolcount) {
@@ -239,8 +241,12 @@ exports.getSchoolist=function(req,res){
                         schoolinfo.push(onedata);
                     });
                     returninfo = {
-                        schoolcount: schoolcount,
-                        pagecount: Math.floor(schoolcount/2 )+1,
+                        pageInfo:{
+                            totalItems: schoolcount,
+                            currentPage:index,
+                            limit:limit,
+                            pagecount: Math.floor(schoolcount/limit )+1
+                        },
                         schoollist: schoolinfo
                     }
                     res.json(new BaseReturnInfo(1, "", returninfo));
@@ -276,7 +282,7 @@ exports.updateSchoolInfo=function(req,res){
         var conditions = {_id: schoolid};
         req.body.updateDate = new Date();
         var update = {$set: schoolinfo};
-        schoolModel.update(conditions, update, function (err, data) {
+        schoolModel.update(conditions, update,{safe: true}, function (err, data) {
             if (err) {
                 return res.json(new BaseReturnInfo(0, "修改驾校信息出错：" + err, ""));
             } else {
@@ -320,7 +326,7 @@ exports.getSchoolInfoById=function(req,res){
             organizationcode:schooldata.organizationcode,
             registertime:schooldata.registertime,
             schoollevel:schooldata.schoollevel,
-            is_validation:schooldata.is_validation,
+            is_validation:schooldata.is_validation?Number(schooldata.is_validation):0,
             privilegelevel:schooldata.privilegelevel,
             studentcount:schooldata.studentcount,
             passingrate:schooldata.passingrate,

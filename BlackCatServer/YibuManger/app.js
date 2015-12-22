@@ -3,11 +3,12 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var partials = require('express-partials');
 var io = require('socket.io')();
 var routes = require('./routes/index');
 var admin = require('./routes/admin')(io);
 var session=require("express-session");
+var bodyParser = require('body-parser');
 var RedisStore = require('connect-redis')(session);
 //站点配置
 var settings = require("./models/config/settings");
@@ -27,6 +28,7 @@ app.use(function(req, res, next) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(partials());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -48,7 +50,7 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use('/', admin);
-//app.use('/admin', validat);
+app.use('/admin', validat);
 app.use('/admin', admin);
 
 
