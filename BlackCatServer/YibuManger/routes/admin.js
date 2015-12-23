@@ -88,9 +88,20 @@ var  returnAdminRouter=function(io) {
 
     router.get('/manage/schoollsit', function(req, res, next) {
         res.render('manger/schooollist2',adminFunc.setPageInfo(req,res,"/admin/manage/schoollsit"));
-});
+    });
     router.get('/manage/editschool', function(req, res, next) {
         res.render('manger/editSchool', {layout:"public/adminTemple"});
+    });
+    // 驾校信息主页
+    router.get('/manage/schoolmain', function(req, res, next) {
+        req.session.schoolid=req.query.schoolid;
+        res.render('school/schoolmain', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/schoolmain"));
+    });
+    router.get("/manage/trainingfieldlist" ,function(req, res, next) {
+        res.render('school/trainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
+    });
+    router.get("/manage/edittrainingfield" ,function(req, res, next) {
+        res.render('school/editTrainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
     });
 
     router.get("/manage/getstatic",function(req,res){
@@ -102,7 +113,6 @@ var  returnAdminRouter=function(io) {
     router.get('/manage/qiniuuptoken', appsystemController.GetqiniuupToken2);
     router.get('/manage/carmodel', appsystemController.GetCarModel);
     ///  驾校信息 处理
-
     router.get("/manage/getschoollist",adminserver.getSchoolist);
     router.post("/manage/saveschool",adminserver.saveSchoolInfo);
     router.post("/manage/updateschool",adminserver.updateSchoolInfo);

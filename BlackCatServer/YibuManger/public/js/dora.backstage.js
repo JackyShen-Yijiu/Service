@@ -130,7 +130,7 @@ function cancelTreeCheckBoxSelect(id){
 
 
 //初始化分页
-function initPagination($scope,$http,searchKey){
+function initPagination($scope,$http,searchKey,url){
 
     $("#dataLoading").removeClass("hide");
     $scope.selectPage = [
@@ -147,7 +147,7 @@ function initPagination($scope,$http,searchKey){
     $scope.pages = [];
     $scope.startNum = 1;
     $scope.keywords = searchKey;
-    getPageInfos($scope,$http,"/admin/manage/getschoollist");
+    getPageInfos($scope,$http,url);
 }
 
 
@@ -179,9 +179,10 @@ function getPageInfos($scope,$http,url){
         getPageInfos($scope,$http,url);
     };
 
-    $http.get(url+"?limit="+$scope.limit+"&index="+$scope.currentPage+"&searchKey="+$scope.keywords).success(function(result){
+    $http.get(url+"&limit="+$scope.limit+"&index="+$scope.currentPage+"&searchKey="+$scope.keywords).success(function(result){
         console.log("getData success!");
-        $scope.data = result.data.schoollist;
+        console.log(result);
+        $scope.data = result.data.datalist;
         if(result.data.pageInfo){
             $scope.totalItems = result.data.pageInfo.totalItems;
             $scope.currentPage =Number(result.data.pageInfo.currentPage);

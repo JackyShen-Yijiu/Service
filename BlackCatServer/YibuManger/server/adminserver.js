@@ -90,7 +90,7 @@ var defaultFun={
     getfiledinfo:function(req){
         filedinfo={
             fieldname:req.body.fieldname,
-            logoimg:req.body.logimg,
+            logoimg:req.body.logoimg,
             province:req.body.province,
             city:req.body.city,
             county:req.body.county,
@@ -98,13 +98,15 @@ var defaultFun={
             latitude:req.body.latitude,
             longitude:req.body.longitude,
             is_validation:req.body.is_validation,
+            responsible:req.body.responsible,
             phone:req.body.phone,
             fieldlevel:req.body.fieldlevel,
             pictures:req.body.pictures,
-            driveschool:req.body.schoolid
+            fielddesc:req.body.fielddesc,
+            driveschool:req.body.schoolid,
+            fielddesc:req.body.fielddesc,
     }
         filedinfo.loc={type:"Point",coordinates:[filedinfo.longitude,filedinfo.latitude]};
-        schoolinfo.pictures=filedinfo.pictures.split("||");
         return filedinfo;
     },
 }
@@ -116,12 +118,12 @@ exports.saveClassType=function(req,res){
 
 //=====================================训练场管理
 exports.getTrainingFieldList=function(req,res){
-    var shcoolid =req.query.schoolid;
+    var schoolid =req.query.schoolid;
     if (schoolid===undefined||schoolid==""){
       return res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
     trainingfiledModel.find({driveschool:new mongodb.ObjectId(schoolid)})
-        .select("_id phone  driveschool fieldname")
+        .select("_id phone  driveschool fieldname address responsible")
         .exec(function(err,datalist){
             process.nextTick(function(){
                var filedlist=[];
@@ -130,11 +132,22 @@ exports.getTrainingFieldList=function(req,res){
                         trainingfiledid: r._id,
                         schoolid: r.driveschool,
                         fieldname: r.fieldname,
+                        address:r.address,
+                        responsible: r.responsible,
                         phone: r.phone
                     }
                     filedlist.push(onedata);
                 });
-                return res.json(new BaseReturnInfo(1, "",filedlist) );
+                returninfo = {
+                    pageInfo:{
+                        totalItems: filedlist.length,
+                        currentPage:1,
+                        limit:filedlist.length,
+                        //pagecount: Math.floor(filedlist.length/limit )+1
+                    },
+                    datalist: filedlist
+                }
+                return res.json(new BaseReturnInfo(1, "",returninfo) );
             })
 
     })
@@ -160,13 +173,13 @@ exports.getTrainingFieldbyId=function(req,res){
         if(err){
             res.json(new BaseReturnInfo(0, "查询出错:"+err, ""));
         }
-        if(!schooldata){
-            res.json(new BaseReturnInfo(0, "没有查询到驾校", ""));
+        if(!trainingfileddata){
+            res.json(new BaseReturnInfo(0, "没有查询到练车场", ""));
         }
         var trainingfiledidinfo={
             trainingfiledid: trainingfileddata._id,
             fieldname:trainingfileddata.fieldname,
-            logoimg:trainingfileddata.logimg,
+            logoimg:trainingfileddata.logoimg,
             province:trainingfileddata.province,
             city:trainingfileddata.city,
             county:trainingfileddata.county,
@@ -175,11 +188,13 @@ exports.getTrainingFieldbyId=function(req,res){
             phone:trainingfileddata.phone,
             fieldlevel:trainingfileddata.fieldlevel,
             pictures:trainingfileddata.pictures,
+            responsible:trainingfileddata.responsible,
             schoolid:trainingfileddata.driveschool,
             latitude:trainingfileddata.latitude,
-            longitude:req.body.longitude
+            longitude:trainingfileddata.longitude,
+            fielddesc:trainingfileddata.fielddesc,
         }
-        res.json(new BaseReturnInfo(1, "", schoolinfo));
+        res.json(new BaseReturnInfo(1, "", trainingfiledidinfo));
     })
 }
 exports.updateTrainingField=function(req,res){
@@ -247,7 +262,7 @@ exports.getSchoolist=function(req,res){
                             limit:limit,
                             pagecount: Math.floor(schoolcount/limit )+1
                         },
-                        schoollist: schoolinfo
+                        datalist: schoolinfo
                     }
                     res.json(new BaseReturnInfo(1, "", returninfo));
                 })

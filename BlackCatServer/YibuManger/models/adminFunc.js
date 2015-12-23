@@ -18,6 +18,22 @@ var adminFunc = {
             layout : 'public/adminTemple'
         }
 
+    },
+ setSchoolPageInfo : function(req,res,currentLink){
+
+    var searchKey = '';
+    if(req.url){
+        var params = url.parse(req.url,true);
+        searchKey = params.query.searchKey?params.query.searchKey:"";
     }
+     var schoolid=req.session.schoolid;
+    return {
+        schoolid:schoolid,
+        searchKey : searchKey,
+        currentLink : currentLink+"?schoolid="+schoolid,
+        layout : 'public/schoolTemple'
+    }
+
+}
 };
 module.exports = adminFunc;

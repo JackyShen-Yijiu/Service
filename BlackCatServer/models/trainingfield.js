@@ -21,7 +21,7 @@ var ImgInfo= new Schema({
 //驾校练车场信息
 var  TrainingFieldSchema=new Schema({
     fieldname:String,   // 训练场名称
-    logimg:String,
+    logoimg:String,
     fieldlevel:String, //驾校星级
     is_validation: { type: Boolean, default: false} , //驾校是否通过验证
     // 场地地点

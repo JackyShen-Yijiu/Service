@@ -1,20 +1,20 @@
 
-<div class="main" ng-controller="schoolist">
+<div class="main" ng-controller="traningfieldlist">
     <div class="main-inner">
         <div class="container">
             <div class="row">
                 <div class="span12">
                     <div class="widget-header">
                         <i class="icon-th-large"></i>
-                        <h3>驾校列表</h3>
+                        <h3>训练场列表</h3>
                         <div style="float: right ; padding-right: 10px" >
                             <div style="float: left;  padding-right: 10px">
-                            <a href="/admin/manage/editschool"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
-                                </div>
-                            <div style="float: right ; padding-right: 10px">
-                            <% include ../public/searchBox %>
-                                </div>
+                                <a href="/admin/manage/edittrainingfield"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
                             </div>
+                            <div style="float: right ; padding-right: 10px">
+                                <% include ../public/searchBox %>
+                            </div>
+                        </div>
 
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
@@ -23,40 +23,31 @@
                                 <table class="table table-hover">
                                     <tr>
 
-                                        <th> 驾校名称 </th>
+                                        <th> 训练场名称 </th>
                                         <th> 地址</th>
-                                        <th> 今日新学员</th>
-                                        <th> 今日订单</th>
-                                        <th> 今日投诉</th>
-                                        <th> 录入时间</th>
+                                        <th> 负责人</th>
+                                        <th> 电话</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
-                                          <a href="/admin/manage/schoolmain?schoolid={{content.shcoolid}}" >
-                                              <span>{{content.name}}</span> </a>
+                                                <span>{{content.fieldname}}</span>
                                         </td>
                                         <td >
                                             <span>{{content.address}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.applyingstudentcount}}</span>
+                                            <span>{{content.responsible}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.reservationcoursecount}}</span>
+                                            <span>{{content.phone}}</span>
                                         </td>
-                                        <td >
-                                            <span>{{content.complaintcount}}</span>
-                                        </td>
-                                        <td>{{content.createtime}}</td>
 
-
-                                        <td>{{content.author}}</td>
 
                                         <td class="td-actions">
-                                            <a href="/admin/manage/editschool?schoolid={{content.shcoolid}}"
-                                                                  class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
+                                            <a href="/admin/manage/edittrainingfield?trainingfiledid={{content.trainingfiledid}}"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <a href="#"
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
                                         </td>
@@ -83,10 +74,10 @@
 
 
 <script>
-    ybxcApp.controller("schoolist",function($scope,$http){
+    ybxcApp.controller("traningfieldlist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getschoollist?");
+        initPagination($scope,$http,"<%=searchKey%>","/manage/gettrainingfieldlist?schoolid=<%=schoolid%>");
 
 
     });
