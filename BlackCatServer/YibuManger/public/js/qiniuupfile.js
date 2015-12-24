@@ -62,13 +62,12 @@ var uploader = Qiniu.uploader({
         },
         'Error': function(up, err, errTip) {
             alert(err.message)
+        },
+         'Key': function(up, file) {
+            var key = (new Date()).getTime()+"."+file.name.split('.').pop().toLowerCase();
+            // do something with key
+            return key
         }
-        // ,
-        // 'Key': function(up, file) {
-        //     var key = "";
-        //     // do something with key
-        //     return key
-        // }
     }
 });
 

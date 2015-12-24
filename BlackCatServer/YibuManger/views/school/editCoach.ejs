@@ -1,0 +1,434 @@
+<link type="text/css" rel="stylesheet" 	href="/css/powerFloat.css" />
+<link type="text/css" rel="stylesheet" 	href="/css/xmenu.css" />
+<div class="main" ng-controller="addSchool">
+
+    <div class="main-inner">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="span12">
+
+                    <div class="widget ">
+
+                        <div class="widget-header">
+                            <i class="icon-th-large"></i>
+                            <h3>添加教练</h3>
+                        </div> <!-- /widget-header -->
+
+                        <div class="widget-content">
+                            <div class="tabbable">
+                                <br>
+                                <div class="tab-pane" id="formcontrols">
+                                    <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                        <fieldset>
+                                            <div class="control-group">
+                                                <label class="control-label" for="name" >教练名称</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多十个字"
+                                                           ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
+                                                         role="alert">2-10个非特殊字符</div>
+                                                </div> <!-- /controls -->
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="logimg">教练头像</label>
+                                                <div class="controls">
+                                                    <div class="input-append">
+                                                        <input class="span4 m-wrap"   id="logimg" type="text"disabled
+                                                               ng-model="formData.logoimg"	   >
+                                                        <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                        <img id="logimgimg" style="width: 60px;height: 60px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="schoollevel">验证状态</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="schoollevel"   ng-model="formData.schoollevel" >
+                                                        <option value="0">未申请</option>
+                                                        <option value="1">申请中</option>
+                                                        <option value="2" selected> 通过</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="schoollevel">训练场地</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="schoollevel"   ng-model="formData.schoollevel" >
+
+                                                    </select>
+                                                </div> <!-- /controls -->
+
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="province">地址</label>
+                                                <div class="controls">
+
+                                                    <input type="text" class="span6 "  id="address" name="address"
+                                                           ng-model="formData.address"    placeholder="详细地址" >
+
+                                                </div> <!-- /controls -->
+                                            </div>
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="website">联系电话</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="website" ng-model="formData.website">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="schoollevel">教练星级</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="schoollevel"   ng-model="formData.schoollevel" >
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="businesslicensenumber">身份证号</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span4" id="businesslicensenumber"  ng-model="formData.businesslicensenumber" >
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="organizationcode">教练证号</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span4" id="organizationcode" ng-model="formData.organizationcode">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="registertime">驾照编号</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span4  laydate-icon" id="registertime" onclick="laydate()">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="registertime">车牌号</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span4  laydate-icon" id="registertime" onclick="laydate()">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="studentcount">教龄</label>
+                                                <div class="controls">
+                                                    <input  type="number" ng-model="formData.studentcount"  class="span1" id="studentcount" value="0" >
+                                                    &nbsp;&nbsp;通过率&nbsp;
+                                                    <input  type="number" ng-model="formData.passingrate"   class="span1" id="passingrate" value="90" >%
+                                                    &nbsp;&nbsp;学员数&nbsp;
+                                                    <input  type="number" ng-model="formData.examhallcount"   class="span1" id="examhallcount" value="0" >
+                                                </div>
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label">教授科目</label>
+                                                <div class="controls">
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="1"> 科目二
+                                                    </label>
+
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="2"> 科目三
+                                                    </label>
+                                                </div>		<!-- /controls -->
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="schoollevel">驾照类型</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="schoollevel"   ng-model="formData.schoollevel" >
+                                                        <option value="1">C1</option>
+                                                        <option value="2">C2</option>
+                                                        <option value="3">O</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="is_validation" >加V认证</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="is_validation" >
+                                                        <option value="1">已认证</option>
+                                                        <option value="0">未认证</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="workbegintime">工作时间</label>
+                                                <div class="controls">
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="1"> 星期一
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="2"> 星期二
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="3"> 星期三
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="4"> 星期四
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="5"> 星期五
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="6"> 星期六
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="7"> 星期日
+                                                    </label>
+                                                </div>		<!-- /controls -->
+                                                <br/>
+                                                <div class="controls">
+                                                    <select class="span2" id="workbegintime" ng-model="formData.workbegintime" >
+                                                        <option value="5">5:00</option>
+                                                        <option value="6">6:00</option>
+                                                        <option value="7">7:00</option>
+                                                        <option value="8">8:00</option>
+                                                        <option value="9">9:00</option>
+                                                    </select>
+                                                    &nbsp;&nbsp;到&nbsp;
+                                                    <select class="span2" id="workendtime" ng-model="formData.workendtime" >
+                                                        <option value="17">17:00</option>
+                                                        <option value="18">18:00</option>
+                                                        <option value="19">19:00</option>
+                                                        <option value="20">20:00</option>
+                                                        <option value="21">21:00</option>
+                                                    </select>
+                                                </div>
+                                            </div> <!-- /control-group -->
+
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="superiorservice">特色服务</label>
+                                                <div class="controls">
+                                                    <textarea   class="span4" id="superiorservice" rows="3" ng-model="formData.superiorservice" placeholder="优势服务"></textarea>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="introduction">简介</label>
+                                                <div class="controls">
+                                                    <textarea   class="span4" id="introduction" rows="3" ng-model="formData.introduction" placeholder="驾校简介"></textarea>
+                                                </div>
+                                            </div>
+
+
+                                            <br />
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
+                                                <button class="btn">取消</button>
+                                            </div> <!-- /form-actions -->
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- /widget-content -->
+
+                    </div> <!-- /widget -->
+
+                </div> <!-- /span8 -->
+            </div> <!-- /row -->
+
+        </div> <!-- /container -->
+
+    </div> <!-- /main-inner -->
+    <div id="m2" class="xmenu" style="display: none;">
+        <div class="select-info">
+            <label class="top-label">已选类型：</label>
+            <ul>
+
+            </ul>
+            <a  name="menu-confirm" href="javascript:void(0);" class="a-btn">
+                <span class="a-btn-text">确定</span>
+            </a>
+        </div>
+        <dl>
+            <dt class="open">所有类型</dt>
+            <dd>
+                <ul id="licensetypelist">
+                    <!--<li ng-repeat="x in licensetypelist" rel="{{ x.modelsid }}">-->
+                    <!--{{ x.code }}-->
+                    <!--</li>-->
+                    <li rel="1">C1</li>
+                    <li rel="2">C2</li>
+                    <li rel="3">O</li>
+
+                </ul>
+            </dd>
+
+        </dl>
+
+    </div>
+
+
+</div> <!-- /main -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
+<script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
+<script type="text/javascript" src="/js/qiniu.js"></script>
+<script type="text/javascript" src="/js/qiniuupfile.js"></script>
+<script type="text/javascript" src="/js/laydate.js"></script>
+
+
+<script type="application/javascript">
+    ybxcApp.controller("addSchool",function($scope,$http){
+        // initlicensetype($scope,$http);
+        $scope.formData = {};
+        $scope.showlicensetype="";
+        var schoolid=GetQueryString("schoolid");
+        $http.get("/admin/manage/carmodel")
+                .success(function(resdata){
+                    $scope.licensetypelist=resdata.data;
+
+                    if(schoolid !=null && schoolid.toString().length>1)
+                    {
+                        $http.get("getschoolbyid?schoolid="+schoolid)
+                                .success(function(response){
+                                    if (response.type==0){
+                                        alert(response.msg);
+                                    }else{
+                                        $scope.formData = response.data;
+                                        console.log(response.data);
+                                        $("#logimgimg").attr("src",$scope.formData.logoimg)
+                                        setPoint($scope.formData.longitude,$scope.formData.latitude);
+                                        $("#latitude").val($scope.formData.latitude);
+                                        $("#longitude").val($scope.formData.longitude);
+                                        $("#licensetype").val($scope.formData.licensetype.join(","));
+                                        $("#registertime").val($scope.formData.registertime);
+                                        $("#privilegelevel").val($scope.formData.privilegelevel);
+                                        $("#is_validation").val($scope.formData.is_validation);
+                                        $("#linkman1").val($scope.formData.responsiblelist[0]);
+                                        $("#linkman2").val($scope.formData.responsiblelist[1]);
+                                        $("#linkman3").val($scope.formData.responsiblelist[2]);
+                                        $("#linkman4").val($scope.formData.responsiblelist[3]);
+                                        $("#linktele1").val($scope.formData.phonelist[0]);
+                                        $("#linktele2").val($scope.formData.phonelist[1]);
+                                        $("#linktele3").val($scope.formData.phonelist[3]);
+                                        $("#linktele4").val($scope.formData.phonelist[4]);
+                                        var  licensetype="";
+                                        console.log($scope.formData.licensetype);
+                                        for(i=0;i<$scope.formData.licensetype.length;i++){
+                                            for(j=0;j<$scope.licensetypelist.length;j++){
+                                                if($scope.formData.licensetype[i]==$scope.licensetypelist[j].modelsid)
+                                                {
+                                                    licensetype=licensetype+" "+$scope.licensetypelist[j].code;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        $scope.showlicensetype=licensetype==""?"请选择驾照类型":licensetype;
+                                    }
+
+
+                                })
+                    }else{
+                        $scope.formData.registertime=new Date();
+                        $scope.formData.schoollevel="5";
+                        $scope.formData.is_validation=1;
+                        $scope.formData.privilegelevel=3;
+                        $scope.formData.studentcount=0;
+                        $scope.formData.passingrate=90;
+                        $scope.formData.examhallcount=1;
+                        $scope.formData.coachcount=1;
+                        $scope.formData.carcount=1
+                        $scope.formData.workbegintime="8";
+                        $scope.formData.workendtime="19";
+                        $("#registertime").val($scope.formData.registertime);
+                        $("#privilegelevel").val($scope.formData.privilegelevel);
+                        $("#is_validation").val($scope.formData.is_validation);
+                    }
+                })
+        $scope.processForm = function(isValid){
+            console.log(isValid);
+            if (!isValid){
+                alert("参数错误");
+                return;
+            }
+            if($scope.formData.schoolid!=undefined&&$scope.formData.schoolid!="")
+            {
+                if(!savedata()){
+                    return;
+                }
+                console.log($scope.formData.licensetype);
+                $http.post("/admin/manage/updateschool",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("修改成功");
+                                window.location.href="/admin/manage/schoollsit";
+                            }
+                        })
+            }else {
+                if(!savedata()){
+                    return;
+                }
+                console.log($scope.formData.licensetype);
+                $http.post("/admin/manage/saveschool",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("添加成功");
+                                window.location.href="/admin/manage/schoollsit";
+                            }
+                        })
+            }
+
+        };
+
+        var savedata=function(){
+            $scope.formData.logoimg=$("#logimg").val();
+            $scope.formData.province=$("#province").val();
+            $scope.formData.city=$("#city").val();
+            $scope.formData.address=$("#address").val();
+            $scope.formData.latitude=$("#latitude").val();
+            $scope.formData.longitude=$("#longitude").val();
+            $scope.formData.registertime=$("#registertime").val();
+            $scope.formData.is_validation=$("#is_validation").val();
+            $scope.formData.privilegelevel=$("#privilegelevel").val();
+            if($("#licensetype").val()==""){
+                alert("驾照类型不为空");
+                return false;
+            }
+            $scope.formData.licensetype=$("#licensetype").val().split(",");
+            var linkman=[];
+            var linktele=[];
+            alert($("#linkman1").val());
+            linkman.push($("#linkman1").val())
+            linkman.push($("#linkman2").val())
+            linkman.push($("#linkman3").val())
+            linkman.push($("#linkman4").val())
+            linktele.push($("#linktele1").val())
+            linktele.push($("#linktele2").val())
+            linktele.push($("#linktele3").val())
+            linktele.push($("#linktele4").val())
+            $scope.formData.responsiblelist=linkman;
+            $scope.formData.phonelist=linktele;
+            console.log(linkman);
+            return true;
+        }
+    });
+
+
+
+</script>

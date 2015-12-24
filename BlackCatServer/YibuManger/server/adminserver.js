@@ -7,15 +7,24 @@ var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var schoolModel=mongodb.DriveSchoolModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
+var  coachmodel=mongodb.CoachModel;
 var cache=require("../../Common/cache");
 require('date-utils');
 exports.getStatitic=function(req,res){
 
 }
 
-var defaultFun={
+ var defaultFun={
     getSchoolcount:function( schoolname,callback){
         schoolModel.count({"name":new RegExp(schoolname)},function(err,count){
+            if(err){
+                return callback(err);
+            }
+            return callback(null,count);
+        })
+    },
+    getCoachcount:function(searchinfo,callback){
+        coachmodel.count(searchinfo,function(err,count){
             if(err){
                 return callback(err);
             }
@@ -115,7 +124,50 @@ var defaultFun={
 exports.saveClassType=function(req,res){
 
 }
-
+///====================================教练管理
+exports.getCoachlist=function(req,res){
+    var schoolid =req.query.schoolid;
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    var schoolname=req.query.searchKey?req.query.searchKey:"";
+    var searchinfo={
+        "driveschool":schoolid,
+        "name":new RegExp(schoolname)
+    }
+    coachmodel.find(searchinfo)
+        .select("_id name mobile  createtime carmodel trainfieldlinfo")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getCoachcount(searchinfo,function (err, coachcount) {
+                var coachlist=[];
+                data.forEach(function (r, index) {
+                    var onedata = {
+                        name: r.name,
+                        coachid: r._id,
+                        mobile: r.mobile,
+                        carmodel: r.carmodel,
+                        trainfieldlinfo: r.trainfieldlinfo,
+                        createtime: r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS")
+                    }
+                    coachlist.push(onedata);
+                });
+                returninfo = {
+                    pageInfo: {
+                        totalItems: coachcount,
+                        currentPage: index,
+                        limit: limit,
+                        pagecount: Math.floor(coachcount / limit) + 1
+                    },
+                    datalist: coachlist
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            });
+        })
+};
+//保存教练信息
+exports.saveCoachInfo=function(req,res){};
 //=====================================训练场管理
 exports.getTrainingFieldList=function(req,res){
     var schoolid =req.query.schoolid;
@@ -221,8 +273,6 @@ exports.getSchoolist=function(req,res){
     var index=req.query.index?req.query.index:0;
     var limit=req.query.limit?req.query.limit:10;
     var schoolname=req.query.searchKey?req.query.searchKey:"";
-    console.log(schoolname);
-    //
     schoolModel.find({"name":new RegExp(schoolname)})
         .select("_id name address  createtime")
         .skip((index-1)*limit)

@@ -22,6 +22,9 @@ myCity.get(myFun);
 map.addEventListener("click", function(e){
     var pt = e.point;
     geoc.getLocation(pt, function(rs){
+        map.centerAndZoom(pt, 16);
+        map.clearOverlays();
+        map.addOverlay(new BMap.Marker(pt));
         var addComp = rs.addressComponents;
         $("#province").val(addComp.province);
         $("#city").val(addComp.city);
@@ -33,5 +36,19 @@ map.addEventListener("click", function(e){
 var setPoint=function(log,lat){
     var point = new BMap.Point(log,lat);
     map.centerAndZoom(point,16);
+    map.clearOverlays();
     map.addOverlay(new BMap.Marker(point));
+};
+var setaddress=function(address){
+    var myGeo = new BMap.Geocoder();
+    // 将地址解析结果显示在地图上,并调整地图视野
+    myGeo.getPoint(address, function(point){
+        if (point) {
+            map.centerAndZoom(point, 16);
+            map.clearOverlays();
+            map.addOverlay(new BMap.Marker(point));
+        }else{
+            alert("您选择地址没有解析到结果!");
+        }
+    }, "");
 }

@@ -322,6 +322,14 @@
 <script type="text/javascript" src="/js/jquery-xmenu.js"></script>
 <script type="application/javascript">
     $(document).ready(function() {
+        $("#address").keydown(function (e) {
+            var curKey = e.which;
+            if (curKey == 13) {
+               var address=$("#address").val();
+                setaddress(address);
+                e.preventDefault();
+            }
+        });
         $("#selectlicensetype").xMenu({
             width :600,
             eventType: "click", //事件类型 支持focus click hover
@@ -454,7 +462,7 @@
             $scope.formData.licensetype=$("#licensetype").val().split(",");
             var linkman=[];
             var linktele=[];
-            alert($("#linkman1").val());
+            //alert($("#linkman1").val());
             linkman.push($("#linkman1").val())
             linkman.push($("#linkman2").val())
             linkman.push($("#linkman3").val())
@@ -465,7 +473,7 @@
             linktele.push($("#linktele4").val())
             $scope.formData.responsiblelist=linkman;
             $scope.formData.phonelist=linktele;
-            console.log(linkman);
+            //console.log(linkman);
             return true;
         }
     });

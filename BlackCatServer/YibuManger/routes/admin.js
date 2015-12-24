@@ -92,7 +92,7 @@ var  returnAdminRouter=function(io) {
     router.get('/manage/editschool', function(req, res, next) {
         res.render('manger/editSchool', {layout:"public/adminTemple"});
     });
-    // 驾校信息主页
+    //========================================== 驾校信息主页====================================
     router.get('/manage/schoolmain', function(req, res, next) {
         req.session.schoolid=req.query.schoolid;
         res.render('school/schoolmain', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/schoolmain"));
@@ -103,6 +103,15 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/edittrainingfield" ,function(req, res, next) {
         res.render('school/editTrainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
     });
+    // 获取教练列表
+    router.get("/manage/coachlist" ,function(req, res, next) {
+        res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
+    });
+    router.get("/manage/editcoachinfo" ,function(req, res, next) {
+        res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo"));
+    });
+
+    //==================================================================================================================
 
     router.get("/manage/getstatic",function(req,res){
         res.json("test");
@@ -117,6 +126,9 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/saveschool",adminserver.saveSchoolInfo);
     router.post("/manage/updateschool",adminserver.updateSchoolInfo);
     router.get("/manage/getschoolbyid",adminserver.getSchoolInfoById);
+    //  教练信息
+    router.get("/manage/getCoachlist",adminserver.getCoachlist);
+    router.post("/manage/savecoachinfo",adminserver.saveCoachInfo);
     // 训练场信息处理
     router.get("/manage/gettrainingfieldlist",adminserver.getTrainingFieldList);
     router.get("/manage/gettrainingfieldbyid",adminserver.getTrainingFieldbyId);
