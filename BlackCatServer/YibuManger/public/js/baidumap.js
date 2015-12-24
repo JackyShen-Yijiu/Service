@@ -47,6 +47,13 @@ var setaddress=function(address){
             map.centerAndZoom(point, 16);
             map.clearOverlays();
             map.addOverlay(new BMap.Marker(point));
+            geoc.getLocation(point, function(rs){
+                var addComp = rs.addressComponents;
+                $("#province").val(addComp.province);
+                $("#city").val(addComp.city);
+                $("#longitude").val(pt.lng);
+                $("#latitude").val(pt.lat);
+            });
         }else{
             alert("您选择地址没有解析到结果!");
         }
