@@ -41,7 +41,6 @@ exports.ObjectId = mongoose.Types.ObjectId;
 exports.close = function() {
     mongoose.connection.close();
 }
-
 exports.AppVersionModel = require('./appversion.js');
 exports.SmsVerifyCodeModel = require('./smsVerifyCode.js');
 exports.UserModel=require('./user');
@@ -69,4 +68,7 @@ exports.IndustryNewsModel=require("./industrynews");
 exports.SchoolDaySummaryModel=require("./schooldaylysummary");
 exports.SchoolBulletin=require("./schoolbulletin");
 exports.CityiInfoModel=require("./cityinfo");
+exports.UserFcode=require("./purse/userFcode");
+exports.SystemIncome=require("./purse/systemIncome");
+exports.Coupon=require("./purse/coupon");
 

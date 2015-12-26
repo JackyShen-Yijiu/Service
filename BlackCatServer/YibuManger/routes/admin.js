@@ -6,13 +6,16 @@ var AdminUser = require("../models/AdminUser");
 var AdminGroup = require("../models/AdminGroup");
 //server
 var adminserver=require("../server/adminserver");
+var basedatafun=require("../server/basedatafun");
 //数据校验
 var validator = require('validator');
-
+var cache=require("../../Common/cache");
+var _ = require("underscore");
 //站点配置
 var settings = require("../models/config/settings");
 //数据库操作对象
 var DbOpt = require("../models/Dbopt");
+var adminFunc = require("../models/adminFunc");
 var PW = require('png-word');
 var RW = require('../util/randomWord');
 var rw = RW('abcdefghijklmnopqrstuvwxyz1234567890');
@@ -84,6 +87,50 @@ var  returnAdminRouter=function(io) {
             }
         }
     });
+
+    router.get('/manage/schoollsit', function(req, res, next) {
+        res.render('manger/schooollist2',adminFunc.setPageInfo(req,res,"/admin/manage/schoollsit"));
+    });
+    router.get('/manage/editschool', function(req, res, next) {
+        res.render('manger/editSchool', {layout:"public/adminTemple"});
+    });
+    //========================================== 驾校信息主页====================================
+    router.get('/manage/schoolmain', function(req, res, next) {
+        req.session.schoolid=req.query.schoolid;
+        res.render('school/schoolmain', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/schoolmain"));
+    });
+    router.get("/manage/trainingfieldlist" ,function(req, res, next) {
+        res.render('school/trainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
+    });
+    router.get("/manage/edittrainingfield" ,function(req, res, next) {
+        res.render('school/editTrainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
+    });
+    // 获取教练列表
+    router.get("/manage/coachlist" ,function(req, res, next) {
+        res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
+    });
+    router.get("/manage/editcoachinfo" ,function(req, res, next) {
+        var schoolid=req.session.schoolid;
+        if(req.session.schoolid===undefined){
+            res.render(error);
+        }
+        console.log(schoolid);
+        basedatafun.getSchooltrainingfiled(schoolid,function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.fieldname
+                };
+                return info;
+            });
+            console.log(filedlist);
+            res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo",filedlist));
+        });
+
+    });
+
+    //==================================================================================================================
+
     router.get("/manage/getstatic",function(req,res){
         res.json("test");
     });
@@ -93,11 +140,14 @@ var  returnAdminRouter=function(io) {
     router.get('/manage/qiniuuptoken', appsystemController.GetqiniuupToken2);
     router.get('/manage/carmodel', appsystemController.GetCarModel);
     ///  驾校信息 处理
-
     router.get("/manage/getschoollist",adminserver.getSchoolist);
     router.post("/manage/saveschool",adminserver.saveSchoolInfo);
     router.post("/manage/updateschool",adminserver.updateSchoolInfo);
     router.get("/manage/getschoolbyid",adminserver.getSchoolInfoById);
+    //  教练信息
+    router.get("/manage/getCoachlist",adminserver.getCoachlist);
+    router.post("/manage/savecoachinfo",adminserver.saveCoachInfo);
+    router.get("/manage/getcoachbyid",adminserver.getcoachbyid);
     // 训练场信息处理
     router.get("/manage/gettrainingfieldlist",adminserver.getTrainingFieldList);
     router.get("/manage/gettrainingfieldbyid",adminserver.getTrainingFieldbyId);

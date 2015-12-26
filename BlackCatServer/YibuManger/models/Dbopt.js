@@ -4,9 +4,9 @@
 
 var crypto=require("crypto");
 var mongoose = require('mongoose');
-var settings = require("../models/config/settings");
+var settings = require("../../Config/DbConfig");
 var db = //mongoose.connect('mongodb://localhost/doracms');
-    mongoose.connect('mongodb://'+settings.HOST+':'+settings.PORT+'/'+settings.DB+'');
+    mongoose.connect(settings.db.uri);
 
 
 var DbOpt = {

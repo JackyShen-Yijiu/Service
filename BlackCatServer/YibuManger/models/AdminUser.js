@@ -21,7 +21,7 @@ var AdminUserSchema = new Schema({
     phoneNum : Number,
     comments : String,
     date: { type: Date, default: Date.now },
-    logo: { type: String, default: "/upload/images/defaultlogo.png" },
+    logo: { type: String, default: "" },
     group: {
         type : String,
         ref : 'AdminGroup'

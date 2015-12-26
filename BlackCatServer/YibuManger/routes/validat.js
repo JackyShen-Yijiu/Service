@@ -27,8 +27,8 @@ router.get("/manage/*",function(req,res,next){
     if(isAdminLogined(req)){
         next();
     }else{
-       // res.redirect("/admin");
-        res.json(new  BaseReturnInfo(-1,"NoLogin",""));
+        res.redirect("/admin");
+        //res.json(new  BaseReturnInfo(-1,"NoLogin",""));
         //res.json("")
     }
 
