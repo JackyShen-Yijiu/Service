@@ -4,12 +4,17 @@
  */
 var mongodb = require('../../models/mongodb.js');
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
+var commondata = require('../../Config/commondata.js');
+var appTypeEmun=require("../../custommodel/emunapptype");
+var appWorkTimes=commondata.worktimes;
+var  basedatafun=require("./basedatafun");
 var schoolModel=mongodb.DriveSchoolModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
 var cache=require("../../Common/cache");
 require('date-utils');
+var _ = require("underscore");
 exports.getStatitic=function(req,res){
 
 }
@@ -118,6 +123,70 @@ exports.getStatitic=function(req,res){
         filedinfo.loc={type:"Point",coordinates:[filedinfo.longitude,filedinfo.latitude]};
         return filedinfo;
     },
+     getCoachinfo:function(req){
+         coachinfo={
+             name:req.body.name,
+             mobile:req.body.mobile,
+             headportrait:{},
+             address:req.body.address,
+             introduction:req.body.introduction,
+             subject:req.body.subject,
+             is_lock:false,
+             validationstate:req.body.validationstate,
+             driveschool:req.body.driveschool,
+             Seniority:req.body.Seniority,
+             passrate:req.body.passrate,
+             studentcount:req.body.studentcount,
+             workweek:req.body.workweek,
+             begintimeint:req.body.begintimeint,
+             endtimeint:req.body.endtimeint,
+             coursestudentcount:req.body.coursestudentcount?req.body.coursestudentcount:1,
+             idcardnumber:req.body.idcardnumber,
+             drivinglicensenumber:req.body.drivinglicensenumber,
+             coachnumber:req.body.coachnumber,
+             starlevel:parseInt(req.body.starlevel)?parseInt(req.body.starlevel):2,
+             platenumber:req.body.platenumber,
+             is_shuttle:true,
+             shuttlemsg:req.body.shuttlemsg,
+             serverclasslist:req.body.serverclasslist,
+             trainfield:req.body.trainfield,
+             carmodel:req.body.carmodel
+         };
+
+         coachinfo.headportrait.originalpic=req.body.logoimg;
+         coachinfo.subject=_.map(coachinfo.subject,function(item,i){
+             return  basedatafun.getsubject(item);
+         });
+         coachinfo.carmodel=basedatafun.getcarmodel(coachinfo.carmodel);
+         coachinfo.is_validation=coachinfo.validationstate==3?true:false;
+         var weekdesc="";
+         if (coachinfo.workweek.length==7){
+             weekdesc="全周";
+         }
+         else{
+             for(i=0;i<coachinfo.workweek.length;i++){
+                 if(appTypeEmun.weeks[coachinfo.workweek[i]-1]!=undefined){
+                     weekdesc=weekdesc+appTypeEmun.weeks[coachinfo.workweek[i]-1];}
+             }
+         }
+         weekdesc =weekdesc +" "+coachinfo.begintimeint+":00--"+coachinfo.endtimeint+":00";
+
+         coachinfo.worktimespace={};
+         coachinfo.worktimedesc=weekdesc;
+         coachinfo.worktimespace.begintimeint=parseInt(coachinfo.begintimeint);
+         coachinfo.worktimespace.endtimeint=parseInt(coachinfo.endtimeint);
+             var worktimes=[];
+             for(var i=parseInt(coachinfo.begintimeint);i<=parseInt(coachinfo.endtimeint);i++){
+                 appWorkTimes.forEach(function(r,index){
+                     if(r.begintime== i.toString()+":00:00"){
+                         worktimes.push(appWorkTimes[index]);
+                     }
+                 })
+             }
+         coachinfo.worktime=worktimes;
+         return coachinfo;
+
+     },
 }
 
 //====================================b班级管理
@@ -167,7 +236,83 @@ exports.getCoachlist=function(req,res){
         })
 };
 //保存教练信息
-exports.saveCoachInfo=function(req,res){};
+exports.saveCoachInfo=function(req,res){
+    coachinfo=defaultFun.getCoachinfo(req);
+    var coachid= req.body.coachid;
+    if (coachid===undefined||coachid==""){
+        var savecoach= new  coachmodel(coachinfo);
+       basedatafun.getUserCount(function(err,countdata){
+            savecoach.displaycoachid=countdata.value.displayid;
+            savecoach.invitationcode=countdata.value.invitationcode;
+            savecoach.loc.coordinates=[savecoach.longitude,savecoach.latitude];
+            savecoach.save(function(err,data){
+                if(err){
+                    return res.json(new BaseReturnInfo(0, "保存教练出错："+err, "") );
+                }else{
+                    return res.json(new BaseReturnInfo(1, "", "sucess") );
+                }
+            })
+        })
+
+    }
+    else {
+        var conditions = {_id : coachid};
+        var update = {$set : coachinfo};
+        coachmodel.update(conditions, update,function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改教练出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+};
+exports.getcoachbyid=function(req,res){
+    var coachid=req.query.coachid;
+    if (coachid===undefined||coachid==""){
+        res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    console.log(coachid);
+    coachmodel.findById(new mongodb.ObjectId(coachid),function(err,coachdata){
+        if(err){
+          return  res.json(new BaseReturnInfo(0, "查询出错:"+err, ""));
+        }
+        if(!coachdata){
+         return   res.json(new BaseReturnInfo(0, "没有查询到教练", ""));
+        }
+        var coachinfo={
+            coachid:coachdata._id,
+            name:coachdata.name,
+            mobile:coachdata.mobile,
+            logoimg:coachdata.headportrait.originalpic,
+            address:coachdata.address,
+            introduction:coachdata.introduction,
+            subject:[],
+            validationstate:coachdata.validationstate,
+            driveschool:coachdata.driveschool,
+            Seniority:coachdata.Seniority,
+            passrate:coachdata.passrate,
+            studentcount:coachdata.studentcount,
+            workweek:coachdata.workweek,
+            begintimeint:coachdata.worktimespace.begintimeint,
+            endtimeint:coachdata.worktimespace.endtimeint,
+            coursestudentcount:coachdata.coursestudentcount,
+            idcardnumber:coachdata.idcardnumber,
+            drivinglicensenumber:coachdata.drivinglicensenumber,
+            coachnumber:coachdata.coachnumber,
+            starlevel:coachdata.starlevel,
+            platenumber:coachdata.platenumber,
+            serverclasslist:req.body.serverclasslist,
+            trainfield:coachdata.trainfield,
+            carmodel:coachdata.carmodel.modelsid,
+        };
+        for(i=0;i<coachdata.subject.length;i++){
+            coachinfo.subject.push(coachdata.subject[i].subjectid);
+        }
+      return  res.json(new BaseReturnInfo(1, "", coachinfo));
+    })
+}
+
 //=====================================训练场管理
 exports.getTrainingFieldList=function(req,res){
     var schoolid =req.query.schoolid;

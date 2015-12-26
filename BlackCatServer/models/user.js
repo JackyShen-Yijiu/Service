@@ -36,6 +36,7 @@ var  UserSchema=new Schema({
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
     invitationcode:{type:String},  // 要初始化  邀请码
     referrerCode: String,   // 被邀请码
+    referrerfcode: String,  //被邀请的Fcode
     applystate:{type:Number,default:0}, //报名状态  0 未报名 1 申请中 2 申请成功
     //是否进行扫描验证码报名
     is_confirmbyscan:{ type: Boolean, default: false},

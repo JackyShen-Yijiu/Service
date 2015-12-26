@@ -19,7 +19,7 @@ var adminFunc = {
         }
 
     },
- setSchoolPageInfo : function(req,res,currentLink){
+ setSchoolPageInfo : function(req,res,currentLink,extradata){
 
     var searchKey = '';
     if(req.url){
@@ -28,6 +28,7 @@ var adminFunc = {
     }
      var schoolid=req.session.schoolid;
     return {
+        extradata:extradata,
         schoolid:schoolid,
         searchKey : searchKey,
         currentLink : currentLink+"?schoolid="+schoolid,

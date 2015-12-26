@@ -6,9 +6,11 @@ var AdminUser = require("../models/AdminUser");
 var AdminGroup = require("../models/AdminGroup");
 //server
 var adminserver=require("../server/adminserver");
+var basedatafun=require("../server/basedatafun");
 //数据校验
 var validator = require('validator');
-
+var cache=require("../../Common/cache");
+var _ = require("underscore");
 //站点配置
 var settings = require("../models/config/settings");
 //数据库操作对象
@@ -108,7 +110,23 @@ var  returnAdminRouter=function(io) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
-        res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo"));
+        var schoolid=req.session.schoolid;
+        if(req.session.schoolid===undefined){
+            res.render(error);
+        }
+        console.log(schoolid);
+        basedatafun.getSchooltrainingfiled(schoolid,function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.fieldname
+                };
+                return info;
+            });
+            console.log(filedlist);
+            res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo",filedlist));
+        });
+
     });
 
     //==================================================================================================================
@@ -129,6 +147,7 @@ var  returnAdminRouter=function(io) {
     //  教练信息
     router.get("/manage/getCoachlist",adminserver.getCoachlist);
     router.post("/manage/savecoachinfo",adminserver.saveCoachInfo);
+    router.get("/manage/getcoachbyid",adminserver.getcoachbyid);
     // 训练场信息处理
     router.get("/manage/gettrainingfieldlist",adminserver.getTrainingFieldList);
     router.get("/manage/gettrainingfieldbyid",adminserver.getTrainingFieldbyId);

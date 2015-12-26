@@ -954,7 +954,7 @@ exports.getUsefulCoachList=function(useid,index,callback){
             return  callback("用户没有报名的权限");
         }
         if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
-            return  callback("该用户现阶段不能预约课程:"+userdata.subject.name);
+            return  callback("该用户现阶段不能预约课程:"+user.subject.name);
         }
         coachmode.find({is_lock:false,is_validation:true,
             driveschool:new mongodb.ObjectId(user.applyschool),
@@ -1508,11 +1508,19 @@ exports.applyschoolinfo=function(applyinfo,callback){
           return  callback("此用户已经报名，请查看报名详情页");
       }
       }
+      var searchcoachinfo={};
+      if(applyinfo.coachid==-1||applyinfo.coachid=="-1"|| applyinfo.coachid.length<5){
+          searchcoachinfo.driveschool=new mongodb.ObjectId(applyinfo.schoolid);
+          searchcoachinfo.is_validation=true
+      }else{
+          searchcoachinfo._id=new mongodb.ObjectId(applyinfo.coachid)
+      }
       // 检查报名驾校和教练
-      coachmode.findById(new mongodb.ObjectId(applyinfo.coachid),function(err,coachdata){
+      coachmode.findOne(searchcoachinfo,function(err,coachdata){
           if(err||!coachdata){
               return callback("不能找到报名的教练");
           }
+          applyinfo.coachid=coachdata._id;
           // 检查教练
           schoolModel.findById(new mongodb.ObjectId(applyinfo.schoolid),function(err,schooldata){
               if(err||!schooldata){
@@ -1674,12 +1682,12 @@ exports.coachSetWorkTime=function(timeinfo,callback){
         coachdata.worktimespace.begintimeint=timeinfo.begintimeint;
         coachdata.worktimespace.endtimeint=timeinfo.endtimeint;
         var worktimes=[];
-        console.log(timeinfo);
+        //console.log(timeinfo);
         for(var i=parseInt(timeinfo.begintimeint);i<=parseInt(timeinfo.endtimeint);i++){
-            console.log(i.toString()+":00:00");
+            //console.log(i.toString()+":00:00");
             appWorkTimes.forEach(function(r,index){
-                console.log(r.begintime);
-                console.log(i.toString()+":00:00");
+                //console.log(r.begintime);
+                ///console.log(i.toString()+":00:00");
                 if(r.begintime== i.toString()+":00:00"){
                     worktimes.push(appWorkTimes[index]);
                 }

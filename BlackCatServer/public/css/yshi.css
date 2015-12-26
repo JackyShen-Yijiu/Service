@@ -1,4 +1,4 @@
-body{width: 100%; height: 100%; background: url("../img/qp.png") no-repeat; background-size:cover; z-index: -1;}
+﻿body{width: 100%; height: 100%; background: url("../img/qp.png") no-repeat; background-size:100% 100%; z-index: -1;}
 .footer{position:absolute;bottom:0;;margin: 0 auto;
   margin-bottom: 95px;;float: left;
   width:100%;height:60px;/*footer的高度*/clear:both;width: 100%; text-align: center;
@@ -8,25 +8,32 @@ body{width: 100%; height: 100%; background: url("../img/qp.png") no-repeat; back
 img{width: 100%;height:auto;}
 html,body{margin:0;padding:0;height:100%; }
 .content{min-height:100%;height:auto !important;height:100%; /*ie6不识别min-height,如上述处理*/position:relative;}
+.demo{width: 100%;height: 30px;margin: 0 auto; }
+.main_nav {max-width:600px; max-height:60px;
 
-.main_nav {max-width:300px;width: 100%; max-height:40px; text-align: center; margin: 0 auto;
- }
-.main_nav li{width:100%;min-height: 10px; font-size:16px;
+
+  width:100%;min-height: 45px; font-size:16px;
   padding: .7em 1em;
-  margin-bottom: 32%;
-  border-radius: 1em;
+
+
   background: #99c11f;
+  text-align: center;
   text-align:center;
   list-style: none;
-  margin: 0 auto;
+
   text-decoration: none;
-  margin-top:20%;
-  border: 1px solid red;
 
 
-}
-.main_nav li a{color:#fff;text-decoration: none;font-size: 28px;}
-.cd-signin{width: 60px;height: 30px;background-color: #99c11f; margin-bottom: 30%;margin: 0 auto; }
+  z-index: 10;
+
+  margin: auto;
+  position: fixed;
+  top: 93%; left: 0; bottom:0; right: 0;
+
+ }
+
+.main_nav  a{color:#fff;text-decoration: none;font-size: 28px;margin:0 auto; vertical-align: middle; line-height: 30px;margin-left:-40px; }
+.cd-signin{width: 100%;height: 30px; background-color: #99c11f;line-height: 30px; margin-bottom: 20%;margin: 0 auto; text-align: center; }
 .cd-user-modal {
   position: fixed;
   top: 0;
@@ -122,6 +129,7 @@ html,body{margin:0;padding:0;height:100%; }
 .cd-form .fieldset {
   position: relative;
   margin: 1.4em 0;
+  text-align: left;
 }
 .cd-form .fieldset:first-child {
   margin-top: 0;
@@ -160,10 +168,11 @@ html,body{margin:0;padding:0;height:100%; }
 .cd-form input {
   margin: 0;
   padding: 0;
+  margin: 0 auto;
   border-radius: 0.25em;
 }
 .cd-form input.full-width {
-  width: 80%;
+  width: 60%;
 }
 .cd-form input.full-width2 {
   width: 94%;
@@ -259,4 +268,5 @@ html,body{margin:0;padding:0;height:100%; }
 #cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected {
   display: block;
 }
-.zt{color:darkblue}
+.zt{color:darkblue；
+width:60%;}
