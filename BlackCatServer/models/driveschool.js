@@ -62,6 +62,9 @@ var DriveSchoolSchema=new Schema({
     superiorservice:{type:String,default:""}, //  优势服务
     shuttleroute:{type:String,default:""}, //  班车路线
     businesslicensenumber :{type:String,default:""}, // 营业执照
+    Remarks:{type:String,default:""},//备注信息
+    // 是否接送
+    is_shuttle:{ type: Boolean, default: true},  // 是否接送默认接送
     organizationcode :{type:String,default:""}, // 组织机构代码
     hotindex:Number,//关注度
     applynotes:String,  // 报名须知

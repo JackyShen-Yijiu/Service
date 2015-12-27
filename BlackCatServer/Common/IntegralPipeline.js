@@ -7,6 +7,9 @@ var async = require('async');
 var mongodb = require('../models/mongodb.js');
 var userModel=mongodb.UserModel;
 var coachModel=mongodb.CoachModel;
+var userfcode=mongodb.UserFcode;
+var  systemIncome=mongodb.SystemIncome;
+var  incomeDetails=mongodb.IncomeDetails;
 var integralListModel=mongodb.IntegralListModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var commonData=require("../Config/commondata").integralrule;
@@ -112,7 +115,7 @@ try{
                         {integralstate:appTypeEmun.IntegralState.registerpaying})
                         .select("name integralstate integralpaylist wallet referrerCode")
                         .exec(function(err,data){
-                            console.log(data);
+                           // console.log(data);
                             cb(null,data);
                         })
                 },
@@ -273,17 +276,147 @@ try{
 
             ], function (err, result) {
                if (err){
-                   console.log("")
+                   setTimeout(cb, 1000*5);
                }
             });
-            setTimeout(cb, 1000);
+
         },
         function(err) {
             console.log('1.1 err: ', err);
         }
     );
 
+    //报名 信息发放
+    async.forever(function(cb){
+            async.waterfall([
+                //查找可以发放的用户
+                function(cb){
+                    // 查找没有发放，同时修改状态1  发放中
+                    systemIncome.findOneAndUpdate({"rewardstate":0,"settingrewardtime":{$lt:new Date()}},
+                        {"rewardstate":1},function(err,data){
+                            cb(err,data);
+                        })
+                },
+                function(systemincomedata,cb){
+                    if (systemincomedata){
+                        //如果不是受邀用户
+                        if(!systemincomedata.is_referrer){
+                            systemIncome.update({"_id":systemincomedata._id},{$set:{rewardstate:2,actualrewardtime:new Date()}},
+                                function(err,data){
+                                    cb(err,data);
+                                })
+                        }else{   // 是受邀用户
+                            userfcode.findOne({"userid":systemincomedata.userid},function(err,userfcodedata){
+                                if(err){
+                                    cb(err);
+                                }
+                                if(!userfcodedata){
+                                    cb("没有找到订单：的F吗"+systemincomedata.userid);
+                                }
+                                 var incomedetailsidlist=[];
+                                // 保存报名人的发放金额
+                                var  selfincomedetails=new incomeDetails();
+                                selfincomedetails.userid=userfcodedata.userid;
+                                selfincomedetails.usertype=userfcodedata.usertype;
+                                selfincomedetails.income=systemincomedata.useractualincome;
+                                selfincomedetails.type=1;  //收入
+                                selfincomedetails.save(function(err,data){
+                                    userfcode.update({"userid":userfcodedata.userid},
+                                        {$inc: { money: systemincomedata.useractualincome }},function(err,data){}
+                                       )
+                                    incomedetailsidlist.push(data._id);
+                                });
+                                // // 发放邀请人的
+                                rewardfcodelist=userfcodedata.fatherFcodelist;
+                                var rewardcount=rewardfcodelist.length;
+                                var rewardmoneytotal=systemIncome.rewardmoney;
+                                var actrewardmoneytotal=0;
+                                var iswhilst=true;
+                                if(rewardcount>0&&rewardmoneytotal>1)
+                                {
+                                    iswhilst=true;
+                                }
+                                else {
+                                    iswhilst=false;
+                                }
+                                async.whilst(
+                                    function() { return iswhilst },
+                                    function(cb) {
+                                        rewardcount--;
+                                        var fcode=rewardfcodelist[rewardcount];
+                                        userfcode.findOne({"fcode":fcode},function(err,tempfcodedata){
+                                            if(err||!tempfcodedata){
+                                                if(rewardcount>0&&rewardmoney>1)
+                                                {
+                                                    iswhilst=true;
+                                                }
+                                                else {
+                                                    iswhilst=false;
+                                                }
+                                                cb();
+                                            };
+                                            var rewardmoney=Math.floor(rewardmoneytotal*0.5);
+                                            if(tempfcodedata.codetype==1&&rewardfcodelist.length==1){
+                                                rewardmoney=rewardmoneytotal;
+                                            }
+                                            rewardmoneytotal=rewardmoneytotal-rewardmoney;
+                                            actrewardmoneytotal=actrewardmoneytotal+rewardmoney;
+                                            var  rewardincomedetails=new incomeDetails();
+                                            rewardincomedetails.userid=tempfcodedata.userid;
+                                            rewardincomedetails.usertype=tempfcodedata.usertype;
+                                            rewardincomedetails.income=rewardmoney;
+                                            rewardincomedetails.type=1;  //收入
+                                            rewardincomedetails.save(function(err,data){
+                                                userfcode.update({"userid":tempfcodedata.userid},
+                                                    {$inc: { money: rewardmoney }},function(err,data){}
+                                                );
+                                                incomedetailsidlist.push(data._id);
+                                                if(rewardcount>0&&rewardmoneytotal>1)
+                                                {
+                                                    iswhilst=true;
+                                                }
+                                                else {
+                                                    iswhilst=false;
+                                                }
+                                                cb();
+                                            });
+                                        })
+
+                                    },
+                                    function(err) {
+                                        rewardsurplus=systemIncome.rewardmoney-actrewardmoneytotal;
+                                        systemIncome.update({"_id":systemincomedata._id},{$set:{rewardstate:2,actualrewardtime:new Date(),
+                                        "rewardsurplus":rewardsurplus,"rewardlist":incomedetailsidlist}},
+                                            function(err,data){
+                                                cb(err,data);
+                                            })
+                                        log('循环发放积分 ', err);
+                                    }
+                                );
+
+                            })
+                        }
+
+                    }else
+                    {
+                        console.log(new Date());
+                        console.log("没有查到报名 发放的用户");
+                        setTimeout(cb, 1000*10);
+                    }
+                }
+            ], function (err, result){
+                if (err){
+                   console.log(err);
+                }
+                setTimeout(cb, 1000*5);
+            });
+
+    },
+        function(err) {
+            console.log('1.1 报名金钱发放err: ', err);
+        });
+
 }catch(err){
-    console.log("计算积分错误：");
+    console.log("计算金钱错误：");
     console.log(err);
 }

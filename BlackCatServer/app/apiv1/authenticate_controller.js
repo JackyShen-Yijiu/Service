@@ -28,7 +28,21 @@ exports.ensureAuthorized = function(req, res, next) {
     } else {
         return res.json(new BaseReturnInfo(0,"Not authenticated",""));
     }
-}
+};
+exports.getUseridByReq = function(req, res, next) {
+    var bearerToken;
+    var bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== 'undefined') {
+        req.token = bearerHeader;
+        verifyToken(bearerHeader, function(ret, decode){
+            req.userId = decode.userId;
+            next();
+        });
+    } else {
+        req.userId=undefined;
+        next();
+    }
+};
 
 var verifyToken = function(token, callback) {
     jwt.verify(token, secretParam.secret, undefined, function(err, decoded) {

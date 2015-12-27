@@ -21,13 +21,79 @@ var auditurl=require("../Config/sysconfig").validationurl;
 require('date-utils');
 var async = require('async');
 var fs=require("fs");
+var cache=require('../Common/cache');
 
-cityinfo.find({"is_open":true})
-    .select("indexid name")
-    .sort({index:1})
-    .exec(function(err,data){
-        console.log(data);
-    })
+var count1 = 0;
+async.whilst(
+    function() { return count1 < 3 },
+    function(cb) {
+        console.log('1.1 count: ', count1);
+        count1++;
+        setTimeout(cb, 1000);
+    },
+    function(err) {
+        // 3s have passed
+        console.log('1.1 err: ', err);
+    }
+);
+console.log("wancheng");
+var count7 = 0;
+//async.forever(
+//
+//    function(cb) {
+//        //console.log('1.1.1: ', 'start');
+//        //console.log('1.7 count: ', count7);
+//        //count7++;
+//        //cache.get("dfdsfdsf",function(err,data){
+//        //    console.log("getcache",count7);
+//        //    cb(null,"cachedata"+count7);
+//        //})
+//        async.waterfall([
+//            function(cb) { console.log('1.1.1: ', 'start');
+//                cache.get("dfdsfdsf",function(err,data){
+//                    console.log("getcache",data+count7);
+//                    cb(null,"cachedata");
+//                }) },
+//            function(n, cb) { console.log('1.1.2: ',n);
+//                setTimeout(cb(null, 3),1000); },
+//            function(n, cb) { console.log('1.1.3: ',n);  setTimeout(cb(null, 3),1000); }
+//        ], function (err, result) {
+//            console.log('1.1 err: ', err);
+//            console.log('1.1 result: ', result);
+//            cb(null,result);
+//        });
+//        count7++;
+//        console.log("test"+count7);
+//    },
+//    function(err) {
+//        console.log('1.7 err: ',err);
+//    }
+//);
+var  asynctest=function(){
+    async.waterfall([
+        function(cb) { console.log('1.1.1: ', 'start');
+           cache.get("dfdsfdsf",function(err,data){
+               console.log("getcache",data);
+               cb(null,"cachedata");
+           }) },
+        function(n, cb) { console.log('1.1.2: ',n);
+            setTimeout(cb(null, 3),1000); },
+        function(n, cb) { console.log('1.1.3: ',n);  setTimeout(cb(null, 3),1000); }
+    ], function (err, result) {
+        console.log('1.1 err: ', err);
+        console.log('1.1 result: ', result);
+        return result;
+    });
+    console.log("test");
+};
+//console.log(asynctest());
+//
+//cityinfo.find({"is_open":true})
+//    .select("indexid name")
+//    .sort({index:1})
+//    .exec(function(err,data){
+//        console.log(data);
+//    })
 //var JsonObj=JSON.parse(fs.readFileSync('./test.json'));
 //console.log(JsonObj);
 //JsonObj.forEach(function(r,index){

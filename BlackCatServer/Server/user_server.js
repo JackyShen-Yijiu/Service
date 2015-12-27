@@ -16,6 +16,7 @@ var appWorkTimes=require("../Config/commondata").worktimes;
 var subjectlist=require("../Config/commondata").subject;
 var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
+var cache=require('../Common/cache');
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
 var coachmode=mongodb.CoachModel;
@@ -1169,10 +1170,11 @@ exports.addFavoritSchool=function(userid,schoolid,callback){
             user.favorschool = [new mongodb.ObjectId(schoolid)];
         }
 
-        user.save(function (err) {
+        user.save(function (err,data) {
             if (err) {
                 return callback('保存出錯：' + err);
             }
+            cache.set("FavoritSchool"+userid,data.favorschool,function(err){});
             return callback(null, "success");
 
         })
@@ -1193,8 +1195,9 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
             var idx = user.favorschool.indexOf(new mongodb.ObjectId(schoolid));
             if (idx != -1) {
                 user.favorschool.splice(idx, 1);
-                user.save(function (err) {
+                user.save(function (err,data) {
                     if (err) {
+                        cache.set("FavoritSchool"+userid,data.favorschool,function(err){});
                         return callback('保存出錯：' + err);
                     }
                     return callback(null, "success");
@@ -1503,7 +1506,10 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
-      if (applyinfo.applyagain!=1){
+      if(userdata.applystate>appTypeEmun.ApplyState.Applying){
+          return  callback("您已经报名成功，请不要重复报名");
+      }
+      if (applyinfo.applyagain!=1 &&userdata.applystate==appTypeEmun.ApplyState.Applying){
       if(userdata.applystate>appTypeEmun.ApplyState.NotApply){
           return  callback("此用户已经报名，请查看报名详情页");
       }
@@ -1539,12 +1545,12 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
                       return callback("所报车型与课程的类型不同，请重新选择");
                   }
-                  userdata.idcardnumber=applyinfo.idcardnumber;
+                  userdata.idcardnumber=applyinfo.idcardnumber?applyinfo.idcardnumber:userdata.idcardnumber;
                   userdata.name =applyinfo.name;
                   userdata.telephone=applyinfo.telephone;
                   userdata.address=applyinfo.address;
                   userdata.carmodel=applyinfo.carmodel;
-                  userdata.userpic=applyinfo.userpic,
+                  userdata.userpic=applyinfo.userpic?applyinfo.userpic:userdata.userpic,
                   userdata.applyschool=applyinfo.schoolid;
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
                   userdata.applyschoolinfo.name=schooldata.name;

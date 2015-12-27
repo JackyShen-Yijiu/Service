@@ -731,7 +731,7 @@ exports.GetComment=function(queryinfo,callback){
             .populate("coachid","_id  name headportrait  ")
             .skip((queryinfo.index-1)*10)
             .limit(10)
-            .sort({"begintime":-1})
+            .sort({"coachcomment.commenttime":-1})
             .exec(function(err,data){
                 if(err){
                     return callback("查询评论出错："+err);
@@ -758,7 +758,7 @@ exports.GetComment=function(queryinfo,callback){
             .populate("userid","_id  name headportrait  ")
             .skip((queryinfo.index-1)*10)
             .limit(10)
-            .sort({"begintime":-1})
+            .sort({"comment.commenttime":-1})
             .exec(function(err,data){
                 if(err){
                     return callback("查询评论出错："+err);
