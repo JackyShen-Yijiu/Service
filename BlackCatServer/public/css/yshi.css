@@ -172,7 +172,7 @@ html,body{margin:0;padding:0;height:100%; }
   border-radius: 0.25em;
 }
 .cd-form input.full-width {
-  width: 60%;
+  width: 75%;
 }
 .cd-form input.full-width2 {
   width: 94%;
@@ -268,5 +268,5 @@ html,body{margin:0;padding:0;height:100%; }
 #cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected {
   display: block;
 }
-.zt{color:darkblue；
+.zt{color:#000000;
 width:60%;}

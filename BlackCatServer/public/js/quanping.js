@@ -7,7 +7,7 @@ jQuery(document).ready(function($){
 		$tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
 		$main_nav = $('.main_nav');
 
-	//µ¯³ö´°¿Ú
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	$main_nav.on('click', function(event){
 
 		if( $(event.target).is($main_nav) ) {
@@ -24,20 +24,20 @@ jQuery(document).ready(function($){
 
 	});
 
-	//¹Ø±Õµ¯³ö´°¿Ú
+	//ï¿½Ø±Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	$('.cd-user-modal').on('click', function(event){
 		if( $(event.target).is($form_modal) || $(event.target).is('.cd-close-form') ) {
 			$form_modal.removeClass('is-visible');
 		}	
 	});
-	//Ê¹ÓÃEsc¼ü¹Ø±Õµ¯³ö´°¿Ú
+	//Ê¹ï¿½ï¿½Escï¿½ï¿½ï¿½Ø±Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	$(document).keyup(function(event){
     	if(event.which=='27'){
     		$form_modal.removeClass('is-visible');
 	    }
     });
 
-	//ÇÐ»»±íµ¥
+	//ï¿½Ð»ï¿½ï¿½ï¿½
 	$form_modal_tab.on('click', function(event) {
 		event.preventDefault();
 		( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
@@ -46,7 +46,7 @@ jQuery(document).ready(function($){
 	function login_selected(){
 		$form_login.addClass('is-selected');
 		$form_signup.removeClass('is-selected');
-		$form_forgot_password.removeClass('is-selected');
+
 		$tab_login.addClass('selected');
 		$tab_signup.removeClass('selected');
 	}
