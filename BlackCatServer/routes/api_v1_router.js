@@ -46,7 +46,9 @@ v1.get("/getproductdetail",appsystemController.getProductDetail);
 
 //======================================基础数据======================================
 
-
+//=====================================Y码相关=======================================
+  // 获取我的金币
+v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
 //======================================用户信息======================================
 //  用户报名验证 v1.1 版
 v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,userController.postenrollverificationv2);

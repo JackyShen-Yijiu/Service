@@ -1,6 +1,7 @@
 /**
  * Created by metis on 2015-08-31.
  */
+var async = require('async');
 var smscodemodule=require('../Common/sendsmscode').sendsmscode;
 var addtestsmscode=require('../Common/sendsmscode').addsmscode;
 var mongodb = require('../models/mongodb.js');
@@ -27,6 +28,8 @@ var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
 var mallProductModel=mongodb.MallProdcutsModel
 var mallOrderModel=mongodb.MallOrderModel;
+var userfcode= mongodb.UserFcode;
+var coupon=mongodb.Coupon;
 require('date-utils');
 
 var timeout = 60 * 5;
@@ -1241,6 +1244,58 @@ getMyWalletlist=function(queryinfo,callback){
                 return callback(null,list);
             }
         })
+};
+exports.getmymoney=function(queryinfo,callback){
+    var usertypeobject;
+    if(queryinfo.usertype==appTypeEmun.UserType.User){
+        usertypeobject=usermodel;
+    }else {
+        usertypeobject=coachmode;
+    }
+    async.parallel([
+        function(cb) {
+            usertypeobject.findById(new mongodb.ObjectId(queryinfo.userid))
+                .select(" is_lock wallet")
+                .exec(function(err,data){
+                    if(err){
+                        return cb("查询用户出错："+err);
+                    }
+                    if (!data){
+                        return cb("没有查到此用户的信息");
+                    }
+                    if(data.is_lock){
+                        return cb("用户已锁定无法获取用户钱包信息");
+                    }
+                    return cb(null,data.wallet);
+                })
+        },
+        function(cb) {
+            userfcode.findOne({"userid":queryinfo.userid})
+                .select("userid fcode money")
+                .exec(function(err, data){
+                    cb(err,data);
+                })
+        },
+        function(cb) {
+            coupon.find({"userid":queryinfo.userid,$or:[{state:0},{state:1},{state:2}]})
+                .select("userid  couponcomefrom is_forcash state")
+                .exec(function(err,data){
+                    cb(err,data);
+                })
+        }
+    ], function (err, results) {
+        if(err){
+         return  callback("查询出错:"+err);
+        }
+        returninfo={
+            userid:queryinfo.userid,
+            wallet:results[0]?results[0]:0,
+            fcode:results[1]? (results[1].fcode?results[1].fcode:""):"",
+            money:results[1]? (results[1].money?results[1].fcode:0):0,
+            couponcount:results[2]? results[2].length:0,
+        };
+        return callback(null,returninfo)
+    });
 }
 // 获取我的钱包
 exports.getMyWallet=function(queryinfo,callback){
