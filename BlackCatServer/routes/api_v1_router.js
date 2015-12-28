@@ -194,6 +194,7 @@ v1.post("/courseinfo/coachfinishreservation",ensureAuthorizedController.ensureAu
 v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthorized,courseController.getreservationapply);
 
 //-------------------------------------------------------------
+
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);

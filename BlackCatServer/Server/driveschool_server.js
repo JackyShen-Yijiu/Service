@@ -73,7 +73,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
                         //  r.restaurantId = r._id;
                         // delete(r._id);
                     });
-                     if (searchinfo.ordertype==0)
+                     if (searchinfo.ordertype==0||searchinfo.ordertype==1)
                      {
                          driveschoollist=  _.sortBy(driveschoollist,"distance")
                      }
