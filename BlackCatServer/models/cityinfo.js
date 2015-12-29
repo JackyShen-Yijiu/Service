@@ -12,7 +12,7 @@ var CityInfoSchema = new Schema({
     ciytype:Number,
     fatherid:Number,
     is_open :{type:Boolean,default:false},
-
+    showtype:{type:Number,default:0},  // 0 驾校， 1教练
 });
 
 CityInfoSchema.index({is_open: 1});

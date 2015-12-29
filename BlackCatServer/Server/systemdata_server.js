@@ -159,6 +159,24 @@ exports.getActivity=function(cityname,callback){
          return callback(null,list);
      })
 }
+// 获取地图的展示方式
+exports.locationShowType=function(cityname,callback){
+    cityInfoModel.findOne({"is_open":true,"name":new RegExp(cityname)})
+        .select("indexid name showtype")
+        .sort({index:1})
+        .exec(function(err,data){
+            if(err){
+                return callback("查找出错："+err);
+            }
+            if(!data){
+                return callback("该地区没有开通");
+            }
+            var showtype={
+                name:data.name,
+                showtype:data.show?data.showtype:0
+            }
+            return callback(null,showtype);});
+}
 exports.getOpenCitylist=function(callback){
    cache.get("opencitylist",function(err,data){
        if(err){

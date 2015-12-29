@@ -137,7 +137,7 @@ exports.getActivity=function(req,res){
     var cityname=req.query.cityname;
     sysstemserver.getActivity(cityname,function(err ,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,{}));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     })
@@ -152,7 +152,18 @@ exports.getOpenCitylist=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     })
 
+};
+// 获取该地区的显示方式
+exports.getlocationShowType=function(req,res){
+    var cityname=req.query.cityname;
+    sysstemserver.locationShowType(cityname,function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 }
+
 
 exports.getTrainingContent=function(req,res){
     //getTrainingContent
