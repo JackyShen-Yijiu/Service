@@ -458,7 +458,7 @@ exports.postapplySchool=function(req,res){
         carmodel:req.body.carmodel,
         applyagain:req.body.applyagain?req.body.applyagain:0
         };
-    if (applyinfo.name===undefined||applyinfo.idcardnumber === undefined||
+    if (applyinfo.name===undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined
         ||applyinfo.schoolid === undefined ||applyinfo.coachid === undefined
         ||applyinfo.carmodel === undefined ||applyinfo.classtypeid === undefined) {
@@ -757,7 +757,7 @@ exports.putFavorSchool=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(0,"",data));
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 }
 
@@ -808,7 +808,27 @@ exports.delFavorrCoach=function(req,res){
     });
 
 }
-
+// 获取我的金额
+exports.getmymoney=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        usertype:req.query.usertype
+    };
+    if (queryinfo.userid===undefined||queryinfo.usertype===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getmymoney(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 //  获取我的钱包
 exports.getMyWallet=function(req,res){
     var  queryinfo={

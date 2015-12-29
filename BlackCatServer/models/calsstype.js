@@ -22,8 +22,8 @@ var ClassTypeSchema=new Schema({
     onsaleprice:Number , // 优化价格,
     originalprice:Number, // 原价
     systemretains:{type:Number,default:0},// 系统预留
-    feedbackuser:{type:Number,default:0},// 系统预留
-    rewardmoney:{type:Number,default:0},// 系统预留
+    feedbackuser:{type:Number,default:0},// 返给用户
+    rewardmoney:{type:Number,default:0},// 系统奖励
     classchedule:String, // 授课日程   周日/平日/
      });
 

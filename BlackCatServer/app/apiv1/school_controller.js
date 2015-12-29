@@ -92,10 +92,11 @@ exports.getSchoolClassType=function(req,res){
 //获取驾校详情
 exports.getSchoolInfo=function(req,res){
     var  schoolid=req.params.schoolid;
+    var userid=req.userId;
     if (schoolid===undefined){
         return res.json(new BaseReturnInfo(0,"获取参数错误",""));
     }
-    driverSchool.getSchoolInfoserver(schoolid,function(err,data){
+    driverSchool.getSchoolInfoserver(schoolid,userid,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));
         }

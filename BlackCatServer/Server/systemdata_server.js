@@ -10,7 +10,24 @@ var headLineModel=mongodb.HeadLineNewsModel;
 var courseWareModel=mongodb.CourseWareModel;
 var mallProductModel=mongodb.MallProdcutsModel;
 var cityInfoModel=mongodb.CityiInfoModel;
+var userconsultModel=mongodb.UserConsultModel;
 
+
+// 保存用户咨询信息
+exports.saveUserConsult=function(userinfo,callback){
+    var userconsult=new userconsultModel();
+    userconsult.userid=userinfo.userid;
+    userconsult.mobile=userinfo.mobile;
+    userconsult.licensetype=userinfo.licensetype;
+    userconsult.content=userinfo.content;
+    userconsult.name=userinfo.name;
+    userconsult.save(function(err){
+        if(err){
+            return callback("保存反馈信息出错："+err);
+        }
+        return callback(null,"success");
+    })
+}
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
     feedback.feedbackmessage=feedbackinfo.feedbackmessage;

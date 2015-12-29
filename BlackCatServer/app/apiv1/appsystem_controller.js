@@ -159,6 +159,23 @@ exports.getHeadLineNews=function (req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     })
 }
+// 保存用户咨询信息
+exports.postUserConsult=function(req,res){
+    var   userinfo={
+        name:req.body.name,
+        mobile:req.body.mobile,
+        licensetype:req.body.licensetype,
+        content:req.body.content,
+        userid:req.body.userid
+    };
+    console.log(userinfo);
+    sysstemserver.saveUserConsult(userinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
 // 保存用户反馈信息
 exports.postUserFeedBack=function(req,res){
     var  feedbackinfo={

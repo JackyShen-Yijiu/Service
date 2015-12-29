@@ -7,8 +7,10 @@ var resbaseschoolinfomode=require("../custommodel/returndriveschoolinfo").resBas
 var schoolModel=mongodb.DriveSchoolModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var classtypeModel=mongodb.ClassTypeModel;
+var cache=require('../Common/cache');
 var geolib = require('geolib');
 var _ = require("underscore");
+var async = require('async');
 
 exports.searchDriverSchool=function(searchinfo,callback){
 
@@ -32,9 +34,9 @@ exports.searchDriverSchool=function(searchinfo,callback){
     }else if (searchinfo.ordertype==2){
         ordercondition.minprice=1;
     }
-    console.log(searchcondition);
-    console.log(ordercondition);
-    console.log(searchinfo);
+    //console.log(searchcondition);
+    //console.log(ordercondition);
+    //console.log(searchinfo);
     schoolModel.find(searchcondition)
         .select("")
         .sort(ordercondition)
@@ -71,7 +73,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
                         //  r.restaurantId = r._id;
                         // delete(r._id);
                     });
-                     if (searchinfo.ordertype==0)
+                     if (searchinfo.ordertype==0||searchinfo.ordertype==1)
                      {
                          driveschoollist=  _.sortBy(driveschoollist,"distance")
                      }
@@ -234,12 +236,36 @@ exports.getClassTypeBySchoolId=function(schoolid,callback){
     });
 };
 // 获取驾校详情
-exports.getSchoolInfoserver=function(schoolid,callback){
-    schoolModel.findById(new mongodb.ObjectId(schoolid),function(err,schooldata){
-       if(err||!schooldata){
-           return callback("查询驾校详情出错："+err);
-       }
-        var data =new  resbaseschoolinfomode(schooldata);
-        return callback(null,data);
+exports.getSchoolInfoserver=function(schoolid,userid,callback){
+    async.waterfall([
+        function(cb){
+            if(!userid){
+                cb(null,0);
+            }else {
+                cache.get("FavoritSchool"+userid,function(err,data){
+                    if(data){
+                        var idx = data.indexOf(schoolid);
+                        if (idx != -1) {
+                            cb(err,1);
+                        }
+                        cb(err,0);
+                    }
+                    cb(err,0);
+                })
+            }
+        },
+        function(favoritSchool,cb){
+            schoolModel.findById(new mongodb.ObjectId(schoolid),function(err,schooldata){
+                if(err||!schooldata){
+                    return callback("查询驾校详情出错："+err);
+                }
+                var data =new  resbaseschoolinfomode(schooldata);
+                data.is_favoritschool=favoritSchool;
+                return cb(null,data);
+            });
+        }
+    ], function (err, result) {
+        return callback(err,result);
     });
+
 };

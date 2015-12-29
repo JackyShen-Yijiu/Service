@@ -7,7 +7,7 @@ var userfcode=mongodb.UserFcode;
 var classtype=mongodb.ClassTypeModel;
 var  systemIncome=mongodb.SystemIncome;
  var Coupon=mongodb.Coupon;
-var hashids = new Hashids("yibukejihoutai",5,"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+var hashids = new Hashids("yibukejihoutai",3,"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 require('date-utils');
 //  查找邀请人
 var defaultfun={
@@ -26,15 +26,16 @@ var defaultfun={
         })
     },
     createfcode:function(displyid,type){
-        var id = hashids.encode(displyid);
-        return type==1? ("FA"+id):("FB"+id);
+        var id = hashids.encode(parseInt(displyid));
+        //console.log("YA"+id);
+        return type==1? ("YA"+id):("YB"+id);
     },
     saveincome:function(userinfo,fcodeinfo,is_reffercode,callback){
         systemIncome.findOne({"userid":userinfo.userid},function(err,systemincomedata){
             if(err){
                 return callback("查询收益出错");
             }
-            if(data){
+            if(systemincomedata){
                 return callback("用户收益已存在");
             }else{
                 classtype.findById(new mongodb.ObjectId(userinfo.applyclasstype),function(err,classtypedata){
@@ -43,6 +44,7 @@ var defaultfun={
                     }
                    var tempincome=new systemIncome();
                     tempincome.userid=userinfo.userid;
+                    tempincome.is_referrer=is_reffercode;
                     tempincome.applyclasstype=classtypedata._id;
                     tempincome.classprice=classtypedata.price;
                     tempincome.dealprice=classtypedata.onsaleprice;
@@ -53,25 +55,24 @@ var defaultfun={
                     tempincome.rewardmoney=is_reffercode?classtypedata.rewardmoney:0;
                     tempincome.systemsurplus=tempincome.totalrevenue-tempincome.useractualincome-tempincome.systemretains-
                         tempincome.rewardmoney;
-                    tempincome.rewardsurplus=0;
-                    tempincome.settingrewardtime=(new Date()).addDays(7);
+                    tempincome.rewardsurplus=0;   // 奖励剩余
+                    tempincome.settingrewardtime=(new Date()).addDays(8);
                     tempincome.rewardstate=0;
                     tempincome.save(function(err,data){
                         if(err){
-                            return callback("保存报名信息出错");
+                            return callback("保存报名信息出错"+err);
                         }
                         //生成优惠券
                        var tempcoupon=new Coupon();
                         tempcoupon.userid=userinfo.userid;
                         tempcoupon.couponcomefrom=1;
                         tempcoupon.sysincomeid=data._id;
-                        tempcoupon.state=0
+                        tempcoupon.state=0;
+                        tempcoupon.is_forcash=is_reffercode;
                         tempcoupon.remark="";
                         tempcoupon.save(function(err,data){
-                            return(null,"suncess")
+                            return callback(null,"suncess")
                         });
-
-
                     });
                 })
             }
@@ -81,7 +82,7 @@ var defaultfun={
 
 // 用户报名成功生成自己的F码
 
-exports.applySuccess=function(userinfo,callback){
+applySuccess=function(userinfo,callback){
     // 查找邀请人
     defaultfun.searchreferrerFCode(userinfo.referrerfcode,function(err,referrdata){
         var is_havereferr=false;
@@ -96,9 +97,14 @@ exports.applySuccess=function(userinfo,callback){
             if(err){
                 return callback("查询Y码出错："+err);
             }
-            var fcode=defaultfun.createfcode(userdata.invitationcode,2);
+            var fcode=defaultfun.createfcode(userinfo.invitationcode,2);
             if(userdata){
                 //已存在Y吗
+                userfcode.update({"userid":userinfo.userid},{$set:{ fatherFcodelist:referrlist}},function(err,data){
+                    defaultfun.saveincome(userinfo,userdata,is_havereferr,function(err,data){
+                        return callback(err,data);
+                    });
+                })
             }else{
                 //保存Y码
                 var tempuser=userfcode({
@@ -113,10 +119,33 @@ exports.applySuccess=function(userinfo,callback){
                     if(err){
                         callback("保存Y码出错");
                     }
-
+                    defaultfun.saveincome(userinfo,data,is_havereferr,function(err,data){
+                        return callback(err,data);
+                    })
                 })
             }
         })
     })
 
 }
+
+//var  userinfo={
+//    referrerfcode:"",
+//    userid:"56332bc4608d71017df2ab23",
+//    usertype:1,
+//    invitationcode:"1001",
+//    "applyclasstype":"562dd2508b8ef3d046b67ccd"
+//}
+
+var  userinfo={
+    referrerfcode:"FBRL77",
+    userid:"562cb02e93d4ca260b40e544",
+    usertype:1,
+    invitationcode:"1019",
+    "applyclasstype":"562dd2508b8ef3d046b67ccd"
+}
+
+applySuccess(userinfo,function(err,data){
+    console.log(err);
+    console.log(data);
+})

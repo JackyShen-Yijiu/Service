@@ -9,8 +9,9 @@ var Schema = mongoose.Schema;
 
 var SystemIncomeSchema=new Schema({
     userid:String, // 用户ID
+    is_referrer:{type:Boolean,default:false}, // 是否是受邀用户
     createtime:{type:Date,default:Date.now()}, //创建时间
-    applyclasstype:{type: Schema.Types.ObjectId, ref: 'classtype'},
+    applyclasstype:{type: Schema.Types.ObjectId, ref: 'classtype'}, //报名课程
     classprice:{type:Number,default:0},  // 课程的价格
     dealprice:{type:Number,default:0},   //成交价格
     totalrevenue:{type:Number,default:0}, // 总收益

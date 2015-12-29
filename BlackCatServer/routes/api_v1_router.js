@@ -41,12 +41,16 @@ v1.get("/getcourseware",appsystemController.getCourseWare);
 v1.get("/getmailproduct",appsystemController.getMallProductList);
 // 查看商品详情（同时进行商品浏览次数 +1）
 v1.get("/getproductdetail",appsystemController.getProductDetail);
+//  保存咨询信息
+v1.post("/saveuserconsult",appsystemController.postUserConsult);
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 
 //======================================基础数据======================================
 
-
+//=====================================Y码相关=======================================
+  // 获取我的金币
+v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
 //======================================用户信息======================================
 //  用户报名验证 v1.1 版
 v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,userController.postenrollverificationv2);
@@ -110,7 +114,7 @@ v1.delete('/userinfo/favoriteschool/:id',ensureAuthorizedController.ensureAuthor
 //获取附近的驾校
 v1.get('/driveschool/nearbydriveschool', driveSchoolController.getNearbydriveSchool);
 //获取驾校详情
-v1.get('/driveschool/getschoolinfo/:schoolid', driveSchoolController.getSchoolInfo);
+v1.get('/driveschool/getschoolinfo/:schoolid',ensureAuthorizedController.getUseridByReq, driveSchoolController.getSchoolInfo);
 //获取教学的课程类型
 v1.get("/driveschool/schoolclasstype/:schoolid",driveSchoolController.getSchoolClassType);
 //获取附近的练车场
@@ -194,6 +198,7 @@ v1.post("/courseinfo/coachfinishreservation",ensureAuthorizedController.ensureAu
 v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthorized,courseController.getreservationapply);
 
 //-------------------------------------------------------------
+
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);

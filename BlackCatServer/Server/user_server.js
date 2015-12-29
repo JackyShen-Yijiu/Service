@@ -1,6 +1,7 @@
 /**
  * Created by metis on 2015-08-31.
  */
+var async = require('async');
 var smscodemodule=require('../Common/sendsmscode').sendsmscode;
 var addtestsmscode=require('../Common/sendsmscode').addsmscode;
 var mongodb = require('../models/mongodb.js');
@@ -16,6 +17,7 @@ var appWorkTimes=require("../Config/commondata").worktimes;
 var subjectlist=require("../Config/commondata").subject;
 var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
+var cache=require('../Common/cache');
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
 var coachmode=mongodb.CoachModel;
@@ -24,8 +26,10 @@ var schoolModel=mongodb.DriveSchoolModel;
 var classtypeModel=mongodb.ClassTypeModel;
 var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
-var mallProductModel=mongodb.MallProdcutsModel
+var mallProductModel=mongodb.MallProdcutsModel;
 var mallOrderModel=mongodb.MallOrderModel;
+var userfcode= mongodb.UserFcode;
+var coupon=mongodb.Coupon;
 require('date-utils');
 
 var timeout = 60 * 5;
@@ -590,9 +594,12 @@ exports.updatePassword=function(pwdinfo,callback){
     }
     if(pwdinfo.usertype==appTypeEmun.UserType.User){
         usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
-  if(err||!userdata){
+  if(err){
       return  callback("查询用户出错："+err);
   }
+            if (!userdata){
+                return  callback("用户未注册");
+            }
      checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
          if (err) {
              return callback("验证码错误" );
@@ -1169,10 +1176,11 @@ exports.addFavoritSchool=function(userid,schoolid,callback){
             user.favorschool = [new mongodb.ObjectId(schoolid)];
         }
 
-        user.save(function (err) {
+        user.save(function (err,data) {
             if (err) {
                 return callback('保存出錯：' + err);
             }
+            cache.set("FavoritSchool"+userid,data.favorschool,function(err){});
             return callback(null, "success");
 
         })
@@ -1193,8 +1201,9 @@ exports.delFavoritSchool=function(userid,schoolid,callback){
             var idx = user.favorschool.indexOf(new mongodb.ObjectId(schoolid));
             if (idx != -1) {
                 user.favorschool.splice(idx, 1);
-                user.save(function (err) {
+                user.save(function (err,data) {
                     if (err) {
+                        cache.set("FavoritSchool"+userid,data.favorschool,function(err){});
                         return callback('保存出錯：' + err);
                     }
                     return callback(null, "success");
@@ -1238,6 +1247,58 @@ getMyWalletlist=function(queryinfo,callback){
                 return callback(null,list);
             }
         })
+};
+exports.getmymoney=function(queryinfo,callback){
+    var usertypeobject;
+    if(queryinfo.usertype==appTypeEmun.UserType.User){
+        usertypeobject=usermodel;
+    }else {
+        usertypeobject=coachmode;
+    }
+    async.parallel([
+        function(cb) {
+            usertypeobject.findById(new mongodb.ObjectId(queryinfo.userid))
+                .select(" is_lock wallet")
+                .exec(function(err,data){
+                    if(err){
+                        return cb("查询用户出错："+err);
+                    }
+                    if (!data){
+                        return cb("没有查到此用户的信息");
+                    }
+                    if(data.is_lock){
+                        return cb("用户已锁定无法获取用户钱包信息");
+                    }
+                    return cb(null,data.wallet);
+                })
+        },
+        function(cb) {
+            userfcode.findOne({"userid":queryinfo.userid})
+                .select("userid fcode money")
+                .exec(function(err, data){
+                    cb(err,data);
+                })
+        },
+        function(cb) {
+            coupon.find({"userid":queryinfo.userid,$or:[{state:0},{state:1},{state:2}]})
+                .select("userid  couponcomefrom is_forcash state")
+                .exec(function(err,data){
+                    cb(err,data);
+                })
+        }
+    ], function (err, results) {
+        if(err){
+         return  callback("查询出错:"+err);
+        }
+        returninfo={
+            userid:queryinfo.userid,
+            wallet:results[0]?results[0]:0,
+            fcode:results[1]? (results[1].fcode?results[1].fcode:""):"",
+            money:results[1]? (results[1].money?results[1].fcode:0):0,
+            couponcount:results[2]? results[2].length:0,
+        };
+        return callback(null,returninfo)
+    });
 }
 // 获取我的钱包
 exports.getMyWallet=function(queryinfo,callback){
@@ -1345,6 +1406,9 @@ exports.getMyProgress=function(userid,callback){
           .exec(function(err,userdata){
               if(err){
                   return  callback("查询错误："+err);
+              }
+              if(!userdata){
+                  return  callback("没有查询到用户信息");
               }
               return callback(null,userdata);
           })
@@ -1503,7 +1567,10 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
-      if (applyinfo.applyagain!=1){
+      if(userdata.applystate>appTypeEmun.ApplyState.Applying){
+          return  callback("您已经报名成功，请不要重复报名");
+      }
+      if (applyinfo.applyagain!=1 &&userdata.applystate==appTypeEmun.ApplyState.Applying){
       if(userdata.applystate>appTypeEmun.ApplyState.NotApply){
           return  callback("此用户已经报名，请查看报名详情页");
       }
@@ -1547,12 +1614,12 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
                       return callback("所报车型与课程的类型不同，请重新选择");
                   }
-                  userdata.idcardnumber=applyinfo.idcardnumber;
+                  userdata.idcardnumber=applyinfo.idcardnumber?applyinfo.idcardnumber:userdata.idcardnumber;
                   userdata.name =applyinfo.name;
                   userdata.telephone=applyinfo.telephone;
                   userdata.address=applyinfo.address;
                   userdata.carmodel=applyinfo.carmodel;
-                  userdata.userpic=applyinfo.userpic,
+                  userdata.userpic=applyinfo.userpic?applyinfo.userpic:userdata.userpic,
                   userdata.applyschool=applyinfo.schoolid;
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
                   userdata.applyschoolinfo.name=schooldata.name;
