@@ -132,7 +132,17 @@ exports.getProductDetail=function(req,res){
     })
 
 }
+//  获取活动信息
+exports.getActivity=function(req,res){
+    var cityname=req.query.cityname;
+    sysstemserver.getActivity(cityname,function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 
+}
 //  获取开通城市列表
 exports.getOpenCitylist=function(req,res){
     sysstemserver.getOpenCitylist(function(err ,data){

@@ -43,6 +43,8 @@ v1.get("/getmailproduct",appsystemController.getMallProductList);
 v1.get("/getproductdetail",appsystemController.getProductDetail);
 //  保存咨询信息
 v1.post("/saveuserconsult",appsystemController.postUserConsult);
+// 获取活动信息
+v1.get("/getactivity",appsystemController.getActivity);
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 
@@ -131,6 +133,7 @@ v1.get("/getschoolbyname",driveSchoolController.getSchoolByName);
 v1.get("/searchschool",driveSchoolController.searchSchool);
 //用户获取开通个城市列表
 v1.get("/getopencity",appsystemController.getOpenCitylist);
+
 
 
 //==============================预约课程(学生端)=========================================

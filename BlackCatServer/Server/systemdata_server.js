@@ -11,6 +11,7 @@ var courseWareModel=mongodb.CourseWareModel;
 var mallProductModel=mongodb.MallProdcutsModel;
 var cityInfoModel=mongodb.CityiInfoModel;
 var userconsultModel=mongodb.UserConsultModel;
+var activityModel=mongodb.ActivityModel;
 
 
 // 保存用户咨询信息
@@ -136,6 +137,28 @@ exports.getProductDetail=function(productid,callback){
 }
 
 
+exports.getActivity=function(cityname,callback){
+ activityModel.find({"is_using":true,
+     "city":new RegExp(cityname),"enddate":{$gte:new Date()}})
+     .exec(function(err,data){
+         if(err){
+             return callback("查询活动出错"+err);
+         }
+         list= _.map(data,function(item,i){
+             var one={
+                 id:item._id,
+                 name:item.name,
+                 titleimg:item.titleimg,
+                 begindate:item.begindate,
+                 contenturl:item.contenturl,
+                 enddate:item.enddate,
+                 address:item.address,
+             }
+             return one;
+         });
+         return callback(null,list);
+     })
+}
 exports.getOpenCitylist=function(callback){
    cache.get("opencitylist",function(err,data){
        if(err){
