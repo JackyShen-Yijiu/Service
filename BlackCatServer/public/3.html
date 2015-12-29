@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="css/yshi.css">
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/quanping.js"></script>
+   <script type="text/javascript" src="js/quanping.js"></script>-->
     <style>
         .zxun input{height: 40px;width: 60%;margin-left:56px;background-color:#99c11f;border-radius: 5px; }
     </style>
@@ -30,22 +30,22 @@
                     <form class="cd-form" method="post"   action=""  name="form">
                         <p class="fieldset">
                             <label class="image-replace cd-username" for="signin-username">真实姓名：</label>
-                            <input class="full-width has-padding has-border" id="signin-username" type="text" placeholder="联系姓名">
+                            <input class="full-width has-padding has-border" id="signin-username" type="text"  value  placeholder="联系姓名" name="">
                         </p>
                         <p class="fieldset">
-                            <label class="image-replace cd-password" for="signin-password">联系电话：</label>
-                     <input class="full-width has-padding has-border"  id="photo"  type="text" placeholder="联系电话" >
+                            <label class="image-replace cd-password" >联系电话：</label>
+                     <input class="full-width has-padding has-border"  id="mobile"  type="text" value placeholder="联系电话" >
                          </p>
                          <p class="fieldset">
-                             <label class="image-replace cd-password" for="signin-password"
+                             <label class="image-replace cd-password"
                              >报考班型：</label>
-                             <input class="full-width has-padding has-border" id="signin-pass" type="text"  placeholder="驾照类型（C1/C2）" STYLE="text-align: left">
+                             <input class="full-width has-padding has-border" id="signin-pass" type="text" value placeholder="驾照类型（C1/C2）" STYLE="text-align: left">
                          </p>
                          <p class="fieldset">
-                             <label for="remember-me"> <a  class="zt">咨询信息提交后，一步教练将在2小时内与您联系，请保持电话畅通。感谢您使用一步驾校。</a></label>
+                             <label > <a  class="zt">咨询信息提交后，一步教练将在2小时内与您联系，请保持电话畅通。感谢您使用一步驾校。</a></label>
                          </p>
                          <p class="fieldset" style="margin-left:18px">
-                             <input class="full-width2" type="submit" value="提交" id="buttonid" onclick="this.innerHTML='已提交，请稍等'" >
+                             <input class="full-width2" type="button" value="提交" id="buttonid" onclick="this.innerHTML='已提交，请稍等'" >
                          </p>
                      </form>
                  </div>
@@ -57,11 +57,11 @@
          <!-----弹出表单---->
     </div>
 </div>
-<script>
+<script type="text/javascript">
 $('form :input').blur(function(){
      var $parent = $(this).parent();
      $parent.find(".formtips").remove();
-     if( $(this).is('#photo') ){
+     if( $(this).is('#mobile') ){
          if( this.value=="" || ( this.value!="" && ! /^1[3458]\d{9}$/.test(this.value) ) ){
              var errorMsg = '请输入正确的电话号码';
              $parent.append('<span class="formtips onError" style="color:red">'+errorMsg+'</span>');
@@ -75,14 +75,34 @@ $('form :input').blur(function(){
  }).focus(function(){
      $(this).triggerHandler("blur");
  });//end blur
-    $('#buttonid').click(function(){
-        $("form :input.required").trigger('blur');
-        var numError = $('form .onError').length;
-        if(numError){
-            return false;
-        }
-        alert("信息已提交，请耐心等待，工作人员会尽快联系您的！");
+
+    /*调取接口*/
+$(document).ready(function(){
+    $("#buttonid").click(function(){
+        var userid= $("#signin-username").val();
+        var mobile= $("#mobile").val();
+        var licensetype= $("#signin-pass").val();
+        $.post("/api/v1/saveuserconsult",
+                {name:userid,
+                    mobile:mobile,
+                    licensetype:licensetype,
+                },
+               function(data,status){
+                    if(status=="success"){
+                        if(data.type==1){
+                            $('.full-width2').css("disabled", "disabled");
+                            alert("信息已提交，请耐心等待，工作人员会尽快联系您的！");
+                        }
+                        else{
+                            alert(data.msg);
+                        }
+                    }else{
+                        alert("提交失败");
+
+                    }
+                });
     });
+})
 </script>
 
 </body>

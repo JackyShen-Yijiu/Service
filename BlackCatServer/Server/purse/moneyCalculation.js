@@ -27,7 +27,7 @@ var defaultfun={
     },
     createfcode:function(displyid,type){
         var id = hashids.encode(parseInt(displyid));
-        console.log("YA"+id);
+        //console.log("YA"+id);
         return type==1? ("YA"+id):("YB"+id);
     },
     saveincome:function(userinfo,fcodeinfo,is_reffercode,callback){
@@ -129,11 +129,19 @@ applySuccess=function(userinfo,callback){
 
 }
 
+//var  userinfo={
+//    referrerfcode:"",
+//    userid:"56332bc4608d71017df2ab23",
+//    usertype:1,
+//    invitationcode:"1001",
+//    "applyclasstype":"562dd2508b8ef3d046b67ccd"
+//}
+
 var  userinfo={
-    referrerfcode:"",
-    userid:"56332bc4608d71017df2ab23",
+    referrerfcode:"FBRL77",
+    userid:"562cb02e93d4ca260b40e544",
     usertype:1,
-    invitationcode:"1001",
+    invitationcode:"1019",
     "applyclasstype":"562dd2508b8ef3d046b67ccd"
 }
 

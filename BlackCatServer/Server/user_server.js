@@ -26,7 +26,7 @@ var schoolModel=mongodb.DriveSchoolModel;
 var classtypeModel=mongodb.ClassTypeModel;
 var trainfieldModel=mongodb.TrainingFieldModel;
 var integralListModel=mongodb.IntegralListModel;
-var mallProductModel=mongodb.MallProdcutsModel
+var mallProductModel=mongodb.MallProdcutsModel;
 var mallOrderModel=mongodb.MallOrderModel;
 var userfcode= mongodb.UserFcode;
 var coupon=mongodb.Coupon;
@@ -594,9 +594,12 @@ exports.updatePassword=function(pwdinfo,callback){
     }
     if(pwdinfo.usertype==appTypeEmun.UserType.User){
         usermodel.findOne({mobile: pwdinfo.mobile},function(err,userdata){
-  if(err||!userdata){
+  if(err){
       return  callback("查询用户出错："+err);
   }
+            if (!userdata){
+                return  callback("用户未注册");
+            }
      checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
          if (err) {
              return callback("验证码错误" );
@@ -1403,6 +1406,9 @@ exports.getMyProgress=function(userid,callback){
           .exec(function(err,userdata){
               if(err){
                   return  callback("查询错误："+err);
+              }
+              if(!userdata){
+                  return  callback("没有查询到用户信息");
               }
               return callback(null,userdata);
           })

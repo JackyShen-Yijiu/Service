@@ -41,6 +41,8 @@ v1.get("/getcourseware",appsystemController.getCourseWare);
 v1.get("/getmailproduct",appsystemController.getMallProductList);
 // 查看商品详情（同时进行商品浏览次数 +1）
 v1.get("/getproductdetail",appsystemController.getProductDetail);
+//  保存咨询信息
+v1.post("/saveuserconsult",appsystemController.postUserConsult);
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 

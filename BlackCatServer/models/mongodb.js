@@ -72,4 +72,5 @@ exports.UserFcode=require("./purse/userFcode");
 exports.SystemIncome=require("./purse/systemIncome");
 exports.Coupon=require("./purse/coupon");
 exports.IncomeDetails=require("./purse/incomeDetails");
+exports.UserConsultModel=require("./userConsult");
 
