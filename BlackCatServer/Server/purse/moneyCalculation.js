@@ -82,7 +82,7 @@ var defaultfun={
 
 // 用户报名成功生成自己的F码
 
-applySuccess=function(userinfo,callback){
+exports.applySuccess=function(userinfo,callback){
     // 查找邀请人
     defaultfun.searchreferrerFCode(userinfo.referrerfcode,function(err,referrdata){
         var is_havereferr=false;
@@ -137,15 +137,15 @@ applySuccess=function(userinfo,callback){
 //    "applyclasstype":"562dd2508b8ef3d046b67ccd"
 //}
 
-var  userinfo={
-    referrerfcode:"FBRL77",
-    userid:"562cb02e93d4ca260b40e544",
-    usertype:1,
-    invitationcode:"1019",
-    "applyclasstype":"562dd2508b8ef3d046b67ccd"
-}
-
-applySuccess(userinfo,function(err,data){
-    console.log(err);
-    console.log(data);
-})
+//var  userinfo={
+//    referrerfcode:"FBRL77",
+//    userid:"562cb02e93d4ca260b40e544",
+//    usertype:1,
+//    invitationcode:"1019",
+//    "applyclasstype":"562dd2508b8ef3d046b67ccd"
+//}
+//
+//applySuccess(userinfo,function(err,data){
+//    console.log(err);
+//    console.log(data);
+//})

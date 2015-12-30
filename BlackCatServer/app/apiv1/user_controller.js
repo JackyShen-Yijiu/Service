@@ -457,7 +457,7 @@ exports.postapplySchool=function(req,res){
         userpic:req.body.userpic,
         carmodel:req.body.carmodel,
         applyagain:req.body.applyagain?req.body.applyagain:0,
-
+        fcode:req.body.fcode?req.body.fcode:""
         };
     if (applyinfo.name===undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined

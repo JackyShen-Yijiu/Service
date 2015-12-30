@@ -1615,6 +1615,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyschool=applyinfo.schoolid;
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
                   userdata.applyschoolinfo.name=schooldata.name;
+                      userdata.referrerfcode=applyinfo.fcode;
 
                   userdata.applycoach=applyinfo.coachid;
                   userdata.applycoachinfo.id=applyinfo.coachid;

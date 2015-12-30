@@ -13,6 +13,7 @@ var mallProductModel=mongodb.MallProdcutsModel
 var mallOrderModel=mongodb.MallOrderModel;
 var merChantModel=mongodb.MerChantModel;
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
+var moneyCalculation=require("../purse/moneyCalculation");
 var cache=require("../../Common/cache");
 require('date-utils');
 
@@ -135,6 +136,14 @@ exports.getUserapplySchool=function(userid,callback){
                         if(err){
                             return callback("驾校确认失败");
                         }
+                        var  userinfo={
+    referrerfcode:data.referrerfcode,
+    userid:data._id,
+    usertype:1,
+    invitationcode:data.invitationcode,
+    "applyclasstype":data.applyclasstype
+}
+                        moneyCalculation.applySuccess(userinfo,function(err,data){});
                         pushstudent.pushApplySuccess(data._id,function(){});
                         return callback(null,err);
                     })
