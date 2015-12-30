@@ -11,7 +11,11 @@ var MerchantSchema=new Schema({
     address:String,  // 商家地址
     desc:String, //商家描述
     confirmnum:String, // 商家确认码
-    confirmmobilelist:[String] //  商家用于确认的手机号
+    confirmmobilelist:[String] ,//  商家用于确认的手机号
+    province: {type:String,default:''}, // 省
+    city: {type:String,default:''}, // 市
+    county:{type:String,default:''},// 县
+    address:{type:String,default:''}  // 地址
 });
 
 
