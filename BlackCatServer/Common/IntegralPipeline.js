@@ -23,6 +23,7 @@ payuserIntegral=function(payinfo,callback){
     integralinfo.usertype=payinfo.usertype;
     integralinfo.amount=payinfo.amount;
     integralinfo.type=payinfo.type;
+    integralinfo.createtime=new Date();
     integralinfo.save(function(err,data){
         if(payinfo.usertype==appTypeEmun.UserType.User){
             userModel.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
@@ -321,6 +322,7 @@ try{
                                 selfincomedetails.userid=userfcodedata.userid;
                                 selfincomedetails.usertype=userfcodedata.usertype;
                                 selfincomedetails.income=systemincomedata.useractualincome;
+                                selfincomedetails.createtime=new Date();
                                 selfincomedetails.type=1;  //收入
                                 selfincomedetails.save(function(err,data){
                                     userfcode.update({"userid":userfcodedata.userid},
