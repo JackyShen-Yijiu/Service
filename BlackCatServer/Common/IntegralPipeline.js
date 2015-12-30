@@ -294,7 +294,7 @@ try{
                 function(cb){
                     // 查找没有发放，同时修改状态1  发放中
                     systemIncome.findOneAndUpdate({"rewardstate":0
-                     //   ,"settingrewardtime":{$lt:new Date()}
+                        ,"settingrewardtime":{$lt:new Date()}
                     },
                         {"rewardstate":1},function(err,data){
                             cb(err,data);
