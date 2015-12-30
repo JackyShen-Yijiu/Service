@@ -1283,7 +1283,7 @@ exports.verifyFcodeCorrect=function(queryinfo,callback){
                             userinfo.mobile=userdata.mobile;
                             userinfo.headportrait=userdata.headportrait;
                         }
-                        cache.set("fcode"+queryinfo.fcode,60*10,function(err,data){});
+                        cache.set("fcode"+queryinfo.fcode,userinfo,60*10,function(err,data){});
                         return callback(null,userinfo);
                     })
             })
