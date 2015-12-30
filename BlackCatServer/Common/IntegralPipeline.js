@@ -105,186 +105,186 @@ getfatheruser=function(referrerCode,callback){
 }
 
 try{
-    //async.forever(
-    //    function(cb) {
-    //        async.waterfall([
-    //            //在用户表中查找要发放积分的用户
-    //            function(cb) {
-    //                // 用户表里面查找
-    //                userModel.findOneAndUpdate({integralstate:appTypeEmun.IntegralState.nopay},
-    //                    {integralstate:appTypeEmun.IntegralState.registerpaying})
-    //                    .select("name integralstate integralpaylist wallet referrerCode")
-    //                    .exec(function(err,data){
-    //                       // console.log(data);
-    //                        cb(null,data);
-    //                    })
-    //            },
-    //            // 查找用户邀请人员
-    //            function(data, cb) {
-    //                if (data) {
-    //                    getfatheruser(data.referrerCode, function (err, faterdata) {
-    //                        if (err) {
-    //                            cb(err)
-    //                        }
-    //                        if (faterdata) {// 找到邀请人
-    //                            var amount = commonData.passiveregister;
-    //                            var slfeget = Math.floor(amount * commonData.levelscale);
-    //                            Calculationfather(faterdata.integralpaylist, amount - slfeget, commonData.levelscale, function (err) {
-    //                                console.log(' 完成循序发积分 ');
-    //                            })
-    //                            var payinfo = {
-    //                                userid: data._id,
-    //                                usertype: appTypeEmun.UserType.User,
-    //                                type:appTypeEmun.IntegralType.register,
-    //                                amount: slfeget
-    //                            };
-    //                            payuserIntegral(payinfo, function (err, redata) {
-    //                                var paylist = faterdata.integralpaylist;
-    //                                var payone = {
-    //                                    id: faterdata.integralpaylist.length + 1,
-    //                                    userid: data._id,
-    //                                    usertype: appTypeEmun.UserType.User
-    //                                }
-    //                                paylist.push(payone);
-    //                                userModel.update({"_id": new mongodb.ObjectId(data._id)},
-    //                                    {
-    //                                        integralstate: appTypeEmun.IntegralState.registerpayed,
-    //                                        integralpaylist: paylist
-    //                                    }, function (err, data) {
-    //                                        console.log(data);
-    //                                    })
-    //                            })
-    //                        }
-    //                        //没有找到邀请人，自己注册
-    //                        else {
-    //                            var payinfo = {
-    //                                userid: data._id,
-    //                                usertype: appTypeEmun.UserType.User,
-    //                                type:appTypeEmun.IntegralType.register,
-    //                                amount: commonData.selfregister
-    //                            };
-    //                            payuserIntegral(payinfo, function (err, redata) {
-    //                                var paylist = [];
-    //                                var payone = {
-    //                                    id: 1,
-    //                                    userid: data._id,
-    //                                    usertype: appTypeEmun.UserType.User
-    //                                }
-    //                                paylist.push(payone);
-    //                                userModel.update({"_id": new mongodb.ObjectId(payinfo.userid)},
-    //                                    {
-    //                                        integralstate: appTypeEmun.IntegralState.registerpayed,
-    //                                        integralpaylist: paylist
-    //                                    }, function (err, data) {
-    //                                        console.log(data);
-    //                                    })
-    //                            })
-    //
-    //                        }
-    //                    })
-    //                }
-    //                else {
-    //
-    //                console.log("没有查找到用户可以发放积分")
-    //                    setTimeout(cb, 1000);
-    //
-    //            };
-    //
-    //            },
-    //            // 在教练表中查找需要发送积分的用户
-    //            function(cb){
-    //                // 教练表里面查找
-    //                coachModel.findOneAndUpdate({integralstate:appTypeEmun.IntegralState.nopay},
-    //                    {integralstate:appTypeEmun.IntegralState.registerpaying})
-    //                    .select("name integralstate integralpaylist wallet referrerCode")
-    //                    .exec(function(err,data){
-    //                        console.log(data);
-    //                        cb(null,data);
-    //                    })
-    //            },
-    //            // 计算可以发放积分的教练
-    //        function(coachdata,cb){
-    //            if (coachdata) {
-    //                getfatheruser(coachdata.referrerCode, function (err, faterdata) {
-    //                    if (err) {
-    //                        cb(err)
-    //                    }
-    //                    if (faterdata) {// 找到邀请人
-    //                        var amount = commonData.passiveregister;
-    //                        var slfeget = Math.floor(amount * commonData.levelscale);
-    //                        Calculationfather(faterdata.integralpaylist, amount - slfeget, commonData.levelscale, function (err) {
-    //                            console.log(' 完成循序发积分 ');
-    //                        })
-    //                        var payinfo = {
-    //                            userid: coachdata._id,
-    //                            usertype: appTypeEmun.UserType.Coach,
-    //                            type:appTypeEmun.IntegralType.register,
-    //                            amount: slfeget
-    //                        };
-    //                        payuserIntegral(payinfo, function (err, redata) {
-    //                            var paylist = faterdata.integralpaylist;
-    //                            var payone = {
-    //                                id: faterdata.integralpaylist.length + 1,
-    //                                userid: coachdata._id,
-    //                                usertype: appTypeEmun.UserType.Coach
-    //                            }
-    //                            paylist.push(payone);
-    //                            coachModel.update({"_id": new mongodb.ObjectId(coachdata._id)},
-    //                                {
-    //                                    integralstate: appTypeEmun.IntegralState.registerpayed,
-    //                                    integralpaylist: paylist
-    //                                }, function (err, data) {
-    //                                    console.log(data);
-    //                                })
-    //                        })
-    //                    }
-    //                    //没有找到邀请人，自己注册
-    //                    else {
-    //                        var payinfo = {
-    //                            userid: coachdata._id,
-    //                            usertype: appTypeEmun.UserType.Coach,
-    //                            type:appTypeEmun.IntegralType.register,
-    //                            amount: commonData.selfregister
-    //                        };
-    //                        payuserIntegral(payinfo, function (err, redata) {
-    //                            var paylist = [];
-    //                            var payone = {
-    //                                id: 1,
-    //                                userid: coachdata._id,
-    //                                usertype: appTypeEmun.UserType.User
-    //                            }
-    //                            paylist.push(payone);
-    //                            coachModel.update({"_id": new mongodb.ObjectId(coachdata.userid)},
-    //                                {
-    //                                    integralstate: appTypeEmun.IntegralState.registerpayed,
-    //                                    integralpaylist: paylist
-    //                                }, function (err, data) {
-    //                                    console.log(data);
-    //                                })
-    //                        })
-    //
-    //                    }
-    //                })
-    //            }
-    //            else {
-    //
-    //                console.log("没有查找到教练可以发放积分")
-    //                setTimeout(cb, 1000*20);
-    //
-    //            };
-    //        }
-    //
-    //        ], function (err, result) {
-    //           if (err){
-    //               setTimeout(cb, 1000*20);
-    //           }
-    //        });
-    //
-    //    },
-    //    function(err) {
-    //        console.log('1.1 err: ', err);
-    //    }
-    //);
+    async.forever(
+        function(cb) {
+            async.waterfall([
+                //在用户表中查找要发放积分的用户
+                function(cb) {
+                    // 用户表里面查找
+                    userModel.findOneAndUpdate({integralstate:appTypeEmun.IntegralState.nopay},
+                        {integralstate:appTypeEmun.IntegralState.registerpaying})
+                        .select("name integralstate integralpaylist wallet referrerCode")
+                        .exec(function(err,data){
+                           // console.log(data);
+                            cb(null,data);
+                        })
+                },
+                // 查找用户邀请人员
+                function(data, cb) {
+                    if (data) {
+                        getfatheruser(data.referrerCode, function (err, faterdata) {
+                            if (err) {
+                                cb(err)
+                            }
+                            if (faterdata) {// 找到邀请人
+                                var amount = commonData.passiveregister;
+                                var slfeget = Math.floor(amount * commonData.levelscale);
+                                Calculationfather(faterdata.integralpaylist, amount - slfeget, commonData.levelscale, function (err) {
+                                    console.log(' 完成循序发积分 ');
+                                })
+                                var payinfo = {
+                                    userid: data._id,
+                                    usertype: appTypeEmun.UserType.User,
+                                    type:appTypeEmun.IntegralType.register,
+                                    amount: slfeget
+                                };
+                                payuserIntegral(payinfo, function (err, redata) {
+                                    var paylist = faterdata.integralpaylist;
+                                    var payone = {
+                                        id: faterdata.integralpaylist.length + 1,
+                                        userid: data._id,
+                                        usertype: appTypeEmun.UserType.User
+                                    }
+                                    paylist.push(payone);
+                                    userModel.update({"_id": new mongodb.ObjectId(data._id)},
+                                        {
+                                            integralstate: appTypeEmun.IntegralState.registerpayed,
+                                            integralpaylist: paylist
+                                        }, function (err, data) {
+                                            console.log(data);
+                                        })
+                                })
+                            }
+                            //没有找到邀请人，自己注册
+                            else {
+                                var payinfo = {
+                                    userid: data._id,
+                                    usertype: appTypeEmun.UserType.User,
+                                    type:appTypeEmun.IntegralType.register,
+                                    amount: commonData.selfregister
+                                };
+                                payuserIntegral(payinfo, function (err, redata) {
+                                    var paylist = [];
+                                    var payone = {
+                                        id: 1,
+                                        userid: data._id,
+                                        usertype: appTypeEmun.UserType.User
+                                    }
+                                    paylist.push(payone);
+                                    userModel.update({"_id": new mongodb.ObjectId(payinfo.userid)},
+                                        {
+                                            integralstate: appTypeEmun.IntegralState.registerpayed,
+                                            integralpaylist: paylist
+                                        }, function (err, data) {
+                                            console.log(data);
+                                        })
+                                })
+
+                            }
+                        })
+                    }
+                    else {
+
+                    console.log("没有查找到用户可以发放积分")
+                        setTimeout(cb, 1000);
+
+                };
+
+                },
+                // 在教练表中查找需要发送积分的用户
+                function(cb){
+                    // 教练表里面查找
+                    coachModel.findOneAndUpdate({integralstate:appTypeEmun.IntegralState.nopay},
+                        {integralstate:appTypeEmun.IntegralState.registerpaying})
+                        .select("name integralstate integralpaylist wallet referrerCode")
+                        .exec(function(err,data){
+                            console.log(data);
+                            cb(null,data);
+                        })
+                },
+                // 计算可以发放积分的教练
+            function(coachdata,cb){
+                if (coachdata) {
+                    getfatheruser(coachdata.referrerCode, function (err, faterdata) {
+                        if (err) {
+                            cb(err)
+                        }
+                        if (faterdata) {// 找到邀请人
+                            var amount = commonData.passiveregister;
+                            var slfeget = Math.floor(amount * commonData.levelscale);
+                            Calculationfather(faterdata.integralpaylist, amount - slfeget, commonData.levelscale, function (err) {
+                                console.log(' 完成循序发积分 ');
+                            })
+                            var payinfo = {
+                                userid: coachdata._id,
+                                usertype: appTypeEmun.UserType.Coach,
+                                type:appTypeEmun.IntegralType.register,
+                                amount: slfeget
+                            };
+                            payuserIntegral(payinfo, function (err, redata) {
+                                var paylist = faterdata.integralpaylist;
+                                var payone = {
+                                    id: faterdata.integralpaylist.length + 1,
+                                    userid: coachdata._id,
+                                    usertype: appTypeEmun.UserType.Coach
+                                }
+                                paylist.push(payone);
+                                coachModel.update({"_id": new mongodb.ObjectId(coachdata._id)},
+                                    {
+                                        integralstate: appTypeEmun.IntegralState.registerpayed,
+                                        integralpaylist: paylist
+                                    }, function (err, data) {
+                                        console.log(data);
+                                    })
+                            })
+                        }
+                        //没有找到邀请人，自己注册
+                        else {
+                            var payinfo = {
+                                userid: coachdata._id,
+                                usertype: appTypeEmun.UserType.Coach,
+                                type:appTypeEmun.IntegralType.register,
+                                amount: commonData.selfregister
+                            };
+                            payuserIntegral(payinfo, function (err, redata) {
+                                var paylist = [];
+                                var payone = {
+                                    id: 1,
+                                    userid: coachdata._id,
+                                    usertype: appTypeEmun.UserType.User
+                                }
+                                paylist.push(payone);
+                                coachModel.update({"_id": new mongodb.ObjectId(coachdata.userid)},
+                                    {
+                                        integralstate: appTypeEmun.IntegralState.registerpayed,
+                                        integralpaylist: paylist
+                                    }, function (err, data) {
+                                        console.log(data);
+                                    })
+                            })
+
+                        }
+                    })
+                }
+                else {
+
+                    console.log("没有查找到教练可以发放积分")
+                    setTimeout(cb, 1000*20);
+
+                };
+            }
+
+            ], function (err, result) {
+               if (err){
+                   setTimeout(cb, 1000*20);
+               }
+            });
+
+        },
+        function(err) {
+            console.log('1.1 err: ', err);
+        }
+    );
 
     //报名 信息发放
     async.forever(function(cb){
