@@ -53,8 +53,13 @@ v1.get("/getlocationShowType",appsystemController.getlocationShowType);
 //======================================基础数据======================================
 
 //=====================================Y码相关=======================================
+// 验证Y码是否正确
+v1.get("/verifyfcodecorrect",ensureAuthorizedController.ensureAuthorized,userController.verifyFcodeCorrect)
+
   // 获取我的金币
-v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
+v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney)
+
+////=====================================Y码相关=======================================
 //======================================用户信息======================================
 //  用户报名验证 v1.1 版
 v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,userController.postenrollverificationv2);

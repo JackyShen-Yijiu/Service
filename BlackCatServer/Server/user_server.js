@@ -1248,6 +1248,48 @@ getMyWalletlist=function(queryinfo,callback){
             }
         })
 };
+
+// 验证Y吗 是否存在
+exports.verifyFcodeCorrect=function(queryinfo,callback){
+    cache.get("fcode"+queryinfo.fcode,function(err,data){
+        if(err){
+            return callback("查询出错："+err);
+        }
+        if (data){
+            return callback(null,data);
+        }
+        userfcode.findOne({"fcode":queryinfo.fcode})
+            .select("userid fcode usertype")
+            .exec(function(err, data){
+                if(err){
+                    return callback("查询出错："+err);
+                }
+                if(!data){
+                    return callback("不存在Y吗");
+                }
+                var usertypeobject;
+                if(data.usertype==appTypeEmun.UserType.User){
+                    usertypeobject=usermodel;
+                }else {
+                    usertypeobject=coachmode;
+                }
+                usertypeobject.findById(new mongodb.ObjectId(data.userid))
+                    .select(" name   mobile headportrait ")
+                    .exec(function(err,userdata){
+                        var userinfo={};
+                        if(userdata){
+                            userinfo.userid=userdata._id;
+                            userinfo.name=userdata.name;
+                            userinfo.mobile=userdata.mobile;
+                            userinfo.headportrait=userdata.headportrait;
+                        }
+                        cache.set("fcode"+queryinfo.fcode,60*10,function(err,data){});
+                        return callback(null,userinfo);
+                    })
+            })
+
+    })
+}
 exports.getmymoney=function(queryinfo,callback){
     var usertypeobject;
     if(queryinfo.usertype==appTypeEmun.UserType.User){

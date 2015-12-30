@@ -830,6 +830,27 @@ exports.getmymoney=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+exports.verifyFcodeCorrect=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        fcode:req.query.fcode,
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    if (queryinfo.fcode===undefined||queryinfo.fcode=="") {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    userserver.verifyFcodeCorrect(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
 }
 //  获取我的钱包
 exports.getMyWallet=function(req,res){
