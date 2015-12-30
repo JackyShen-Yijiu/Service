@@ -18,7 +18,7 @@ var ClassTypeSchema=new Schema({
     applycount:Number,  // 该班级报名的数量
     classdesc:{type:String,default:""},  // 课程描述
     vipserverlist:[{type: Schema.Types.ObjectId, ref: 'vipserver'}], // 该课程提供的vip 服务列表{接送、包过，1对1}
-    price:Number, // 价格 原价
+    price:Number, // 价格
     onsaleprice:Number , // 优化价格,
     originalprice:Number, // 原价
     systemretains:{type:Number,default:0},// 系统预留

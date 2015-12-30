@@ -72,7 +72,7 @@ getfatheruser=function(referrerCode,callback){
     userModel.findOne({invitationcode:referrerCode})
         .select("wallet integralpaylist")
         .exec(function(err,fatheruser){
-            console.log(fatheruser)
+           // console.log(fatheruser)
 
             if(!fatheruser)
             {
@@ -199,10 +199,11 @@ try{
                         {integralstate:appTypeEmun.IntegralState.registerpaying})
                         .select("name integralstate integralpaylist wallet referrerCode")
                         .exec(function(err,data){
-                            console.log(data);
+                          //  console.log(data);
                             cb(null,data);
                         })
                 },
+
                 // 计算可以发放积分的教练
             function(coachdata,cb){
                 if (coachdata) {
@@ -277,25 +278,29 @@ try{
 
             ], function (err, result) {
                if (err){
-                   setTimeout(cb, 1000*20);
+                   console.log("发放积分出错："+err);
                }
+                setTimeout(cb, 1000*20);
             });
 
         },
+        // 报名信息发放
+
         function(err) {
             console.log('1.1 err: ', err);
         }
     );
 
     //报名 信息发放
-    async.forever(function(cb){
+    async.forever(
+        function(cb){
             async.waterfall([
                 //查找可以发放的用户
                 function(cb){
                     // 查找没有发放，同时修改状态1  发放中
                     systemIncome.findOneAndUpdate({"rewardstate":0
-                        ,"settingrewardtime":{$lt:new Date()}
-                    },
+                            ,"settingrewardtime":{$lt:new Date()}
+                        },
                         {"rewardstate":1},function(err,data){
                             cb(err,data);
                         })
@@ -316,7 +321,7 @@ try{
                                 if(!userfcodedata){
                                     cb("没有找到订单：的F吗"+systemincomedata.userid);
                                 }
-                                 var incomedetailsidlist=[];
+                                var incomedetailsidlist=[];
                                 // 保存报名人的发放金额
                                 var  selfincomedetails=new incomeDetails();
                                 selfincomedetails.userid=userfcodedata.userid;
@@ -327,7 +332,7 @@ try{
                                 selfincomedetails.save(function(err,data){
                                     userfcode.update({"userid":userfcodedata.userid},
                                         {$inc: { money: systemincomedata.useractualincome }},function(err,data){}
-                                       )
+                                    )
                                     incomedetailsidlist.push(data._id);
                                 });
                                 // // 发放邀请人的
@@ -388,14 +393,14 @@ try{
 
                                     },
                                     function(err) {
-                                      var  rewardsurplus=systemincomedata.rewardmoney-actrewardmoneytotal;
+                                        var  rewardsurplus=systemincomedata.rewardmoney-actrewardmoneytotal;
                                         console.log(systemincomedata.rewardmoney);
                                         systemIncome.update({"_id":systemincomedata._id},{$set:{rewardstate:2,actualrewardtime:new Date(),
-                                        "rewardsurplus":rewardsurplus,"rewardlist":incomedetailsidlist}},
+                                                "rewardsurplus":rewardsurplus,"rewardlist":incomedetailsidlist}},
                                             function(err,data){
                                                 cb(err,data);
                                             })
-                                        console.log('循环发放积分 ', err);
+                                        console.log('循环发放金钱 ', err);
                                     }
                                 );
 
@@ -411,12 +416,12 @@ try{
                 }
             ], function (err, result){
                 if (err){
-                   console.log(err);
+                    console.log("发放报名金额出错"+err);
                 }
                 setTimeout(cb, 1000*10);
             });
 
-    },
+        },
         function(err) {
             console.log('1.1 报名金钱发放err: ', err);
         });
