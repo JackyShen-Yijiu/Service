@@ -12,6 +12,7 @@ var mallProductModel=mongodb.MallProdcutsModel;
 var cityInfoModel=mongodb.CityiInfoModel;
 var userconsultModel=mongodb.UserConsultModel;
 var activityModel=mongodb.ActivityModel;
+var prodcutdetail=require("../Config/sysconfig").validationurl.prodcutdetail;
 require('date-utils');
 
 
@@ -103,6 +104,7 @@ exports.getMallProduct=function(searchinfo,callback){
                         buycount: r.buycount,
                         productcount: r.productcount,
                         detailsimg: r.detailsimg,
+                        detailurl: prodcutdetail+r._id,
                         is_scanconsumption: r.is_scanconsumption?Number(r.is_scanconsumption):0,
                         cityname: r.merchantid.city,
                         merchantid: r.merchantid._id,

@@ -68,7 +68,9 @@ exports.weatherConfig={
 // 验证地址 test
  exports.validationurl={
      applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
-     producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid="
+     producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid=",
+     prodcutdetail:"http://101.200.204.240:8181/validation/getpageproductdetial?productid=",
+     orderurl:"http://101.200.204.240:8181/validation/ordervalidation?orderid=",
  }
 
 
