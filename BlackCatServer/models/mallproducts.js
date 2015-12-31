@@ -19,7 +19,8 @@ var MallProductSchema=new Schema({
     is_top:{ type: Boolean, default: false}, // 是否置顶
     is_using:{ type: Boolean, default: true}, // 产品是否显示
     merchantid:{type: Schema.Types.ObjectId, ref: 'merchant'}, //商家信息
-    is_scanconsumption:{ type: Boolean, default: false} //是否进行扫码消费
+    is_scanconsumption:{ type: Boolean, default: false}, //是否进行扫码消费
+    enddate:{type:Date,default:Date.now()},  // 商品兑换截止日期
 });
 
 

@@ -76,9 +76,12 @@ exports.getCourseWare=function( queryinfo,callback){
 };
 
 // 获取商城列表
-exports.getMallProduct=function(callback){
-    mallProductModel.find({"is_using":true})
+exports.getMallProduct=function(searchinfo,callback){
+    mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":searchinfo.producttype})
+        .populate("merchantid","",{"city":new RegExp(searchinfo.cityname)})
         .sort({"productprice" : 1})
+        .skip((searchinfo.index-1)*10)
+        .limit(searchinfo.count)
         .exec(function(err,productlist){
             if(err){
                 return callback("查询商品出错："+err)
@@ -95,16 +98,17 @@ exports.getMallProduct=function(callback){
                         productdesc: r.productdesc,
                         viewcount: r.viewcount,
                         buycount: r.buycount,
+                        productcount: r.productcount,
                         detailsimg: r.detailsimg,
-                        is_scanconsumption: r.is_scanconsumption?Number(r.is_scanconsumption):0
-                    }
-
-                    if (r.is_top){
-                        toplist.push(oneproduct);
-                    }else
-                    {
+                        is_scanconsumption: r.is_scanconsumption?Number(r.is_scanconsumption):0,
+                        cityname: r.merchantid.city,
+                        merchantid: r.merchantid._id,
+                        address: r.merchantid.address,
+                        county:r.merchantid.county,
+                        distinct:0
+                    };
                         mainlist.push(oneproduct);
-                    }})
+                })
                 return callback(null,{toplist:toplist,mainlist:mainlist})
             })
         })
@@ -127,7 +131,7 @@ exports.getProductDetail=function(productid,callback){
                 buycount: data.buycount,
                 detailsimg: data.detailsimg,
                 is_scanconsumption:data.is_scanconsumption?Number(data.is_scanconsumption):0
-            }
+            };
             return callback(null,oneproduct);
         }else
         {

@@ -51,13 +51,13 @@ v1.get("/getlocationShowType",appsystemController.getlocationShowType);
 //v1.get("/location",appsystemController.getLocation);
 
 //======================================基础数据======================================
-
+//v1.get("/getmailproduct")
 //=====================================Y码相关=======================================
 // 验证Y码是否正确
-v1.get("/verifyfcodecorrect",ensureAuthorizedController.ensureAuthorized,userController.verifyFcodeCorrect)
+v1.get("/verifyfcodecorrect",ensureAuthorizedController.ensureAuthorized,userController.verifyFcodeCorrect);
 
   // 获取我的金币
-v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney)
+v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
 
 ////=====================================Y码相关=======================================
 //======================================用户信息======================================
