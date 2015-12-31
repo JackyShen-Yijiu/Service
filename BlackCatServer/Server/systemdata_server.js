@@ -91,6 +91,8 @@ exports.getMallProduct=function(searchinfo,callback){
                 var toplist=[];
                 var mainlist=[];
                 productlist.forEach(function(r,index){
+                    //console.log(r);
+                    if(r.merchantid!=undefined){
                     var oneproduct={
                         productid: r._id,
                         productname: r.productname,
@@ -108,7 +110,7 @@ exports.getMallProduct=function(searchinfo,callback){
                         county:r.merchantid.county,
                         distinct:0
                     };
-                        mainlist.push(oneproduct);
+                        mainlist.push(oneproduct);}
                 })
                 return callback(null,{toplist:toplist,mainlist:mainlist})
             })
