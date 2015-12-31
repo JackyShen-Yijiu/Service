@@ -16,4 +16,6 @@ router.post('/doapplyvalidation',auditController.doapplyinfoAudit);
 router.get("/ordervalidation",auditController.getOrderScanInfo);
 router.get('/sendmerchantcode',auditController.sendMerchant);
 router.post("/doordervalidation",auditController.doOrderScanAudit);
+
+router.get("/getpageproductdetial",auditController.getPageProductDetial)
 module.exports = router;

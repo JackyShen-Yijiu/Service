@@ -4,7 +4,7 @@
 // web 相关页面 控制
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var auditserver=require('../../Server/webServer/applyInfoAudit_Server');
-
+var sysstemserver=require('../../Server/systemdata_server');
 var mobileVerify = /^1\d{10}$/;
 var webtemplate='layout/validationtemplate';
 exports.applyinfoAudit=function(req,res){
@@ -68,6 +68,18 @@ exports.getOrderScanInfo=function(req,res){
         returinfo.layout=webtemplate;
         console.log(returinfo);
         return   res.render("web/userOrderInfoAudit",returinfo);
+    })
+};
+exports.getPageProductDetial=function(req,res){
+    var  productid= req.query.productid;
+    if (productid===undefined||productid==""){
+        return   res.render("web/spxqy",new BaseReturnInfo(0,"参数错误",{}));
+    }
+    sysstemserver.getProductDetail(productid,function(err ,data){
+        if(err){
+            return   res.render("web/spxqy",new BaseReturnInfo(0,err,{}));
+        }
+        return   res.render("web/spxqy",new BaseReturnInfo(1,"",data));
     })
 }
 
