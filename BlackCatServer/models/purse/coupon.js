@@ -15,7 +15,6 @@
        state:{type:Number,default:0},    // 0未领取  1领取  2过期  3作废    4 已消费
        remark:String     // 备注信息
    });
-
    couponSchema.index({userid: 1});
    couponSchema.index({createtime:-1});
    module.exports = mongoose.model('coupon', couponSchema);

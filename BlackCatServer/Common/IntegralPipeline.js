@@ -153,6 +153,7 @@ try{
                                             integralpaylist: paylist
                                         }, function (err, data) {
                                             console.log(data);
+                                            cb();
                                         })
                                 })
                             }
@@ -178,6 +179,7 @@ try{
                                             integralpaylist: paylist
                                         }, function (err, data) {
                                             console.log(data);
+                                            cb();
                                         })
                                 })
 
@@ -237,6 +239,7 @@ try{
                                         integralpaylist: paylist
                                     }, function (err, data) {
                                         console.log(data);
+                                        cb();
                                     })
                             })
                         }
@@ -262,6 +265,7 @@ try{
                                         integralpaylist: paylist
                                     }, function (err, data) {
                                         console.log(data);
+                                        cb();
                                     })
                             })
 
@@ -271,7 +275,7 @@ try{
                 else {
 
                     console.log("没有查找到教练可以发放积分")
-                    setTimeout(cb, 1000*20);
+                    setTimeout(cb, 1000*10);
 
                 };
             }
@@ -280,7 +284,8 @@ try{
                if (err){
                    console.log("发放积分出错："+err);
                }
-                setTimeout(cb, 1000*20);
+                //console.log(result);
+                setTimeout(cb, 1000*10);
             });
 
         },
@@ -294,6 +299,7 @@ try{
     //报名 信息发放
     async.forever(
         function(cb){
+            //console.log("dsfsdfds");
             async.waterfall([
                 //查找可以发放的用户
                 function(cb){

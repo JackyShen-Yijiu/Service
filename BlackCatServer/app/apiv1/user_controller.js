@@ -851,6 +851,28 @@ exports.getmymoney=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 };
+//获取我的钱列表
+exports.getMymoneyList=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        index:req.query.index?req.query.index:1,
+        count:req.query.count?req.query.count:10,
+    };
+    if (queryinfo.userid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getmyCupon(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.verifyFcodeCorrect=function(req,res){
     var  queryinfo={
         userid:req.query.userid,
