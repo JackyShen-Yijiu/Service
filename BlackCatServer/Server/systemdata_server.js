@@ -116,7 +116,9 @@ exports.getMallProduct=function(searchinfo,callback){
 
 // 获取商品详情
 exports.getProductDetail=function(productid,callback){
-    mallProductModel.findByIdAndUpdate(new mongodb.ObjectId(productid),{$inc:{"viewcount":1}},function(err,data){
+    mallProductModel.findByIdAndUpdate(new mongodb.ObjectId(productid),{$inc:{"viewcount":1}})
+        .populate("merchantid","")
+        .exec(function(err,data){
         if(err){
             return callback("查询产品出错:"+err);
         }
@@ -129,8 +131,17 @@ exports.getProductDetail=function(productid,callback){
                 productdesc: data.productdesc,
                 viewcount: data.viewcount,
                 buycount: data.buycount,
+                productcount: data.productcount,
                 detailsimg: data.detailsimg,
-                is_scanconsumption:data.is_scanconsumption?Number(data.is_scanconsumption):0
+                is_scanconsumption: data.is_scanconsumption?Number(r.is_scanconsumption):0,
+                cityname: data.merchantid.city,
+                merchantid: data.merchantid._id,
+                merchantname: data.merchantid.name,
+                merchantmobile: data.merchantid.mobile,
+                merchantname: data.merchantid.name,
+                address: data.merchantid.address,
+                county:data.merchantid.county,
+                distinct:0
             };
             return callback(null,oneproduct);
         }else
