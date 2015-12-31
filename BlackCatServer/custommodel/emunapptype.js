@@ -8,7 +8,8 @@ exports.LogType={
     info:3,
     warn:4,
     im:5,
-    push:6
+    push:6,
+    website:7
 }
 exports.ClientType = {
     AndroidUserClient:1,

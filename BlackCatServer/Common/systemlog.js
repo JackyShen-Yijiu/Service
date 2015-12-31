@@ -5,7 +5,23 @@
 var mongodb = require('../models/mongodb.js');
 var logModel=mongodb.SystemLogModel;
 
-
+exports.writewebsitedowmlog=function(req ,logType){
+    var loginfo=new logModel;
+    loginfo.apiname=req.url;
+    loginfo.ver=req.query._ver;
+    loginfo.os=req.query._os;
+    loginfo.msid=req.query._mid;
+    loginfo.psrc=req.query.psrc;
+    loginfo.path=req.path;
+    loginfo.ip= getClientIp(req);
+    //loginfo.queryparameter=req.query.toString();
+    //loginfo.pathparameter=req.params.toString();
+    //loginfo.bodyparameter=req.body.toString();
+    loginfo.logtype=logType;
+    loginfo.save(function(err){
+          console.log(err)
+    });
+}
 exports.writeLog=function(req ,errmsg,logType){
     var loginfo=new logModel;
      loginfo.apiname=req.url;

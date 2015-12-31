@@ -11,6 +11,8 @@ var  SystemlogSchema = new Schema({
     ver:String,    // app 版本号
     os :Number,   //  请求手机  1 andriod 2 ios
     msid:String,  //手机唯一编码
+    path:String,
+    psrc:String,
     ip:String,
     pathparameter:String,   // path 参数
     queryparameter:String,  // query 参数
