@@ -135,7 +135,7 @@ exports.getProductDetail=function(productid,callback){
                 productcount: data.productcount,
                 enddate:data.enddate?data.enddate.toFormat("YYYY-MM-DD"):new Date().addMonths(1).toFormat("YYYY-MM-DD"),
                 detailsimg: data.detailsimg,
-                is_scanconsumption: data.is_scanconsumption?Number(r.is_scanconsumption):0,
+                is_scanconsumption: data.is_scanconsumption?Number(data.is_scanconsumption):0,
                 cityname: data.merchantid.city,
                 merchantid: data.merchantid._id,
                 merchantname: data.merchantid.name,
