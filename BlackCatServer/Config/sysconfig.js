@@ -78,4 +78,6 @@ exports.weatherConfig={
 //exports.validationurl={
 //    applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
 //    producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid="
+//prodcutdetail:"http://123.57.63.15:8181/validation/getpageproductdetial?productid=",
+//    orderfinishurl:"http://123.57.63.15:8181/validation/getpageorderfinish?orderid=",
 //}
