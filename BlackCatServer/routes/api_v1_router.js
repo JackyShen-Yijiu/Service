@@ -58,6 +58,8 @@ v1.get("/verifyfcodecorrect",ensureAuthorizedController.ensureAuthorized,userCon
 
   // 获取我的金币
 v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
+// 获取我的 优惠券
+v1.get("/userinfo/getmycupon",ensureAuthorizedController.ensureAuthorized,userController.getmyCupon)
 
 ////=====================================Y码相关=======================================
 //======================================用户信息======================================

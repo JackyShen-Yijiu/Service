@@ -1289,6 +1289,16 @@ exports.verifyFcodeCorrect=function(queryinfo,callback){
             })
 
     })
+};
+exports.getmyCupon=function(queryinfo,callback){
+    coupon.find({"userid":queryinfo.userid})
+        .select("userid   createtime couponcomefrom is_forcash state")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询优惠卷出错："+err);
+            }
+            callback(err,data);
+        })
 }
 exports.getmymoney=function(queryinfo,callback){
     var usertypeobject;
