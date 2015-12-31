@@ -30,6 +30,7 @@ var mallProductModel=mongodb.MallProdcutsModel;
 var mallOrderModel=mongodb.MallOrderModel;
 var userfcode= mongodb.UserFcode;
 var IncomeDetails= mongodb.IncomeDetails;
+var SystemIncome=mongodb.SystemIncome;
 var coupon=mongodb.Coupon;
 require('date-utils');
 
@@ -1352,6 +1353,64 @@ exports.verifyFcodeCorrect=function(queryinfo,callback){
 
     })
 };
+// 领取优惠券
+exports.receiveMyCupon=function(queryinfo,callback){
+    coupon.findOne({"userid":queryinfo.userid,"_id":queryinfo.cuponid})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询优惠卷出错："+err);
+            }
+            if (!data){
+              return  callback("没有查询到此优惠卷");
+            }
+            if(data.state!=0){
+                return  callback("此优惠劵无法领取");
+            }
+            if(queryinfo.receivetype==0){
+                data.state=1;
+                data.usetime=new Date();
+                data.save(function(err,data){
+                    if(err){
+                        return callback("领取失败："+err);
+                    }
+                    return callback(null,"sucess");
+                })
+            }
+            else  if(queryinfo.receivetype==1){
+                if(!data.is_forcash||data.sysincomeid==""){
+                    return  callback("此优惠劵无法兑换现金");
+                }
+                SystemIncome.findById(new mongodb.ObjectId(data.sysincomeid),function(err,SystemIncomedata){
+                    if(err||!SystemIncomedata){
+                        return  callback("此优惠劵无法兑换现金");
+                    }
+                    if(SystemIncomedata.rewardstate!=0||SystemIncomedata.useractualincome>0){
+                        return  callback("此优惠劵无法兑换现金");
+                    }
+                    SystemIncomedata.useractualincome= SystemIncomedata.userdeserveincome;
+                    SystemIncomedata.systemsurplus=SystemIncomedata.systemsurplus-SystemIncomedata.userdeserveincome;
+                    SystemIncomedata.save(function(err,newdata){
+                        if(err){
+                            return callback("领取失败："+err);
+                        }
+                        data.state=1;
+                        data.usetime=new Date();
+                        data.save(function(err,data){
+                            if(err){
+                                return callback("领取失败："+err);
+                            }
+                            return callback(null,"sucess");
+                        })
+                    })
+                });
+
+            }
+            else{
+                callback("参数错误");
+            }
+
+        })
+}
 exports.getmyCupon=function(queryinfo,callback){
     coupon.find({"userid":queryinfo.userid})
         .select("userid   createtime couponcomefrom is_forcash state")

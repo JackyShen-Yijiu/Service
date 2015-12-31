@@ -49,50 +49,6 @@
                                                 </div>		<!-- /controls -->
                                             </div> <!-- /control-group -->
 
-
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="email">邮件地址</label>
-                                                <div class="controls">
-                                                    <input type="email" name="email" class="span4" id="email" placeholder="john.donga@egrappler.com"
-                                                           type="email" ng-model="formData.email" >
-                                                    <br/>
-                                                    <div class="alert alert-danger span2"  ng-show="myForm.email.$dirty && myForm.email.$invalid
-											&& !myForm.email.$pristine"
-                                                         role="alert">邮箱格式不对</div>
-                                                </div> <!-- /controls -->
-
-                                            </div> <!-- /control-group -->
-
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="licensetype">驾照类型</label>
-                                                <div class="controls">
-                                                    <input type="hidden" value="" id="licensetype"   />
-                                                    <div class="topnav">
-                                                        <a id="selectlicensetype" href="javascript:void(0);" class="as">
-                                                            <span>{{showlicensetype}}</span>
-                                                        </a>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="control-label" for="cartype">训练车型</label>
-                                                <div class="controls">
-                                                    <textarea   class="span4" id="cartype" rows="3" ng-model="formData.cartype" placeholder="训练车型"></textarea>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="vipserver">驾校特色</label>
-                                                <div class="controls">
-                                                    <textarea   class="span4" id="vipserver" rows="3" ng-model="formData.vipserver"  placeholder="驾校特色"></textarea>
-                                                </div>
-                                            </div>
-
                                             <div class="control-group">
                                                 <label class="control-label" for="valueaddedservice">增值服务</label>
                                                 <div class="controls">
