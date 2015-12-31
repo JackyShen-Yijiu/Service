@@ -866,7 +866,7 @@ exports.getMymoneyList=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",{}));
     };
-    userserver.getmyCupon(queryinfo,function(err,data){
+    userserver.getMymoneyList(queryinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));
         }

@@ -29,6 +29,7 @@ var integralListModel=mongodb.IntegralListModel;
 var mallProductModel=mongodb.MallProdcutsModel;
 var mallOrderModel=mongodb.MallOrderModel;
 var userfcode= mongodb.UserFcode;
+var IncomeDetails= mongodb.IncomeDetails;
 var coupon=mongodb.Coupon;
 require('date-utils');
 
@@ -1298,6 +1299,53 @@ exports.getmyCupon=function(queryinfo,callback){
                 return callback("查询优惠卷出错："+err);
             }
             callback(err,data);
+        })
+};
+exports.getMymoneyList=function(queryinfo,callback){
+    userfcode.findOne({"userid":queryinfo.userid})
+        .select("userid fcode money")
+        .exec(function(err, data){
+            if(err){
+                callback("查找用户出错:"+err);
+            }
+            if(!data){
+                var moneyinfo={
+                    userid:queryinfo.userid,
+                    fcode:"",
+                    money:0,
+                    moneylist:[]
+                }
+                return callback(null,moneyinfo);
+            }else {
+                IncomeDetails.find({"userid":queryinfo.userid,"state":1})
+                    .select("userid createtime income type")
+                    .sort({"createtime" : -1})
+                    .skip((queryinfo.index-1)*10)
+                    .limit(queryinfo.count)
+                    .exec(function(err,moneydata){
+                        if (err){
+                            callback("查找用户金钱出错:"+err);
+                        }
+                       var  moneylist=[];
+                        moneydata.forEach(function(r,index){
+                            money={
+                                createtime: r.createtime,
+                                type: r.type,
+                                income: r.income,
+                            }
+                            moneylist.push(money);
+                        })
+                        var moneyinfo={
+                            userid:queryinfo.userid,
+                            fcode:data.fcode,
+                            money:data.money,
+                            moneylist:moneylist,
+                        }
+                        return callback(null,moneyinfo);
+
+                    })
+            }
+
         })
 }
 exports.getmymoney=function(queryinfo,callback){
