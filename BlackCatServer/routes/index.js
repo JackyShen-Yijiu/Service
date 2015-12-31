@@ -16,4 +16,9 @@ router.post('/doapplyvalidation',auditController.doapplyinfoAudit);
 router.get("/ordervalidation",auditController.getOrderScanInfo);
 router.get('/sendmerchantcode',auditController.sendMerchant);
 router.post("/doordervalidation",auditController.doOrderScanAudit);
+
+// 获取商品详情页
+router.get("/getpageproductdetial",auditController.getPageProductDetial);
+// 获取订单完成页
+router.get("/getpageorderfinish",auditController.getPageOrderFinish);
 module.exports = router;

@@ -11,7 +11,7 @@ var incomeDetailsSchema=new Schema({
     createtime:{type:Date,default:Date.now()}, //创建时间
     usertype:Number, //用户类型 1 用户 2教练
     income :{type:Number,default:0}, //收入
-    type:Number,  //1 收入  2 提取
+    type:Number,  // 0 支出  1 报名奖励  2 邀请奖励  3 下线分红
     state:{type:Number,default:1},    // 1  有限  0 无效
     failurereason:String
 });

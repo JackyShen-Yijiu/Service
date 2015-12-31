@@ -104,6 +104,7 @@ exports.userBuyProduct=function(req,res){
         name:req.body.name,
         mobile:req.body.mobile,
         address:req.body.address,
+        couponid:req.body.couponid?req.body.couponid:""
     }
     if (postinfo.usertype === undefined
         ||postinfo.userid === undefined
@@ -456,7 +457,8 @@ exports.postapplySchool=function(req,res){
         classtypeid:req.body.classtypeid,
         userpic:req.body.userpic,
         carmodel:req.body.carmodel,
-        applyagain:req.body.applyagain?req.body.applyagain:0
+        applyagain:req.body.applyagain?req.body.applyagain:0,
+        fcode:req.body.fcode?req.body.fcode:""
         };
     if (applyinfo.name===undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined
@@ -807,6 +809,26 @@ exports.delFavorrCoach=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 
+};
+// 获取我的优惠劵
+exports.getmyCupon=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+    };
+    if (queryinfo.userid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getmyCupon(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 // 获取我的金额
 exports.getmymoney=function(req,res){
@@ -828,6 +850,49 @@ exports.getmymoney=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+//获取我的钱列表
+exports.getMymoneyList=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        index:req.query.index?req.query.index:1,
+        count:req.query.count?req.query.count:10,
+    };
+    if (queryinfo.userid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getMymoneyList(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+exports.verifyFcodeCorrect=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        fcode:req.query.fcode,
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    if (queryinfo.fcode===undefined||queryinfo.fcode=="") {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    userserver.verifyFcodeCorrect(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,"",{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
 }
 //  获取我的钱包
 exports.getMyWallet=function(req,res){

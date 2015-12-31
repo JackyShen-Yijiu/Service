@@ -13,9 +13,10 @@
        sysincomeid:String,  // 如果是报名所得，报名收入id
        is_forcash:{type:Boolean,default:false}, // 是否可以兑换现金
        state:{type:Number,default:0},    // 0未领取  1领取  2过期  3作废    4 已消费
-       remark:String     // 备注信息
+       remark:String,   // 备注信息
+       usetime:Date,    // 使用实际
+       productid:String  // 购买商品id
    });
-
    couponSchema.index({userid: 1});
    couponSchema.index({createtime:-1});
    module.exports = mongoose.model('coupon', couponSchema);

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/shoujianr.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <title></title>
+</head>
+<body>
+<div class="header">
+    <div class="row">
+        <div class="shch"> <h4>商品详情</h4></div>
+
+    </div>
+</div>
+<div class="main">
+    <%if(type===1){%>
+    <div class="container">
+        <div class="row">
+            <h5><%=data.productname%></h5>
+            <div class="jzh"><%=data.productdesc%>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <img class="img-responsive" src="<%=data.productimg%>" alt="">
+        </div>
+        <div class="row">
+            <div class="hh">
+                <div class="duihq"><a href="">￥<%=data.productprice%></a></div>
+                <div class="jq" ><h5>￥ <%=data.productprice%></h5>
+                    <a href="" class="jzh">价值</a>
+                </div>
+                <div class="bmhq"><h5 >报名兑换券</h5>
+                    <a href="" class="yzh" >1张</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="sh">
+                <div class="duihuan"><a href=""><%=data.buycount%>人已兑换</a></div>
+                <div class="linqu"><a href="">到店领取</a></div>
+                <div class="shengyu"><a href="">剩余<%=data.productcount%>份</a></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="yxq">
+            <div class="qx">有限期： <%=data.enddate%></div>
+            <div class="photo">联系电话：<%=data.merchantmobile%></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <h4 style="color: red">使用说明：</h4>
+            <h5>每张报名兑换券只限1人使用，超出收费标准：按当时店内实际价格收取费用</h5>
+        </div>
+    </div>
+    <%}else{ %>
+    <div class="container"><h6><%=msg %></h6></div>
+    <%}%>
+
+</div>
+</body>
+</html>

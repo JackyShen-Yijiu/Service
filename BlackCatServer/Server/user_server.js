@@ -29,6 +29,7 @@ var integralListModel=mongodb.IntegralListModel;
 var mallProductModel=mongodb.MallProdcutsModel;
 var mallOrderModel=mongodb.MallOrderModel;
 var userfcode= mongodb.UserFcode;
+var IncomeDetails= mongodb.IncomeDetails;
 var coupon=mongodb.Coupon;
 require('date-utils');
 
@@ -166,42 +167,103 @@ userpayprocess=function(userdata,info,callback){
                 return callback("没有查找到商品");
             }
         }
-        if(userdata.wallet<productdata.productprice){
-            return callback("对不起，您的金币不足，无法购买商品");
-        }
-        var payinfo={
-            userid:userdata._id,
-            usertype:info.usertype,
-            amount:productdata.productprice*(-1),
-            type:appTypeEmun.IntegralType.buyproduct
-        }
-        payuserIntegral(payinfo,function(err,data){
-            if(err){
-                return callback("购买商品失败");
+        //优惠券购买
+        if(productdata.is_scanconsumption){
+            if(info.couponid===undefined||info.couponid==""){
+                return callback("不存在优惠券");
             }
-            var order= new  mallOrderModel;
-            order.userid=userdata._id;
-            order.usertype=info.usertype;
-            order.productid=productdata._id;
-            order.orderstate=appTypeEmun.MallOrderState.applying;
-            order.receivername=info.name;
-            order.mobile=info.mobile;
-            order.address=info.mobile;
-            order.save(function(err,data){
-                if(err){
-                    return callback("保存订单出错:"+err);
+            coupon.findById(new mongodb(info.couponid),function(err,data){
+                if (err){
+                    return callback("查询优惠码出错:"+err);
                 }
-                mallOrderModel.update({_id:new mongodb.ObjectId(data._id)},
-                    { $set: { "orderscanaduiturl":auditurl.producturl+data._id }},function(err){});
-                userdata.scanauditurl=auditurl.applyurl+userdata._id;
-                mallProductModel.update({_id:new mongodb.ObjectId(productdata._id)},{$inc: { buycount: 1 }},function(err){});
-                var  orderinfo={
-                    orderid:data._id,
-                    orderscanaduiturl:auditurl.producturl+data._id
+                if(!data){
+                    return callback("没有查询到优惠券信息");
                 }
-                return callback(null,"suncess",orderinfo);
+                // 优惠券已失效
+                if (data.state!=0&&data.state!=1){
+                    return callback("此优惠券已使用");
+                }
+                // 更改优惠卷的状态
+                data.state=4;  // 已消费
+                data.usetime=new Date();
+                data.remark="购买商品";
+                data.productid=info.productid;
+                data.save(function(err,newdata){
+                    if (err){
+                        return callback("购买失败："+err);
+                    }
+
+                    var order= new  mallOrderModel;
+                    order.userid=userdata._id;
+                    order.usertype=info.usertype;
+                    order.productid=productdata._id;
+                    order.orderstate=appTypeEmun.MallOrderState.applying;
+                    order.receivername=info.name;
+                    order.mobile=info.mobile;
+                    order.address=info.mobile;
+                    //order.is_confirmbyscan=true;
+                    order.couponid=newdata._id;
+                    order.save(function(err,data){
+                        if(err){
+                            return callback("保存订单出错:"+err);
+                        }
+                        mallOrderModel.update({_id:new mongodb.ObjectId(data._id)},
+                            { $set: { "orderscanaduiturl":auditurl.producturl+data._id }},function(err){});
+                        userdata.scanauditurl=auditurl.applyurl+userdata._id;
+                        mallProductModel.update({_id:new mongodb.ObjectId(productdata._id)},{$inc: { buycount: 1 }},function(err){});
+                        var  orderinfo={
+                            orderid:data._id,
+                            orderscanaduiturl:auditurl.producturl+data._id,
+                            finishorderurl:auditurl.orderfinishurl+data._id
+                        }
+                        return callback(null,"suncess",orderinfo);
+                    })
+                })
             })
-        })
+        }
+        else {
+
+            //积分购买
+            if (userdata.wallet < productdata.productprice) {
+                return callback("对不起，您的金币不足，无法购买商品");
+            }
+            var payinfo = {
+                userid: userdata._id,
+                usertype: info.usertype,
+                amount: productdata.productprice * (-1),
+                type: appTypeEmun.IntegralType.buyproduct
+            }
+            payuserIntegral(payinfo, function (err, data) {
+                if (err) {
+                    return callback("购买商品失败");
+                }
+                var order = new mallOrderModel;
+                order.userid = userdata._id;
+                order.usertype = info.usertype;
+                order.productid = productdata._id;
+                order.orderstate = appTypeEmun.MallOrderState.applying;
+                order.receivername = info.name;
+                order.mobile = info.mobile;
+                order.address = info.mobile;
+                order.save(function (err, data) {
+                    if (err) {
+                        return callback("保存订单出错:" + err);
+                    }
+                    mallOrderModel.update({_id: new mongodb.ObjectId(data._id)},
+                        {$set: {"orderscanaduiturl": auditurl.producturl + data._id}}, function (err) {
+                        });
+                    userdata.scanauditurl = auditurl.applyurl + userdata._id;
+                    mallProductModel.update({_id: new mongodb.ObjectId(productdata._id)}, {$inc: {buycount: 1}}, function (err) {
+                    });
+                    var orderinfo = {
+                        orderid: data._id,
+                        orderscanaduiturl: auditurl.producturl + data._id,
+                        finishorderurl:auditurl.orderfinishurl+data._id
+                    }
+                    return callback(null, "suncess", orderinfo);
+                })
+            })
+        }
     })
 }
 // 用户购买商品
@@ -438,7 +500,7 @@ exports.userlogin= function(usertype,userinfo,callback){
     }
 };
 exports.userSignup=function(usertype,userinfo,callback){
-    console.log(userinfo);
+    //console.log(userinfo);
     checkSmsCode(userinfo.mobile,userinfo.smscode,function(err){
         if(err){
             return  callback(err);
@@ -1248,6 +1310,105 @@ getMyWalletlist=function(queryinfo,callback){
             }
         })
 };
+
+// 验证Y吗 是否存在
+exports.verifyFcodeCorrect=function(queryinfo,callback){
+    cache.get("fcode"+queryinfo.fcode,function(err,data){
+        if(err){
+            return callback("查询出错："+err);
+        }
+        if (data){
+            return callback(null,data);
+        }
+        userfcode.findOne({"fcode":queryinfo.fcode})
+            .select("userid fcode usertype")
+            .exec(function(err, data){
+                if(err){
+                    return callback("查询出错："+err);
+                }
+                if(!data){
+                    return callback("不存在Y吗");
+                }
+                var usertypeobject;
+                if(data.usertype==appTypeEmun.UserType.User){
+                    usertypeobject=usermodel;
+                }else {
+                    usertypeobject=coachmode;
+                }
+                usertypeobject.findById(new mongodb.ObjectId(data.userid))
+                    .select(" name   mobile headportrait ")
+                    .exec(function(err,userdata){
+                        var userinfo={};
+                        if(userdata){
+                            userinfo.userid=userdata._id;
+                            userinfo.name=userdata.name;
+                            userinfo.mobile=userdata.mobile;
+                            userinfo.headportrait=userdata.headportrait;
+                        }
+                        cache.set("fcode"+queryinfo.fcode,userinfo,60*10,function(err,data){});
+                        return callback(null,userinfo);
+                    })
+            })
+
+    })
+};
+exports.getmyCupon=function(queryinfo,callback){
+    coupon.find({"userid":queryinfo.userid})
+        .select("userid   createtime couponcomefrom is_forcash state")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询优惠卷出错："+err);
+            }
+            callback(err,data);
+        })
+};
+exports.getMymoneyList=function(queryinfo,callback){
+    userfcode.findOne({"userid":queryinfo.userid})
+        .select("userid fcode money")
+        .exec(function(err, data){
+            if(err){
+                callback("查找用户出错:"+err);
+            }
+            if(!data){
+                var moneyinfo={
+                    userid:queryinfo.userid,
+                    fcode:"",
+                    money:0,
+                    moneylist:[]
+                }
+                return callback(null,moneyinfo);
+            }else {
+                IncomeDetails.find({"userid":queryinfo.userid,"state":1})
+                    .select("userid createtime income type")
+                    .sort({"createtime" : -1})
+                    .skip((queryinfo.index-1)*10)
+                    .limit(queryinfo.count)
+                    .exec(function(err,moneydata){
+                        if (err){
+                            callback("查找用户金钱出错:"+err);
+                        }
+                       var  moneylist=[];
+                        moneydata.forEach(function(r,index){
+                            money={
+                                createtime: r.createtime,
+                                type: r.type,
+                                income: r.income,
+                            }
+                            moneylist.push(money);
+                        })
+                        var moneyinfo={
+                            userid:queryinfo.userid,
+                            fcode:data.fcode,
+                            money:data.money,
+                            moneylist:moneylist,
+                        }
+                        return callback(null,moneyinfo);
+
+                    })
+            }
+
+        })
+}
 exports.getmymoney=function(queryinfo,callback){
     var usertypeobject;
     if(queryinfo.usertype==appTypeEmun.UserType.User){
@@ -1290,12 +1451,24 @@ exports.getmymoney=function(queryinfo,callback){
         if(err){
          return  callback("查询出错:"+err);
         }
+        var  couponremindlist=[];
+        if (results[2])
+        {
+            for(i=0;i<results[2].length;i++){
+
+                if(results[2][i].state==0&&results[2][i].is_forcash==true){
+                    console.log(results[2][i]);
+                    couponremindlist.push(results[2][i]);
+                }
+            }
+        }
         returninfo={
             userid:queryinfo.userid,
             wallet:results[0]?results[0]:0,
             fcode:results[1]? (results[1].fcode?results[1].fcode:""):"",
             money:results[1]? (results[1].money?results[1].fcode:0):0,
             couponcount:results[2]? results[2].length:0,
+            couponremindlist:couponremindlist,
         };
         return callback(null,returninfo)
     });
@@ -1623,6 +1796,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyschool=applyinfo.schoolid;
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
                   userdata.applyschoolinfo.name=schooldata.name;
+                      userdata.referrerfcode=applyinfo.fcode;
 
                   userdata.applycoach=applyinfo.coachid;
                   userdata.applycoachinfo.id=applyinfo.coachid;

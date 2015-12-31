@@ -12,6 +12,8 @@ var mallProductModel=mongodb.MallProdcutsModel;
 var cityInfoModel=mongodb.CityiInfoModel;
 var userconsultModel=mongodb.UserConsultModel;
 var activityModel=mongodb.ActivityModel;
+var prodcutdetail=require("../Config/sysconfig").validationurl.prodcutdetail;
+require('date-utils');
 
 
 // 保存用户咨询信息
@@ -76,9 +78,12 @@ exports.getCourseWare=function( queryinfo,callback){
 };
 
 // 获取商城列表
-exports.getMallProduct=function(callback){
-    mallProductModel.find({"is_using":true})
+exports.getMallProduct=function(searchinfo,callback){
+    mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":searchinfo.producttype})
+        .populate("merchantid","",{"city":new RegExp(searchinfo.cityname)})
         .sort({"productprice" : 1})
+        .skip((searchinfo.index-1)*10)
+        .limit(searchinfo.count)
         .exec(function(err,productlist){
             if(err){
                 return callback("查询商品出错："+err)
@@ -87,6 +92,8 @@ exports.getMallProduct=function(callback){
                 var toplist=[];
                 var mainlist=[];
                 productlist.forEach(function(r,index){
+                    //console.log(r);
+                    if(r.merchantid!=undefined){
                     var oneproduct={
                         productid: r._id,
                         productname: r.productname,
@@ -95,16 +102,18 @@ exports.getMallProduct=function(callback){
                         productdesc: r.productdesc,
                         viewcount: r.viewcount,
                         buycount: r.buycount,
+                        productcount: r.productcount,
                         detailsimg: r.detailsimg,
-                        is_scanconsumption: r.is_scanconsumption?Number(r.is_scanconsumption):0
-                    }
-
-                    if (r.is_top){
-                        toplist.push(oneproduct);
-                    }else
-                    {
-                        mainlist.push(oneproduct);
-                    }})
+                        detailurl: prodcutdetail+r._id,
+                        is_scanconsumption: r.is_scanconsumption?Number(r.is_scanconsumption):0,
+                        cityname: r.merchantid.city,
+                        merchantid: r.merchantid._id,
+                        address: r.merchantid.address,
+                        county:r.merchantid.county,
+                        distinct:0
+                    };
+                        mainlist.push(oneproduct);}
+                })
                 return callback(null,{toplist:toplist,mainlist:mainlist})
             })
         })
@@ -112,7 +121,9 @@ exports.getMallProduct=function(callback){
 
 // 获取商品详情
 exports.getProductDetail=function(productid,callback){
-    mallProductModel.findByIdAndUpdate(new mongodb.ObjectId(productid),{$inc:{"viewcount":1}},function(err,data){
+    mallProductModel.findByIdAndUpdate(new mongodb.ObjectId(productid),{$inc:{"viewcount":1}})
+        .populate("merchantid","")
+        .exec(function(err,data){
         if(err){
             return callback("查询产品出错:"+err);
         }
@@ -125,9 +136,19 @@ exports.getProductDetail=function(productid,callback){
                 productdesc: data.productdesc,
                 viewcount: data.viewcount,
                 buycount: data.buycount,
+                productcount: data.productcount,
+                enddate:data.enddate?data.enddate.toFormat("YYYY-MM-DD"):new Date().addMonths(1).toFormat("YYYY-MM-DD"),
                 detailsimg: data.detailsimg,
-                is_scanconsumption:data.is_scanconsumption?Number(data.is_scanconsumption):0
-            }
+                is_scanconsumption: data.is_scanconsumption?Number(data.is_scanconsumption):0,
+                cityname: data.merchantid.city,
+                merchantid: data.merchantid._id,
+                merchantname: data.merchantid.name,
+                merchantmobile: data.merchantid.mobile,
+                merchantname: data.merchantid.name,
+                address: data.merchantid.address,
+                county:data.merchantid.county,
+                distinct:0
+            };
             return callback(null,oneproduct);
         }else
         {

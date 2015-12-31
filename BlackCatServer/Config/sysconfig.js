@@ -73,7 +73,10 @@ exports.weatherConfig={
 
 
 // 验证地址 正式
-//exports.validationurl={
-//    applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
-//    producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid="
-//}
+
+exports.validationurl={
+    applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
+    producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid=",
+    prodcutdetail:"http://123.57.63.15:8181/validation/getpageproductdetial?productid=",
+    orderfinishurl:"http://123.57.63.15:8181/validation/getpageorderfinish?orderid="
+}

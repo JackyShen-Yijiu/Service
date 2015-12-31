@@ -17,27 +17,48 @@ var mallProductModel=mongodb.MallProdcutsModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
 var shcoolsummary =mongodb.SchoolDaySummaryModel;
 var   cityinfo=mongodb.CityiInfoModel;
+var ActivityModel=mongodb.ActivityModel;
 var auditurl=require("../Config/sysconfig").validationurl;
 require('date-utils');
 var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
-var count1 = 0;
-async.whilst(
-    function() { return count1 < 3 },
-    function(cb) {
-        console.log('1.1 count: ', count1);
-        count1++;
-        setTimeout(cb, 1000);
-    },
-    function(err) {
-        // 3s have passed
-        console.log('1.1 err: ', err);
-    }
-);
-console.log("wancheng");
-var count7 = 0;
+
+var addActivity=function(){
+    var temptivityModel=new ActivityModel();
+    temptivityModel.name="一步vip包过班";
+    temptivityModel.titleimg="http://7xnjg0.com1.z0.glb.clouddn.com/20151230%20185023.png";
+    temptivityModel.contenturl="http://7xnjg0.com1.z0.glb.clouddn.com/20151230%20185023.png";
+    temptivityModel.begindate=new Date();
+    temptivityModel.enddate=(new Date()).addDays(180);
+    temptivityModel.is_using=true;
+    temptivityModel.province="北京市"
+    temptivityModel.city="北京市"
+    temptivityModel.county="海淀区"
+    temptivityModel.address="北京市海淀区中关村E世界 财富中心C743";
+    temptivityModel.save(function(err,data){
+        console.log(data);
+    })
+}
+//addActivity();
+
+
+//var count1 = 0;
+//async.whilst(
+//    function() { return count1 < 3 },
+//    function(cb) {
+//        console.log('1.1 count: ', count1);
+//        count1++;
+//        setTimeout(cb, 1000);
+//    },
+//    function(err) {
+//        // 3s have passed
+//        console.log('1.1 err: ', err);
+//    }
+//);
+//console.log("wancheng");
+//var count7 = 0;
 //async.forever(
 //
 //    function(cb) {

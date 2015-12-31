@@ -51,10 +51,19 @@ v1.get("/getlocationShowType",appsystemController.getlocationShowType);
 //v1.get("/location",appsystemController.getLocation);
 
 //======================================基础数据======================================
-
+//v1.get("/getmailproduct")
 //=====================================Y码相关=======================================
+// 验证Y码是否正确
+v1.get("/verifyfcodecorrect",ensureAuthorizedController.ensureAuthorized,userController.verifyFcodeCorrect);
+
   // 获取我的金币
 v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
+// 获取我的 优惠券
+v1.get("/userinfo/getmycupon",ensureAuthorizedController.ensureAuthorized,userController.getmyCupon);
+// 获取的的金币列表
+v1.get("/userinfo/getmymoneylist",ensureAuthorizedController.ensureAuthorized,userController.getMymoneyList)
+
+////=====================================Y码相关=======================================
 //======================================用户信息======================================
 //  用户报名验证 v1.1 版
 v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,userController.postenrollverificationv2);
