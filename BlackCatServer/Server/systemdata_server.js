@@ -12,6 +12,7 @@ var mallProductModel=mongodb.MallProdcutsModel;
 var cityInfoModel=mongodb.CityiInfoModel;
 var userconsultModel=mongodb.UserConsultModel;
 var activityModel=mongodb.ActivityModel;
+require('date-utils');
 
 
 // 保存用户咨询信息
@@ -132,6 +133,7 @@ exports.getProductDetail=function(productid,callback){
                 viewcount: data.viewcount,
                 buycount: data.buycount,
                 productcount: data.productcount,
+                enddate:data.enddate?data.enddate.toFormat("YYYY-MM-DD"):new Date().addMonths(1).toFormat("YYYY-MM-DD"),
                 detailsimg: data.detailsimg,
                 is_scanconsumption: data.is_scanconsumption?Number(r.is_scanconsumption):0,
                 cityname: data.merchantid.city,
