@@ -70,7 +70,7 @@ exports.weatherConfig={
      applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
      producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid=",
      prodcutdetail:"http://101.200.204.240:8181/validation/getpageproductdetial?productid=",
-     orderurl:"http://101.200.204.240:8181/validation/ordervalidation?orderid=",
+     orderfinishurl:"http://101.200.204.240:8181/validation/getpageorderfinish?orderid=",
  }
 
 

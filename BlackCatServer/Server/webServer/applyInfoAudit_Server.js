@@ -314,3 +314,41 @@ exports.sendSchoolcode=function(sendinfo,callback) {
 
     })
 }
+
+
+// 获取订单信息
+exports.getProductOrderinfo=function(orderid,callback){
+    mallOrderModel.findById(new mongodb.ObjectId(orderid))
+        .populate("productid"," productname  productprice  merchantid")
+        .exec(function(err,data){
+            if(err||!data){
+                return callback("没有找到相关订单");
+            }
+                if(data.productid.merchantid){
+                    merChantModel.findById(new mongodb.ObjectId(data.productid.merchantid),function(err,merchantdata){
+                        if (err||!merchantdata){
+                            return callback("没有查询到商家");
+                        };
+                        var orderinfo={
+                            orderid:data._id,
+                            orderscanaduiturl:data.orderscanaduiturl,
+                            orerdertime:(data.createtime).toFormat("YYYY-MM-DD"),
+                            enddate:(data.createtime).addMonths(1).toFormat("YYYY-MM-DD"),
+                            productid:data.productid._id,
+                            productname: data.productid.productname,
+                            productprice: data.productid.productprice,
+                            merchantid:merchantdata._id,
+                            merchantname:merchantdata.name,
+                            merchantmobile:merchantdata.mobile,
+                            merchantaddress:merchantdata.address,
+                            distinct:0
+                        };
+                        return callback(null,orderinfo);
+                    })
+                }else{
+                    return callback("没有查询到商家");}
+
+
+
+        })
+}

@@ -1,0 +1,40 @@
+.header{
+    width: 1200px;
+    height: 79px;
+    background-color: rgba(254,222,121,0.1);
+    position: absolute;
+    z-index: 10;
+}
+
+#photo{
+    width: 1200px;
+    height: auto;
+}
+#photo img{
+    width: 1200px;
+    height: 382px;
+}
+.jr{
+    text-align: center;
+    margin-top: 80px;
+}
+.jr img{
+    margin: 15px 0;
+    width: 18px;
+    height: auto;
+}
+.dh{
+    font-size: 36px;
+    color: #3a344f;
+}
+.xh{
+    font-size: 14px;
+    color: #3a344f ;
+    margin: 10px;
+}
+.zt{
+    font-size: 14px;
+}
+.footer{
+   margin-top: 170px;
+}

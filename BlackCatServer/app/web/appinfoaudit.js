@@ -83,6 +83,21 @@ exports.getPageProductDetial=function(req,res){
     })
 }
 
+// 获取订单详情页
+exports.getPageOrderFinish=function(req,res){
+    var  orderid= req.query.orderid;
+    if (orderid===undefined||orderid==""){
+        return   res.render("web/finishpordouctorder",new BaseReturnInfo(0,"参数错误",{}));
+    }
+    auditserver.getProductOrderinfo(orderid,function(err ,data){
+        console.log(err);
+        if(err){
+            return   res.render("web/finishpordouctorder",new BaseReturnInfo(0,err,{}));
+        }
+        return   res.render("web/finishpordouctorder",new BaseReturnInfo(1,"",data));
+    })
+}
+
 exports.doOrderScanAudit=function(req,res){
     var auditinfo={
         orderid:req.body.orderid,

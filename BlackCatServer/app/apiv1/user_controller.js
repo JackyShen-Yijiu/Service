@@ -104,6 +104,7 @@ exports.userBuyProduct=function(req,res){
         name:req.body.name,
         mobile:req.body.mobile,
         address:req.body.address,
+        couponid:req.body.couponid?req.body.couponid:""
     }
     if (postinfo.usertype === undefined
         ||postinfo.userid === undefined

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/shoujianr.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <title>Title</title>
+</head>
+<body>
+<div class="header">
+    <div class="row">
+        <div class="shch"></div>
+    </div>
+</div>
+
+<div class="main">
+    <% if(type==1){%>
+    <div class="container">
+        <p class="chengg"><a href="">兑换成功！</a></p>
+        <p class="yhj"><a href="">您的优惠券二维码</a></p>
+        <div class="row">
+            <div class="hrwm">
+                <img src="/api/v1/create_qrcode?text=<%=data.orderscanaduiturl%>>&size=4" alt="">
+            </div>
+        </div>
+        <p class="yhj"><a href="">您的订单编码为：<%=data.orderid%></a></p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <h4 style="color: red;margin-top: -2px">兑换说明：</h4>
+            <h4>&nbsp;&nbsp;&nbsp;&nbsp;请您在有限期内携带订单二维码前往您所兑换的商家确认兑换商品信息。</h4>
+        </div>
+        <div class="row">
+            <h4 style="color: red">兑换商家信息：</h4>
+            <div><img class="img-responsive" src="img/kuwanwangba.png" alt=""></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <h4><%=data.productname%></h4>
+            <div class="jzh"><%=data.productdesc%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="hh">
+                <div class="duihq"><a href="" >￥<%=data.productprice%></a></div>
+                <div class="jq" ><h5>￥ <%=data.productprice%></h5>
+                    <a href="" class="jzh">价值</a>
+                </div>
+                <div class="bmhq"><h5 >报名兑换券</h5>
+                    <a href="" class="yzh" >1张</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="qx"><%=data.merchantname%></div>
+            <div class="jl">距离： <%=data.distinct%>km</div>
+        </div>
+        <div class="row">
+            <div class="qx">有限期：<%=data.enddate%></div>
+            <div class="jl">联系电话：<%=data.merchantmobile%></div>
+        </div>
+    </div>
+<%}else{%>
+    <div class="container"><h5><%=msg%></h5></div>
+    <%}%>
+</div>
+
+</body>
+</html>

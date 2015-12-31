@@ -19,7 +19,8 @@ var  MallOrderSchema = new Schema({
     mobile:String,  //�ֻ���
     address:String,  //�ռ���ַ
     orderscanaduiturl:String, // 订单扫码确认url
-    is_confirmbyscan:{ type: Boolean, default: false}
+    couponid:String, // 如果是优惠券报名此字段有值
+    is_confirmbyscan:{ type: Boolean, default: false}  // 是否进行扫描消费
 });
 
 MallOrderSchema.plugin(seqlist.plugin, {

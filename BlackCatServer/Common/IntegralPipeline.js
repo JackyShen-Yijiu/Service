@@ -346,6 +346,7 @@ try{
                                 var rewardcount=rewardfcodelist.length;
                                 var rewardmoneytotal=systemincomedata.rewardmoney;
                                 var actrewardmoneytotal=0;
+                                var isfirst=0;
                                 var iswhilst=true;
                                 if(rewardcount>0&&rewardmoneytotal>1)
                                 {
@@ -380,7 +381,7 @@ try{
                                             rewardincomedetails.userid=tempfcodedata.userid;
                                             rewardincomedetails.usertype=tempfcodedata.usertype;
                                             rewardincomedetails.income=rewardmoney;
-                                            rewardincomedetails.type=1;  //收入
+                                            rewardincomedetails.type=(isfirst==0)?2:3;  //收入 1 报名奖励  2 邀请奖励  3 下线分红
                                             rewardincomedetails.save(function(err,data){
                                                 userfcode.update({"userid":tempfcodedata.userid},
                                                     {$inc: { money: rewardmoney }},function(err,data){}
