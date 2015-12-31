@@ -811,6 +811,27 @@ exports.delFavorrCoach=function(req,res){
     });
 
 };
+exports.receivemycupon=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        receivetype:req.query.receivetype,  // 0 领取优惠券 1 领取钱
+        cuponid:req.query.cuponidid,
+    };
+    if (queryinfo.userid===undefined||receivetype.receivetype===undefined||receivetype.cuponid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.receiveMyCupon(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 // 获取我的优惠劵
 exports.getmyCupon=function(req,res){
     var  queryinfo={

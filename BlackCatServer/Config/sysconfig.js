@@ -27,12 +27,12 @@ exports.jpushCofig={
 
 // 测试环信im配置地址
 
-// exports.imConfig={
-    // client_id:"YXA6In9icIkvEeWcN8Xg9ZIE7w",
-    // client_secret:"YXA66Vo2yOfs5iupNCButKMuFmfnTdY",
-    // org_name:"black-cat",
-    // app_name:"yibuxuechetest"
-// }
+ //exports.imConfig={
+ //    client_id:"YXA6In9icIkvEeWcN8Xg9ZIE7w",
+ //    client_secret:"YXA66Vo2yOfs5iupNCButKMuFmfnTdY",
+ //    org_name:"black-cat",
+ //    app_name:"yibuxuechetest"
+ //}
 
 //// 环信正式版
 exports.imConfig={
@@ -45,10 +45,10 @@ exports.imConfig={
 
 // redis 配置， 测试库
 // exports.redisConfig={
-    // redis_host: "101.200.204.240",
-    // redis_port: 6379,
-    // redis_db: 0,
-    // redis_password:"yibuxueche"
+//     redis_host: "101.200.204.240",
+//     redis_port: 6379,
+//     redis_db: 0,
+//     redis_password:"yibuxueche"
 // }
 
 // redis 正式
@@ -67,12 +67,15 @@ exports.weatherConfig={
 
 // 验证地址 test
 // exports.validationurl={
-    // applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
-    // producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid="
+//     applyurl:"http://101.200.204.240:8181/validation/applyvalidation?userid=",
+//     producturl:"http://101.200.204.240:8181/validation/ordervalidation?orderid="
+//prodcutdetail:"http://123.57.63.15:8181/validation/getpageproductdetial?productid=",
+// orderfinishurl:"http://123.57.63.15:8181/validation/getpageorderfinish?orderid="
 // }
 
 
 // 验证地址 正式
+
 exports.validationurl={
     applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
     producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid=",

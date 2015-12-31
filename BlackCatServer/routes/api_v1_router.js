@@ -61,7 +61,9 @@ v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userCo
 // 获取我的 优惠券
 v1.get("/userinfo/getmycupon",ensureAuthorizedController.ensureAuthorized,userController.getmyCupon);
 // 获取的的金币列表
-v1.get("/userinfo/getmymoneylist",ensureAuthorizedController.ensureAuthorized,userController.getMymoneyList)
+v1.get("/userinfo/getmymoneylist",ensureAuthorizedController.ensureAuthorized,userController.getMymoneyList);
+// 领取优惠券或者密码
+v1.get("/userinfo/receivemycupon",ensureAuthorizedController.ensureAuthorized,userController.receivemycupon);
 
 ////=====================================Y码相关=======================================
 //======================================用户信息======================================
