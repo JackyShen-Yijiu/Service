@@ -94,6 +94,14 @@ var  returnAdminRouter=function(io) {
     router.get('/manage/editschool', function(req, res, next) {
         res.render('manger/editSchool', {layout:"public/adminTemple"});
     });
+    //  ==========================活动管理========================================
+    router.get('/manage/activtylist', function(req, res, next) {
+        res.render('manger/Activtylist' , adminFunc.setPageInfo(req,res,"/admin/manage/activtylist"));
+    });
+    //app首页活动页
+    router.get("/manage/editActivty",function(req, res, next) {
+        res.render('manger/editActivty', adminFunc.setPageInfo(req,res,"/admin/manage/editActivty"));
+    });
     //========================================== 驾校信息主页====================================
     router.get('/manage/schoolmain', function(req, res, next) {
         req.session.schoolid=req.query.schoolid;
@@ -114,7 +122,7 @@ var  returnAdminRouter=function(io) {
         if(req.session.schoolid===undefined){
             res.render(error);
         }
-        console.log(schoolid);
+        //console.log(schoolid);
         basedatafun.getSchooltrainingfiled(schoolid,function(err,data){
             filedlist=  _.map(data,function(item,i) {
                 var info = {
@@ -155,6 +163,13 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/updatetrainingfield",adminserver.updateTrainingField);
     //班型操作
     router.post("/manage/saveclasstype",adminserver.saveClassType);
+
+    // 活动管理
+    router.get("/manage/getactivtylist",adminserver.getactivtylist);
+    //保存活动信息
+    router.post("/manage/updateactivty",adminserver.updateactivty);
+    router.get("/manage/getactivitybyid",adminserver.getactivitybyid);
+
 
 return router;
 }
