@@ -109,6 +109,8 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
+
+
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
         var schoolid=req.session.schoolid;
         if(req.session.schoolid===undefined){
