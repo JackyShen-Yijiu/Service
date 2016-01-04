@@ -94,6 +94,14 @@ var  returnAdminRouter=function(io) {
     router.get('/manage/editschool', function(req, res, next) {
         res.render('manger/editSchool', {layout:"public/adminTemple"});
     });
+    //  ==========================活动管理========================================
+    router.get('/manage/activtylist', function(req, res, next) {
+        res.render('manger/Activtylist' , adminFunc.setPageInfo(req,res,"/admin/manage/activtylist"));
+    });
+    //app首页活动页
+    router.get("/manage/editActivty",function(req, res, next) {
+        res.render('manger/editActivty', adminFunc.setPageInfo(req,res,"/admin/manage/editActivty"));
+    });
     //========================================== 驾校信息主页====================================
     router.get('/manage/schoolmain', function(req, res, next) {
         req.session.schoolid=req.query.schoolid;
@@ -109,14 +117,22 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
+    //me获取Y码列表
+    router.get("/manage/Ycodelist" ,function(req, res, next) {
+        res.render('Ycode/Ycodelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/Ycodelist"));
+    });
 
+    //app首页活动页
+    router.get("/manage/editActivty",function(req, res, next) {
+        res.render('school/editActivty', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editActivty"));
+    });
 
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
         var schoolid=req.session.schoolid;
         if(req.session.schoolid===undefined){
             res.render(error);
         }
-        console.log(schoolid);
+        //console.log(schoolid);
         basedatafun.getSchooltrainingfiled(schoolid,function(err,data){
             filedlist=  _.map(data,function(item,i) {
                 var info = {
@@ -157,6 +173,13 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/updatetrainingfield",adminserver.updateTrainingField);
     //班型操作
     router.post("/manage/saveclasstype",adminserver.saveClassType);
+
+    // 活动管理
+    router.get("/manage/getactivtylist",adminserver.getactivtylist);
+    //保存活动信息
+    router.post("/manage/updateactivty",adminserver.updateactivty);
+    router.get("/manage/getactivitybyid",adminserver.getactivitybyid);
+
 
 return router;
 }

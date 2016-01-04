@@ -6,7 +6,7 @@ module.exports = {
 
     db: {
         //uri: process.env.MONGODB || 'mongodb://123.57.7.30:27300/BlackCat_Prod',
-       // uri: process.env.MONGODB || 'mongodb://10.171.52.27:27300/BlackCat_Prod',
+        //uri: process.env.MONGODB || 'mongodb://10.171.52.27:27300/BlackCat_Prod',
 
          uri: process.env.MONGODB || 'mongodb://123.57.7.30:27300/BlackCat',
 
