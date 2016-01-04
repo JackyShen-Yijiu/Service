@@ -1,0 +1,269 @@
+<link type="text/css" rel="stylesheet" 	href="/css/powerFloat.css" />
+<link type="text/css" rel="stylesheet" 	href="/css/xmenu.css" />
+<div class="main" ng-controller="addSchool">
+
+    <div class="main-inner">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="span12">
+
+                    <div class="widget ">
+
+                        <div class="widget-header">
+                            <i class="icon-th-large"></i>
+                            <h3>首页活动设置</h3>
+                        </div> <!-- /widget-header -->
+
+                        <div class="widget-content">
+                            <div class="tabbable">
+                                <br>
+                                <div class="tab-pane" id="formcontrols">
+                                    <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                        <fieldset>
+                                            <!--one-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="name" >活动名称</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6 " name="name"    id="name"  placeholder="请输入商品名称，最多30个字"
+                                                           ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
+                                                         role="alert">5-30个非特殊字符</div>
+                                                </div>
+                                            </div><!-- /one end -->
+                                            <!--two-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="activityimg">活动图片</label>
+                                                <div class="controls">
+                                                    <div class="input-append">
+                                                        <input class="span4 m-wrap"   id="activityimg" type="text"disabled
+                                                               ng-model="formData.logoimg"	   >
+                                                        <button class="btn" type="button" id="pickactivityimg">选择图片</button>
+                                                        <img id="activityimgimg" style="width: 60px;height: 60px">
+                                                    </div>
+                                                </div>
+                                            </div><!--two end-->
+                                            <!--three-->
+                                            <div class="control-group">
+                                                <label class="control-label" >活动时间<label/>
+                                                <div class="controls">
+                                                    <label class="control-label" for="starttime">开始时间:</label>
+                                                    <input type="text" class="span4  laydate-icon" id="starttime" onclick="laydate()">
+                                                    <br>
+                                                    <br>
+                                                    <label class="control-label" for="endtime">结束时间:</label>
+                                                    <input type="text" class="span4  laydate-icon" id="endtime" onclick="laydate()">
+                                                </div>
+                                            </div> <!-- /three end -->
+
+
+
+                                            <!--four-->
+                                            <div class="control-group">
+                                                <label class="control-label">上线方式</label>
+                                                <div class="controls">
+                                                    <label class="checkbox inline">
+                                                        <input name="subject" type="checkbox" value="1" checked> 立即上线
+                                                    </label>
+
+                                                    <label class="checkbox inline">
+                                                        <input name="subject" type="checkbox" value="2"> 定时上线
+                                                    </label>
+                                                </div>
+                                            </div> <!-- /four end -->
+
+                                            <!--five-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="activityLink">活动链接</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="activityLink" ng-model="formData.website">
+                                                </div>
+                                            </div> <!-- five end -->
+                                            <!--six-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="province">活动城市</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span2 disabled"  id="province"
+                                                           ng-model="formData.province"  disabled> 省
+                                                    <input type="text" class="span2 disabled" id="city"
+                                                           ng-model="formData.city" disabled> 市
+                                                    <br/>
+                                                    <br/>
+                                                    <input type="text" class="span6 disabled"  id="address" name="address"
+                                                           ng-model="formData.address"    placeholder="详细地址" required>
+                                                    <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
+                                                    <input type="hidden" id="latitude" ng-model="formData.latitude"  >
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
+                                                         role="alert">地址必须</div>
+                                                </div> <!-- /controls -->
+                                            </div>
+                                            <div class="control-group"  style="height: 250px;width: 600px">
+                                                <label class="control-label" >地图标注</label>
+                                                <div class="controls">
+                                                    <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
+                                                </div>
+                                            </div><!--six end-->
+
+                                            <br />
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
+                                                <button class="btn">取消</button>
+                                            </div> <!-- /form-actions -->
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- /widget-content -->
+
+                    </div> <!-- /widget -->
+
+                </div> <!-- /span8 -->
+            </div> <!-- /row -->
+
+        </div> <!-- /container -->
+
+    </div> <!-- /main-inner -->
+
+</div> <!-- /main -->
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
+<script  src="/js/baidumap.js"></script>
+<script type="text/javascript" src="/js/laydate.js"></script>
+<script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
+<script type="text/javascript" src="/js/qiniu.js"></script>
+<script type="text/javascript" src="/js/qiniuupfile.js"></script>
+
+<script type="application/javascript">
+    ybxcApp.controller("addSchool",function($scope,$http){
+        $scope.formData = {};
+       // var trainingfiledid=GetQueryString("trainingfiledid");
+        var activityid=GetQueryString("activityid");
+        if(activityid !=null && activityid.toString().length>1)
+        {
+            $http.get("getactivitybyid?activityid="+activityid)
+                    .success(function(response){
+                        if (response.type==0){
+                            alert(response.msg);
+                        }else{
+                            $scope.formData = response.data;
+                            console.log(response.data);
+                           // $("#logimg").val($scope.formData.logoimg);
+                           // $("#logimgimg").attr("src",$scope.formData.logoimg)
+                            //setPoint($scope.formData.longitude,$scope.formData.latitude);
+                           // $("#latitude").val($scope.formData.latitude);
+                           // $("#longitude").val($scope.formData.longitude);
+                           // $("#is_validation").val($scope.formData.is_validation);
+                            //me
+                            $("#starttime").val($scope.formData.starttime);
+                            $("#endtime").val($scope.formData.endtime);
+                            setPoint($scope.formData.longitude,$scope.formData.latitude);
+                            $("#latitude").val($scope.formData.latitude);
+                            $("#longitude").val($scope.formData.longitude);
+                            $("#activityimg").val($scope.formData.logoimg);
+                            $("#activityimgimg").attr("src",$scope.formData.logoimg)
+                            $("#activityLink").val($scope.formData.activityLink);
+                            $("#is_validation").val($scope.formData.is_validation);
+
+                            $("input[name='subject']:checkbox").each(function(){
+                                var index=$scope.formData.subject.indexOf(parseInt($(this).val()));
+                                if (index>-1){
+                                    $(this).attr("checked","true");
+                                }
+                            });
+
+                        }
+
+
+                    })
+        }else{
+            // $scope.formData.fieldlevel="5";
+            //$scope.formData.is_validation=1;
+            // $("#is_validation").val($scope.formData.is_validation);
+
+
+            /////me
+            $scope.formData.starttime=new Date();
+            $scope.formData.endtime=new Date();
+            $("#starttime").val($scope.formData.starttime);
+            $("#endtime").val($scope.formData.endtime);
+            $scope.formData.is_validation=1;
+            $("#is_validation").val($scope.formData.is_validation);
+        }
+
+        $scope.processForm = function(isValid){
+            console.log(isValid);
+            if (!isValid){
+                alert("参数错误");
+                return;
+            }
+            if($scope.formData.trainingfiledid!=undefined&&$scope.formData.trainingfiledid!="")
+            {
+                if(!savedata()){
+                    return;
+                }
+                $http.post("/admin/manage/updatetrainingfield",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("修改成功");
+                                //window.location.href="/admin/manage/schoollsit";
+                            }
+                        })
+            }else {
+                if(!savedata()){
+                    return;
+                }
+                $http.post("/admin/manage/savetrainingfield",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("添加成功");
+                                //window.location.href="/admin/manage/schoollsit";
+                            }
+                        })
+            }
+
+        };
+
+        var savedata=function(){
+           // $scope.formData.logoimg=$("#logimg").val();
+           // $scope.formData.province=$("#province").val();
+            //$scope.formData.city=$("#city").val();
+           // $scope.formData.address=$("#address").val();
+            //$scope.formData.latitude=$("#latitude").val();
+            //$scope.formData.longitude=$("#longitude").val();
+            //$scope.formData.is_validation=$("#is_validation").val();
+           // $scope.formData.fieldlevel=$("#fieldlevel").val();
+            //$scope.formData.schoolid="<%=schoolid%>";
+
+            //me
+            $scope.formData.starttime=$("#starttime").val();
+            $scope.formData.endtime=$("#endtime").val();
+            $scope.formData.logoimg=$("#activityimg").val();
+            $scope.formData.province=$("#province").val();
+            $scope.formData.city=$("#city").val();
+            $scope.formData.address=$("#address").val();
+            $scope.formData.latitude=$("#latitude").val();
+            $scope.formData.longitude=$("#longitude").val();
+            $scope.formData.fieldlevel=$("#activityLink").val();
+            $scope.formData.is_validation=$("#is_validation").val();//?????
+            $scope.formData.schoolid="<%=schoolid%>";//?????
+            $scope.formData.subject=[];
+
+            $("input[name='subject']:checkbox").each(function(){
+                if ($(this).attr("checked")!=undefined) {
+                    $scope.formData.subject.push($(this).attr('value'));
+                }
+            });
+            return true;
+        }
+    });
+
+
+
+</script>
+
