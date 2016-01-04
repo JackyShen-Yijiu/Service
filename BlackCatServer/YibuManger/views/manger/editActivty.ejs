@@ -1,6 +1,5 @@
-<link type="text/css" rel="stylesheet" 	href="/css/powerFloat.css" />
-<link type="text/css" rel="stylesheet" 	href="/css/xmenu.css" />
-<div class="main" ng-controller="addSchool">
+
+<div class="main" ng-controller="editactivty">
 
     <div class="main-inner">
 
@@ -14,7 +13,7 @@
 
                         <div class="widget-header">
                             <i class="icon-th-large"></i>
-                            <h3>首页活动设置</h3>
+                            <h3>活动设置</h3>
                         </div> <!-- /widget-header -->
 
                         <div class="widget-content">
@@ -39,7 +38,7 @@
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="activityimg" type="text"disabled
-                                                               ng-model="formData.logoimg"	   >
+                                                               ng-model="formData.titleimg"	   >
                                                         <button class="btn" type="button" id="pickactivityimg">选择图片</button>
                                                         <img id="activityimgimg" style="width: 60px;height: 60px">
                                                     </div>
@@ -47,7 +46,7 @@
                                             </div><!--two end-->
                                             <!--three-->
                                             <div class="control-group">
-                                                <label class="control-label" >活动时间<label/>
+                                                <label class="control-label" >活动时间</label>
                                                 <div class="controls">
                                                     <label class="control-label" for="starttime">开始时间:</label>
                                                     <input type="text" class="span4  laydate-icon" id="starttime" onclick="laydate()">
@@ -78,7 +77,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="activityLink">活动链接</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6" id="activityLink" ng-model="formData.website">
+                                                    <input type="text" class="span6" id="activityLink" ng-model="formData.contenturl">
                                                 </div>
                                             </div> <!-- five end -->
                                             <!--six-->
@@ -109,7 +108,7 @@
                                             <br />
                                             <div class="form-actions">
                                                 <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
-                                                <button class="btn">取消</button>
+                                                <button class="btn" type="reset">取消</button>
                                             </div> <!-- /form-actions -->
                                         </fieldset>
                                     </form>
@@ -131,12 +130,13 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
 <script  src="/js/baidumap.js"></script>
 <script type="text/javascript" src="/js/laydate.js"></script>
+<script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
 <script type="text/javascript" src="/js/qiniu.js"></script>
 <script type="text/javascript" src="/js/qiniuupfile.js"></script>
 
 <script type="application/javascript">
-    ybxcApp.controller("addSchool",function($scope,$http){
+    ybxcApp.controller("editactivty",function($scope,$http){
         $scope.formData = {};
        // var trainingfiledid=GetQueryString("trainingfiledid");
         var activityid=GetQueryString("activityid");
@@ -149,29 +149,8 @@
                         }else{
                             $scope.formData = response.data;
                             console.log(response.data);
-                           // $("#logimg").val($scope.formData.logoimg);
-                           // $("#logimgimg").attr("src",$scope.formData.logoimg)
-                            //setPoint($scope.formData.longitude,$scope.formData.latitude);
-                           // $("#latitude").val($scope.formData.latitude);
-                           // $("#longitude").val($scope.formData.longitude);
-                           // $("#is_validation").val($scope.formData.is_validation);
-                            //me
                             $("#starttime").val($scope.formData.starttime);
                             $("#endtime").val($scope.formData.endtime);
-                            setPoint($scope.formData.longitude,$scope.formData.latitude);
-                            $("#latitude").val($scope.formData.latitude);
-                            $("#longitude").val($scope.formData.longitude);
-                            $("#activityimg").val($scope.formData.logoimg);
-                            $("#activityimgimg").attr("src",$scope.formData.logoimg)
-                            $("#activityLink").val($scope.formData.activityLink);
-                            $("#is_validation").val($scope.formData.is_validation);
-
-                            $("input[name='subject']:checkbox").each(function(){
-                                var index=$scope.formData.subject.indexOf(parseInt($(this).val()));
-                                if (index>-1){
-                                    $(this).attr("checked","true");
-                                }
-                            });
 
                         }
 
@@ -184,12 +163,12 @@
 
 
             /////me
-            $scope.formData.starttime=new Date();
-            $scope.formData.endtime=new Date();
-            $("#starttime").val($scope.formData.starttime);
-            $("#endtime").val($scope.formData.endtime);
-            $scope.formData.is_validation=1;
-            $("#is_validation").val($scope.formData.is_validation);
+//            $scope.formData.starttime=new Date();
+//            $scope.formData.endtime=new Date();
+//            $("#starttime").val($scope.formData.starttime);
+//            $("#endtime").val($scope.formData.endtime);
+//            $scope.formData.is_validation=1;
+
         }
 
         $scope.processForm = function(isValid){
@@ -198,31 +177,31 @@
                 alert("参数错误");
                 return;
             }
-            if($scope.formData.trainingfiledid!=undefined&&$scope.formData.trainingfiledid!="")
+            if($scope.formData.activityid!=undefined&&$scope.formData.activityid!="")
             {
                 if(!savedata()){
                     return;
                 }
-                $http.post("/admin/manage/updatetrainingfield",$scope.formData)
+                console.log($scope.formData);
+                $http.post("/admin/manage/savecoachinfo",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
                                 alert(response.msg);
                             }else{
                                 alert("修改成功");
-                                //window.location.href="/admin/manage/schoollsit";
                             }
                         })
             }else {
                 if(!savedata()){
                     return;
                 }
-                $http.post("/admin/manage/savetrainingfield",$scope.formData)
+                console.log($scope.formData);
+                $http.post("/admin/manage/savecoachinfo",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
                                 alert(response.msg);
                             }else{
                                 alert("添加成功");
-                                //window.location.href="/admin/manage/schoollsit";
                             }
                         })
             }
@@ -238,27 +217,9 @@
             //$scope.formData.longitude=$("#longitude").val();
             //$scope.formData.is_validation=$("#is_validation").val();
            // $scope.formData.fieldlevel=$("#fieldlevel").val();
-            //$scope.formData.schoolid="<%=schoolid%>";
 
-            //me
-            $scope.formData.starttime=$("#starttime").val();
-            $scope.formData.endtime=$("#endtime").val();
-            $scope.formData.logoimg=$("#activityimg").val();
-            $scope.formData.province=$("#province").val();
-            $scope.formData.city=$("#city").val();
-            $scope.formData.address=$("#address").val();
-            $scope.formData.latitude=$("#latitude").val();
-            $scope.formData.longitude=$("#longitude").val();
-            $scope.formData.fieldlevel=$("#activityLink").val();
-            $scope.formData.is_validation=$("#is_validation").val();//?????
-            $scope.formData.schoolid="<%=schoolid%>";//?????
-            $scope.formData.subject=[];
 
-            $("input[name='subject']:checkbox").each(function(){
-                if ($(this).attr("checked")!=undefined) {
-                    $scope.formData.subject.push($(this).attr('value'));
-                }
-            });
+
             return true;
         }
     });

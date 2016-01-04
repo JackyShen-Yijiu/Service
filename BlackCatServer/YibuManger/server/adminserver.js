@@ -9,6 +9,7 @@ var appTypeEmun=require("../../custommodel/emunapptype");
 var appWorkTimes=commondata.worktimes;
 var  basedatafun=require("./basedatafun");
 var schoolModel=mongodb.DriveSchoolModel;
+var activtyModel= mongodb.ActivityModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
@@ -20,6 +21,14 @@ exports.getStatitic=function(req,res){
 }
 
  var defaultFun={
+     getModelCount:function(obj,searchinfo,callback){
+         obj.count(searchinfo,function(err,count){
+             if(err){
+                 return callback(err);
+             }
+             return callback(null,count);
+         })
+     },
     getSchoolcount:function( schoolname,callback){
         schoolModel.count({"name":new RegExp(schoolname)},function(err,count){
             if(err){
@@ -187,6 +196,19 @@ exports.getStatitic=function(req,res){
          return coachinfo;
 
      },
+     getActivity:function(req){
+         activtyinfo={
+             name:req.body.name?req.body.name:"",
+             titleimg:req.body.titleimg?req.body.titleimg:"",
+             contenturl:req.body.contenturl?req.body.contenturl:"",
+             begindate:req.body.begindate?req.body.begindate:new Date(),
+             enddate:req.body.enddate?req.body.enddate:new Date(),
+             province:req.body.province?req.body.province:"",
+             city:req.body.province?req.body.city:"",
+             county:req.body.province?req.body.county:"",
+             address:req.body.address?req.body.address:"",
+         }
+     }
 }
 
 //====================================b班级管理
@@ -413,6 +435,98 @@ exports.updateTrainingField=function(req,res){
     })
 }
 
+//  活动管理 ===
+exports.getactivitybyid=function(req,res){
+    var activityid=req.query.activityid;
+    if (activityid===undefined||activityid==""){
+        res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    activtyModel.findById(new mongodb.ObjectId(activityid),function(err,activityinfo) {
+        if (err) {
+            res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
+        }
+        if (!activityinfo) {
+            res.json(new BaseReturnInfo(0, "没有查询到活动", ""));
+        }
+        var activity={
+            activityid:activityinfo._id,
+            name:activityinfo.name,
+            titleimg:activityinfo.titleimg,
+            contenturl:activityinfo.contenturl,
+            begindate:activityinfo.begindate,
+            enddate:activityinfo.enddate,
+            province:activityinfo.province,
+            city:activityinfo.province,
+            county:activityinfo.province,
+            address:activityinfo.address,
+        }
+        res.json(new BaseReturnInfo(1, "", activity));
+    })
+}
+   //保存活动信息
+exports.updateactivty= function(req,res){
+    activtyfo=defaultFun.getActivity(req);
+    var activityid= req.body.activityid;
+    if (activityid===undefined||activityid==""){
+        var saveactivity= new  activtyModel(activtyfo);
+            saveactivity.save(function(err,data){
+                if(err){
+                    return res.json(new BaseReturnInfo(0, "保存教练出错："+err, "") );
+                }else{
+                    return res.json(new BaseReturnInfo(1, "", "sucess") );
+                }
+            })
+
+
+    }
+    else {
+        var conditions = {_id : activityid};
+        var update = {$set : activtyfo};
+        activtyModel.update(conditions, update,function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改教练出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+}
+exports.getactivtylist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    var name=req.query.searchKey?req.query.searchKey:"";
+    activtyModel.find({"name":new RegExp(name)})
+        //.select("_id name address  createtime")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(activtyModel,{"name":new RegExp(name)},function (err,activitycount) {
+                activityinfo= _.map(data,function(item,index){
+                    info={
+                        name:item.name,
+                        activityid:item._id,
+                        contenturl:item.contenturl,
+                        begindate:item.begindate,
+                        enddate:item.enddate,
+                        province:item.province,
+                        city:item.city,
+                    }
+                    return info;
+                })
+                returninfo = {
+                    pageInfo:{
+                        totalItems: activitycount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(activitycount/limit )+1
+                    },
+                    datalist: activityinfo
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+}
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
     var index=req.query.index?req.query.index:0;
