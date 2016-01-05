@@ -664,10 +664,10 @@ exports.updatePassword=function(pwdinfo,callback){
                 return  callback("用户未注册");
             }
      checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
-         if (err) {
-             return callback("验证码错误" );
-
-         }
+         //if (err) {
+         //    return callback("验证码错误" );
+         //
+         //}
          userdata.password=pwdinfo.password;
          userdata.save(function(err,newdata){
              if(err){
@@ -1601,7 +1601,6 @@ exports.getapplyschoolinfo=function(userid,callback){
             if(data.applystate==appTypeEmun.ApplyState.NotApply){
                 return callback("该用户没有提交报名申请");
             }
-            console.log(data)
             var userinfo={
                 userid:data._id,
                 name: data.name,

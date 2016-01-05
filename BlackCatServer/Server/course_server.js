@@ -10,6 +10,7 @@ var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var pushstudent=require("../Common/PushStudentMessage");
 var pushcoach=require("../Common/PushCoachMessage");
+var _ = require("underscore");
 require('date-utils');
 
 exports.GetCoachCourse=function(coachid,date ,callback){
@@ -59,6 +60,7 @@ exports.GetCoachCourse=function(coachid,date ,callback){
                     else{
                         list=data;
                     }
+                    list= _.sortBy(list,'coursebegintime');
                     return callback(null,list);
                 })
 
@@ -76,6 +78,7 @@ exports.GetCoachCourse=function(coachid,date ,callback){
                     list=coursedata;
                 }
                 //list.sort(coursebegintime);
+                list= _.sortBy(list,'coursebegintime');
                 return callback(null,list);
             }
 

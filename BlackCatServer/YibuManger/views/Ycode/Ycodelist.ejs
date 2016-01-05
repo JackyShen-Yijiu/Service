@@ -22,25 +22,30 @@
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-                                        <th> 姓名 </th>
-                                        <th> 联系电话</th>
-                                        <th> 科目</th>
-                                        <th>训练场</th>
-                                        <th class="td-actions"> 操作</th>
+                                        <th> 报名单号 </th>
+                                        <th> 报名学员</th>
+                                        <th> 报名班型</th>
+                                        <th>收费价格</th>
+                                        <th>报名驾校</th>
+                                        <th>驾校返利</th>
+                                        <th>学员返利</th>
+                                        <th>代理分利</th>
+                                        <th>公司收益</th>
+                                        <th>报名时间</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
-                                            <span>{{content.name}}</span>
+                                            <span>{{content.ziduan}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.mobile}}</span>
+                                            <span>{{content.ziduan}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.carmodel.code}}</span>
+                                            <span>{{content.carmodel.ziduan}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.trainfieldlinfo.name}}</span>
+                                            <span>{{content.trainfieldlinfo.ziduan}}</span>
                                         </td>
 
 
