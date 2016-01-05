@@ -45,16 +45,22 @@ exports.getUseridByReq = function(req, res, next) {
 };
 
 var verifyToken = function(token, callback) {
-    jwt.verify(token, secretParam.secret, undefined, function(err, decoded) {
-        if (err) {
-            console.log(err);
-            if(callback != undefined){
-                callback(false);
+    try {
+        jwt.verify(token, secretParam.secret, undefined, function (err, decoded) {
+            if (err) {
+                console.log(err);
+                if (callback != undefined) {
+                    callback(false);
+                }
+            } else {
+                if (callback != undefined) {
+                    callback(true, decoded);
+                }
             }
-        }else{
-            if(callback != undefined){
-                callback(true, decoded);
-            }
-        }
-    });
+        });
+    }
+    catch(ex)
+    {
+        callback(false);
+    }
 }

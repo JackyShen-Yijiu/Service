@@ -208,6 +208,7 @@ exports.getStatitic=function(req,res){
              county:req.body.province?req.body.county:"",
              address:req.body.address?req.body.address:"",
          }
+         return activtyinfo;
      }
 }
 

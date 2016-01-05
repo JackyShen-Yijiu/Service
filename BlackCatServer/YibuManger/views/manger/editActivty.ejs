@@ -27,7 +27,7 @@
                                                 <label class="control-label" for="name" >活动名称</label>
                                                 <div class="controls">
                                                     <input type="text" class="span6 " name="name"    id="name"  placeholder="请输入商品名称，最多30个字"
-                                                           ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.name" required>
                                                     <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
                                                          role="alert">5-30个非特殊字符</div>
                                                 </div>
@@ -137,8 +137,9 @@
 
 <script type="application/javascript">
     ybxcApp.controller("editactivty",function($scope,$http){
+        initqiniuupload("pickactivityimg","activityimgimg","activityimg");
         $scope.formData = {};
-       // var trainingfiledid=GetQueryString("trainingfiledid");
+       //var trainingfiledid=GetQueryString("trainingfiledid");
         var activityid=GetQueryString("activityid");
         if(activityid !=null && activityid.toString().length>1)
         {
@@ -149,26 +150,16 @@
                         }else{
                             $scope.formData = response.data;
                             console.log(response.data);
-                            $("#starttime").val($scope.formData.starttime);
-                            $("#endtime").val($scope.formData.endtime);
-
+                            $("#starttime").val($scope.formData.begindate);
+                            $("#endtime").val($scope.formData.enddate);
+                            $("#activityimgimg").attr("src",$scope.formData.titleimg)
                         }
-
-
                     })
         }else{
-            // $scope.formData.fieldlevel="5";
-            //$scope.formData.is_validation=1;
-            // $("#is_validation").val($scope.formData.is_validation);
-
-
-            /////me
-//            $scope.formData.starttime=new Date();
-//            $scope.formData.endtime=new Date();
-//            $("#starttime").val($scope.formData.starttime);
-//            $("#endtime").val($scope.formData.endtime);
-//            $scope.formData.is_validation=1;
-
+            $scope.formData.begindate=new Date();
+            $scope.formData.enddate=new Date();
+            $("#starttime").val($scope.formData.begindate);
+            $("#endtime").val($scope.formData.enddate);
         }
 
         $scope.processForm = function(isValid){
@@ -179,11 +170,12 @@
             }
             if($scope.formData.activityid!=undefined&&$scope.formData.activityid!="")
             {
+
                 if(!savedata()){
                     return;
                 }
                 console.log($scope.formData);
-                $http.post("/admin/manage/savecoachinfo",$scope.formData)
+                $http.post("/admin/manage/updateactivty",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
                                 alert(response.msg);
@@ -196,7 +188,7 @@
                     return;
                 }
                 console.log($scope.formData);
-                $http.post("/admin/manage/savecoachinfo",$scope.formData)
+                $http.post("/admin/manage/updateactivty",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
                                 alert(response.msg);
@@ -209,17 +201,12 @@
         };
 
         var savedata=function(){
-           // $scope.formData.logoimg=$("#logimg").val();
-           // $scope.formData.province=$("#province").val();
-            //$scope.formData.city=$("#city").val();
-           // $scope.formData.address=$("#address").val();
-            //$scope.formData.latitude=$("#latitude").val();
-            //$scope.formData.longitude=$("#longitude").val();
-            //$scope.formData.is_validation=$("#is_validation").val();
-           // $scope.formData.fieldlevel=$("#fieldlevel").val();
-
-
-
+            $scope.formData.province=$("#province").val();
+            $scope.formData.city=$("#city").val();
+            $scope.formData.address=$("#address").val();
+            $scope.formData.titleimg=$("#activityimg").val();
+            $scope.formData.begindate=$("#starttime").val();
+            $scope.formData.enddate=$("#endtime").val();
             return true;
         }
     });
