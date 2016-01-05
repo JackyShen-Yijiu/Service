@@ -117,14 +117,13 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
-    //me获取Y码列表
+    //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
-        res.render('Ycode/Ycodelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/Ycodelist"));
+        res.render('Ycode/Ycodelist', adminFunc.setPageInfo(req,res,"/admin/manage/Ycodelist"));
     });
-
-    //app首页活动页
-    router.get("/manage/editActivty",function(req, res, next) {
-        res.render('school/editActivty', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editActivty"));
+    //报名记录
+    router.get("/manage/recordlist" ,function(req, res, next) {
+        res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist"));
     });
 
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
