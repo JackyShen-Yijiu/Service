@@ -1,20 +1,12 @@
-
-<div class="main" ng-controller="coachlist">
+<link type="text/css" rel="stylesheet" 	href="/css/mask.css" />
+<div class="main" ng-controller="Ycodelist">
     <div class="main-inner">
         <div class="container">
             <div class="row">
                 <div class="span12">
                     <div class="widget-header">
                         <i class="icon-th-large"></i>
-                        <h3>教练列表 </h3>
-                        <div style="float: right ; padding-right: 10px" >
-                            <div style="float: left;  padding-right: 10px">
-                                <a href="/admin/manage/editcoachinfo"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
-                            </div>
-                            <div style="float: right ; padding-right: 10px">
-                                <% include ../public/searchBox %>
-                            </div>
-                        </div>
+                        <h3>返利列表</h3>
 
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
@@ -22,9 +14,9 @@
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-                                        <th> 报名单号 </th>
-                                        <th> 报名学员</th>
-                                        <th> 报名班型</th>
+                                        <th>报名单号 </th>
+                                        <th>报名学员</th>
+                                        <th>报名班型</th>
                                         <th>收费价格</th>
                                         <th>报名驾校</th>
                                         <th>驾校返利</th>
@@ -36,26 +28,36 @@
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
-                                            <span>{{content.ziduan}}</span>
+                                            <a href="/admin/manage/editActivty?activityid={{content.activityid}}" >
+                                                <span id="orderId">{{content.danhao}}</span> </a>
                                         </td>
                                         <td >
-                                            <span>{{content.ziduan}}</span>
+                                            <span>{{content.xueyuan}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.carmodel.ziduan}}</span>
+                                            <span>{{content.banxing}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.trainfieldlinfo.ziduan}}</span>
+                                            <span>{{content.jiage}}</span>
                                         </td>
-
-
-                                        <td class="td-actions">
-                                            <a href="/admin/manage/editcoachinfo?coachid={{content.coachid}}"
-                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a href="#"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                        <td >
+                                            <span>{{content.jiaxiao}}</span>
                                         </td>
-
+                                        <td >
+                                            <span>{{content.jiaxiaofanli}}</span>
+                                        </td>
+                                       <td>
+                                           <span>{{content.xueyuanfanli}}</span>
+                                       </td>
+                                        <td>
+                                            <span>{{content.dailifenli}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.gongsishouyi}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.shijian}}</span>
+                                        </td>
 
                                     </tr>
                                 </table>
@@ -77,11 +79,56 @@
 </div>
 
 
+<!--mask-->
+<div class="mask" id="mask">
+    <div class="Ymoney-show">
+        <div class="widget-header" style="border-bottom: 1px solid #000;">
+            <i class="icon-th-large"></i>
+            <h3>Y码返利详情</h3>
+            <span class="close-icon" style="width:20px;height:20px;position: absolute;top:0px;right:30px; ">
+                <i class="icon-remove-sign"></i>
+            </span>
+        </div> <!-- /widget-header -->
+        <table class="table table-hover">
+            <tr style="border-bottom: 1px solid #ccc;">
+                <th>ID </th>
+                <th>姓名</th>
+                <th>身份</th>
+                <th>Y码</th>
+                <th>分利</th>
+            </tr>
+            <tr class="datalist" ng-repeat="content in data">
+
+                <td >
+                        <span>{{content.ID}}</span> </a>
+                </td>
+                <td >
+                    <span>{{content.name}}</span>
+                </td>
+                <td >
+                    <span>{{content.identity}}</span>
+                </td>
+                <td >
+                    <span>{{content.Ycode}}</span>
+                </td>
+                <td >
+                    <span>{{content.money}}</span>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+
+
+</div><!--mask end-->
+
+
 <script>
-    ybxcApp.controller("coachlist",function($scope,$http){
+    ybxcApp.controller("Ycodelist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getactivtylist?");
 
 
     });
@@ -89,3 +136,4 @@
 
 
 </script>
+<script src="/js/Ycode-mask.js"></script>
