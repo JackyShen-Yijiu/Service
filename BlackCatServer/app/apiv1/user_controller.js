@@ -817,7 +817,7 @@ exports.receivemycupon=function(req,res){
         receivetype:req.query.receivetype,  // 0 领取优惠券 1 领取钱
         cuponid:req.query.cuponidid,
     };
-    if (queryinfo.userid===undefined||queryinfo.receivetype===undefined||receivetype.cuponid===undefined) {
+    if (queryinfo.userid===undefined||queryinfo.receivetype===undefined||queryinfo.cuponid===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数错误",""));
     };
