@@ -32,6 +32,7 @@ map.addEventListener("click", function(e){
         $("#longitude").val(pt.lng);
         $("#latitude").val(pt.lat);
         $("#address").val(addComp.province + addComp.city + addComp.district  + addComp.street  + addComp.streetNumber);
+        $("#address").change();
     });
 });
 var setPoint=function(log,lat){

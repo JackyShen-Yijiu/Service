@@ -718,7 +718,6 @@ exports.searchCoach=function(searchinfo,callback){
             is_lock:false,
             is_validation:true,
         };
-        // searchcondition"carmodel.;
     }
     if (searchinfo.cityname!=""){
         searchcondition.city=new RegExp(searchinfo.cityname);
