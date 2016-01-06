@@ -31,7 +31,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
     // 0 默认 1距离 2 评分  3 价格
     if(searchinfo.ordertype==2){
         ordercondition.schoollevel=-1;
-    }else if (searchinfo.ordertype==2){
+    }else if (searchinfo.ordertype==3){
         ordercondition.minprice=1;
     }
     //console.log(searchcondition);

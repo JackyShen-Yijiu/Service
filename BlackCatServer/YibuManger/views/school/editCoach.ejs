@@ -127,7 +127,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="Seniority">教龄</label>
                                                 <div class="controls">
-                                                    <input  type="number"   class="span1" id="Seniority" value="0" >
+                                                    <input  type="number"   class="span1" ng-model="formData.Seniority"   id="Seniority" value="0" >
                                                     &nbsp;&nbsp;通过率&nbsp;
                                                     <input  type="number" ng-model="formData.passrate"   class="span1" id="passrate" value="90" >%
                                                     &nbsp;&nbsp;学员数&nbsp;
@@ -200,15 +200,15 @@
                                                 <div class="controls">
                                                     <select class="span2" id="begintimeint"  >
                                                         <option value="5">5:00</option>
-                                                        <option value="6">6:00</option>
+                                                        <option value="6" >6:00</option>
                                                         <option value="7">7:00</option>
-                                                        <option value="8">8:00</option>
+                                                        <option value="8" selected>8:00</option>
                                                         <option value="9">9:00</option>
                                                     </select>
                                                     &nbsp;&nbsp;到&nbsp;
                                                     <select class="span2" id="endtimeint"  >
                                                         <option value="17">17:00</option>
-                                                        <option value="18">18:00</option>
+                                                        <option value="18"selected>18:00</option>
                                                         <option value="19">19:00</option>
                                                         <option value="20">20:00</option>
                                                         <option value="21">21:00</option>
@@ -268,8 +268,11 @@
                                         console.log(response.data);
                                         $("#trainfield").val($scope.formData.trainfield);
                                         $("#starlevel").val($scope.formData.starlevel);
-                                        $("#Seniority").val(parseInt($scope.formData.Seniority))
+                                        $("#Seniority").val(parseInt($scope.formData.Seniority));
+                                        $("#validationstate").val(parseInt($scope.formData.validationstate))
                                         $("#logimgimg").attr("src",$scope.formData.logoimg);
+                                        $("#begintimeint").val($scope.formData.begintimeint);
+                                        $("#endtimeint").val($scope.formData.endtimeint);
                                         $("input[name='week']:checkbox").each(function(){
                                             var index=$scope.formData.workweek.indexOf(parseInt($(this).val()));
                                             if (index>-1){

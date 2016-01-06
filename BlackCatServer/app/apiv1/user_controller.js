@@ -183,6 +183,27 @@ exports.postSignUp=function(req,res){
 
 };
 
+// 搜索教练
+exports.searchCoach=function(req,res){
+    var  searchinfo= {
+        latitude : parseFloat(req.query.latitude),
+        longitude : parseFloat(req.query.longitude),
+        cityname : req.query.cityname?req.query.cityname:"",
+        licensetype : req.query.licensetype?req.query.licensetype:0,
+        ordertype : req.query.ordertype?parseInt(req.query.ordertype):0,
+        index: req.query.index ? parseInt(req.query.index) : 1,
+        count : req.query.count ? parseInt(req.query.count) : 1,
+        coachname:req.query.coachname?req.query.coachname:"",
+    };
+    userserver.searchCoach(searchinfo,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
 //附近的教练
 exports.getNearbyCoach=function(req,res){
     //console.log(req);

@@ -117,14 +117,21 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
-    //me获取Y码列表
-    router.get("/manage/Ycodelist" ,function(req, res, next) {
-        res.render('Ycode/Ycodelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/Ycodelist"));
+    //获取班型列表
+    router.get("/manage/classtypelist" ,function(req, res, next) {
+        res.render('school/classtypelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/classtypelist"));
     });
-
-    //app首页活动页
-    router.get("/manage/editActivty",function(req, res, next) {
-        res.render('school/editActivty', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editActivty"));
+    //编辑班型信息
+    router.get("/manage/editclasstype" ,function(req, res, next) {
+        res.render('school/editClassType', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editclasstype"));
+    });
+    //获取Y码列表
+    router.get("/manage/Ycodelist" ,function(req, res, next) {
+        res.render('Ycode/Ycodelist', adminFunc.setPageInfo(req,res,"/admin/manage/Ycodelist"));
+    });
+    //报名记录
+    router.get("/manage/recordlist" ,function(req, res, next) {
+        res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist"));
     });
 
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
@@ -172,6 +179,7 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/savetrainingfield",adminserver.saveTrainingField);
     router.post("/manage/updatetrainingfield",adminserver.updateTrainingField);
     //班型操作
+    router.get("/manage/getclasstypelist",adminserver.classtypelist);
     router.post("/manage/saveclasstype",adminserver.saveClassType);
 
     // 活动管理

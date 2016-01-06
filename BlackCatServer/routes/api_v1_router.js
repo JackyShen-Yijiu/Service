@@ -146,7 +146,8 @@ v1.get("/getschoolbyname",driveSchoolController.getSchoolByName);
 v1.get("/searchschool",driveSchoolController.searchSchool);
 //用户获取开通个城市列表
 v1.get("/getopencity",appsystemController.getOpenCitylist);
-
+// 按条件查询教练
+v1.get("/searchcoach",userController.searchCoach);
 
 
 //==============================预约课程(学生端)=========================================
