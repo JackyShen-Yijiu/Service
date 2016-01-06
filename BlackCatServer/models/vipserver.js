@@ -1,7 +1,7 @@
 /**
  * Created by li on 2015/11/3.
  */
-    // vip ·þÎñÁÐ±í
+    // vip ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 var mongoose = require('mongoose');
 var seqlist=require("./idautoinc");
 var Schema = mongoose.Schema;
@@ -9,7 +9,6 @@ var Schema = mongoose.Schema;
 var  VipServerSchema = new Schema({
     name:String,
     color:String
-
 });
 
 VipServerSchema.plugin(seqlist.plugin, {

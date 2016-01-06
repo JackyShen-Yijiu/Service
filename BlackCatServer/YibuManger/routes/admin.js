@@ -123,7 +123,18 @@ var  returnAdminRouter=function(io) {
     });
     //编辑班型信息
     router.get("/manage/editclasstype" ,function(req, res, next) {
-        res.render('school/editClassType', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editclasstype"));
+        basedatafun.getvipserver(function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.name
+                };
+                return info;
+            });
+
+            res.render('school/editClassType', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editclasstype",filedlist));
+        });
+
     });
     //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
@@ -180,6 +191,7 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/updatetrainingfield",adminserver.updateTrainingField);
     //班型操作
     router.get("/manage/getclasstypelist",adminserver.classtypelist);
+    router.get("/manage/getclasstypebyid",adminserver.getclasstypebyid);
     router.post("/manage/saveclasstype",adminserver.saveClassType);
 
     // 活动管理

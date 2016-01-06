@@ -8,6 +8,7 @@ var commondata = require('../../Config/commondata.js');
 var schoolModel=mongodb.DriveSchoolModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
+var vipserver=mongodb.VipServerModel;
  var userCountModel=mongodb.UserCountModel;
 var cache=require("../../Common/cache");
 
@@ -66,6 +67,19 @@ var basedataFunc = {
             }
         }
         return undefined;
+    },
+    getvipserver:function(callback){
+        cache.get("getvipserverlist",function(err,data){
+            if(!data){
+                vipserver.find(function(err,fileddata){
+                    cache.set("getvipserverlist",fileddata,5*60,function(err){});
+                    return callback(null,fileddata);
+                })
+            }
+            if(data){
+                return callback(null,data);
+            }
+        })
     }
 
 }
