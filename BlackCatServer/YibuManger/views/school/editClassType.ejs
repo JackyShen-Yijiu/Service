@@ -1,6 +1,6 @@
 <link type="text/css" rel="stylesheet" 	href="/css/powerFloat.css" />
 <link type="text/css" rel="stylesheet" 	href="/css/xmenu.css" />
-<div class="main" ng-controller="addSchool">
+<div class="main" ng-controller="editclasstype">
     <div class="main-inner">
 
         <div class="container">
@@ -24,44 +24,124 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="name" >班级名称</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6 " name="name"    id="name"  placeholder="驾校名称最多三十个字"
-                                                           ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                    <input type="text" class="span6 " name="classname"    id="classname"  placeholder="名称最多三十个字"
+                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.classname" required>
                                                     <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                         role="alert">5-30个非特殊字符</div>
+                                                         role="alert">2-30个非特殊字符</div>
                                                 </div> <!-- /controls -->
                                             </div>
                                             <div class="control-group">
-                                                <label class="control-label" for="coachcount">价格</label>
+                                                <label class="control-label" >开课时间</label>
                                                 <div class="controls">
-                                                    <input  type="number" ng-model="formData.coachcount" class="span2" id="coachcount" value="100" >
+                                                    <label class="control-label" for="starttime">开始时间:</label>
+                                                    <input type="text" class="span4  laydate-icon" id="begindate" onclick="laydate()">
+                                                    <br>
+                                                    <br>
+                                                    <label class="control-label" for="endtime">结束时间:</label>
+                                                    <input type="text" class="span4  laydate-icon" id="enddate" onclick="laydate()">
                                                 </div>
-                                            </div> <!-- /control-group -->
+                                            </div> <!-- /three end -->
                                             <div class="control-group">
-                                                <label class="control-label">训练场</label>
+                                                <label class="control-label" for="carmodel">驾照类型</label>
                                                 <div class="controls">
-                                                    <label class="checkbox inline">
-                                                        <input type="checkbox" value="1"> 第一训练场
-                                                    </label>
-
-                                                    <label class="checkbox inline">
-                                                        <input type="checkbox" value="2"> 第二训练场
-                                                    </label>
-                                                </div>		<!-- /controls -->
+                                                    <select class="span4" id="carmodel"    >
+                                                        <option value="1">C1</option>
+                                                        <option value="2">C2</option>
+                                                        <option value="3">O</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
 
                                             <div class="control-group">
-                                                <label class="control-label" for="valueaddedservice">增值服务</label>
+                                                <label class="control-label" for="price">价格</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="valueaddedservice" rows="3"  ng-model="formData.valueaddedservice" placeholder="增值服务"></textarea>
+                                                    <input name="price"  type="number" ng-model="formData.price" class="span2" id="price" value="100"  required>
+
+                                                </div>
+                                                <div class="alert alert-danger span2"  ng-show="myForm.price.$error.required"
+                                                     role="alert">价格必须</div>
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="onsaleprice">优惠价格</label>
+                                                <div class="controls">
+                                                    <input   name="onsaleprice"  type="number" ng-model="formData.onsaleprice" class="span2" id="onsaleprice" value="100"  required>
+                                                </div>
+                                                <div class="alert alert-danger span2"  ng-show="myForm.onsaleprice.$error.required"
+                                                     role="alert">优惠价格必须</div>
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="originalprice">原始价格</label>
+                                                <div class="controls">
+                                                    <input   name="originalprice" type="number" ng-model="formData.originalprice" class="span2" id="originalprice" value="100"  required>
+
+                                                </div>
+                                                <div class="alert alert-danger span2"  ng-show="myForm.originalprice.$error.required"
+                                                     role="alert">原始价格必须</div>
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="systemretains">系统预留</label>
+                                                <div class="controls">
+                                                    <input name="systemretains"  type="number" ng-model="formData.systemretains" class="span2" id="systemretains" value="100"  required>
+
+                                                </div>
+                                                <div class="alert alert-danger span2"  ng-show="myForm.systemretains.$error.required"
+                                                     role="alert">价格必须</div>
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="feedbackuser">返给用户</label>
+                                                <div class="controls">
+                                                    <input name="feedbackuser"  type="number" ng-model="formData.feedbackuser" class="span2" id="feedbackuser" value="100"  required>
+
+                                                </div>
+                                                <div class="alert alert-danger span2"  ng-show="myForm.feedbackuser.$error.required"
+                                                     role="alert">价格必须</div>
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="rewardmoney">返给代理</label>
+                                                <div class="controls">
+                                                    <input name="rewardmoney"  type="number" ng-model="formData.rewardmoney" class="span2" id="rewardmoney" value="100"  required>
+
+                                                </div>
+                                                <div class="alert alert-danger span2"  ng-show="myForm.rewardmoney.$error.required"
+                                                     role="alert">价格必须</div>
+                                            </div> <!-- /control-group -->
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="valueaddedservice">车型</label>
+                                                <div class="controls">
+                                                    <textarea   class="span4" id="cartype" rows="3"  ng-model="formData.cartype" placeholder="车型信息"></textarea>
                                                 </div>
                                             </div>
                                             <div class="control-group">
-                                                <label class="control-label" for="introduction">驾校简介</label>
+                                                <label class="control-label" for="classdesc">授课日程</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="introduction" rows="3" ng-model="formData.introduction" placeholder="驾校简介"></textarea>
+                                                    <textarea   class="span4" id="classchedule" rows="3" ng-model="formData.classchedule"
+                                                                placeholder="授课日程 平日/周末"></textarea>
                                                 </div>
                                             </div>
 
+                                            <div class="control-group">
+                                                <label class="control-label" for="classdesc">简介</label>
+                                                <div class="controls">
+                                                    <textarea   class="span4" id="classdesc" rows="3" ng-model="formData.classdesc" placeholder="驾校简介"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="vipserverlist">驾照类型</label>
+                                                <div class="controls">
+                                                    <input type="hidden" value="" id="vipserverlist"   />
+                                                    <div class="topnav">
+                                                        <a id="showviplist" href="javascript:void(0);" class="as">
+                                                            <span></span>
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                             <br />
                                             <div class="form-actions">
                                                 <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
@@ -95,12 +175,9 @@
             <dt class="open">所有类型</dt>
             <dd>
                 <ul id="licensetypelist">
-                    <!--<li ng-repeat="x in licensetypelist" rel="{{ x.modelsid }}">-->
-                    <!--{{ x.code }}-->
-                    <!--</li>-->
-                    <li rel="1">C1</li>
-                    <li rel="2">C2</li>
-                    <li rel="3">O</li>
+                    <% extradata.forEach(function(r,index){ %>
+                    <li rel="<%=r.id%>"><%=r.name%></li>
+                    <%})%>
 
                 </ul>
             </dd>
@@ -116,82 +193,41 @@
 <script type="text/javascript" src="/js/jquery-xmenu.js"></script>
 <script type="application/javascript">
     $(document).ready(function() {
-        $("#selectlicensetype").xMenu({
+        $("#showviplist").xMenu({
             width :600,
             eventType: "click", //事件类型 支持focus click hover
             dropmenu:"#m2",//弹出层
-            hiddenID : "licensetype"//隐藏域ID
+            hiddenID : "vipserverlist"//隐藏域ID
         });
     })
 </script>
 <script type="application/javascript">
-    ybxcApp.controller("addSchool",function($scope,$http){
-        // initlicensetype($scope,$http);
-        $scope.formData = {};
-        $scope.showlicensetype="";
-        var schoolid=GetQueryString("schoolid");
-        $http.get("/admin/manage/carmodel")
-                .success(function(resdata){
-                    $scope.licensetypelist=resdata.data;
+    ybxcApp.controller("editclasstype",function($scope,$http){
 
-                    if(schoolid !=null && schoolid.toString().length>1)
+        $scope.formData = {};
+
+        var classtypeid=GetQueryString("classtypeid");
+        if(classtypeid !=null && classtypeid.toString().length>1)
                     {
-                        $http.get("getschoolbyid?schoolid="+schoolid)
+                        var index = layer.load(2);
+                        $http.get("getclasstypebyid?classtypeid="+classtypeid)
                                 .success(function(response){
+                                    layer.close(index);
                                     if (response.type==0){
                                         alert(response.msg);
-                                    }else{
+                                    }
+                                    else{
                                         $scope.formData = response.data;
-                                        console.log(response.data);
-                                        $("#logimgimg").attr("src",$scope.formData.logoimg)
-                                        setPoint($scope.formData.longitude,$scope.formData.latitude);
-                                        $("#latitude").val($scope.formData.latitude);
-                                        $("#longitude").val($scope.formData.longitude);
-                                        $("#licensetype").val($scope.formData.licensetype.join(","));
-                                        $("#registertime").val($scope.formData.registertime);
-                                        $("#privilegelevel").val($scope.formData.privilegelevel);
-                                        $("#is_validation").val($scope.formData.is_validation);
-                                        $("#linkman1").val($scope.formData.responsiblelist[0]);
-                                        $("#linkman2").val($scope.formData.responsiblelist[1]);
-                                        $("#linkman3").val($scope.formData.responsiblelist[2]);
-                                        $("#linkman4").val($scope.formData.responsiblelist[3]);
-                                        $("#linktele1").val($scope.formData.phonelist[0]);
-                                        $("#linktele2").val($scope.formData.phonelist[1]);
-                                        $("#linktele3").val($scope.formData.phonelist[3]);
-                                        $("#linktele4").val($scope.formData.phonelist[4]);
+                                        console.log($scope.formData);
                                         var  licensetype="";
-                                        console.log($scope.formData.licensetype);
-                                        for(i=0;i<$scope.formData.licensetype.length;i++){
-                                            for(j=0;j<$scope.licensetypelist.length;j++){
-                                                if($scope.formData.licensetype[i]==$scope.licensetypelist[j].modelsid)
-                                                {
-                                                    licensetype=licensetype+" "+$scope.licensetypelist[j].code;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        $scope.showlicensetype=licensetype==""?"请选择驾照类型":licensetype;
                                     }
 
 
                                 })
                     }else{
-                        $scope.formData.registertime=new Date();
-                        $scope.formData.schoollevel="5";
-                        $scope.formData.is_validation=1;
-                        $scope.formData.privilegelevel=3;
-                        $scope.formData.studentcount=0;
-                        $scope.formData.passingrate=90;
-                        $scope.formData.examhallcount=1;
-                        $scope.formData.coachcount=1;
-                        $scope.formData.carcount=1
-                        $scope.formData.workbegintime="8";
-                        $scope.formData.workendtime="19";
-                        $("#registertime").val($scope.formData.registertime);
-                        $("#privilegelevel").val($scope.formData.privilegelevel);
-                        $("#is_validation").val($scope.formData.is_validation);
+
                     }
-                })
+
         $scope.processForm = function(isValid){
             console.log(isValid);
             if (!isValid){
@@ -203,14 +239,13 @@
                 if(!savedata()){
                     return;
                 }
-                console.log($scope.formData.licensetype);
-                $http.post("/admin/manage/updateschool",$scope.formData)
+                $http.post("/admin/manage/saveclasstype",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
                                 alert(response.msg);
                             }else{
                                 alert("修改成功");
-                                window.location.href="/admin/manage/schoollsit";
+                                window.location.href="/admin/manage/classtypelist";
                             }
                         })
             }else {
@@ -218,13 +253,13 @@
                     return;
                 }
                 console.log($scope.formData.licensetype);
-                $http.post("/admin/manage/saveschool",$scope.formData)
+                $http.post("/admin/manage/saveclasstype",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
                                 alert(response.msg);
                             }else{
                                 alert("添加成功");
-                                window.location.href="/admin/manage/schoollsit";
+                                window.location.href="/admin/manage/classtypelist";
                             }
                         })
             }
@@ -232,34 +267,6 @@
         };
 
         var savedata=function(){
-            $scope.formData.logoimg=$("#logimg").val();
-            $scope.formData.province=$("#province").val();
-            $scope.formData.city=$("#city").val();
-            $scope.formData.address=$("#address").val();
-            $scope.formData.latitude=$("#latitude").val();
-            $scope.formData.longitude=$("#longitude").val();
-            $scope.formData.registertime=$("#registertime").val();
-            $scope.formData.is_validation=$("#is_validation").val();
-            $scope.formData.privilegelevel=$("#privilegelevel").val();
-            if($("#licensetype").val()==""){
-                alert("驾照类型不为空");
-                return false;
-            }
-            $scope.formData.licensetype=$("#licensetype").val().split(",");
-            var linkman=[];
-            var linktele=[];
-            alert($("#linkman1").val());
-            linkman.push($("#linkman1").val())
-            linkman.push($("#linkman2").val())
-            linkman.push($("#linkman3").val())
-            linkman.push($("#linkman4").val())
-            linktele.push($("#linktele1").val())
-            linktele.push($("#linktele2").val())
-            linktele.push($("#linktele3").val())
-            linktele.push($("#linktele4").val())
-            $scope.formData.responsiblelist=linkman;
-            $scope.formData.phonelist=linktele;
-            console.log(linkman);
             return true;
         }
     });

@@ -15,7 +15,7 @@ var ClassTypeSchema=new Schema({
     is_vip:{type:Boolean,default:false},  // 该课程是否是VIP课程
     carmodel:{modelsid:Number,name:String,code:String},  // 该 班级所有车型（驾照类型）（手动自动）
     cartype:String, //车品牌  富康、奔驰等
-    applycount:Number,  // 该班级报名的数量
+    applycount:{type:Number,default:0},  // 该班级报名的数量
     classdesc:{type:String,default:""},  // 课程描述
     vipserverlist:[{type: Schema.Types.ObjectId, ref: 'vipserver'}], // 该课程提供的vip 服务列表{接送、包过，1对1}
     price:Number, // 价格

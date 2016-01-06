@@ -210,11 +210,61 @@ exports.getStatitic=function(req,res){
              address:req.body.address?req.body.address:"",
          }
          return activtyinfo;
+     },
+     getClasstype:function(req){
+         classtype={
+             schoolid:req.body.schoolid,
+             classname:req.body.classname?req.body.classname:"",  // 班级名称
+             begindate:req.body.begindate?req.body.begindate:new Date(), // 班级开始时间
+             enddate:req.body.enddate?req.body.enddate:new Date(),  // 班级结束时间
+             is_using:req.body.is_using?req.body.is_using:false,  // 该课程是否正在使用
+             is_vip:false,  // 该课程是否是VIP课程
+             //carmodel:{modelsid:Number,name:String,code:String},  // 该 班级所有车型（驾照类型）（手动自动）
+             cartype:req.body.cartype?req.body.cartype:"", //车品牌  富康、奔驰等
+             classdesc:req.body.classdesc?req.body.classdesc:"",  // 课程描述
+             vipserverlist:req.body.vipserverlist?req.body.vipserverlist:[], // 该课程提供的vip 服务列表{接送、包过，1对1}
+             price:req.body.price?req.body.price:"", // 价格
+             onsaleprice:req.body.onsaleprice?req.body.onsaleprice:0, // 优化价格,
+             originalprice:req.body.originalprice?req.body.originalprice:0, // 原价
+             systemretains:req.body.systemretains?req.body.systemretains:0,// 系统预留
+             feedbackuser:req.body.feedbackuser?req.body.feedbackuser:0,// 返给用户
+             rewardmoney:req.body.rewardmoney?req.body.rewardmoney:0,// 系统奖励
+             classchedule:req.body.classchedule?req.body.classchedule:"", // 授课日程   周日/平日/
+         }
+         classtype.carmodel=basedatafun.getcarmodel(classtype.carmodel);
+         classtype.is_vip=classtype.vipserverlist.length>0?true:false;
+         return classtype;
      }
-}
+ }
+
 
 //====================================b班级管理
 exports.saveClassType=function(req,res){
+    classinfo=defaultFun.getClasstype(req);
+    var classtypeid= req.body.classtypeid;
+    if (classtypeid===undefined||classtypeid==""){
+        var classtype= new  classtypemodel(classinfo);
+        classtype.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存班型："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+
+
+    }
+    else {
+        var conditions = {_id : classtypeid};
+        var update = {$set : classinfo};
+        classtypemodel.update(conditions, update,function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存班型："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
 
 }
 exports.classtypelist=function(req,res){
@@ -255,6 +305,40 @@ exports.classtypelist=function(req,res){
 
         })
 
+};
+exports.getclasstypebyid=function(req,res){
+    var classtypeid=req.query.classtypeid;
+    if (classtypeid===undefined||classtypeid==""){
+        res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    classtypemodel.findById(new mongodb.ObjectId(classtypeid),function(err,classdata){
+        if(err){
+            return  res.json(new BaseReturnInfo(0, "查询出错:"+err, ""));
+        }
+        if(!classdata){
+            return   res.json(new BaseReturnInfo(0, "没有查询到教练", ""));
+        }
+        var classtypeinfo={
+            classtypeid:classdata._id,
+            schoolid:classdata.schoolid,
+            classname:classdata.classname,  // 班级名称
+            begindate:classdata.begindate, // 班级开始时间
+            enddate:classdata.enddate,  // 班级结束时间
+            is_using:classdata.is_using?req.body.is_using:false,  // 该课程是否正在使用
+            carmodel:classdata.carmodel.modelsid,  // 该 班级所有车型（驾照类型）（手动自动）
+            cartype:classdata.cartype, //车品牌  富康、奔驰等
+            classdesc:classdata.classdesc,  // 课程描述
+            vipserverlist:classdata.vipserverlist, // 该课程提供的vip 服务列表{接送、包过，1对1}
+            price:classdata.price, // 价格
+            onsaleprice:classdata.onsaleprice, // 优化价格,
+            originalprice:classdata.originalprice, // 原价
+            systemretains:classdata.systemretains,// 系统预留
+            feedbackuser:classdata.feedbackuser,// 返给用户
+            rewardmoney:classdata.rewardmoney,// 系统奖励
+            classchedule:classdata.classchedule, // 授课日程   周日/平日/
+        };
+        return  res.json(new BaseReturnInfo(1, "", classtypeinfo));
+    })
 }
 ///====================================教练管理
 exports.getCoachlist=function(req,res){
