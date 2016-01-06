@@ -22,19 +22,20 @@
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-
                                         <th> 名称 </th>
                                         <th> 开始时间</th>
                                         <th> 结束时间</th>
-                                        <th> 驾照 </th>
-                                        <th> 活动城市</th>
+                                        <th> 驾照类型 </th>
+                                        <th> 报名数量</th>
+                                        <th> 价格</th>
+                                        <th> 上课时间</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
-                                            <a href="/admin/manage/editActivty?activityid={{content.activityid}}" >
-                                                <span>{{content.name}}</span> </a>
+                                            <a href="/admin/manage/editclasstype?classtypeid={{content.classtypeid}}" >
+                                                <span>{{content.classname}}</span> </a>
                                         </td>
                                         <td >
                                             <span>{{content.begindate}}</span>
@@ -43,16 +44,20 @@
                                             <span>{{content.enddate}}</span>
                                         </td>
                                         <td >
-                                            <a href="{{content.contenturl}}" target="_blank" >
-                                                <span>{{content.contenturl}}</span></a>
+                                                <span>{{content.carmodel.name}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.province}}/{{content.city}}</span>
+                                            <span>{{content.applycount}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.onsaleprice}}/{{content.price}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.classchedule}}</span>
                                         </td>
 
-
                                         <td class="td-actions">
-                                            <a href="/admin/manage/editActivty?activityid={{content.activityid}}"
+                                            <a href="/admin/manage/editclasstype?classtypeid={{content.classtypeid}}"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <a href="#"
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
@@ -83,9 +88,7 @@
     ybxcApp.controller("classtypelist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-       // initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getactivtylist?");
-
-
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getclasstypelist?schoolid=<%=schoolid%>");
     });
 
 

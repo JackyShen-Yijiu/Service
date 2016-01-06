@@ -13,6 +13,7 @@ var activtyModel= mongodb.ActivityModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
+var classtypemodel=mongodb.ClassTypeModel;
 var cache=require("../../Common/cache");
 require('date-utils');
 var _ = require("underscore");
@@ -214,6 +215,45 @@ exports.getStatitic=function(req,res){
 
 //====================================b班级管理
 exports.saveClassType=function(req,res){
+
+}
+exports.classtypelist=function(req,res){
+    var schoolid =req.query.schoolid;
+    if (schoolid===undefined||schoolid==""){
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    classtypemodel.find({schoolid:new mongodb.ObjectId(schoolid)})
+        //.select("_id phone  driveschool fieldname address responsible")
+        .exec(function(err,datalist){
+            process.nextTick(function(){
+                var filedlist=[];
+                datalist.forEach(function(r,index){
+                    onedata={
+                        classtypeid: r._id,
+                        classname: r.classname,
+                        begindate: r.begindate,
+                        enddate:r.enddate,
+                        carmodel: r.carmodel,
+                        applycount: r.applycount,
+                        price: r.price,
+                        classchedule: r.classchedule,
+                        onsaleprice: r.onsaleprice
+                    }
+                    filedlist.push(onedata);
+                });
+                returninfo = {
+                    pageInfo:{
+                        totalItems: filedlist.length,
+                        currentPage:1,
+                        limit:filedlist.length,
+                        //pagecount: Math.floor(filedlist.length/limit )+1
+                    },
+                    datalist: filedlist
+                }
+                return res.json(new BaseReturnInfo(1, "",returninfo) );
+            })
+
+        })
 
 }
 ///====================================教练管理

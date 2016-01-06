@@ -117,6 +117,14 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
+    //获取班型列表
+    router.get("/manage/classtypelist" ,function(req, res, next) {
+        res.render('school/classtypelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/classtypelist"));
+    });
+    //编辑班型信息
+    router.get("/manage/editclasstype" ,function(req, res, next) {
+        res.render('school/editClassType', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editclasstype"));
+    });
     //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
         res.render('Ycode/Ycodelist', adminFunc.setPageInfo(req,res,"/admin/manage/Ycodelist"));
@@ -171,6 +179,7 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/savetrainingfield",adminserver.saveTrainingField);
     router.post("/manage/updatetrainingfield",adminserver.updateTrainingField);
     //班型操作
+    router.get("/manage/getclasstypelist",adminserver.classtypelist);
     router.post("/manage/saveclasstype",adminserver.saveClassType);
 
     // 活动管理

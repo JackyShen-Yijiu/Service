@@ -33,6 +33,7 @@ var IncomeDetails= mongodb.IncomeDetails;
 var SystemIncome=mongodb.SystemIncome;
 var coupon=mongodb.Coupon;
 require('date-utils');
+var _ = require("underscore");
 
 var timeout = 60 * 5;
 
@@ -704,7 +705,81 @@ exports.updatePassword=function(pwdinfo,callback){
             });
         });
     }
-}
+};
+// 按条件查找教练
+exports.searchCoach=function(searchinfo,callback){
+    var searchcondition= {
+        is_lock:false,
+        is_validation:true,
+    };
+    if (searchinfo.licensetype!=""&&parseInt(searchinfo.licensetype)!=0){
+        searchcondition={
+            "carmodel.modelsid":parseInt(searchinfo.licensetype),
+            is_lock:false,
+            is_validation:true,
+        };
+        // searchcondition"carmodel.;
+    }
+    if (searchinfo.cityname!=""){
+        searchcondition.city=new RegExp(searchinfo.cityname);
+    }else{
+        searchcondition.loc={$nearSphere:{$geometry:{type:'Point',
+            coordinates:[searchinfo.longitude, searchinfo.latitude]}, $maxDistance: 100000}}
+    }
+    if (searchinfo.coachname!=""){
+        searchcondition.name=new RegExp(searchinfo.coachname);
+    }
+
+    var ordercondition={};
+    // 0 默认 1距离 2 评分  3 价格
+    if(searchinfo.ordertype==2){
+        ordercondition.starlevel=-1;
+    }
+    console.log(searchcondition);
+    coachmode.find(searchcondition)
+        .select("")
+        .sort(ordercondition)
+        .skip((searchinfo.index-1)*10)
+        .limit(searchinfo.count)
+        .exec(function(err,driveschool){
+            if (err ) {
+                console.log(err);
+                callback("查找教练出错："+err);
+            } else {
+                process.nextTick(function(){
+                    driveschoollist=[];
+                    driveschool.forEach(function(r, idx){
+                        var oneschool= {
+                            coachid : r._id,
+                            distance : geolib.getDistance(
+                                {latitude: searchinfo.latitude, longitude: searchinfo.longitude},
+                                {latitude: r.latitude, longitude: r.longitude},
+                                10
+                            ),
+                            name: r.name,
+                            driveschoolinfo: r.driveschoolinfo,
+                            headportrait:r.headportrait,
+                            starlevel: r.starlevel?r.starlevel:4,
+                            passrate: r.passrate?r.passrate:99,
+                            Seniority: r.Seniority?r.Seniority:1,
+                            is_shuttle: r.is_shuttle,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            subject: r.subject
+                        }
+                        driveschoollist.push(oneschool);
+                        //  r.restaurantId = r._id;
+                        // delete(r._id);
+                    });
+                    if (searchinfo.ordertype==0||searchinfo.ordertype==1)
+                    {
+                        driveschoollist=  _.sortBy(driveschoollist,"distance")
+                    }
+                    callback(null,driveschoollist);
+                });
+            }
+        })
+};
 // 获取附近的教练
 exports.getNearCoach=function(latitude, longitude, radius,callback){
     coachmode.getNearCoach(latitude, longitude, radius ,function(err ,coachlist){
