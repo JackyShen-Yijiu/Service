@@ -144,8 +144,8 @@ exports.getStatitic=function(req,res){
              is_lock:false,
              validationstate:req.body.validationstate,
              driveschool:req.body.driveschool,
-             Seniority:req.body.Seniority,
-             passrate:req.body.passrate,
+             Seniority:req.body.Seniority?req.body.Seniority:1,
+             passrate:req.body.passrate?req.body.passrate:99,
              studentcount:req.body.studentcount,
              workweek:req.body.workweek,
              begintimeint:req.body.begintimeint,
@@ -231,8 +231,9 @@ exports.getStatitic=function(req,res){
              rewardmoney:req.body.rewardmoney?req.body.rewardmoney:0,// 系统奖励
              classchedule:req.body.classchedule?req.body.classchedule:"", // 授课日程   周日/平日/
          }
-         classtype.carmodel=basedatafun.getcarmodel(classtype.carmodel);
+         classtype.carmodel=basedatafun.getcarmodel(req.body.carmodel?req.body.carmodel:0);
          classtype.is_vip=classtype.vipserverlist.length>0?true:false;
+         //console.log(classtype);
          return classtype;
      }
  }
@@ -712,6 +713,20 @@ exports.saveSchoolInfo=function(req,res){
         if(err){
             return res.json(new BaseReturnInfo(0, "保存驾校信息出错："+err, "") );
         }else{
+            var temptraining= trainingfiledModel();
+            temptraining.fieldname=data.name+"本部练车场";
+            temptraining.fieldlevel=data.schoollevel;
+            temptraining.is_validation=true;
+            temptraining.latitude=data.latitude;
+            temptraining.longitude=data.longitude;
+            temptraining.loc=data.loc;
+            temptraining.province=data.province;
+            temptraining.city=data.city;
+            temptraining.county=data.county;
+            temptraining.address=data.address;
+            temptraining.fielddesc="本部练车场";
+            temptraining.driveschool=data._id;
+            temptraining.save(function(err,data){});
             return res.json(new BaseReturnInfo(1, "", "sucess") );
         }
     })

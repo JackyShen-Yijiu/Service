@@ -219,7 +219,9 @@
                                     else{
                                         $scope.formData = response.data;
                                         console.log($scope.formData);
-                                        var  licensetype="";
+                                      $("#begindate").val($scope.formData.begindate);
+                                        $("#enddate").val($scope.formData.enddate);
+                                        $("#carmodel").val($scope.formData.carmodel);
                                     }
 
 
@@ -239,6 +241,7 @@
                 if(!savedata()){
                     return;
                 }
+                console.log($scope.formData);
                 $http.post("/admin/manage/saveclasstype",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
@@ -252,7 +255,6 @@
                 if(!savedata()){
                     return;
                 }
-                console.log($scope.formData.licensetype);
                 $http.post("/admin/manage/saveclasstype",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
@@ -267,6 +269,10 @@
         };
 
         var savedata=function(){
+            $scope.formData.schoolid="<%=schoolid%>";
+            $scope.formData.begindate=$("#begindate").val();
+            $scope.formData.enddate=$("#enddate").val();
+            $scope.formData.carmodel=$("#carmodel").val();
             return true;
         }
     });
