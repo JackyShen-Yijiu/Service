@@ -14,6 +14,7 @@ var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
 var classtypemodel=mongodb.ClassTypeModel;
+var usermodel=mongodb.UserModel;
 var cache=require("../../Common/cache");
 require('date-utils');
 var _ = require("underscore");
@@ -325,7 +326,7 @@ exports.getclasstypebyid=function(req,res){
             classname:classdata.classname,  // 班级名称
             begindate:classdata.begindate, // 班级开始时间
             enddate:classdata.enddate,  // 班级结束时间
-            is_using:classdata.is_using?req.body.is_using:false,  // 该课程是否正在使用
+            is_using:classdata.is_using,  // 该课程是否正在使用
             carmodel:classdata.carmodel.modelsid,  // 该 班级所有车型（驾照类型）（手动自动）
             cartype:classdata.cartype, //车品牌  富康、奔驰等
             classdesc:classdata.classdesc,  // 课程描述
@@ -811,4 +812,35 @@ exports.getSchoolInfoById=function(req,res){
         }
         res.json(new BaseReturnInfo(1, "", schoolinfo));
     })
+}
+
+//==========================================主页信息
+exports.getApplySchoolinfo=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    var name=req.query.searchKey?req.query.searchKey:"";
+    var searchinfo={applystate:1};
+    if (name!=""){
+        searchinfo={"name":new RegExp(name)};
+    }
+    usermodel.find(searchinfo)
+        .select("_id name address mobile carmodel  referrerfcode  applystate applyinfo  applyschoolinfo  " +
+            "applycoachinfo applyclasstypeinfo  createtime")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({"applyinfo.applytime":-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(usermodel,searchinfo,function (err, usercount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: usercount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(usercount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
 }

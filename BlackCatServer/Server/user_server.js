@@ -1707,7 +1707,7 @@ exports.getMyProgress=function(userid,callback){
 // 获取用户的报名状态
   exports.getMyApplyState=function(userid,callback){
       usermodel.findById(new mongodb.ObjectId(userid))
-          .select("applystate applyinfo")
+          .select("applystate applyinfo applycount")
           .exec(function(err,userdata){
               if(err){
                   return  callback("查询错误："+err);
@@ -1715,6 +1715,7 @@ exports.getMyProgress=function(userid,callback){
               if(!userdata){
                   return  callback("没有查询到用户信息");
               }
+              userdata.applycount=userdata.applycount?userdata.applycount:0;
               return callback(null,userdata);
           })
   }
@@ -1872,6 +1873,9 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
+      if(userdata.applycount>1){
+          return  callback("您已经超过了最大报名次数");
+      }
       if(userdata.applystate>appTypeEmun.ApplyState.Applying){
           return  callback("您已经报名成功，请不要重复报名");
       }
@@ -1921,7 +1925,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
                   userdata.applyschoolinfo.name=schooldata.name;
                       userdata.referrerfcode=applyinfo.fcode;
-
+                      userdata.applycount=userdata.applycount?userdata.applycount:0;
+                      userdata.applycount=userdata.applycount+1;
                   userdata.applycoach=applyinfo.coachid;
                   userdata.applycoachinfo.id=applyinfo.coachid;
                   userdata.applycoachinfo.name=coachdata.name;
