@@ -175,6 +175,9 @@ var  returnAdminRouter=function(io) {
     // 获取图片上传token
     router.get('/manage/qiniuuptoken', appsystemController.GetqiniuupToken2);
     router.get('/manage/carmodel', appsystemController.GetCarModel);
+    // 获取申请报名人员信息
+    router.get('/manage/getapplyschoolinfo',adminserver.getApplySchoolinfo);
+
     ///  驾校信息 处理
     router.get("/manage/getschoollist",adminserver.getSchoolist);
     router.post("/manage/saveschool",adminserver.saveSchoolInfo);

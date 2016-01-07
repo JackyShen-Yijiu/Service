@@ -42,6 +42,15 @@
                                                 </div>
                                             </div> <!-- /three end -->
                                             <div class="control-group">
+                                                <label class="control-label" for="is_using" >是否发布</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="is_using" >
+                                                        <option value="true">发布</option>
+                                                        <option value="false">不发布</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
                                                 <label class="control-label" for="carmodel">驾照类型</label>
                                                 <div class="controls">
                                                     <select class="span4" id="carmodel"    >
@@ -135,7 +144,7 @@
                                                     <input type="hidden" value="" id="vipserverlist"   />
                                                     <div class="topnav">
                                                         <a id="showviplist" href="javascript:void(0);" class="as">
-                                                            <span></span>
+                                                            <span>{{showchoosevipserver}}</span>
                                                         </a>
 
                                                     </div>
@@ -205,7 +214,7 @@
     ybxcApp.controller("editclasstype",function($scope,$http){
 
         $scope.formData = {};
-
+        $scope.showchoosevipserver=""
         var classtypeid=GetQueryString("classtypeid");
         if(classtypeid !=null && classtypeid.toString().length>1)
                     {
@@ -219,9 +228,20 @@
                                     else{
                                         $scope.formData = response.data;
                                         console.log($scope.formData);
+                                       $("#licensetypelist li").each(
+                                               function(){
+                                                   var  vipserverid=$(this).attr("rel");
+                                                   var vipservername=$(this).text();
+                                                   if ($scope.formData.vipserverlist.indexOf(vipserverid)>-1){
+                                                       $scope.showchoosevipserver=$scope.showchoosevipserver+" " +vipservername;
+                                                   }
+                                               }
+                                       );
                                       $("#begindate").val($scope.formData.begindate);
                                         $("#enddate").val($scope.formData.enddate);
                                         $("#carmodel").val($scope.formData.carmodel);
+                                        $("#is_using").val($scope.formData.is_using.toString());
+                                        $("#vipserverlist").val($scope.formData.vipserverlist.join(","));
                                     }
 
 
@@ -273,6 +293,8 @@
             $scope.formData.begindate=$("#begindate").val();
             $scope.formData.enddate=$("#enddate").val();
             $scope.formData.carmodel=$("#carmodel").val();
+            $scope.formData.is_using=$("#is_using").val();
+            $scope.formData.vipserverlist=$("#vipserverlist").val().split(",");
             return true;
         }
     });

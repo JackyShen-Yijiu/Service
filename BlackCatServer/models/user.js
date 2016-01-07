@@ -38,6 +38,7 @@ var  UserSchema=new Schema({
     referrerCode: String,   // 被邀请码
     referrerfcode: String,  //被邀请的Fcode
     applystate:{type:Number,default:0}, //报名状态  0 未报名 1 申请中 2 申请成功
+    applycount:{type:Number,default:0}, // 报名次数
     //是否进行扫描验证码报名
     is_confirmbyscan:{ type: Boolean, default: false},
     // 扫描地址
