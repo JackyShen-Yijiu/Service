@@ -216,6 +216,13 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
 
 //-------------------------------------------------------------
 
+// ================================================教练端1.1 功能接口=======================
+    // 获取日历上的约课休假信息
+v1.get("/courseinfo/getmonthapplydata",ensureAuthorizedController.ensureAuthorized,courseController.getmonthapplydata);
+    //获取系统消息列表
+
+//==========================================================================================
+
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);

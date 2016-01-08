@@ -41,13 +41,13 @@ exports.subject=[
 ]
 exports.carmodels=[
     {modelsid:1,
-        name:'小型汽车手动挡',
+        name:'手动挡汽车',
         code:"C1",
         desc:"准驾车型：小型、微型客汽车以及轻型、微型载货汽车，轻、小、微型专项作业车。C1准驾C2车型."
     },
     {
         modelsid:2,
-        name:'小型自动挡汽车',
+        name:'自动挡汽车',
         code:"C2",
         desc:"小型、微型自动挡载客汽车以及轻型、微型自动挡载货汽车。"
     },

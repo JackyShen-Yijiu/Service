@@ -7,9 +7,11 @@ var coachmode=mongodb.CoachModel;
 var coursemode=mongodb.CourseModel;
 var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
+var coachleavemodel=mongodb.CoachLeaveModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var pushstudent=require("../Common/PushStudentMessage");
 var pushcoach=require("../Common/PushCoachMessage");
+var eventproxy   = require('eventproxy');
 var _ = require("underscore");
 require('date-utils');
 
@@ -850,19 +852,30 @@ exports.saveCoachLeaveInfo=function(leaveinfo ,callback){
             if(err){
                 return callback("查询教练出错");
             }
-            console.log(leaveinfo)
+            //console.log(leaveinfo)
             data.leavebegintime=datebegin;
             data.leaveendtime=endtime;
-            data.save();
+            data.save(function(err,savedata){
+              var   temp=new     coachleavemodel()
+                temp.coachid=savedata._id;
+                temp.leavebegintime=datebegin;
+                temp.leaveendtime=endtime;
+                temp.createtime=new Date();
+                temp.save();
+            });
             return callback(null,"success");
         })
     });
 }
 // 教练获取我的预约列表
 exports.getCoachReservationList=function(queryinfo,callback){
-    reservationmodel.find( { coachid:new mongodb.ObjectId(queryinfo.coachid)})
+    var searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid)}
+    if(queryinfo.reservationstate!=0){
+        searchinfo.reservationstate=queryinfo.reservationstate;
+    }
+    reservationmodel.find(searchinfo)
         .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
-        " courseprocessdesc trainfieldlinfo  is_coachcomment")
+        " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime")
         .populate("userid","_id  name headportrait")
         .skip((queryinfo.index-1)*10)
         .limit(10)
@@ -885,14 +898,70 @@ exports.getCoachReservationList=function(queryinfo,callback){
                         shuttleaddress: r.shuttleaddress,
                         courseprocessdesc: r.courseprocessdesc,
                         classdatetimedesc: r.classdatetimedesc,
-                        trainfieldlinfo: r.trainfieldlinfo
+                        trainfieldlinfo: r.trainfieldlinfo,
+                        begintime: r.begintime,
+                        endtime: r.endtime
                     }
                     list.push(listone);
                 })
                 return callback(null,list);
             })
         })
+};
+var   getcoachmonthdata=function(coachid,beginDate,endDate,callback){
+    reservationmodel.aggregate([{$match:{
+        "coachid":new mongodb.ObjectId(coachid),
+        "begintime": { $gte: beginDate, $lt:endDate}
+
+    }},
+        {"$project":{
+            "day":{"$dayOfMonth":"$begintime"},
+
+        }}
+        ,{$group:{_id:"$day"}}
+    ],function(err,coursedata) {
+        if (err) {
+            return callback(err);
+        }
+        //console.log(coursedata);
+        coursedata=_.sortBy(coursedata,"_id");
+        return callback(null,coursedata);
+    })
+};
+var  getcoachmonthleaveinfo=function(coachid,beginDate,endDate,callback){
+    coachleavemodel.find({"coachid":new mongodb.ObjectId(coachid),"$or":[
+        {"leavebegintime": { $gte: beginDate, $lt:endDate}},{"leaveendtime": { $gte: beginDate, $lt:endDate}}
+    ]}).exec(function(err,leavedata){
+        if (err){
+            return callback(err);
+        }
+
+    })
 }
+var  begintime=(new Date(2015,12,3));
+var endtime=(new Date(2016,1,1));
+console.log(begintime.getMonth());
+console.log(begintime);
+console.log(endtime.getMonth());
+console.log(new Date().getMonth());
+//getcoachmonthdata("563ecd21bc863bcc287c3647",begintime,endtime,function(err,data){
+//    console.log(data);
+//})
+// 获取 教练这个月课程安排
+exports.getmonthapplydata=function(coachid,year,month,callback){
+    var  begintime=(new Date(year,month-1,1));
+    var endtime=(new Date(year,month-1,1)).addMonths(1);
+    var proxy = new eventproxy();
+    proxy.fail(callback);
+    proxy.all('reservationapply',"leaveoff",
+        function (reservationapply,reservationapply){
+            var weekmroedatainfo= {
+                datalist:reservationapply,
+                coursedata:reservationapply
+            };
+            return callback(null,weekmroedatainfo);
+        });
+};
 // 教练获取没有处理的预约申请
 exports.getreservationapply=function(coachid,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"reservationstate":appTypeEmun.ReservationState.applying})

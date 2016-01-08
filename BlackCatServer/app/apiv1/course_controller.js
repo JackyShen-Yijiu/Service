@@ -343,12 +343,34 @@ exports.getreservationapply=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 
-}
+};
+// 获取我每个月的课程安排
+
+exports.getmonthapplydata= function(req,res){
+        var  coachid=req.query.coachid;
+        var  year=req.query.year;
+        var  month=req.query.month;
+        if (coachid===undefined||year===undefined||month===undefined){
+            return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+        }
+        if(coachid!=req.userId){
+            return res.json(
+                new BaseReturnInfo(0,"无法确认请求用户",[]));
+        };
+        courseserver.getmonthapplydata(coachid,year,month,function(err,data){
+            if (err){
+                return res.json(new BaseReturnInfo(0,err,[]));
+            }
+            return res.json(new BaseReturnInfo(1,"",data));
+        });
+
+    };
 // 教练获取所有的预约列表
 exports.getCoachReservationList=function(req,res){
     var queryinfo= {
           coachid:req.query.coachid,
-     index:req.query.index
+         reservationstate:req.query.reservationstate?req.query.reservationstate:0,
+         index:req.query.index?req.query.index:1
 }
     if (queryinfo.coachid===undefined|| queryinfo.index===undefined){
         return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
@@ -454,6 +476,7 @@ exports.getMyCoachList=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
-}
+};
+
 
 
