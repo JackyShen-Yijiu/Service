@@ -32,7 +32,6 @@ var  returnAdminRouter=function(io) {
 
     //管理员登录验证码
     router.get('/vnum',function(req, res){
-
         var word = rw.random(4);
         req.session.vnum = word;
         console.log(word);

@@ -323,10 +323,14 @@ exports.postReservation=function(reservationinfo,callback){
 
 
 //获取用户的预约信息
-exports.getuserReservation=function(userid,subjectid,callback){
-    reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid})
+exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
+    var searhinfo={userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid};
+    if (reservationstate>0){
+        searhinfo.reservationstate=reservationstate;
+    }
+    reservationmodel.find(searhinfo)
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
-        "courseprocessdesc trainfieldlinfo  is_comment")
+        "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime ")
         .populate("coachid","_id name driveschoolinfo headportrait")
        .sort({begintime:-1})
         .exec(function(err,reservationlist){
@@ -354,7 +358,9 @@ exports.getuserReservation=function(userid,subjectid,callback){
                         shuttleaddress: r.shuttleaddress,
                         courseprocessdesc: r.courseprocessdesc,
                         classdatetimedesc: r.classdatetimedesc,
-                        trainfieldlinfo: r.trainfieldlinfo
+                        trainfieldlinfo: r.trainfieldlinfo,
+                        begintime: r.begintime,
+                        endtime: r.endtime
                     }
                     list.push(listone);
                 })

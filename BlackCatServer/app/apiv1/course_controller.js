@@ -64,8 +64,12 @@ exports.postReservation=function(req,res){
 exports.getuserresveration=function(req,res){
    var userid=req.query.userid;
     var subjectid = req.query.subjectid;
+    var reservationstate = req.query.reservationstate;
     if(subjectid===undefined){
         subjectid=2;
+    }
+    if(reservationstate===undefined){
+        reservationstate=0;
     }
   if(!req.userId){
       return res.json(
@@ -75,7 +79,7 @@ exports.getuserresveration=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
-    courseserver.getuserReservation(userid,subjectid,function(err,data){
+    courseserver.getuserReservation(userid,subjectid,reservationstate,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,[]));
         }
