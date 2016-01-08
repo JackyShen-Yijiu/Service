@@ -21,3 +21,13 @@ function GetQueryString(name)
 	var r = window.location.search.substr(1).match(reg);
 	if(r!=null)return  unescape(r[2]); return null;
 }
+
+function formatDate(now) {
+	var year=now.getYear();
+	var month=now.getMonth()+1;
+	var date=now.getDate();
+	var hour=now.getHours();
+	var minute=now.getMinutes();
+	var second=now.getSeconds();
+	return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+}

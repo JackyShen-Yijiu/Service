@@ -64,7 +64,7 @@
                                             <span>{{content.applyschoolinfo.name}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.applyinfo.applytime}}</span>
+                                            <span>{{content.applyinfo.applytime}} </span>
                                         </td>
 
 
@@ -84,7 +84,53 @@
                         </div><!-- /.box -->
                         <% include ../public/tableFooter %>
                     </div>
+                    <div id="editpage" class="widget-content"  style="display: none">
+                        <div class="control-group">
+                            <div class="alert">
+                                姓名： <strong>  {{formData.name}}</strong>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                报名教练： <strong>  {{formData.applycoachinfo.name}}</strong>
+                                </div>
+                            </div>
+                        <div class="control-group">
+                            <div class="alert">
+                                报名驾校： <strong>  {{formData.applyschoolinfo.name}}</strong>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                报名班级： <strong>  {{formData.applyclasstypeinfo.name}}</strong>
+                            </div>
+                        </div>
 
+                        <div class="control-group">
+                            <div class="alert">
+                                报名时间： <strong>  {{formData.applyinfo.applytime}}</strong>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="alert-info">
+                                报名状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate!='1'" class="span2" id="applystate" ng-model="formData.applystate" >
+                                    <option value="0">未报名</option>
+                                    <option value="1">报名中</option>
+                                    <option value="2">报名成功</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="alert-info text-center">
+                                处理状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate!='1'" class="span2" id="handelstate" ng-model="formData.applyinfo.handelstate" >
+                                    <option value="0">未处理</option>
+                                    <option value="1">处理中</option>
+                                    <option value="2">处理成功</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="alert-info text-center">
+                                处理信息：   <textarea  style="margin-top: 10px"   id="superiorservice"
+                                                    rows="3" ng-model="formData.applyinfo.handelmessage" placeholder=""></textarea>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate!='1'" >处理</button>
                 </div>
             </div>
 
@@ -102,14 +148,32 @@
         $scope.formData = {};
         //获取文档列表信息
         initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?");
-        $scope.editApplyinfo=function(useid,name){
+        $scope.editApplyinfo=function(userid,name){
+            $scope.formData={};
+            var   userdata;
+            for(var i=0;i<$scope.data.length;i++){
+                if(userid==$scope.data[i]._id){
+                    userdata=$scope.data[i];
+                    break;
+                }
+            }
+            if(userdata===undefined){
+                layer.msg('没有找到用户信息', {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return;
+            }
+            $scope.formData=userdata;
+            $scope.formData.applystate= $scope.formData.applystate.toString();
+            $scope.formData.applyinfo.handelstate= $scope.formData.applyinfo.handelstate.toString();
             layer.open({
-                type: 2,
-                title: '审核用户---'+name,
+                type: 1,
+                title: '审核用户--'+name,
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                 area : ['800px' , '520px'],
-                content: 'test/iframe.html'
+                // area : ['800px' , '520px'],
+                content:$("#editpage")
             });
         }
     });
