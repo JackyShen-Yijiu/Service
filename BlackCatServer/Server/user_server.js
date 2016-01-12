@@ -920,15 +920,18 @@ exports.getStudentInfo=function(userid,callback){
             }
 
                     var subjectprocess="";
-            var leavecourse=0;
+            var leavecoursecount=0;
+            var missingcoursecount=0;
                     if (data.subject.subjectid==2){
                         subjectprocess= data.subjecttwo.progress;
-                        leavecourse:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
+                        leavecoursecount:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
+                        missingcoursecount= r.subjecttwo.missingcourse?r.userid.subjecttwo.missingcourse:0;
                     }
                     else if(data.subject.subjectid==3)
                     {
                         subjectprocess=  data.subjectthree.progress;
-                        leavecourse:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
+                        leavecoursecount:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
+                        missingcoursecount= r.subjectthree.missingcourse?r.userid.subjectthree.missingcourse:0;
                     }
                     var user={
                         "_id": data._id,
@@ -942,7 +945,8 @@ exports.getStudentInfo=function(userid,callback){
                         "address":data.address,
                         "applyschoolinfo":data.applyschoolinfo,
                         "subjectprocess": subjectprocess,
-                        "leavecourse":leavecourse,
+                        "leavecoursecount":leavecoursecount,
+                        "missingcoursecount":missingcoursecount
 
                     }
 
