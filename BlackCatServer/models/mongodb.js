@@ -75,4 +75,4 @@ exports.IncomeDetails=require("./purse/incomeDetails");
 exports.UserConsultModel=require("./userConsult");
 exports.ActivityModel=require("./activity");
 exports.CoachLeaveModel=require("./coachleave");
-
+exports.UserCashOutModel=require("./purse/usercashout");

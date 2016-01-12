@@ -289,7 +289,8 @@ exports.coachCommentV2=function(req,res){
     };
     if (commentinfo.coachid === undefined
         ||commentinfo.reservationid === undefined||
-        commentinfo.starlevel === undefined||commentinfo.commentcontent === undefined
+        commentinfo.starlevel === undefined||
+           commentinfo.commentcontent === undefined
         ||commentinfo.learningcontent === undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));

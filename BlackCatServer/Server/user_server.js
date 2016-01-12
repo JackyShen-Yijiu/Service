@@ -32,6 +32,7 @@ var userfcode= mongodb.UserFcode;
 var IncomeDetails= mongodb.IncomeDetails;
 var SystemIncome=mongodb.SystemIncome;
 var coupon=mongodb.Coupon;
+var UserCashOutModel=mongodb.UserCashOutModel;
 require('date-utils');
 var _ = require("underscore");
 
@@ -1503,6 +1504,72 @@ exports.getmyCupon=function(queryinfo,callback){
             callback(err,data);
         })
 };
+// 用户提现申请
+exports.userCashOut=function(cashinfo,callback){
+    var usertypeobject;
+    if(bindbankinfo.usertype==appTypeEmun.UserType.User){
+        usertypeobject=usermodel;
+    }else {
+        usertypeobject=coachmode;
+    }
+    usertypeobject.findById(new mongodb.ObjectId(bindbankinfo.userid))
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错："+err);
+            }
+            if (!data){
+                return callback("没有查到此用户的信息");
+            }
+            if(data.is_lock){
+                return callback("用户已锁定无法绑定");
+            }
+            if(bindbankinfo.cardtype!=3){
+                return callback("在不支持此类型的提现");
+            }
+            userfcode.findOne({"userid":data._id})
+                .exec(function(err, moneydata){
+                   if (err){
+                       return callback("查询用户金额出错"+err);
+                   }
+                    if(!moneydata){
+                        return callback("没有查询到用户的现金信息");
+                    }
+                    if (moneydata.money<cashinfo.money){
+                        return callback("金额不足");
+                    }
+                    moneydata.money=moneydata.money-cashinfo.money;
+                    moneydata.save(function(err,newmymoneydata){
+                        var tempincomedetail=new IncomeDetails();
+                        tempincomedetail.userid=newmymoneydata.userid;
+                        tempincomedetail.createtime=new Date();
+                        tempincomedetail.usertype=newmymoneydata.usertype;
+                        tempincomedetail.income=cashinfo.money*(-1);
+                        tempincomedetail.type=0;    // 支出
+                        tempincomedetail.state=1;  // 有效
+                        tempincomedetail.save(function(err,incomedetaildata){
+                            var  tempusercashmodel=new UserCashOutModel();
+                            tempusercashmodel.userid=bindbankinfo.userid;
+                            tempusercashmodel.createtime=new Date();
+                            tempusercashmodel.usertype=bindbankinfo.usertype;
+                            tempusercashmodel.money=bindbankinfo.money;
+                            tempusercashmodel.cashoutstate=1;
+                            tempusercashmodel.cardtype=bindbankinfo.cardtype;
+                            tempusercashmodel.name=bindbankinfo.name;
+                            tempusercashmodel.cardnumber=bindbankinfo.cardnumber;
+                            tempusercashmodel.cardbank=bindbankinfo.cardbank;
+                            tempusercashmodel.save(function(err,data){
+                                if (err){
+                                    return callback("保存取现信息错误"+err);
+                                }
+                                return callback(null,"sucess");
+                            })
+                        })
+                    });
+                })
+
+        })
+}
+//绑定银行卡
 exports.bindBank=function(bindbankinfo,callback){
     var usertypeobject;
     if(bindbankinfo.usertype==appTypeEmun.UserType.User){
