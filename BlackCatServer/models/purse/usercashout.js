@@ -8,7 +8,7 @@
 
 
 var mongoose = require('mongoose');
-var seqlist=require("./idautoinc");
+var seqlist=require("../idautoinc");
 var Schema = mongoose.Schema;
 
 var  UserCashOutSchema = new Schema({
