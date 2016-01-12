@@ -916,6 +916,33 @@ exports.getMymoneyList=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+// 用户绑定银行卡
+exports.bindbank=function(req,res){
+    var  bindbankinfo={
+         userid:req.body.userid,
+         usertype:req.body.usertype,  //  1 学员  2 教练
+         name:req.body.name,   // 绑定用户名称
+         cardtype:req.body.cardtype,  // 卡类型  1微信  2 支付宝 3银联卡
+         cardnumber:req.body.cardnumber,   // 卡号码
+         cardbank:req.body.cardbank,  //如果是银行卡是哪个类型的
+    }
+    if(bindbankinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    if (bindbankinfo.userid===undefined||bindbankinfo.usertype===undefined ||
+        bindbankinfo.name===undefined||bindbankinfo.cardtype===undefined||
+        bindbankinfo.cardnumber===undefined||bindbankinfo.cardbank===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    userserver.bindBank(bindbankinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 exports.verifyFcodeCorrect=function(req,res){
     var  queryinfo={

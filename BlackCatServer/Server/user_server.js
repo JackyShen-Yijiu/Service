@@ -738,7 +738,7 @@ exports.searchCoach=function(searchinfo,callback){
     coachmode.find(searchcondition)
         .select("")
         .sort(ordercondition)
-        .skip((searchinfo.index-1)*10)
+        .skip((searchinfo.index-1)*searchinfo.count)
         .limit(searchinfo.count)
         .exec(function(err,driveschool){
             if (err ) {
@@ -1503,6 +1503,48 @@ exports.getmyCupon=function(queryinfo,callback){
             callback(err,data);
         })
 };
+exports.bindBank=function(bindbankinfo,callback){
+    var usertypeobject;
+    if(bindbankinfo.usertype==appTypeEmun.UserType.User){
+        usertypeobject=usermodel;
+    }else {
+        usertypeobject=coachmode;
+    }
+    usertypeobject.findById(new mongodb.ObjectId(bindbankinfo.userid))
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错："+err);
+            }
+            if (!data){
+                return callback("没有查到此用户的信息");
+            }
+            if(data.is_lock){
+                return callback("用户已锁定无法绑定");
+            }
+            if(bindbankinfo.cardtype!=3){
+                return callback("在不支持此类型的绑定");
+            }
+            for(var i=0;i<data.bankcardlist.length;i++){
+                if (data.bankcardlist[i].cardnumber==bindbankinfo.cardnumber){
+                    return  callback("已绑定此银行卡");
+                    break;
+                }
+            }
+            var onebank={
+                name:bindbankinfo.name,
+                cardnumber:bindbankinfo.cardnumber,
+                cardbank:bindbankinfo.cardbank
+            }
+            data.bankcardlist.push(onebank);
+            data.save(function(err,data){
+                if(err){
+                    return callback("绑定银行卡出错"+err);
+                }
+                return callback(null,"sucess");
+            })
+        })
+
+}
 exports.getMymoneyList=function(queryinfo,callback){
     userfcode.findOne({"userid":queryinfo.userid})
         .select("userid fcode money")

@@ -42,7 +42,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
     schoolModel.find(searchcondition)
         .select("")
         .sort(ordercondition)
-        .skip((searchinfo.index-1)*10)
+        .skip((searchinfo.index-1)*searchinfo.count)
         .limit(searchinfo.count)
         .exec(function(err,driveschool){
             if (err ) {

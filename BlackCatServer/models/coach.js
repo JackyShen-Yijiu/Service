@@ -70,7 +70,8 @@ var  CoachSchema=new Schema({
         newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
         classremind:{ type: Boolean, default: false}// 开课提醒
     },
-
+    // 绑定银行卡列表
+    bankcardlist:[{name:String, cardnumber:String,cardbank:String}],
     // 我所服务的班级列,
     serverclasslist:[{type: Schema.Types.ObjectId, ref: 'classtype'} ],
     // 用户积分状态

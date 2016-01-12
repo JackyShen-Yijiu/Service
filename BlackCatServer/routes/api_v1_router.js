@@ -224,7 +224,7 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
   // 教练评价学员
    v1.post("/courseinfo/coachcommentv2",ensureAuthorizedController.ensureAuthorized,courseController.coachCommentV2);
   // 绑定 支付宝 微信  银行卡
-  v1.post("/userinfo/",ensureAuthorizedController.ensureAuthorized,userController.receivemycupon);
+  v1.post("/userinfo/bindbank",ensureAuthorizedController.ensureAuthorized,userController.receivemycupon);
     // 用户提款
   //获取系统消息列表
 
