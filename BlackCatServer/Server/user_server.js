@@ -972,13 +972,13 @@ exports.getCoachStudentList=function(coachinfo,callback){
                     if (r.subject.subjectid==2){
                         subjectprocess= r.subjecttwo.progress;
                         leavecoursecount:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
-                        missingcoursecount= r.userid.subjecttwo.missingcourse?r.userid.subjecttwo.missingcourse:0;
+                        missingcoursecount= r.subjecttwo.missingcourse?r.userid.subjecttwo.missingcourse:0;
                     }
                     else if(r.subject.subjectid==3)
                     {
                         subjectprocess= r.subjectthree.progress;
                         leavecoursecount:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
-                        missingcoursecount= r.userid.subjectthree.missingcourse?r.userid.subjectthree.missingcourse:0;
+                        missingcoursecount= r.subjectthree.missingcourse?r.userid.subjectthree.missingcourse:0;
                     }
                     var user={
                         "_id": r._id,
