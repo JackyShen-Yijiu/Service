@@ -143,6 +143,10 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/recordlist" ,function(req, res, next) {
         res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist"));
     });
+    //教练审核记录
+    router.get("/manage/coachCheckList" ,function(req, res, next) {
+        res.render('apply-record/coachCheckList', adminFunc.setPageInfo(req,res,"/admin/manage/coachCheckList"));
+    });
 
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
         var schoolid=req.session.schoolid;
