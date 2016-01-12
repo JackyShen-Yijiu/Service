@@ -915,7 +915,7 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
         ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish}]
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
         .select("userid reservationstate reservationcreatetime begintime endtime subject " +
-        "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment  endclassnum")
+        "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment  endclassnum learningcontent")
         .populate( "userid"," _id  name headportrait  subjecttwo subjectthree")
         .sort({"begintime":1})
         .exec(function(err,data){
@@ -935,7 +935,8 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                         begintime :(r.begintime).toFormat("HH:00"),
                         endtime :(r.endtime).toFormat("HH:00"),
                         leavecoursecount:0,
-                        missingcoursecount:0
+                        missingcoursecount:0,
+                        learningcontent: r.learningcontent
                     };
                     if (r.subject.subjectid==2){
                         listone.leavecoursecount= r.userid.subjecttwo.totalcourse- r.endclassnum;
@@ -993,7 +994,7 @@ exports.getCoachReservationList=function(queryinfo,callback){
     }
     reservationmodel.find(searchinfo)
         .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
-        " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum")
+        " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum  learningcontent")
         .populate("userid","_id  name headportrait subjecttwo subjectthree")
         .skip((queryinfo.index-1)*10)
         .limit(10)
@@ -1019,6 +1020,7 @@ exports.getCoachReservationList=function(queryinfo,callback){
                         trainfieldlinfo: r.trainfieldlinfo,
                         begintime: r.begintime,
                         endtime: r.endtime,
+                        learningcontent: r.learningcontent,
                         leavecoursecount:0,
                         missingcoursecount:0
                     };
