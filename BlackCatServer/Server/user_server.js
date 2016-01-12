@@ -967,15 +967,15 @@ exports.getCoachStudentList=function(coachinfo,callback){
                 var userlist=[] ;
                 data.forEach(function(r,index){
                     var subjectprocess="";
-                    var leavecourse=0;
+                    var leavecoursecount=0;
                     if (r.subject.subjectid==2){
                         subjectprocess= r.subjecttwo.progress;
-                        leavecourse:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
+                        leavecoursecount:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
                     }
                     else if(r.subject.subjectid==3)
                     {
                         subjectprocess= r.subjectthree.progress;
-                        leavecourse:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
+                        leavecoursecount:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
                     }
                     var user={
                         "_id": r._id,
@@ -984,7 +984,7 @@ exports.getCoachStudentList=function(coachinfo,callback){
                         "headportrait": r.headportrait,
                         "subject": r.subject,
                         "subjectprocess": subjectprocess,
-                        "leavecourse":leavecourse,
+                        "leavecoursecount":leavecoursecount,
 
                     }
                     userlist.push(user);
