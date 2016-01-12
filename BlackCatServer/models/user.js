@@ -72,6 +72,7 @@ var  UserSchema=new Schema({
         totalcourse:{type:Number,default:24},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
+        missingcourse:{type:Number,default:0}, // 漏课数量
         progress:{type:String,default:"未开始"}, // 学习进度
         reservationid:String //学习进度id
     },
@@ -80,6 +81,7 @@ var  UserSchema=new Schema({
         totalcourse:{type:Number,default:16},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},
+        missingcourse:{type:Number,default:0}, // 漏课数量
         progress:{type:String,default:"未开始"}, // 学习进度
         reservationid:String //学习进度id
     },

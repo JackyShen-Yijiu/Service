@@ -554,14 +554,15 @@ exports.coachApplyVerification=function(req,res){
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
         idcardnumber:req.body.idcardnumber,   // 身份证
-        drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证
-        coachnumber :req.body.coachnumber,  // 教练证
+        drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证  可选
+        coachnumber :req.body.coachnumber,  // 教练证c
+        coachtype: req.body.coachtype? req.body.coachtype:0,  //教练的方式 0 挂靠教练  1直营教练
         driveschoolid:req.body.driveschoolid, //所在驾校
-        referrerCode:req.body.referrerCode  //邀请吗可选
+        referrerCode:req.body.referrerCode,  //邀请吗可选
     }
     //console.log(applyinfo)
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
-        applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
+        applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     };

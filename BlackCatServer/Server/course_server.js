@@ -586,7 +586,116 @@ exports.userComment=function(commnetinfo,callback){
 
     });
 };
+//  教练签到课程
+exports.courseSignin=function(sigininfo,callback){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(sigininfo.reservationid),
+        coachid:new mongodb.ObjectId(sigininfo.coachid),
+        userid:new mongodb.ObjectId(sigininfo.userid)},function(err,resdata){
+        if(err){
+            return callback("查询预约信息出错："+err);
+        }
+        if(!resdata){
+            return callback("没有查询到预约信息");
+        }
+        // 判断签到时间
+        var  datanow=new Date();
+        if ((resdata.begintime-datanow)>15*60*1000||datanow>resdata.endtime){
+            return callback("该时段不能签到");
+        }
+        if(resdata.reservationstate!=appTypeEmun.ReservationState.applyconfirm){
+            return callback("该状态不能签到");
+        }
+        //可以签到
+        resdata.reservationstate=appTypeEmun.ReservationState.signin;
+        resdata.is_signin=true;
+        resdata.sigintime=new Date();
+        resdata.save(function(err,data){
+            if(err){
+                return callback("签到出错");
+            }
+            return callback(null,"success")
+        })
+    })
+};
+//   教练评论
+exports.coachCommentV2=function(commnetinfo,callback){
+    reservationmodel.findOne({_id:new mongodb.ObjectId(commnetinfo.reservationid),
+        coachid:new mongodb.ObjectId(commnetinfo.coachid)},function(err,resdata){
+        if(err||!resdata){
+            return callback("查询预约信息出粗："+err);
+        }
+        if(resdata.reservationstate!=appTypeEmun.ReservationState.finish &&
+            resdata.reservationstate!=appTypeEmun.ReservationState.ucomments
+        )
+        {
+            return callback("预约没有完成不能评论");
+        }
+        if (resdata.is_coachcomment){
+            return callback("您已经完成评论，请勿重复评论");
+        }
+        resdata.is_coachcomment=true;
+        resdata.coachcomment.starlevel=commnetinfo.starlevel;
+        resdata.coachcomment.attitudelevel=4;
+        resdata.coachcomment.timelevel=4;
+        resdata.coachcomment.abilitylevel=4;
+        resdata.coachcomment.commentcontent=commnetinfo.commentcontent;
+        resdata.coachcomment.commenttime=new Date();
+        if(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments){
+            resdata.reservationstate=appTypeEmun.ReservationState.finish;
+        }
+        resdata.learningcontent=reservationinfo.learningcontent;
+        if (resdata.startclassnum!=undefined && resdata.startclassnum !=undefined)
+        {
+            var tempstr="";
+            if (resdata.startclassnum ==resdata.endclassnum){
+                tempstr= "第"+ (resdata.startclassnum)+"课时";
+            }else if(resdata.endclassnum-resdata.startclassnum==1){
+                tempstr= "第"+ (resdata.startclassnum)+","+( resdata.endclassnum)+"课时";
+            }else{
+                tempstr= "第"+ (resdata.startclassnum)+"--"+( resdata.endclassnum)+"课时";
+            }
+            resdata.courseprocessdesc=resdata.subject.name+ tempstr+"  "+
+                (reservationinfo.learningcontent?reservationinfo.learningcontent:"");
 
+        }
+        else{
+            resdata.courseprocessdesc=resdata.subject.name+"  "+(reservationinfo.learningcontent?reservationinfo.learningcontent:"");
+        }
+        //console.log("科目："+resdata.subject.name);
+        resdata.finishtime=new Date();
+        resdata.save(function(err,newdata){
+            if(err){
+                return callback("保存评论出错");
+
+            }
+            pushstudent.pushCoachComment(newdata.userid,newdata._id,function(err,data){});
+            usermodel.findById(new mongodb.ObjectId(newdata.userid),function(err,data){
+
+                if (newdata.subject.subjectid==2){
+                    data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
+                    data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
+                    data.subjecttwo.progress=resdata.courseprocessdesc;
+                    data.subjecttwo.reservationid=reservationinfo.reservationid;
+                }
+                if (newdata.subject.subjectid==3){
+                    data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                    data.subjectthree.finishcourse=data.subjectthree.finishcourse+newdata.coursehour;
+                    data.subjectthree.progress=resdata.courseprocessdesc;
+                    data.subjectthree.reservationid=reservationinfo.reservationid;
+                }
+                //console.log(data);
+                data.save(function(err){
+                    if (err){
+                        return callback("确认完成出错："+err);
+                    }
+                    return callback(null,"success");
+                })
+            })
+        })
+
+
+    });
+};
 // 教练评论信息
 exports.coachComment=function(commnetinfo,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(commnetinfo.reservationid),
@@ -806,8 +915,8 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
         ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish}]
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
         .select("userid reservationstate reservationcreatetime begintime endtime subject " +
-        "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment")
-        .populate( "userid"," _id  name headportrait ")
+        "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment  endclassnum")
+        .populate( "userid"," _id  name headportrait  subjecttwo subjectthree")
         .sort({"begintime":1})
         .exec(function(err,data){
             if(err){
@@ -824,8 +933,17 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                         reservationcreatetime: r.reservationcreatetime,
                         courseprocessdesc: r.courseprocessdesc,
                         begintime :(r.begintime).toFormat("HH:00"),
-                        endtime :(r.endtime).toFormat("HH:00")
-                }
+                        endtime :(r.endtime).toFormat("HH:00"),
+                        leavecoursecount:0,
+                        missingcoursecount:0
+                    };
+                    if (r.subject.subjectid==2){
+                        listone.leavecoursecount= r.userid.subjecttwo.totalcourse- r.endclassnum;
+                        listone.missingcoursecount= r.userid.subjecttwo.missingcourse;
+                    }else if(r.subject.subjectid==3){
+                        listone.leavecoursecount= r.userid.subjectthree.totalcourse- r.endclassnum;
+                        listone.missingcoursecount= r.userid.subjectthree.missingcourse;
+                    }
                     list.push(listone);
                 })
                 return callback(null,list);
@@ -875,8 +993,8 @@ exports.getCoachReservationList=function(queryinfo,callback){
     }
     reservationmodel.find(searchinfo)
         .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
-        " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime")
-        .populate("userid","_id  name headportrait")
+        " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum")
+        .populate("userid","_id  name headportrait subjecttwo subjectthree")
         .skip((queryinfo.index-1)*10)
         .limit(10)
         .sort({"reservationcreatetime":-1})
@@ -900,7 +1018,16 @@ exports.getCoachReservationList=function(queryinfo,callback){
                         classdatetimedesc: r.classdatetimedesc,
                         trainfieldlinfo: r.trainfieldlinfo,
                         begintime: r.begintime,
-                        endtime: r.endtime
+                        endtime: r.endtime,
+                        leavecoursecount:0,
+                        missingcoursecount:0
+                    };
+                    if (r.subject.subjectid==2){
+                        listone.leavecoursecount= r.userid.subjecttwo.totalcourse- r.endclassnum;
+                        listone.missingcoursecount= r.userid.subjecttwo.missingcourse;
+                    }else if(r.subject.subjectid==3){
+                        listone.leavecoursecount= r.userid.subjectthree.totalcourse- r.endclassnum;
+                        listone.missingcoursecount= r.userid.subjectthree.missingcourse;
                     }
                     list.push(listone);
                 })
@@ -925,7 +1052,11 @@ var   getcoachmonthdata=function(coachid,beginDate,endDate,callback){
         }
         //console.log(coursedata);
         coursedata=_.sortBy(coursedata,"_id");
-        return callback(null,coursedata);
+        var courseday=[];
+        coursedata.forEach(function(r,index){
+            courseday.push(r._id);
+        })
+        return callback(null,courseday);
     })
 };
 var  getcoachmonthleaveinfo=function(coachid,beginDate,endDate,callback){
@@ -935,15 +1066,47 @@ var  getcoachmonthleaveinfo=function(coachid,beginDate,endDate,callback){
         if (err){
             return callback(err);
         }
-
+        var leaveday=[];
+        choosemonth=beginDate.getMonth();
+        leavedata.forEach(function(r,index){
+            leavebegintimemonth= r.leavebegintime.getMonth();
+            leaveendtimemonth= r.leaveendtime.getMonth();
+            leavebegintimeday= r.leavebegintime.getDate();
+            leaveendtimeday= r.leaveendtime.getDate();
+             if (leavebegintimemonth==leaveendtimemonth){
+                 for(i=leavebegintimeday;i<=leaveendtimeday;i++){
+                     if (leavedata.indexOf(i)==-1){
+                     leaveday.push(i);}
+                 }
+             }
+            else {
+                 //
+                 if (choosemonth==leavebegintimemonth){
+                     for(i=leavebegintimeday;i<=31;i++){
+                         if (leavedata.indexOf(i)==-1){
+                             leaveday.push(i);}
+                     }
+                 }else  if (choosemonth==leaveendtimemonth) {
+                     for(i=1;i<=leaveendtimeday;i++){
+                         if (leavedata.indexOf(i)==-1){
+                             leaveday.push(i);}
+                     }
+                 }
+             }
+        });
+        leaveday=_.sortBy(leaveday);
+        return callback (null,leaveday);
     })
 }
-var  begintime=(new Date(2015,12,3));
-var endtime=(new Date(2016,1,1));
-console.log(begintime.getMonth());
-console.log(begintime);
-console.log(endtime.getMonth());
-console.log(new Date().getMonth());
+//var  begintime=(new Date(2015,12,3));
+//var endtime=(new Date(2016,1,1));
+//console.log(begintime.getMonth());
+//console.log(begintime);
+//console.log(endtime.getMonth());
+//console.log(new Date().getMonth());
+//getcoachmonthleaveinfo("5616352721ec29041a9af889",begintime,endtime,function(err,data){
+//    console.log(data);
+//})
 //getcoachmonthdata("563ecd21bc863bcc287c3647",begintime,endtime,function(err,data){
 //    console.log(data);
 //})
@@ -953,13 +1116,15 @@ exports.getmonthapplydata=function(coachid,year,month,callback){
     var endtime=(new Date(year,month-1,1)).addMonths(1);
     var proxy = new eventproxy();
     proxy.fail(callback);
+    getcoachmonthleaveinfo(coachid,begintime,endtime,proxy.done("leaveoff"));
+    getcoachmonthdata(coachid,begintime,endtime,proxy.done("reservationapply"));
     proxy.all('reservationapply',"leaveoff",
-        function (reservationapply,reservationapply){
-            var weekmroedatainfo= {
-                datalist:reservationapply,
-                coursedata:reservationapply
+        function (reservationapply,leaveoff){
+            var monthday= {
+                reservationapply:reservationapply,
+                leaveoff:leaveoff
             };
-            return callback(null,weekmroedatainfo);
+            return callback(null,monthday);
         });
 };
 // 教练获取没有处理的预约申请
@@ -1019,7 +1184,8 @@ exports.getCoachReservationinfo=function(reservationid,coachid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         coachid:new mongodb.ObjectId(coachid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason subject is_coachcomment")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo userid cancelreason subject is_coachcomment " +
+            "comment  coachcomment cancelreason")
         .populate("userid","_id  name headportrait displayuserid")
         .exec(function(err,resdata){
             if(err){

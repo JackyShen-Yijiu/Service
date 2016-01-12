@@ -218,8 +218,15 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
 
 // ================================================教练端1.1 功能接口=======================
     // 获取日历上的约课休假信息
-v1.get("/courseinfo/getmonthapplydata",ensureAuthorizedController.ensureAuthorized,courseController.getmonthapplydata);
-    //获取系统消息列表
+  v1.get("/courseinfo/getmonthapplydata",ensureAuthorizedController.ensureAuthorized,courseController.getmonthapplydata);
+   //学员签到 （教练提交申请）
+   v1.post("/courseinfo/coursesignin",ensureAuthorizedController.ensureAuthorized,courseController.courseSignin);
+  // 教练评价学员
+   v1.post("/courseinfo/coachcommentv2",ensureAuthorizedController.ensureAuthorized,courseController.coachCommentV2);
+  // 绑定 支付宝 微信  银行卡
+  v1.post("/userinfo/",ensureAuthorizedController.ensureAuthorized,userController.receivemycupon);
+    // 用户提款
+  //获取系统消息列表
 
 //==========================================================================================
 

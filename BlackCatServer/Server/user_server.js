@@ -919,12 +919,15 @@ exports.getStudentInfo=function(userid,callback){
             }
 
                     var subjectprocess="";
+            var leavecourse=0;
                     if (data.subject.subjectid==2){
                         subjectprocess= data.subjecttwo.progress;
+                        leavecourse:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
                     }
                     else if(data.subject.subjectid==3)
                     {
-                        subjectprocess=  data.subjecttwo.progress;
+                        subjectprocess=  data.subjectthree.progress;
+                        leavecourse:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
                     }
                     var user={
                         "_id": data._id,
@@ -937,7 +940,8 @@ exports.getStudentInfo=function(userid,callback){
                         "mobile":data.mobile,
                         "address":data.address,
                         "applyschoolinfo":data.applyschoolinfo,
-                        "subjectprocess": subjectprocess
+                        "subjectprocess": subjectprocess,
+                        "leavecourse":leavecourse,
 
                     }
 
@@ -962,12 +966,15 @@ exports.getCoachStudentList=function(coachinfo,callback){
                 var userlist=[] ;
                 data.forEach(function(r,index){
                     var subjectprocess="";
+                    var leavecourse=0;
                     if (r.subject.subjectid==2){
                         subjectprocess= r.subjecttwo.progress;
+                        leavecourse:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
                     }
                     else if(r.subject.subjectid==3)
                     {
-                        subjectprocess=  r.subjecttwo.progress;
+                        subjectprocess= r.subjectthree.progress;
+                        leavecourse:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
                     }
                     var user={
                         "_id": r._id,
@@ -975,7 +982,8 @@ exports.getCoachStudentList=function(coachinfo,callback){
                         "name": r.name,
                         "headportrait": r.headportrait,
                         "subject": r.subject,
-                        "subjectprocess": subjectprocess
+                        "subjectprocess": subjectprocess,
+                        "leavecourse":leavecourse,
 
                     }
                     userlist.push(user);
@@ -1836,7 +1844,7 @@ exports.postenrollverificationv2=function(applyinfo,callback){
                         userdata.applyclasstypeinfo.name=classtypedata.classname;
                         userdata.applyclasstypeinfo.price=classtypedata.price;
                         userdata.vipserverlist=classtypedata.vipserverlist;
-                        userdata.applystate=appTypeEmun.ApplyState.Applying;
+                        userdata.applystate=appTypeEmun.ApplyState.Applyvalidation;
                         userdata.applyinfo.applytime=new Date();
                         userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
                         //userdata.scanauditurl=auditurl.applyurl+userdata._id;
@@ -2003,6 +2011,7 @@ exports.applyVerification=function(applyinfo,callback){
         coachdata.drivinglicensenumber=applyinfo.drivinglicensenumber ? applyinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
         coachdata.coachnumber=applyinfo.coachnumber ? applyinfo.coachnumber:coachdata.coachnumber;
         coachdata.validationstate=appTypeEmun.CoachValidationState.Validationing;
+        coachdata.coachtype=applyinfo.coachtype ? applyinfo.coachtype:coachdata.coachtype;
         coachdata.is_validation=false;
         if (applyinfo.driveschoolid){
            schoolModel.findById(new mongodb.ObjectId(applyinfo.driveschoolid),function(err,schooldata){
@@ -2012,6 +2021,8 @@ exports.applyVerification=function(applyinfo,callback){
                 coachdata.driveschool=new mongodb.ObjectId(applyinfo.driveschoolid);
                 coachdata.driveschoolinfo.id=applyinfo.driveschoolid;
                 coachdata.driveschoolinfo.name=schooldata.name;
+                coachdata.province=schooldata.province;
+                coachdata.city=schooldata.city;
                 coachdata.save(function(err,data){
                     if(err)
                     {
@@ -2141,6 +2152,8 @@ exports.updateCoachServer=function(updateinfo,callback){
                     coachdata.driveschool = new mongodb.ObjectId(updateinfo.driveschoolid);
                     coachdata.driveschoolinfo.id = updateinfo.driveschoolid;
                     coachdata.driveschoolinfo.name = schooldata.name;
+                    coachdata.province=schooldata.province;
+                    coachdata.city=schooldata.city;
                     if (updateinfo.trainfield) {
                         trainfieldModel.findById(new mongodb.ObjectId(updateinfo.trainfield), function (err, trainfielddata) {
                             if (err || !trainfielddata) {

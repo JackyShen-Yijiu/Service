@@ -14,7 +14,9 @@ var async = require('async');
 
 exports.searchDriverSchool=function(searchinfo,callback){
 
-    var searchcondition= {};
+    var searchcondition= {
+        is_validation:true
+    };
     if (searchinfo.cityname!=""){
         searchcondition.city=new RegExp(searchinfo.cityname);
     }else{
