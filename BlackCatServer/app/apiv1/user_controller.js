@@ -1027,7 +1027,7 @@ exports.remindExam=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"参数错误",""));
     };
-    if(info.userid!=req.userId){
+    if(info.coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",{}));
     };
