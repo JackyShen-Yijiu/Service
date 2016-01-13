@@ -17,6 +17,7 @@ var LocalCity=function(){
 var myCity = new BMap.LocalCity();
 myCity.get(myFun);
 }
+LocalCity();
 
 
  var geoc = new BMap.Geocoder();

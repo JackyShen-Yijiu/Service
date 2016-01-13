@@ -41,7 +41,8 @@ exports.ApplyHandelState={
 exports.ApplyState={
     NotApply:0, // 没有申请
     Applying:1, // 申请中
-    Applyed:2 // 申请成功
+    Applyed:2, // 申请成功
+    Applyvalidation:3// 申请验证
 }
 // 预约状态
 exports.ReservationState={
@@ -53,14 +54,18 @@ exports.ReservationState={
     applyconfirm:3,
     //教练（拒绝或者取消）
     applyrefuse:4,
-    //  待确认完成
+    //  待确认完成  (v1.1 中没有该字段)
     unconfirmfinish:5,
     //待评论
     ucomments:6,
     // 订单完成
     finish:7,
     //系统取消
-    systemcancel:8
+    systemcancel:8,
+    //已签到
+    signin:9,
+    //未签到
+    nosignin:10
 }
 // ����״̬��Ϣ
 exports.ExamintionSatte={

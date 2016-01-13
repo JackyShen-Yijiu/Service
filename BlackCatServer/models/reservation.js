@@ -54,6 +54,8 @@ var ReservationSchema=new Schema({
         operator:{ type: String, default: ""}, // 处理人
         handledatetime:Date      //处理时间
     },
+    is_signin:{type: Boolean, default: false}, // 是否签到
+    sigintime:Date,   // 签到时间
     // 取消预约原因
     cancelreason:{reason:String,cancelcontent:String},
     // 是否接送

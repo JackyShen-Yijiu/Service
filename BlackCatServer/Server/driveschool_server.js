@@ -14,7 +14,9 @@ var async = require('async');
 
 exports.searchDriverSchool=function(searchinfo,callback){
 
-    var searchcondition= {};
+    var searchcondition= {
+        is_validation:true
+    };
     if (searchinfo.cityname!=""){
         searchcondition.city=new RegExp(searchinfo.cityname);
     }else{
@@ -40,7 +42,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
     schoolModel.find(searchcondition)
         .select("")
         .sort(ordercondition)
-        .skip((searchinfo.index-1)*10)
+        .skip((searchinfo.index-1)*searchinfo.count)
         .limit(searchinfo.count)
         .exec(function(err,driveschool){
             if (err ) {
@@ -194,8 +196,14 @@ exports.getSchoolTrainingField=function(schoolid,callback){
     })
 }
 //根据驾校id 获取驾校课程类型
-exports.getClassTypeBySchoolId=function(schoolid,callback){
-    classtypeModel.find({"schoolid":new mongodb.ObjectId(schoolid),"is_using":true})
+exports.getClassTypeBySchoolId=function(schoolid,cartype,callback){
+    var searchinfo={};
+    if (cartype!=0){
+        searchinfo={"carmodel.modelsid":cartype};
+    }
+    searchinfo.schoolid=new mongodb.ObjectId(schoolid);
+    searchinfo.is_using=true;
+    classtypeModel.find(searchinfo)
         .populate("schoolid"," name  latitude longitude address")
         .populate("vipserverlist"," name  color id")
     .exec(function(err,data){
