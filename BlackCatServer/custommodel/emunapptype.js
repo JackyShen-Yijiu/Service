@@ -80,7 +80,9 @@ exports.ExamintionSatte={
     //   ����û��ͨ��,�������±���
     nopass:4,
     //  ����ͨ�� ��������
-    pass :5
+    pass :5,
+    // 可报考
+    canapply:6
 }
 // 积分发放状态
 exports.IntegralState={

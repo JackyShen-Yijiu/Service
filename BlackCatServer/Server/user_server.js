@@ -2382,8 +2382,50 @@ exports.getCoachinfoServer=function(userid,callback){
         returnmodel.coachid =coachdata._id;
         return callback(null,returnmodel);
     });
-}
+};
+//提醒用户报考
+exports.remindExam=function(info,callback){
+    usermodel.findOne({"_id":new  mongodb.ObjectId(info.userid),"applycoach":new mongodb.ObjectId(info.coachid)})
+        .select("subject  subjecttwo  subjectthree d")
+        .exec(function(err,data){
+            if(err){
+                return callback("查找用户出错："+err);
+            }
+            if (!data){
+                return callback("没有查询到此学员的信息")
+            }
+            if( data.subject.subjectid==2){
+                if (data.subjecttwo.finishcourse+data.subjecttwo.reservation<data.subjecttwo.totalcourse){
+                    return callback("该学院的课时没有学满，无法报考");
+                }
+                if (data.examinationinfo.subjecttwo.examinationstate!=appTypeEmun.ExamintionSatte.noapply){
+                    return callback("用户已经报考");
+                }
+                usermodel.update({"_id":new  mongodb.ObjectId(info.userid)},
+                    {"examinationinfo.subjecttwo.examinationstate": appTypeEmun.ExamintionSatte.canapply},{safe: false},
+                function(err,data){
+                    return callback(null,"sucess");
+                });
+            }else  if ( data.subject.subjectid==3){
+                if (data.subjectthree.finishcourse+data.subjectthree.reservation<data.subjectthree.totalcourse){
+                    return callback("该学院的课时没有学满，无法报考");
+                }
+                if (data.examinationinfo.subjectthree.examinationstate!=appTypeEmun.ExamintionSatte.noapply){
+                    return callback("用户已经报考");
+                }
+                usermodel.update({"_id":new  mongodb.ObjectId(info.userid)},
+                    {"examinationinfo.subjecttwo.examinationstate": appTypeEmun.ExamintionSatte.canapply},{safe: false},
+                    function(err,data){
+                        return callback(null,"sucess");
+                    });
+            }else {
+                return callback("该用户当前科目无法报考");
+            }
 
+        })
+};
+
+exports.getAllCoachtags=function(callback){};
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){
     userCountModel.getUserCountInfo(function(err,data){

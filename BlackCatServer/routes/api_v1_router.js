@@ -228,6 +228,10 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
     // 用户提款
   v1.post("/userinfo/usercashout",ensureAuthorizedController.ensureAuthorized,userController.userCashOut);
   //获取系统消息列表
+  // 提醒学员报考
+  v1.post("/userinfo/remindexam",ensureAuthorizedController.ensureAuthorized,userController.remindExam);
+   //获取系统所有教练标签
+    v1.get("/userinfo/getallcoachtags",userController.getAllCoachtags);
 
 //==========================================================================================
 

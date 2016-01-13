@@ -1015,6 +1015,38 @@ exports.getMyWallet=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+
+// 教练提醒学员考试
+exports.remindExam=function(req,res){
+    var info={
+         coachid:req.body.coachid,
+         userid:req.body.userid
+    };
+    if (info.userid===undefined||info.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(info.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.remindExam(info,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+//  获取教练所有标签
+exports.getAllCoachtags=function(req,res){
+   var coachid=req.query.coachid;
+    userserver.getAllCoachtags(info,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 
 
