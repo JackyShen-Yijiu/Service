@@ -2426,6 +2426,20 @@ exports.remindExam=function(info,callback){
 
         })
 };
+var  getcoachchoosetag=function(coachid,callback){
+    try {
+        coachmode.findById(new mongodb.ObjectId(coachid))
+            .select("tagslist")
+            .exec(function(err,data){
+                if(err||!data){
+                    return callback([]);
+                }
+                return callback(data.tagslist?data.tagslist:[]);
+            })
+    }catch(ex){
+        return callback ([]);
+    }
+}
 //获取教练所有的tag
 exports.getAllCoachtags=function(coachid,callback){
     CoachTag.find({tagtype:0},function(err,systemdata){
@@ -2436,11 +2450,37 @@ exports.getAllCoachtags=function(coachid,callback){
             if  (err){
                 return callback("查询标签出出错"+err);
             }
-            var returndata={
-                systemtag:systemdata,
-                selft:slefdata
-            }
-            return callback(null,returndata);
+            getcoachchoosetag(coachid,function(choosedata){
+                systemdata= _.map(systemdata,function(item,i){
+                    var systemitem={
+                        _id:item._id,
+                        tagname:item.tagname,
+                        tagtype:item.tagtype,
+                        coachid:item.tagtype,
+                        is_audit:item.tagtype,
+                        is_choose: choosedata.indexOf(item._id)>-1?true:false,
+                    }
+                    return  systemitem;
+                });
+                slefdata= _.map(slefdata,function(item,i){
+                    var systemitem={
+                        _id:item._id,
+                        tagname:item.tagname,
+                        tagtype:item.tagtype,
+                        coachid:item.tagtype,
+                        is_audit:item.tagtype,
+                        is_choose: choosedata.indexOf(item._id)>-1?true:false,
+                }
+                    return  systemitem;
+                });
+
+                var returndata={
+                    systemtag:systemdata,
+                    selft:slefdata
+                }
+                return callback(null,returndata);
+            })
+
         })
     })
 };
@@ -2457,7 +2497,6 @@ exports.coachAddTag=function(taginfo,callback){
         }
         return callback(null,data);
     })
-
 }
 // 删除教练自定义标签
 exports.coachDeletetag=function(taginfo,callback){
