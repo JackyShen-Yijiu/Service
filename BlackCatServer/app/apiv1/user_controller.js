@@ -1041,7 +1041,69 @@ exports.remindExam=function(req,res){
 //  获取教练所有标签
 exports.getAllCoachtags=function(req,res){
    var coachid=req.query.coachid;
-    userserver.getAllCoachtags(info,function(err,data){
+    userserver.getAllCoachtags(coachid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+// 教练添加自定义标签
+exports.coachAddTag=function(req,res){
+    var  taginfo={
+        coachid:req.body.coachid,
+        tagname:req.body.tagname
+    }
+    if (taginfo.tagname===undefined||taginfo.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(taginfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.coachAddTag(taginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+// 教练删除自定义标签
+exports.coachDeletetag=function(req,res){
+    var  taginfo={
+        coachid:req.body.coachid,
+        tagid:req.body.tagid
+    }
+    if (taginfo.tagid===undefined||taginfo.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(taginfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.coachDeletetag(taginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+exports.coachSettags=function(req,res){
+    var  taginfo={
+        coachid:req.body.coachid,
+        tagslist:req.body.tagslist
+    }
+    if (taginfo.tagslist===undefined||taginfo.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(taginfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.coachSetTags(taginfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));
         }

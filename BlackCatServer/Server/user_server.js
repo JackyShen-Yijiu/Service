@@ -32,6 +32,7 @@ var userfcode= mongodb.UserFcode;
 var IncomeDetails= mongodb.IncomeDetails;
 var SystemIncome=mongodb.SystemIncome;
 var coupon=mongodb.Coupon;
+var CoachTag=mongodb.CoachTagsModel;
 var UserCashOutModel=mongodb.UserCashOutModel;
 require('date-utils');
 var _ = require("underscore");
@@ -2424,8 +2425,58 @@ exports.remindExam=function(info,callback){
 
         })
 };
+//获取教练所有的tag
+exports.getAllCoachtags=function(coachid,callback){
+    CoachTag.find({tagtype:0},function(err,systemdata){
+        if  (err){
+            return callback("查询标签出出错"+err);
+        }
+        CoachTag.find({tagtype:1,coachid:coachid},function(err,slefdata){
+            if  (err){
+                return callback("查询标签出出错"+err);
+            }
+            var returndata={
+                systemtag:systemdata,
+                selft:slefdata
+            }
+            return callback(null,returndata);
+        })
+    })
+};
+// 添加教练自定义标签
+exports.coachAddTag=function(taginfo,callback){
+    var temptag=new CoachTag();
+    temptag.tagtype=1;
+    temptag.tagname=taginfo.tagname;
+    temptag.coachid=taginfo.coachid;
+    temptag.is_audit=false;
+    temptag.save(function(err,data){
+        if(err){
+            return  callback("保存标签出错："+err);
+        }
+        return callback(null,"success");
+    })
 
-exports.getAllCoachtags=function(callback){};
+}
+// 删除教练自定义标签
+exports.coachDeletetag=function(taginfo,callback){
+    CoachTag.remove({_id:new mongodb.ObjectId(taginfo.tagid),tagtype:1,is_audit:false,coachid:taginfo.coachid},function(err,data){
+        if(err){
+            return callback("删除标签出错");
+        }
+        return callback(null,"success");
+    });
+};
+// 教练设置自己标签
+exports.coachSetTags =function(taginfo,callback){
+    taglist=taginfo.tagslist.split(",");
+    coachmode.update({"_id":taginfo.coachid}, { $set: { tagslist: taglist}},function(err,data){
+        if(err){
+            return callback("保存教练标签出错");
+        }
+        return  callback(null,"sucess");
+    })
+};
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){
     userCountModel.getUserCountInfo(function(err,data){

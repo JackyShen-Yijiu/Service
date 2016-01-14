@@ -232,7 +232,13 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
   v1.post("/userinfo/remindexam",ensureAuthorizedController.ensureAuthorized,userController.remindExam);
    //获取系统所有教练标签
     v1.get("/userinfo/getallcoachtags",userController.getAllCoachtags);
-
+    // 教练添加自定义标签
+   v1.post("/userinfo/coachaddtag",ensureAuthorizedController.ensureAuthorized,userController.coachAddTag);
+   // 教练删除自定义标签
+   v1.post("/userinfo/coachdeletetag",ensureAuthorizedController.ensureAuthorized,userController.coachDeletetag);
+   // 教练选择自己的标签
+    v1.post("userinfo/coachsetselftags",ensureAuthorizedController.ensureAuthorized,
+        userController.coachSettags)
 //==========================================================================================
 
 //---------------------------------ceshishiyong---------------------------------------

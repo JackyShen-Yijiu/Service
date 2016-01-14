@@ -11,11 +11,10 @@ var Schema = mongoose.Schema;
 var CoachTagsSchema = new Schema({
     tagname:String,
     tagtype:Number,  // 标签类型 0  系统标签  1教练自定义标签
-    coacid:Number,
-    is_open :{type:Boolean,default:false},
-
+    coachid:String,  // 如果是教练 教练id
+    is_audit :{type:boolean,default:true}  // 如果时候教练标签是否审核
 });
 
-CoachTagsSchema.index({is_open: 1});
-CoachTagsSchema.index({fatherid: 1});
-module.exports = mongoose.model('city_info', CoachTagsSchema);
+CoachTagsSchema.index({coachid: 1});
+CoachTagsSchema.index({tagtype: 1});
+module.exports = mongoose.model('coachtags', CoachTagsSchema);

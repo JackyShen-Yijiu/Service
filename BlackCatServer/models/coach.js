@@ -74,6 +74,8 @@ var  CoachSchema=new Schema({
     bankcardlist:[{name:String, cardnumber:String,cardbank:String}],
     // 我所服务的班级列,
     serverclasslist:[{type: Schema.Types.ObjectId, ref: 'classtype'} ],
+    // 我的标签列表
+    tagslist:[{type: Schema.Types.ObjectId, ref: 'coachtags'} ],
     // 用户积分状态
     integralstate:{type:Number,default:0},
     // 用户积分发放人员列表
