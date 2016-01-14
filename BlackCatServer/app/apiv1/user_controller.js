@@ -1109,6 +1109,26 @@ exports.coachSettags=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+
+// 获取教练系统消息
+exports.getsysteminfo=function(req,res){
+    var  searchinfo={
+        coachid:req.query.coachid,
+        index:req.query.index?req.query.index:1,
+        count:req.query.count?req.query.count:1,
+    }
+    if(searchinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getSystemInfo(searchinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
 }
 
 

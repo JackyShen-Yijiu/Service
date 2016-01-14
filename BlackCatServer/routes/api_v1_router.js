@@ -9,6 +9,7 @@ var driveSchoolController=require('../app/apiv1/school_controller');
 var testController=require('../app/apiv1/testfile_controller');
 var courseController=require("../app/apiv1/course_controller");
 var ensureAuthorizedController=require('../app/apiv1/authenticate_controller');
+var userCenterController=require('../app/apiHeadMaster/userCenter_controller');
 var v1 = express.Router();
 
 //================================================ v1 api=================
@@ -237,8 +238,14 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
    // 教练删除自定义标签
    v1.post("/userinfo/coachdeletetag",ensureAuthorizedController.ensureAuthorized,userController.coachDeletetag);
    // 教练选择自己的标签
-    v1.post("userinfo/coachsetselftags",ensureAuthorizedController.ensureAuthorized,
-        userController.coachSettags)
+    v1.post("/userinfo/coachsetselftags",ensureAuthorizedController.ensureAuthorized,
+        userController.coachSettags);
+    //教练获取系统消息
+    v1.get("/userinfo/getsysteminfo",ensureAuthorizedController.ensureAuthorized,
+    userController.getsysteminfo);
+    // 教练获取资讯消息
+    v1.get("/userinfo/getnews", userCenterController.getIndustryNews);
+
 //==========================================================================================
 
 //---------------------------------ceshishiyong---------------------------------------

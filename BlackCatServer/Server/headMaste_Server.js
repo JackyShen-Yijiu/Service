@@ -212,6 +212,7 @@ exports.getIndustryNews=function(searchinfo,callback){
                         description: r.description,
                         contenturl: r.contenturl,
                         createtime: r.createtime,
+                        newstype: r.newstype? r.newstype:0,
                         seqindex: r.seqindex
                     }
                     newslist.push(news);

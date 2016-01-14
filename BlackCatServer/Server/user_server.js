@@ -34,6 +34,7 @@ var SystemIncome=mongodb.SystemIncome;
 var coupon=mongodb.Coupon;
 var CoachTag=mongodb.CoachTagsModel;
 var UserCashOutModel=mongodb.UserCashOutModel;
+var SystemMessage=mongodb.SystemMessageModel;
 require('date-utils');
 var _ = require("underscore");
 
@@ -2477,6 +2478,19 @@ exports.coachSetTags =function(taginfo,callback){
         return  callback(null,"sucess");
     })
 };
+// 教练 获取系统消息
+exports.getSystemInfo =function(searchinfo,callback){
+    SystemMessage.find({userid:searchinfo.coachid})
+        .skip((searchinfo.index-1)*searchinfo.count)
+        .limit(searchinfo.count)
+        .sort({"createtime":-1})
+        .exec(function(err,data){
+            if (err){
+                return callback("查询系统消息出错："+err);
+            }
+            return callback(null,data);
+        })
+}
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){
     userCountModel.getUserCountInfo(function(err,data){

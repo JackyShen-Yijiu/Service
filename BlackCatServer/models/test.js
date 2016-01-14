@@ -19,12 +19,29 @@ var shcoolsummary =mongodb.SchoolDaySummaryModel;
 var   cityinfo=mongodb.CityiInfoModel;
 var ActivityModel=mongodb.ActivityModel;
 var auditurl=require("../Config/sysconfig").validationurl;
+var tags=mongodb.CoachTagsModel;
+var systemmessage=mongodb.SystemMessageModel;
 require('date-utils');
 var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
 
+var  addtags =function(){
+    var   temptag=new tags();
+    temptag.tagname="五星级教练";
+    temptag.tagtype=0;
+    temptag.save();
+}
+ var  addsystemnew=function(){
+     var tem=new systemmessage();
+     tem.userid="5616352721ec29041a9af889";
+     tem.title="金额增加通知";
+     tem.description="恭喜您获得1元";
+     tem.detial="金额增加通知恭喜您获得1元";
+     tem.save();
+ }
+addsystemnew();
 var addActivity=function(){
     var temptivityModel=new ActivityModel();
     temptivityModel.name="一步vip包过班";
