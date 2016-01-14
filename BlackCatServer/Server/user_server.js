@@ -2455,7 +2455,7 @@ exports.coachAddTag=function(taginfo,callback){
         if(err){
             return  callback("保存标签出错："+err);
         }
-        return callback(null,"success");
+        return callback(null,data);
     })
 
 }
