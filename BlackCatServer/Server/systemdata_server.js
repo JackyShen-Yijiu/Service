@@ -45,8 +45,19 @@ exports.getmessagecount=function(searchinfo,callback){
                 return callback("查询行业信息："+err);
             }
             var info={
-                systemmessagecount:systemmessagecount,
-                newscount:newscount
+                //systemmessagecount:systemmessagecount,
+                //newscount:newscount
+                messageinfo:{
+                    messagecount:systemmessagecount,
+                    message:"您的积分有更新",
+                    messagetime:(new Date).toFormat("YYYY-MM-DD")
+                },
+                Newsinfo:{
+                    newscount:newscount,
+                    news:"",
+                    newstime:(new Date).toFormat("YYYY-MM-DD")
+                }
+
             }
             return  callback(null,info);
         })
