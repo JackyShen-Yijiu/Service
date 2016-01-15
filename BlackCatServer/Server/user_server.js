@@ -2511,6 +2511,9 @@ exports.coachDeletetag=function(taginfo,callback){
 // 教练设置自己标签
 exports.coachSetTags =function(taginfo,callback){
     taglist=taginfo.tagslist.split(",");
+    if(taginfo.lengt==0){
+        taglist=[];
+    }
     coachmode.update({"_id":taginfo.coachid}, { $set: { tagslist: taglist}},function(err,data){
         if(err){
             return callback("保存教练标签出错");
