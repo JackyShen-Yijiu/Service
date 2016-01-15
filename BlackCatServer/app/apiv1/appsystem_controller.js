@@ -223,4 +223,17 @@ exports.postUserFeedBack=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     })
 
+};
+exports.getmessagecount=function(req,res){
+    var searchinfo={
+        coachid:req.query.coachid,
+        lastmessage:req.query.lastmessage?req.query.lastnews:0,
+        lastnews:req.query.lastnews?req.query.lastnews:0
+    }
+    sysstemserver.getmessagecount(searchinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 }

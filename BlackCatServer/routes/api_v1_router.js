@@ -247,9 +247,9 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
     // 教练获取资讯消息
     v1.get("/userinfo/getnews", userCenterController.getIndustryNews);
      // 获取系统和资讯消息数量
-    //v1.get("/userinfo/getmessagecount",userCenterController.getmessagecount);
+    v1.get("/userinfo/getmessagecount",appsystemController.getmessagecount);
     // 名称模糊搜索我的预约列表
-v1.get("/courseinfo/searchreservationlist",ensureAuthorizedController.ensureAuthorized,
+    v1.get("/courseinfo/searchreservationlist",ensureAuthorizedController.ensureAuthorized,
     courseController.searchreservationlist);
 
 //==========================================================================================
