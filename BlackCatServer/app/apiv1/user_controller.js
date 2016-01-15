@@ -655,6 +655,7 @@ exports.updateCoachInfo=function(req,res){
         trainfield:req.body.trainfieldlinfo,  // 训练场
         //is_shuttle:req.body.is_shuttle,  // 是否接送
         platenumber:req.body.platenumber, // 车牌号
+        coachtype: req.body.coachtype,  //教练的方式 0 挂靠教练  1直营教练
         //shuttlemsg:req.body.shuttlemsg  // 车送说明
     }
     //console.log(updateuserinfo)

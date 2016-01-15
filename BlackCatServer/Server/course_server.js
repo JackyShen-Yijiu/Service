@@ -985,7 +985,77 @@ exports.saveCoachLeaveInfo=function(leaveinfo ,callback){
             return callback(null,"success");
         })
     });
-}
+};
+// 按名称模糊搜索预约列表
+exports.searchreservationlist=function(queryinfo,callback){
+     usermodel.find({"subject.subjectid":{"$gt":1},name:new RegExp(queryinfo.searchname),is_lock:false})
+         .select("_id")
+         .limit(100)
+         .exec(function(err,data){
+             if(err){
+                 return callback("查询用户出错:"+err);
+             }
+             if(data.length>0){
+                 useridlist=[];
+                 for(var i=0;i<data.length;i++){
+                     useridlist.push(data[i]._id);
+                 }
+                 var searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+                     userid:{"$in":useridlist}}
+                 if(queryinfo.reservationstate!=0){
+                     searchinfo.reservationstate=queryinfo.reservationstate;
+                 }
+                 reservationmodel.find(searchinfo)
+                     .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
+                         " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum  learningcontent")
+                     .populate("userid","_id  name headportrait subjecttwo subjectthree")
+                     .skip((queryinfo.index-1)*10)
+                     .limit(10)
+                     .sort({"reservationcreatetime":-1})
+                     .exec(function(err,data){
+                         if(err){
+                             return callback("查询数据出错："+err);
+                         }
+                         process.nextTick(function(){
+                             var list=[]
+                             data.forEach(function(r,index){
+                                 var listone= {
+                                     _id: r._id,
+                                     userid: r.userid,
+                                     reservationstate: (r.is_coachcomment&&r.reservationstate==appTypeEmun.ReservationState.ucomments)?
+                                         appTypeEmun.ReservationState.finish: r.reservationstate,
+                                     reservationcreatetime: r.reservationcreatetime,
+                                     subject: r.subject,
+                                     is_shuttle: r.is_shuttle,
+                                     shuttleaddress: r.shuttleaddress,
+                                     courseprocessdesc: r.courseprocessdesc,
+                                     classdatetimedesc: r.classdatetimedesc,
+                                     trainfieldlinfo: r.trainfieldlinfo,
+                                     begintime: r.begintime,
+                                     endtime: r.endtime,
+                                     learningcontent: r.learningcontent,
+                                     leavecoursecount:0,
+                                     missingcoursecount:0
+                                 };
+                                 if (r.subject.subjectid==2){
+                                     listone.leavecoursecount= r.userid.subjecttwo.totalcourse- r.endclassnum;
+                                     listone.missingcoursecount= r.userid.subjecttwo.missingcourse;
+                                 }else if(r.subject.subjectid==3){
+                                     listone.leavecoursecount= r.userid.subjectthree.totalcourse- r.endclassnum;
+                                     listone.missingcoursecount= r.userid.subjectthree.missingcourse;
+                                 }
+                                 list.push(listone);
+                             })
+                             return callback(null,list);
+                         })
+                     });
+
+             }else {
+                 return callback(null,[]);
+             }
+         })
+
+};
 // 教练获取我的预约列表
 exports.getCoachReservationList=function(queryinfo,callback){
     var searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid)}

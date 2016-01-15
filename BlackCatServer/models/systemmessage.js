@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 
 var  SystemMessageSchema = new Schema({
     createtime:{type:Date,default:Date.now()},//  消息时间
-    userid:{type:String,default:""} , //消息 对应id
+    userid:{type:String,default:""} , //ix
     title:{type:String,default:""},   //消息题目
     description:{type:String,default:""},  // 消息描述
     detial:{type:String,default:""},  // 消息详情

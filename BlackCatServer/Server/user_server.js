@@ -2254,6 +2254,7 @@ exports.updateCoachServer=function(updateinfo,callback){
             coachdata.subject = updateinfo.subject ? updateinfo.subject : coachdata.subject;
             coachdata.Seniority = updateinfo.Seniority ? updateinfo.Seniority : coachdata.Seniority;
             coachdata.passrate = updateinfo.passrate ? updateinfo.passrate : coachdata.passrate;
+            coachdata.coachtype = updateinfo.coachtype ? updateinfo.coachtype : coachdata.coachtype;
             //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
             //coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
             coachdata.idcardnumber = updateinfo.idcardnumber ? updateinfo.idcardnumber : coachdata.idcardnumber;

@@ -458,6 +458,28 @@ exports.getCoachReservationList=function(req,res){
     });
 
 }
+// 教练按名称模糊搜索预约列表
+exports.searchreservationlist=function(req,res){
+    var queryinfo= {
+        coachid:req.query.coachid,
+        reservationstate:req.query.reservationstate?req.query.reservationstate:0,
+        searchname:req.query.searchname?req.query.searchname:"",
+        index:req.query.index?req.query.index:1
+    }
+    if (queryinfo.coachid===undefined|| queryinfo.index===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+    }
+    if(queryinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserver.searchreservationlist(queryinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 // 提交教练的预约请求
 exports.postCoachLeave=function(req,res){
     var leaveinfo={

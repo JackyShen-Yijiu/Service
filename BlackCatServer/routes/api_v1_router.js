@@ -201,7 +201,8 @@ v1.post("/userinfo/coachsetclass",ensureAuthorizedController.ensureAuthorized,us
 // 教练请假接口
 v1.post("/courseinfo/putcoachleave",ensureAuthorizedController.ensureAuthorized,courseController.postCoachLeave);
 //教练获取预约列表
-v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachReservationList);
+v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,
+    courseController.getCoachReservationList);
 // 教练获取某一天的预约列表
 v1.get("/courseinfo/daysreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachDaysreservation);
 // 教练获取预约详情
@@ -245,6 +246,11 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
     userController.getsysteminfo);
     // 教练获取资讯消息
     v1.get("/userinfo/getnews", userCenterController.getIndustryNews);
+     // 获取系统和资讯消息数量
+    //v1.get("/userinfo/getmessagecount",userCenterController.getmessagecount);
+    // 名称模糊搜索我的预约列表
+v1.get("/courseinfo/searchreservationlist",ensureAuthorizedController.ensureAuthorized,
+    courseController.searchreservationlist);
 
 //==========================================================================================
 
