@@ -643,7 +643,7 @@ exports.coachCommentV2=function(commnetinfo,callback){
         if(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments){
             resdata.reservationstate=appTypeEmun.ReservationState.finish;
         }
-        resdata.learningcontent=reservationinfo.learningcontent;
+        resdata.learningcontent=commnetinfo.learningcontent;
         if (resdata.startclassnum!=undefined && resdata.startclassnum !=undefined)
         {
             var tempstr="";
@@ -655,11 +655,11 @@ exports.coachCommentV2=function(commnetinfo,callback){
                 tempstr= "第"+ (resdata.startclassnum)+"--"+( resdata.endclassnum)+"课时";
             }
             resdata.courseprocessdesc=resdata.subject.name+ tempstr+"  "+
-                (reservationinfo.learningcontent?reservationinfo.learningcontent:"");
+                (commnetinfo.learningcontent?commnetinfo.learningcontent:"");
 
         }
         else{
-            resdata.courseprocessdesc=resdata.subject.name+"  "+(reservationinfo.learningcontent?reservationinfo.learningcontent:"");
+            resdata.courseprocessdesc=resdata.subject.name+"  "+(commnetinfo.learningcontent?commnetinfo.learningcontent:"");
         }
         //console.log("科目："+resdata.subject.name);
         resdata.finishtime=new Date();
@@ -675,13 +675,13 @@ exports.coachCommentV2=function(commnetinfo,callback){
                     data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
                     data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
                     data.subjecttwo.progress=resdata.courseprocessdesc;
-                    data.subjecttwo.reservationid=reservationinfo.reservationid;
+                    data.subjecttwo.reservationid=commnetinfo.reservationid;
                 }
                 if (newdata.subject.subjectid==3){
                     data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
                     data.subjectthree.finishcourse=data.subjectthree.finishcourse+newdata.coursehour;
                     data.subjectthree.progress=resdata.courseprocessdesc;
-                    data.subjectthree.reservationid=reservationinfo.reservationid;
+                    data.subjectthree.reservationid=commnetinfo.reservationid;
                 }
                 //console.log(data);
                 data.save(function(err){
