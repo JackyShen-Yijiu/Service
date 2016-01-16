@@ -493,7 +493,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                             userfcode.findOne({"userid":newinstace._id})
                                 .select("userid fcode money")
                                 .exec(function(err, fcodedata){
-                                    returnmodel.fcode=fcodedata.fcode?fcodedata.fcode:"";
+                                    returnmodel.fcode=fcodedata&&fcodedata.fcode?fcodedata.fcode:"";
                                     return callback(null,returnmodel);
                                 })
 
