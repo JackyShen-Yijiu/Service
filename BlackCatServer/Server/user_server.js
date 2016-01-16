@@ -2461,7 +2461,7 @@ exports.getAllCoachtags=function(coachid,callback){
                         tagtype:item.tagtype,
                         coachid:item.tagtype,
                         is_audit:item.tagtype,
-                        color:item.tagtype?item.tagtype:colorarray[colorid],
+                        color:item.color?item.color:colorarray[colorid],
                         is_choose: choosedata.indexOf(item._id)>-1?true:false,
                     }
                     return  systemitem;
@@ -2474,7 +2474,7 @@ exports.getAllCoachtags=function(coachid,callback){
                         tagtype:item.tagtype,
                         coachid:item.tagtype,
                         is_audit:item.tagtype,
-                        color:item.tagtype?item.tagtype:colorarray[colorid],
+                        color:item.color?item.color:colorarray[colorid],
                         is_choose: choosedata.indexOf(item._id)>-1?true:false,
                 }
                     return  systemitem;
@@ -2486,7 +2486,6 @@ exports.getAllCoachtags=function(coachid,callback){
                 }
                 return callback(null,returndata);
             })
-
         })
     })
 };
