@@ -458,7 +458,7 @@ exports.userlogin= function(usertype,userinfo,callback){
     }else if(usertype==userTypeEmun.Coach)
     {
         coachmode.findOne({mobile: userinfo.mobile})
-            .populate("coachtags"," _id  tagname tagtype color")
+            .populate("tagslist"," _id  tagname tagtype color")
             .exec(function (err, userinstace) {
             if (err)
             {
@@ -486,7 +486,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.usersetting=newinstace.usersetting;
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
-                            returnmodel.coachtags=userinstace.coachtags;
+                            returnmodel.tagslist=userinstace.tagslist;
                             if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
                                 regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
                                     coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
@@ -2369,7 +2369,7 @@ exports.getUserinfoServer=function(type,userid,callback){
 
     } else if(type==appTypeEmun.UserType.Coach) {
         coachmode.findById(new mongodb.ObjectId(userid))
-            .populate("coachtags"," _id  tagname tagtype color")
+            .populate("tagslist"," _id  tagname tagtype color")
             .exec(function(err,coachdata){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
@@ -2378,7 +2378,7 @@ exports.getUserinfoServer=function(type,userid,callback){
             returnmodel.token="";
             //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
             returnmodel.coachid =coachdata._id;
-                returnmodel.coachtags=coachdata.coachtags;
+                returnmodel.tagslist=coachdata.tagslist;
             return callback(null,returnmodel);
         });
     }else
@@ -2388,7 +2388,7 @@ exports.getUserinfoServer=function(type,userid,callback){
 };
 exports.getCoachinfoServer=function(userid,callback){
     coachmode.findById(new mongodb.ObjectId(userid))
-        .populate("coachtags"," _id  tagname tagtype color")
+        .populate("tagslist"," _id  tagname tagtype color")
         .exec(function(err,coachdata) {
         if (err || !coachdata) {
             return callback("查询教练出错：" + err);
@@ -2397,7 +2397,7 @@ exports.getCoachinfoServer=function(userid,callback){
         returnmodel.token=coachdata.token;
         returnmodel.usersetting=coachdata.usersetting;
         returnmodel.idcardnumber=idCardNumberObfuscator(coachdata.idcardnumber);
-            returnmodel.coachtags=coachdata.coachtags;
+            returnmodel.tagslist=coachdata.tagslist;
         returnmodel.coachid =coachdata._id;
         userfcode.findOne({"userid":coachdata._id})
             .select("userid fcode money")
