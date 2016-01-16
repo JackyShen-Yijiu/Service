@@ -490,7 +490,13 @@ exports.userlogin= function(usertype,userinfo,callback){
                                         { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
                                 })
                             }
-                            return callback(null,returnmodel);
+                            userfcode.findOne({"userid":newinstace._id})
+                                .select("userid fcode money")
+                                .exec(function(err, fcodedata){
+                                    returnmodel.fcode=fcodedata.fcode?fcodedata.fcode:"";
+                                    return callback(null,returnmodel);
+                                })
+
 
                         });
                     }

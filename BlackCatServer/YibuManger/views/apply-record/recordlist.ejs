@@ -107,19 +107,19 @@
                         </div>
                         <div class="control-group">
                             <div class="alert-info">
-                                报名状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate!='1'" class="span2" id="applystate" ng-model="formData.applystate" >
-                                    <option value="0">未报名</option>
-                                    <option value="1">报名中</option>
-                                    <option value="2">报名成功</option>
+                                报名状态：    <select style="margin-top: 10px"  ng-disabled="formData.applystate==0" class="span2" id="applystate" ng-model="formData.applystate" >
+                                    <option value=0>未报名</option>
+                                    <option value=1>报名中</option>
+                                    <option value=2>报名成功</option>
                                 </select>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="alert-info text-center">
-                                处理状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate!='1'" class="span2" id="handelstate" ng-model="formData.applyinfo.handelstate" >
-                                    <option value="0">未处理</option>
-                                    <option value="1">处理中</option>
-                                    <option value="2">处理成功</option>
+                                处理状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate==0" class="span2" id="handelstate" ng-model="formData.applyinfo.handelstate" >
+                                    <option value=0>未处理</option>
+                                    <option value=1>处理中</option>
+                                    <option value=2>处理成功</option>
                                 </select>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate!='1'" >处理</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate==0" >处理</button>
                 </div>
             </div>
 
@@ -175,6 +175,16 @@
                 // area : ['800px' , '520px'],
                 content:$("#editpage")
             });
+        };
+        $scope.auditestudent=function(){
+            if(  $scope.formData._id===undefined){
+                layer.msg('没有找到用户信息', {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return;
+            }
         }
+
     });
 </script>
