@@ -2387,7 +2387,9 @@ exports.getUserinfoServer=function(type,userid,callback){
     }
 };
 exports.getCoachinfoServer=function(userid,callback){
-    coachmode.findById(new mongodb.ObjectId(userid),function(err,coachdata) {
+    coachmode.findById(new mongodb.ObjectId(userid))
+        .populate("coachtags"," _id  tagname tagtype color")
+        .exec(function(err,coachdata) {
         if (err || !coachdata) {
             return callback("查询教练出错：" + err);
         }
@@ -2395,8 +2397,14 @@ exports.getCoachinfoServer=function(userid,callback){
         returnmodel.token=coachdata.token;
         returnmodel.usersetting=coachdata.usersetting;
         returnmodel.idcardnumber=idCardNumberObfuscator(coachdata.idcardnumber);
+            returnmodel.coachtags=coachdata.coachtags;
         returnmodel.coachid =coachdata._id;
-        return callback(null,returnmodel);
+        userfcode.findOne({"userid":coachdata._id})
+            .select("userid fcode money")
+            .exec(function(err, fcodedata){
+                returnmodel.fcode=fcodedata&&fcodedata.fcode?fcodedata.fcode:"";
+                return callback(null,returnmodel);
+            })
     });
 };
 //提醒用户报考
