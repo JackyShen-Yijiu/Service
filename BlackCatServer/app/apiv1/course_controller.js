@@ -416,7 +416,7 @@ exports.courseSignin=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"您的二维码生成已经超时，请重新生成扫描",[]));
     }
-    if(queryinfo.coachid!=req.userId){
+    if(sigininfo.coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
