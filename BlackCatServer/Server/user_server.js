@@ -15,6 +15,7 @@ var appTypeEmun=require("../custommodel/emunapptype");
 var regisermobIm=require('../Common/mobIm');
 var appWorkTimes=require("../Config/commondata").worktimes;
 var subjectlist=require("../Config/commondata").subject;
+var colorarray=require("../Config/sysconfig").coachtagcolor
 var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
 var cache=require('../Common/cache');
@@ -2453,23 +2454,27 @@ exports.getAllCoachtags=function(coachid,callback){
             }
             getcoachchoosetag(coachid,function(choosedata){
                 systemdata= _.map(systemdata,function(item,i){
+                  var colorid =parseInt(Math.random()*8, 10)
                     var systemitem={
                         _id:item._id,
                         tagname:item.tagname,
                         tagtype:item.tagtype,
                         coachid:item.tagtype,
                         is_audit:item.tagtype,
+                        color:item.tagtype?item.tagtype:colorarray[colorid],
                         is_choose: choosedata.indexOf(item._id)>-1?true:false,
                     }
                     return  systemitem;
                 });
                 slefdata= _.map(slefdata,function(item,i){
+                    var colorid =parseInt(Math.random()*8, 10);
                     var systemitem={
                         _id:item._id,
                         tagname:item.tagname,
                         tagtype:item.tagtype,
                         coachid:item.tagtype,
                         is_audit:item.tagtype,
+                        color:item.tagtype?item.tagtype:colorarray[colorid],
                         is_choose: choosedata.indexOf(item._id)>-1?true:false,
                 }
                     return  systemitem;
@@ -2488,10 +2493,12 @@ exports.getAllCoachtags=function(coachid,callback){
 // 添加教练自定义标签
 exports.coachAddTag=function(taginfo,callback){
     var temptag=new CoachTag();
+    var colorid =parseInt(Math.random()*8, 10);
     temptag.tagtype=1;
     temptag.tagname=taginfo.tagname;
     temptag.coachid=taginfo.coachid;
     temptag.is_audit=false;
+    temptag.color=colorarray[colorid];
     temptag.save(function(err,data){
         if(err){
             return  callback("保存标签出错："+err);
