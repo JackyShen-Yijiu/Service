@@ -1005,6 +1005,30 @@ exports.searchreservationlist=function(queryinfo,callback){
                  if(queryinfo.reservationstate!=0){
                      searchinfo.reservationstate=queryinfo.reservationstate;
                  }
+                 // 已取消
+                 if(queryinfo.reservationstate ==appTypeEmun.ReservationState.applycancel){
+                     searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+                         reservationstate:{"$in":[appTypeEmun.ReservationState.applycancel,appTypeEmun.ReservationState.applyrefuse,
+                             appTypeEmun.ReservationState.systemcancel]},
+                         userid:{"$in":useridlist}}
+                 };
+                 //带评价
+                 if(queryinfo.reservationstate ==appTypeEmun.ReservationState.ucomments){
+                     searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+                         reservationstate:queryinfo.reservationstate,
+                         is_coachcomment:false,
+                         userid:{"$in":useridlist}}
+
+                 };
+                 // 已完成
+                 if(queryinfo.reservationstate ==appTypeEmun.ReservationState.finish){
+                     searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+                         "$or":[{reservationstate:queryinfo.reservationstate},{
+                             reservationstate:appTypeEmun.ReservationState.ucomments,
+                             is_coachcomment:true
+                         }],
+                         userid:{"$in":useridlist}}
+                 };
                  reservationmodel.find(searchinfo)
                      .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
                          " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum  learningcontent")
@@ -1062,6 +1086,26 @@ exports.getCoachReservationList=function(queryinfo,callback){
     if(queryinfo.reservationstate!=0){
         searchinfo.reservationstate=queryinfo.reservationstate;
     }
+    // 已取消
+    if(queryinfo.reservationstate ==appTypeEmun.ReservationState.applycancel){
+         searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+             reservationstate:{"$in":[appTypeEmun.ReservationState.applycancel,appTypeEmun.ReservationState.applyrefuse,
+                 appTypeEmun.ReservationState.systemcancel]}}
+    };
+    //带评价
+    if(queryinfo.reservationstate ==appTypeEmun.ReservationState.ucomments){
+        searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+            reservationstate:queryinfo.reservationstate,
+            is_coachcomment:false}
+    };
+    // 已完成
+    if(queryinfo.reservationstate ==appTypeEmun.ReservationState.finish){
+        searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+            "$or":[{reservationstate:queryinfo.reservationstate},{
+                reservationstate:appTypeEmun.ReservationState.ucomments,
+                is_coachcomment:true
+            }]}
+    };
     reservationmodel.find(searchinfo)
         .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
         " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum  learningcontent")

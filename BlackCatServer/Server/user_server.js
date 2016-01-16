@@ -457,7 +457,9 @@ exports.userlogin= function(usertype,userinfo,callback){
         });
     }else if(usertype==userTypeEmun.Coach)
     {
-        coachmode.findOne({mobile: userinfo.mobile}, function (err, userinstace) {
+        coachmode.findOne({mobile: userinfo.mobile})
+            .populate("coachtags"," _id  tagname tagtype color")
+            .exec(function (err, userinstace) {
             if (err)
             {
                 return callback ("查找用户出错:"+ err);
@@ -484,6 +486,7 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.usersetting=newinstace.usersetting;
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
+                            returnmodel.coachtags=userinstace.coachtags;
                             if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
                                 regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
                                     coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
@@ -2365,7 +2368,9 @@ exports.getUserinfoServer=function(type,userid,callback){
         })
 
     } else if(type==appTypeEmun.UserType.Coach) {
-        coachmode.findById(new mongodb.ObjectId(userid),function(err,coachdata) {
+        coachmode.findById(new mongodb.ObjectId(userid))
+            .populate("coachtags"," _id  tagname tagtype color")
+            .exec(function(err,coachdata){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
             }
@@ -2373,6 +2378,7 @@ exports.getUserinfoServer=function(type,userid,callback){
             returnmodel.token="";
             //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
             returnmodel.coachid =coachdata._id;
+                returnmodel.coachtags=coachdata.coachtags;
             return callback(null,returnmodel);
         });
     }else
