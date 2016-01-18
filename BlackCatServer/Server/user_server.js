@@ -1054,7 +1054,7 @@ exports.setCoachClassInfo=function(classinfo,callback){
                          idx = data.serverclasslist.indexOf(new mongodb.ObjectId(r));}
 
                         if (idx == -1) {
-                            if (data.serverclasslist===undefined|| data.serverclasslist.length==0){
+                            if (data.serverclasslist==undefined||data.serverclasslist==null){
                                 data.serverclasslist=[];
                             }
                             data.serverclasslist.push(new mongodb.ObjectId(r));
@@ -1101,6 +1101,7 @@ exports.getCoachClassInfo=function(userid,callback){
                         var ind =-1;
                         if (data.serverclasslist!=undefined&&data.serverclasslist.length>0){
                             ind=data.serverclasslist.indexOf(r._id);}
+                        console.log(list);
                         var listone={
                             classid: r._id,
                             classname: r.classname,
