@@ -1054,7 +1054,7 @@ exports.setCoachClassInfo=function(classinfo,callback){
                          idx = data.serverclasslist.indexOf(new mongodb.ObjectId(r));}
 
                         if (idx == -1) {
-                            if (data.serverclasslist===undefined|| data.serverclasslist.length==0){
+                            if (data.serverclasslist==undefined||data.serverclasslist==null){
                                 data.serverclasslist=[];
                             }
                             data.serverclasslist.push(new mongodb.ObjectId(r));
