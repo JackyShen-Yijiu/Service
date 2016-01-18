@@ -1090,7 +1090,9 @@ exports.getCoachClassInfo=function(userid,callback){
                 process.nextTick(function(){
                     var list=[];
                     classlist.forEach(function(r,index){
-                        var ind=data.serverclasslist.indexOf(r._id);
+                        var ind =-1;
+                        if (data.serverclasslist!=undefined&&data.serverclasslist.length>0){
+                            ind=data.serverclasslist.indexOf(r._id);}
                         var listone={
                             classid: r._id,
                             classname: r.classname,
