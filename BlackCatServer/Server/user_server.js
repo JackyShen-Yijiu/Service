@@ -1101,7 +1101,7 @@ exports.getCoachClassInfo=function(userid,callback){
                         var ind =-1;
                         if (data.serverclasslist!=undefined&&data.serverclasslist.length>0){
                             ind=data.serverclasslist.indexOf(r._id);}
-                        console.log(list);
+                        console.log(ind);
                         var listone={
                             classid: r._id,
                             classname: r.classname,
