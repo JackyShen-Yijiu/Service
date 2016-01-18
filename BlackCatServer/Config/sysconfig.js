@@ -78,8 +78,8 @@ exports.coachtagcolor=["#ffb814","#f76f56","#fe945b","#20d1bc","#45cbfb","#139ef
 // 验证地址 正式
 
 exports.validationurl={
-    applyurl:"http://123.57.63.15:8181/validation/applyvalidation?userid=",
-    producturl:"http://123.57.63.15:8181/validation/ordervalidation?orderid=",
-    prodcutdetail:"http://123.57.63.15:8181/validation/getpageproductdetial?productid=",
-    orderfinishurl:"http://123.57.63.15:8181/validation/getpageorderfinish?orderid="
+    applyurl:"http://api.yibuxueche.com/validation/applyvalidation?userid=",
+    producturl:"http://api.yibuxueche.com/validation/ordervalidation?orderid=",
+    prodcutdetail:"http://api.yibuxueche.com/validation/getpageproductdetial?productid=",
+    orderfinishurl:"http://api.yibuxueche.com/validation/getpageorderfinish?orderid="
 }
