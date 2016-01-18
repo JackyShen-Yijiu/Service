@@ -1031,7 +1031,9 @@ exports.setCoachClassInfo=function(classinfo,callback){
                 process.nextTick(function(){
                     var is_shuttle=false;
                     classlist.forEach(function(r,index){
-                        var idx=data.serverclasslist.indexOf(r._id);
+                        var idx=-1;
+                        if (data.serverclasslist!=undefined&& data.serverclasslist.length>0){
+                         idx=data.serverclasslist.indexOf(r._id);}
                         if (idx != -1) {
                             data.serverclasslist.splice(idx, 1);;
                         }
