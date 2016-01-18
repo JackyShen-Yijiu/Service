@@ -12,6 +12,8 @@ var mallProductModel=mongodb.MallProdcutsModel;
 var cityInfoModel=mongodb.CityiInfoModel;
 var userconsultModel=mongodb.UserConsultModel;
 var activityModel=mongodb.ActivityModel;
+var systemmessageModel=mongodb.SystemMessageModel;
+var industryNewsModel=mongodb.IndustryNewsModel;
 var prodcutdetail=require("../Config/sysconfig").validationurl.prodcutdetail;
 require('date-utils');
 
@@ -30,7 +32,38 @@ exports.saveUserConsult=function(userinfo,callback){
         }
         return callback(null,"success");
     })
-}
+};
+//  查询用户消息
+exports.getmessagecount=function(searchinfo,callback){
+    systemmessageModel.count({userid:searchinfo.coachid,seqindex:{"$gt":searchinfo.lastmessage}},
+    function(err,systemmessagecount){
+        if(err){
+            return callback("查询系统消息数量出错："+err);
+        }
+        industryNewsModel.count({seqindex:{"$gt":searchinfo.lastnews}},function(err,newscount){
+            if(err){
+                return callback("查询行业信息："+err);
+            }
+            var info={
+                //systemmessagecount:systemmessagecount,
+                //newscount:newscount
+                messageinfo:{
+                    messagecount:systemmessagecount,
+                    message:"您的积分有更新",
+                    messagetime:(new Date).toFormat("YYYY-MM-DD")
+                },
+                Newsinfo:{
+                    newscount:newscount,
+                    news:"",
+                    newstime:(new Date).toFormat("YYYY-MM-DD")
+                }
+
+            }
+            return  callback(null,info);
+        })
+    })
+
+    };
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
     feedback.feedbackmessage=feedbackinfo.feedbackmessage;

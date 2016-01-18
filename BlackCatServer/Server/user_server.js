@@ -15,6 +15,7 @@ var appTypeEmun=require("../custommodel/emunapptype");
 var regisermobIm=require('../Common/mobIm');
 var appWorkTimes=require("../Config/commondata").worktimes;
 var subjectlist=require("../Config/commondata").subject;
+var colorarray=require("../Config/sysconfig").coachtagcolor
 var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
 var cache=require('../Common/cache');
@@ -32,6 +33,9 @@ var userfcode= mongodb.UserFcode;
 var IncomeDetails= mongodb.IncomeDetails;
 var SystemIncome=mongodb.SystemIncome;
 var coupon=mongodb.Coupon;
+var CoachTag=mongodb.CoachTagsModel;
+var UserCashOutModel=mongodb.UserCashOutModel;
+var SystemMessage=mongodb.SystemMessageModel;
 require('date-utils');
 var _ = require("underscore");
 
@@ -453,7 +457,9 @@ exports.userlogin= function(usertype,userinfo,callback){
         });
     }else if(usertype==userTypeEmun.Coach)
     {
-        coachmode.findOne({mobile: userinfo.mobile}, function (err, userinstace) {
+        coachmode.findOne({mobile: userinfo.mobile})
+            .populate("tagslist"," _id  tagname tagtype color")
+            .exec(function (err, userinstace) {
             if (err)
             {
                 return callback ("查找用户出错:"+ err);
@@ -480,13 +486,20 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.usersetting=newinstace.usersetting;
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
+                            returnmodel.tagslist=userinstace.tagslist;
                             if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
                                 regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
                                     coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
                                         { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
                                 })
                             }
-                            return callback(null,returnmodel);
+                            userfcode.findOne({"userid":newinstace._id})
+                                .select("userid fcode money")
+                                .exec(function(err, fcodedata){
+                                    returnmodel.fcode=fcodedata&&fcodedata.fcode?fcodedata.fcode:"";
+                                    return callback(null,returnmodel);
+                                })
+
 
                         });
                     }
@@ -738,7 +751,7 @@ exports.searchCoach=function(searchinfo,callback){
     coachmode.find(searchcondition)
         .select("")
         .sort(ordercondition)
-        .skip((searchinfo.index-1)*10)
+        .skip((searchinfo.index-1)*searchinfo.count)
         .limit(searchinfo.count)
         .exec(function(err,driveschool){
             if (err ) {
@@ -919,12 +932,18 @@ exports.getStudentInfo=function(userid,callback){
             }
 
                     var subjectprocess="";
+            var leavecoursecount=0;
+            var missingcoursecount=0;
                     if (data.subject.subjectid==2){
                         subjectprocess= data.subjecttwo.progress;
+                        leavecoursecount:data.subjecttwo.totalcourse- data.subjecttwo.finishcourse-data.subjecttwo.missingcourse;
+                        missingcoursecount= data.subjecttwo.missingcourse?data.subjecttwo.missingcourse:0;
                     }
                     else if(data.subject.subjectid==3)
                     {
-                        subjectprocess=  data.subjecttwo.progress;
+                        subjectprocess=  data.subjectthree.progress;
+                        leavecoursecount:data.subjectthree.totalcourse- data.subjectthree.finishcourse-data.subjectthree.missingcourse;
+                        missingcoursecount= data.subjectthree.missingcourse?data.userid.subjectthree.missingcourse:0;
                     }
                     var user={
                         "_id": data._id,
@@ -937,7 +956,9 @@ exports.getStudentInfo=function(userid,callback){
                         "mobile":data.mobile,
                         "address":data.address,
                         "applyschoolinfo":data.applyschoolinfo,
-                        "subjectprocess": subjectprocess
+                        "subjectprocess": subjectprocess,
+                        "leavecoursecount":leavecoursecount,
+                        "missingcoursecount":missingcoursecount
 
                     }
 
@@ -962,12 +983,18 @@ exports.getCoachStudentList=function(coachinfo,callback){
                 var userlist=[] ;
                 data.forEach(function(r,index){
                     var subjectprocess="";
+                    var leavecoursecount=0;
+                    var missingcoursecount=0;
                     if (r.subject.subjectid==2){
                         subjectprocess= r.subjecttwo.progress;
+                        leavecoursecount:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
+                        missingcoursecount= r.subjecttwo.missingcourse?r.subjecttwo.missingcourse:0;
                     }
                     else if(r.subject.subjectid==3)
                     {
-                        subjectprocess=  r.subjecttwo.progress;
+                        subjectprocess= r.subjectthree.progress;
+                        leavecoursecount:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
+                        missingcoursecount= r.subjectthree.missingcourse?r.subjectthree.missingcourse:0;
                     }
                     var user={
                         "_id": r._id,
@@ -975,7 +1002,9 @@ exports.getCoachStudentList=function(coachinfo,callback){
                         "name": r.name,
                         "headportrait": r.headportrait,
                         "subject": r.subject,
-                        "subjectprocess": subjectprocess
+                        "subjectprocess": subjectprocess,
+                        "leavecoursecount":leavecoursecount,
+                        "missingcoursecount":missingcoursecount
 
                     }
                     userlist.push(user);
@@ -1495,6 +1524,114 @@ exports.getmyCupon=function(queryinfo,callback){
             callback(err,data);
         })
 };
+// 用户提现申请
+exports.userCashOut=function(cashinfo,callback){
+    var usertypeobject;
+    if(bindbankinfo.usertype==appTypeEmun.UserType.User){
+        usertypeobject=usermodel;
+    }else {
+        usertypeobject=coachmode;
+    }
+    usertypeobject.findById(new mongodb.ObjectId(bindbankinfo.userid))
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错："+err);
+            }
+            if (!data){
+                return callback("没有查到此用户的信息");
+            }
+            if(data.is_lock){
+                return callback("用户已锁定无法绑定");
+            }
+            if(bindbankinfo.cardtype!=3){
+                return callback("在不支持此类型的提现");
+            }
+            userfcode.findOne({"userid":data._id})
+                .exec(function(err, moneydata){
+                   if (err){
+                       return callback("查询用户金额出错"+err);
+                   }
+                    if(!moneydata){
+                        return callback("没有查询到用户的现金信息");
+                    }
+                    if (moneydata.money<cashinfo.money){
+                        return callback("金额不足");
+                    }
+                    moneydata.money=moneydata.money-cashinfo.money;
+                    moneydata.save(function(err,newmymoneydata){
+                        var tempincomedetail=new IncomeDetails();
+                        tempincomedetail.userid=newmymoneydata.userid;
+                        tempincomedetail.createtime=new Date();
+                        tempincomedetail.usertype=newmymoneydata.usertype;
+                        tempincomedetail.income=cashinfo.money*(-1);
+                        tempincomedetail.type=0;    // 支出
+                        tempincomedetail.state=1;  // 有效
+                        tempincomedetail.save(function(err,incomedetaildata){
+                            var  tempusercashmodel=new UserCashOutModel();
+                            tempusercashmodel.userid=bindbankinfo.userid;
+                            tempusercashmodel.createtime=new Date();
+                            tempusercashmodel.usertype=bindbankinfo.usertype;
+                            tempusercashmodel.money=bindbankinfo.money;
+                            tempusercashmodel.cashoutstate=1;
+                            tempusercashmodel.cardtype=bindbankinfo.cardtype;
+                            tempusercashmodel.name=bindbankinfo.name;
+                            tempusercashmodel.cardnumber=bindbankinfo.cardnumber;
+                            tempusercashmodel.cardbank=bindbankinfo.cardbank;
+                            tempusercashmodel.save(function(err,data){
+                                if (err){
+                                    return callback("保存取现信息错误"+err);
+                                }
+                                return callback(null,"sucess");
+                            })
+                        })
+                    });
+                })
+
+        })
+}
+//绑定银行卡
+exports.bindBank=function(bindbankinfo,callback){
+    var usertypeobject;
+    if(bindbankinfo.usertype==appTypeEmun.UserType.User){
+        usertypeobject=usermodel;
+    }else {
+        usertypeobject=coachmode;
+    }
+    usertypeobject.findById(new mongodb.ObjectId(bindbankinfo.userid))
+        .exec(function(err,data){
+            if(err){
+                return callback("查询用户出错："+err);
+            }
+            if (!data){
+                return callback("没有查到此用户的信息");
+            }
+            if(data.is_lock){
+                return callback("用户已锁定无法绑定");
+            }
+            if(bindbankinfo.cardtype!=3){
+                return callback("在不支持此类型的绑定");
+            }
+            for(var i=0;i<data.bankcardlist.length;i++){
+                if (data.bankcardlist[i].cardnumber==bindbankinfo.cardnumber){
+                    return  callback("已绑定此银行卡");
+                    break;
+                }
+            }
+            var onebank={
+                name:bindbankinfo.name,
+                cardnumber:bindbankinfo.cardnumber,
+                cardbank:bindbankinfo.cardbank
+            }
+            data.bankcardlist.push(onebank);
+            data.save(function(err,data){
+                if(err){
+                    return callback("绑定银行卡出错"+err);
+                }
+                return callback(null,"sucess");
+            })
+        })
+
+}
 exports.getMymoneyList=function(queryinfo,callback){
     userfcode.findOne({"userid":queryinfo.userid})
         .select("userid fcode money")
@@ -1836,7 +1973,7 @@ exports.postenrollverificationv2=function(applyinfo,callback){
                         userdata.applyclasstypeinfo.name=classtypedata.classname;
                         userdata.applyclasstypeinfo.price=classtypedata.price;
                         userdata.vipserverlist=classtypedata.vipserverlist;
-                        userdata.applystate=appTypeEmun.ApplyState.Applying;
+                        userdata.applystate=appTypeEmun.ApplyState.Applyvalidation;
                         userdata.applyinfo.applytime=new Date();
                         userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
                         //userdata.scanauditurl=auditurl.applyurl+userdata._id;
@@ -2011,6 +2148,7 @@ exports.applyVerification=function(applyinfo,callback){
         coachdata.drivinglicensenumber=applyinfo.drivinglicensenumber ? applyinfo.drivinglicensenumber:coachdata.drivinglicensenumber;
         coachdata.coachnumber=applyinfo.coachnumber ? applyinfo.coachnumber:coachdata.coachnumber;
         coachdata.validationstate=appTypeEmun.CoachValidationState.Validationing;
+        coachdata.coachtype=applyinfo.coachtype ? applyinfo.coachtype:coachdata.coachtype;
         coachdata.is_validation=false;
         if (applyinfo.driveschoolid){
            schoolModel.findById(new mongodb.ObjectId(applyinfo.driveschoolid),function(err,schooldata){
@@ -2020,6 +2158,8 @@ exports.applyVerification=function(applyinfo,callback){
                 coachdata.driveschool=new mongodb.ObjectId(applyinfo.driveschoolid);
                 coachdata.driveschoolinfo.id=applyinfo.driveschoolid;
                 coachdata.driveschoolinfo.name=schooldata.name;
+                coachdata.province=schooldata.province;
+                coachdata.city=schooldata.city;
                 coachdata.save(function(err,data){
                     if(err)
                     {
@@ -2131,6 +2271,7 @@ exports.updateCoachServer=function(updateinfo,callback){
             coachdata.subject = updateinfo.subject ? updateinfo.subject : coachdata.subject;
             coachdata.Seniority = updateinfo.Seniority ? updateinfo.Seniority : coachdata.Seniority;
             coachdata.passrate = updateinfo.passrate ? updateinfo.passrate : coachdata.passrate;
+            coachdata.coachtype = updateinfo.coachtype ? updateinfo.coachtype : coachdata.coachtype;
             //coachdata.worktime=updateinfo.worktime ? updateinfo.worktime:coachdata.worktime;
             //coachdata.coursestudentcount=updateinfo.coursestudentcount ? updateinfo.coursestudentcount:coachdata.coursestudentcount;
             coachdata.idcardnumber = updateinfo.idcardnumber ? updateinfo.idcardnumber : coachdata.idcardnumber;
@@ -2148,6 +2289,8 @@ exports.updateCoachServer=function(updateinfo,callback){
                     coachdata.driveschool = new mongodb.ObjectId(updateinfo.driveschoolid);
                     coachdata.driveschoolinfo.id = updateinfo.driveschoolid;
                     coachdata.driveschoolinfo.name = schooldata.name;
+                    coachdata.province=schooldata.province;
+                    coachdata.city=schooldata.city;
                     if (updateinfo.trainfield) {
                         trainfieldModel.findById(new mongodb.ObjectId(updateinfo.trainfield), function (err, trainfielddata) {
                             if (err || !trainfielddata) {
@@ -2232,7 +2375,9 @@ exports.getUserinfoServer=function(type,userid,callback){
         })
 
     } else if(type==appTypeEmun.UserType.Coach) {
-        coachmode.findById(new mongodb.ObjectId(userid),function(err,coachdata) {
+        coachmode.findById(new mongodb.ObjectId(userid))
+            .populate("tagslist"," _id  tagname tagtype color")
+            .exec(function(err,coachdata){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
             }
@@ -2240,6 +2385,7 @@ exports.getUserinfoServer=function(type,userid,callback){
             returnmodel.token="";
             //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
             returnmodel.coachid =coachdata._id;
+                returnmodel.tagslist=coachdata.tagslist;
             return callback(null,returnmodel);
         });
     }else
@@ -2248,7 +2394,9 @@ exports.getUserinfoServer=function(type,userid,callback){
     }
 };
 exports.getCoachinfoServer=function(userid,callback){
-    coachmode.findById(new mongodb.ObjectId(userid),function(err,coachdata) {
+    coachmode.findById(new mongodb.ObjectId(userid))
+        .populate("tagslist"," _id  tagname tagtype color")
+        .exec(function(err,coachdata) {
         if (err || !coachdata) {
             return callback("查询教练出错：" + err);
         }
@@ -2256,11 +2404,169 @@ exports.getCoachinfoServer=function(userid,callback){
         returnmodel.token=coachdata.token;
         returnmodel.usersetting=coachdata.usersetting;
         returnmodel.idcardnumber=idCardNumberObfuscator(coachdata.idcardnumber);
+            returnmodel.tagslist=coachdata.tagslist;
         returnmodel.coachid =coachdata._id;
-        return callback(null,returnmodel);
+        userfcode.findOne({"userid":coachdata._id})
+            .select("userid fcode money")
+            .exec(function(err, fcodedata){
+                returnmodel.fcode=fcodedata&&fcodedata.fcode?fcodedata.fcode:"";
+                return callback(null,returnmodel);
+            })
     });
-}
+};
+//提醒用户报考
+exports.remindExam=function(info,callback){
+    usermodel.findOne({"_id":new  mongodb.ObjectId(info.userid),"applycoach":new mongodb.ObjectId(info.coachid)})
+        .select("subject  subjecttwo  subjectthree d")
+        .exec(function(err,data){
+            if(err){
+                return callback("查找用户出错："+err);
+            }
+            if (!data){
+                return callback("没有查询到此学员的信息")
+            }
+            if( data.subject.subjectid==2){
+                if (data.subjecttwo.finishcourse+data.subjecttwo.reservation<data.subjecttwo.totalcourse){
+                    return callback("该学院的课时没有学满，无法报考");
+                }
+                if (data.examinationinfo.subjecttwo.examinationstate!=appTypeEmun.ExamintionSatte.noapply){
+                    return callback("用户已经报考");
+                }
+                usermodel.update({"_id":new  mongodb.ObjectId(info.userid)},
+                    {"examinationinfo.subjecttwo.examinationstate": appTypeEmun.ExamintionSatte.canapply},{safe: false},
+                function(err,data){
+                    return callback(null,"sucess");
+                });
+            }else  if ( data.subject.subjectid==3){
+                if (data.subjectthree.finishcourse+data.subjectthree.reservation<data.subjectthree.totalcourse){
+                    return callback("该学院的课时没有学满，无法报考");
+                }
+                if (data.examinationinfo.subjectthree.examinationstate!=appTypeEmun.ExamintionSatte.noapply){
+                    return callback("用户已经报考");
+                }
+                usermodel.update({"_id":new  mongodb.ObjectId(info.userid)},
+                    {"examinationinfo.subjecttwo.examinationstate": appTypeEmun.ExamintionSatte.canapply},{safe: false},
+                    function(err,data){
+                        return callback(null,"sucess");
+                    });
+            }else {
+                return callback("该用户当前科目无法报考");
+            }
 
+        })
+};
+var  getcoachchoosetag=function(coachid,callback){
+    try {
+        coachmode.findById(new mongodb.ObjectId(coachid))
+            .select("tagslist")
+            .exec(function(err,data){
+                if(err||!data){
+                    return callback([]);
+                }
+                return callback(data.tagslist?data.tagslist:[]);
+            })
+    }catch(ex){
+        return callback ([]);
+    }
+}
+//获取教练所有的tag
+exports.getAllCoachtags=function(coachid,callback){
+    CoachTag.find({tagtype:0},function(err,systemdata){
+        if  (err){
+            return callback("查询标签出出错"+err);
+        }
+        CoachTag.find({tagtype:1,coachid:coachid},function(err,slefdata){
+            if  (err){
+                return callback("查询标签出出错"+err);
+            }
+            getcoachchoosetag(coachid,function(choosedata){
+                systemdata= _.map(systemdata,function(item,i){
+                  var colorid =parseInt(Math.random()*8, 10)
+                    var systemitem={
+                        _id:item._id,
+                        tagname:item.tagname,
+                        tagtype:item.tagtype,
+                        coachid:item.tagtype,
+                        is_audit:item.tagtype,
+                        color:item.color?item.color:colorarray[colorid],
+                        is_choose: choosedata.indexOf(item._id)>-1?true:false,
+                    }
+                    return  systemitem;
+                });
+                slefdata= _.map(slefdata,function(item,i){
+                    var colorid =parseInt(Math.random()*8, 10);
+                    var systemitem={
+                        _id:item._id,
+                        tagname:item.tagname,
+                        tagtype:item.tagtype,
+                        coachid:item.tagtype,
+                        is_audit:item.tagtype,
+                        color:item.color?item.color:colorarray[colorid],
+                        is_choose: choosedata.indexOf(item._id)>-1?true:false,
+                }
+                    return  systemitem;
+                });
+
+                var returndata={
+                    systemtag:systemdata,
+                    selft:slefdata
+                }
+                return callback(null,returndata);
+            })
+        })
+    })
+};
+// 添加教练自定义标签
+exports.coachAddTag=function(taginfo,callback){
+    var temptag=new CoachTag();
+    var colorid =parseInt(Math.random()*8, 10);
+    temptag.tagtype=1;
+    temptag.tagname=taginfo.tagname;
+    temptag.coachid=taginfo.coachid;
+    temptag.is_audit=false;
+    temptag.color=colorarray[colorid];
+    temptag.save(function(err,data){
+        if(err){
+            return  callback("保存标签出错："+err);
+        }
+        return callback(null,data);
+    })
+}
+// 删除教练自定义标签
+exports.coachDeletetag=function(taginfo,callback){
+    CoachTag.remove({_id:new mongodb.ObjectId(taginfo.tagid),tagtype:1,is_audit:false,coachid:taginfo.coachid},function(err,data){
+        if(err){
+            return callback("删除标签出错");
+        }
+        return callback(null,"success");
+    });
+};
+// 教练设置自己标签
+exports.coachSetTags =function(taginfo,callback){
+    taglist=taginfo.tagslist.split(",");
+    if(taginfo.lengt==0){
+        taglist=[];
+    }
+    coachmode.update({"_id":taginfo.coachid}, { $set: { tagslist: taglist}},function(err,data){
+        if(err){
+            return callback("保存教练标签出错");
+        }
+        return  callback(null,"sucess");
+    })
+};
+// 教练 获取系统消息
+exports.getSystemInfo =function(searchinfo,callback){
+    SystemMessage.find({userid:searchinfo.coachid})
+        .skip((searchinfo.index-1)*searchinfo.count)
+        .limit(searchinfo.count)
+        .sort({"createtime":-1})
+        .exec(function(err,data){
+            if (err){
+                return callback("查询系统消息出错："+err);
+            }
+            return callback(null,data);
+        })
+}
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){
     userCountModel.getUserCountInfo(function(err,data){

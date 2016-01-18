@@ -73,7 +73,8 @@ exports.weatherConfig={
 // orderfinishurl:"http://123.57.63.15:8181/validation/getpageorderfinish?orderid="
 // }
 
-
+// 教练标签颜色
+exports.coachtagcolor=["#ffb814","#f76f56","#fe945b","#20d1bc","#45cbfb","#139ef7","#d755f2","#ef56b9"]
 // 验证地址 正式
 
 exports.validationurl={

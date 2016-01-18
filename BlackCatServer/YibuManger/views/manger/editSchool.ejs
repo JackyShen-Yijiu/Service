@@ -56,7 +56,7 @@
                                                     <br/>
                                                     <input type="text" class="span6 disabled"  id="address" name="address"
                                                            ng-model="formData.address"    placeholder="详细地址--可以通过地图选择" required>
-                                                    <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
+                                                    <input type="hidden" id="longitude"  ng-model="formData.longitude"  >
                                                     <input type="hidden" id="latitude" ng-model="formData.latitude"  >
                                                     <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
                                                          role="alert">地址必须</div>
@@ -309,7 +309,6 @@
 
     </div>
 
-
 </div> <!-- /main -->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
 <script  src="/js/baidumap.js"></script>
@@ -322,14 +321,24 @@
 <script type="text/javascript" src="/js/jquery-xmenu.js"></script>
 <script type="application/javascript">
     $(document).ready(function() {
+        //地图选择地址
         $("#address").keydown(function (e) {
             var curKey = e.which;
-            if (curKey == 13) {
-               var address=$("#address").val();
-                setaddress(address);
-                e.preventDefault();
-            }
+             if (curKey == 13) {
+             var address=$("#address").val();
+             setaddress(address);
+             e.preventDefault();
+             }
+
         });
+        //手动填写地址
+        $("#address").blur(function(e){
+            var address=this.value ||"";
+            setaddress(address);
+            e.preventDefault();
+        });
+
+
         $("#selectlicensetype").xMenu({
             width :600,
             eventType: "click", //事件类型 支持focus click hover
@@ -338,6 +347,7 @@
         });
     })
 </script>
+
 <script type="application/javascript">
     ybxcApp.controller("addSchool",function($scope,$http){
        // initlicensetype($scope,$http);
@@ -445,16 +455,19 @@
 
         };
 
-        var savedata=function(){
+        var savedata=function(){//写入数据
             $scope.formData.logoimg=$("#logimg").val();
             $scope.formData.province=$("#province").val();
             $scope.formData.city=$("#city").val();
             $scope.formData.address=$("#address").val();
-            $scope.formData.latitude=$("#latitude").val();
-            $scope.formData.longitude=$("#longitude").val();
+            $scope.formData.latitude=$("#latitude").val();//经度和纬度在手动输入的时候保证能够让后端取到值（加一个判断条件如果取不到值就让用户重写入）
+            $scope.formData.longitude=$("#longitude").val();//纬度
             $scope.formData.registertime=$("#registertime").val();
             $scope.formData.is_validation=$("#is_validation").val();
             $scope.formData.privilegelevel=$("#privilegelevel").val();
+            //判断经纬度是否正确
+
+
             if($("#licensetype").val()==""){
                 alert("驾照类型不为空");
                 return false;

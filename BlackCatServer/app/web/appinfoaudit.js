@@ -7,6 +7,7 @@ var auditserver=require('../../Server/webServer/applyInfoAudit_Server');
 var sysstemserver=require('../../Server/systemdata_server');
 var mobileVerify = /^1\d{10}$/;
 var webtemplate='layout/validationtemplate';
+var weixininfo=require('../../Common/weixin');
 exports.applyinfoAudit=function(req,res){
     var userid=req.query.userid;
     if(userid===undefined){
@@ -174,4 +175,16 @@ exports.sendSchoolCode=function(req,res){
             );
         })
 
+}
+
+exports.getweixininfo=function(req,res){
+    weixininfo.weixinSignature(function(err,data){
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err,"" ));
+        }
+        //console.log(data);
+        return res.json(
+            new BaseReturnInfo(1,"",data)
+        );
+    })
 }

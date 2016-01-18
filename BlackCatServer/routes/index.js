@@ -21,4 +21,9 @@ router.post("/doordervalidation",auditController.doOrderScanAudit);
 router.get("/getpageproductdetial",auditController.getPageProductDetial);
 // 获取订单完成页
 router.get("/getpageorderfinish",auditController.getPageOrderFinish);
+//获取微信相关信息
+router.get("/getweixininfo",auditController.getweixininfo);
+
+
+
 module.exports = router;

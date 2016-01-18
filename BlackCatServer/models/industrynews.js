@@ -2,7 +2,7 @@
  * Created by li on 2015/11/28.
  */
 
-// ĞĞÒµ×ÊÑ¶ ĞÅÏ¢
+// ï¿½ï¿½Òµï¿½ï¿½Ñ¶ ï¿½ï¿½Ï¢
 
 
 var mongoose = require('mongoose');
@@ -10,13 +10,14 @@ var seqlist=require("./idautoinc");
 var Schema = mongoose.Schema;
 
 var  IndustryNewsSchema = new Schema({
-    createtime:{type:Date,default:Date.now()},//  ´´½¨Ê±¼ä
-    title:String,   //±êÌâ
+    createtime:{type:Date,default:Date.now()},//  ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    title:String,   //ï¿½ï¿½ï¿½ï¿½
     logimg:String,  // log Í¼Æ¬
-    description:String,  // ÃèÊöĞÅÏ¢
-    contenturl:String,   // ÄÚÈİµÄĞÅÏ¢
-    viewcount:{type:Number,default:0},  // ä¯ÀÀ´ÎÊı
-    sharecount:{type:Number,default:0}  // ·ÖÏí´ÎÊı
+    description:String,  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+    contenturl:String,   // ï¿½ï¿½ï¿½İµï¿½ï¿½ï¿½Ï¢
+    newstype:{type:Number,default:0},  // å’¨è¯¢ç±»å‹  0 è¡Œä¸šå’¨è¯¢ 1 ç¬‘è¯
+    viewcount:{type:Number,default:0},  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    sharecount:{type:Number,default:0}  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 });
 
 IndustryNewsSchema.plugin(seqlist.plugin, {

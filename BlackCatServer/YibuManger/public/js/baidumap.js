@@ -17,6 +17,7 @@ var LocalCity=function(){
 var myCity = new BMap.LocalCity();
 myCity.get(myFun);
 }
+LocalCity();
 
 
  var geoc = new BMap.Geocoder();
@@ -58,6 +59,7 @@ var setaddress=function(address){
             });
         }else{
             alert("您选择地址没有解析到结果!");
+            map.centerAndZoom(point, 16);  //找不到则重新定位到城市
         }
     }, "");
 }

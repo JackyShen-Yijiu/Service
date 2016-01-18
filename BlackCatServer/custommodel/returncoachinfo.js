@@ -37,5 +37,8 @@ exports.resBaseCoachInfo=function(user){
     this.workweek=user.workweek;
     this.worktimespace=user.worktimespace;
     this.serverclass=user.serverclasslist?user.serverclasslist.length:0;
+    this.coachtype=user.coachtype?user.coachtype:0;
+    this.leavebegintime=user.leavebegintime;
+    this.leaveendtime=user.leaveendtime;
 
 };

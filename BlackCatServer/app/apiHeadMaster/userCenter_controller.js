@@ -39,8 +39,8 @@ exports.postBulletin=function(req,res){
         content:req.body.content,
         bulletobject:req.body.bulletobject
     };
-    console.log(bulletininfo);
-    console.log(req.body);
+    //console.log(bulletininfo);
+    //console.log(req.body);
     if (bulletininfo.userid === undefined|| bulletininfo.schoolid === undefined
         ||bulletininfo.content === undefined|| bulletininfo.bulletobject === undefined) {
         return res.json(
@@ -102,8 +102,7 @@ exports.getIndustryNews=function(req,res) {
         }
         return res.json(new BaseReturnInfo(1, "", data));
     })
-}
-
+};
 exports.getWeatherinfo=function(req,res){
     var cityname=req.query.cityname;
     if (cityname===undefined){

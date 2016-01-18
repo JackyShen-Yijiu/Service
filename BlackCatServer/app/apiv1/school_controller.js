@@ -78,10 +78,11 @@ exports.getSchoolTrainingField=function(req,res){
 //获取可以报名的课程类型
 exports.getSchoolClassType=function(req,res){
     var  schoolid=req.params.schoolid;
+    var  cartype=req.query.cartype?req.query.cartype:0;
     if (schoolid===undefined){
         return res.json(new BaseReturnInfo(0,"获取参数错误",""));
     }
-    driverSchool.getClassTypeBySchoolId(schoolid,function(err,classtypedata){
+    driverSchool.getClassTypeBySchoolId(schoolid,cartype,function(err,classtypedata){
         if(err){
             return res.json(new BaseReturnInfo(0,err,[]));
         }

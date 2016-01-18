@@ -554,14 +554,15 @@ exports.coachApplyVerification=function(req,res){
         coachid: req.body.coachid,
         name : req.body.name,  //姓名
         idcardnumber:req.body.idcardnumber,   // 身份证
-        drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证
-        coachnumber :req.body.coachnumber,  // 教练证
+        drivinglicensenumber:req.body.drivinglicensenumber, // 驾驶证  可选
+        coachnumber :req.body.coachnumber,  // 教练证c
+        coachtype: req.body.coachtype? req.body.coachtype:0,  //教练的方式 0 挂靠教练  1直营教练
         driveschoolid:req.body.driveschoolid, //所在驾校
-        referrerCode:req.body.referrerCode  //邀请吗可选
+        referrerCode:req.body.referrerCode,  //邀请吗可选
     }
     //console.log(applyinfo)
     if (applyinfo.coachid===undefined||applyinfo.name===undefined||applyinfo.idcardnumber===undefined||
-        applyinfo.drivinglicensenumber===undefined||applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
+        applyinfo.coachnumber===undefined||applyinfo.driveschoolid===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     };
@@ -654,6 +655,7 @@ exports.updateCoachInfo=function(req,res){
         trainfield:req.body.trainfieldlinfo,  // 训练场
         //is_shuttle:req.body.is_shuttle,  // 是否接送
         platenumber:req.body.platenumber, // 车牌号
+        coachtype: req.body.coachtype,  //教练的方式 0 挂靠教练  1直营教练
         //shuttlemsg:req.body.shuttlemsg  // 车送说明
     }
     if (updateuserinfo.coachid===undefined) {
@@ -914,6 +916,61 @@ exports.getMymoneyList=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+// 用户提款
+exports.userCashOut=function(req,res){
+    var cashinfo={
+        userid:req.body.userid,
+        usertype:req.body.usertype,  //  1 学员  2 教练
+        name:req.body.name,   // 绑定用户名称
+        cardtype:req.body.cardtype,  // 卡类型  1微信  2 支付宝 3银联卡
+        cardnumber:req.body.cardnumber,   // 卡号码
+        cardbank:req.body.cardbank,  //如果是银行卡是哪个类型的
+        money:req.body.money
+    }
+    if(cashinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    if (cashinfo.userid===undefined||cashinfo.usertype===undefined ||
+        cashinfo.name===undefined||cashinfo.cardtype===undefined||
+        cashinfo.cardnumber===undefined||cashinfo.money===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    userserver.userCashOut(cashinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+// 用户绑定银行卡
+exports.bindbank=function(req,res){
+    var  bindbankinfo={
+         userid:req.body.userid,
+         usertype:req.body.usertype,  //  1 学员  2 教练
+         name:req.body.name,   // 绑定用户名称
+         cardtype:req.body.cardtype,  // 卡类型  1微信  2 支付宝 3银联卡
+         cardnumber:req.body.cardnumber,   // 卡号码
+         cardbank:req.body.cardbank,  //如果是银行卡是哪个类型的
+    }
+    if(bindbankinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    if (bindbankinfo.userid===undefined||bindbankinfo.usertype===undefined ||
+        bindbankinfo.name===undefined||bindbankinfo.cardtype===undefined||
+        bindbankinfo.cardnumber===undefined||bindbankinfo.cardbank===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    userserver.bindBank(bindbankinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 exports.verifyFcodeCorrect=function(req,res){
     var  queryinfo={
@@ -958,6 +1015,120 @@ exports.getMyWallet=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+
+// 教练提醒学员考试
+exports.remindExam=function(req,res){
+    var info={
+         coachid:req.body.coachid,
+         userid:req.body.userid
+    };
+    if (info.userid===undefined||info.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(info.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.remindExam(info,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+//  获取教练所有标签
+exports.getAllCoachtags=function(req,res){
+   var coachid=req.query.coachid;
+    userserver.getAllCoachtags(coachid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+// 教练添加自定义标签
+exports.coachAddTag=function(req,res){
+    var  taginfo={
+        coachid:req.body.coachid,
+        tagname:req.body.tagname
+    }
+    if (taginfo.tagname===undefined||taginfo.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(taginfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.coachAddTag(taginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+// 教练删除自定义标签
+exports.coachDeletetag=function(req,res){
+    var  taginfo={
+        coachid:req.body.coachid,
+        tagid:req.body.tagid
+    }
+    if (taginfo.tagid===undefined||taginfo.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(taginfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.coachDeletetag(taginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+exports.coachSettags=function(req,res){
+    var  taginfo={
+        coachid:req.body.coachid,
+        tagslist:req.body.tagslist
+    }
+    if (taginfo.tagslist===undefined||taginfo.coachid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(taginfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.coachSetTags(taginfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+
+// 获取教练系统消息
+exports.getsysteminfo=function(req,res){
+    var  searchinfo={
+        coachid:req.query.coachid,
+        index:req.query.index?req.query.index:1,
+        count:req.query.count?req.query.count:1,
+    }
+    if(searchinfo.coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getSystemInfo(searchinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
 }
 
 

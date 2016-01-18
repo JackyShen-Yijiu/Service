@@ -12,9 +12,11 @@ var reservationmodel=mongodb.ReservationModel;
 var driveschoolmodel=mongodb.DriveSchoolModel;
 var schooldaylysummary=mongodb.SchoolDaySummaryModel;
 var coachmodel=mongodb.CoachModel;
+var usermodel=mongodb.UserModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var statistics=require("../Server/headmaster_operation_server").statisticsTodayinfo;
 require('date-utils');
+var async = require('async');
 var times = [];
 
 
@@ -29,20 +31,77 @@ rule.minute = times;
 try{
 var j = schedule.scheduleJob(rule, function(){
    // console.log((new Date()).addMinutes(-30));
-    console.log(new Date().toString()+": 开始更新预约状态");
-    reservationmodel.update({reservationstate:appTypeEmun.ReservationState.applyconfirm,endtime:{ "$lt": new Date()}} ,
-        { $set: { reservationstate:appTypeEmun.ReservationState.unconfirmfinish }},{safe: false, multi: true},function(err,doc){
-            console.log(new Date().toString()+": 更新待评价状态结果：");
+    // 订单完成 已签到 -----
+    console.log(new Date().toString()+": 开始更新订单状态状态");
+    reservationmodel.update({reservationstate:appTypeEmun.ReservationState.signin,is_signin:true,endtime:{ "$lt": new Date()}} ,
+        { $set: { reservationstate:appTypeEmun.ReservationState.ucomments }},{safe: false, multi: true},function(err,doc){
+            console.log(new Date().toString()+": 更新已签到状态结果：");
             if(err){
                 console.log(err)
             }
             console.log(doc)
         });
-// 自动修改
-
+    // 订单 完成  未签到
+    console.log(new Date().toString()+": 更新未签到状态结果：");
+    var boolasync =true;
+    async.whilst(
+        function() { return boolasync },
+        function(cb) {
+            reservationmodel.findOneAndUpdate({reservationstate:appTypeEmun.ReservationState.applyconfirm,
+                is_signin:false,endtime:{ "$lt": new Date()}} ,
+                { $set: { reservationstate:appTypeEmun.ReservationState.nosignin }},
+                {new: true},function(err,doc){
+                    if(err){
+                        cb(err);
+                    }
+                    if(!doc){
+                        boolasync=false;
+                        cb("没有查到未签到数据");
+                    }
+                    if(doc){
+                    usermodel.findById(new mongodb.ObjectId(doc.userid),function(err,data){
+                        if (newdata.subject.subjectid==2){
+                            data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
+                            data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
+                            data.subjecttwo.progress=doc.courseprocessdesc;
+                            data.subjecttwo.reservationid=doc._id;
+                            data.subjecttwo.missingcourse= data.subjecttwo.missingcourse+doc.coursehour;
+                        }
+                        if (newdata.subject.subjectid==3){
+                            data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
+                            data.subjectthree.finishcourse=data.subjectthree.finishcourse+newdata.coursehour;
+                            data.subjectthree.progress=doc.courseprocessdesc;
+                            data.subjectthree.reservationid=doc._id;
+                            data.subjecttwo.missingcourse= data.subjectthree.missingcourse+doc.coursehour
+                        }
+                        //console.log(data);
+                        data.save(function(err){
+                            if (err){
+                               cb("修改未签到数据出错："+err);
+                            }
+                            cb();
+                        })
+                    })
+                    }
+                });
+        },
+        function(err) {
+            // 3s have passed
+            console.log('未签到数据修改出错: ', err);
+        }
+    );
+    //reservationmodel.update({reservationstate:appTypeEmun.ReservationState.applyconfirm,is_signin:false,endtime:{ "$lt": new Date()}} ,
+    //    { $set: { reservationstate:appTypeEmun.ReservationState.nosignin }},{safe: false, multi: true},function(err,doc){
+    //        console.log(new Date().toString()+": 更新待评价状态结果：");
+    //        if(err){
+    //            console.log(err)
+    //        }
+    //        console.log(doc)
+    //    });
+// 自动修改  订单确认
     reservationmodel.update({reservationstate:appTypeEmun.ReservationState.applying,reservationcreatetime:{ "$gt": new Date().addMinutes(-100)}} ,
         { $set: { reservationstate:appTypeEmun.ReservationState.applyconfirm }},{safe: false, multi: true},function(err,doc){
-            console.log(new Date().toString()+": 订单确认状态结果：");
+            console.log(new Date().toString()+": 更新订单确认状态结果：");
             if(err){
                 console.log(err)
             }

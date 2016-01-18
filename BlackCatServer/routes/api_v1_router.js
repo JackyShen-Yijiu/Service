@@ -9,6 +9,7 @@ var driveSchoolController=require('../app/apiv1/school_controller');
 var testController=require('../app/apiv1/testfile_controller');
 var courseController=require("../app/apiv1/course_controller");
 var ensureAuthorizedController=require('../app/apiv1/authenticate_controller');
+var userCenterController=require('../app/apiHeadMaster/userCenter_controller');
 var v1 = express.Router();
 
 //================================================ v1 api=================
@@ -200,7 +201,8 @@ v1.post("/userinfo/coachsetclass",ensureAuthorizedController.ensureAuthorized,us
 // 教练请假接口
 v1.post("/courseinfo/putcoachleave",ensureAuthorizedController.ensureAuthorized,courseController.postCoachLeave);
 //教练获取预约列表
-v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachReservationList);
+v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAuthorized,
+    courseController.getCoachReservationList);
 // 教练获取某一天的预约列表
 v1.get("/courseinfo/daysreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachDaysreservation);
 // 教练获取预约详情
@@ -218,8 +220,37 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
 
 // ================================================教练端1.1 功能接口=======================
     // 获取日历上的约课休假信息
-v1.get("/courseinfo/getmonthapplydata",ensureAuthorizedController.ensureAuthorized,courseController.getmonthapplydata);
-    //获取系统消息列表
+  v1.get("/courseinfo/getmonthapplydata",ensureAuthorizedController.ensureAuthorized,courseController.getmonthapplydata);
+   //学员签到 （教练提交申请）
+   v1.post("/courseinfo/coursesignin",ensureAuthorizedController.ensureAuthorized,courseController.courseSignin);
+  // 教练评价学员
+   v1.post("/courseinfo/coachcommentv2",ensureAuthorizedController.ensureAuthorized,courseController.coachCommentV2);
+  // 绑定 支付宝 微信  银行卡
+  v1.post("/userinfo/bindbank",ensureAuthorizedController.ensureAuthorized,userController.bindbank);
+    // 用户提款
+  v1.post("/userinfo/usercashout",ensureAuthorizedController.ensureAuthorized,userController.userCashOut);
+  //获取系统消息列表
+  // 提醒学员报考
+  v1.post("/userinfo/remindexam",ensureAuthorizedController.ensureAuthorized,userController.remindExam);
+   //获取系统所有教练标签
+    v1.get("/userinfo/getallcoachtags",userController.getAllCoachtags);
+    // 教练添加自定义标签
+   v1.post("/userinfo/coachaddtag",ensureAuthorizedController.ensureAuthorized,userController.coachAddTag);
+   // 教练删除自定义标签
+   v1.post("/userinfo/coachdeletetag",ensureAuthorizedController.ensureAuthorized,userController.coachDeletetag);
+   // 教练选择自己的标签
+    v1.post("/userinfo/coachsetselftags",ensureAuthorizedController.ensureAuthorized,
+        userController.coachSettags);
+    //教练获取系统消息
+    v1.get("/userinfo/getsysteminfo",ensureAuthorizedController.ensureAuthorized,
+    userController.getsysteminfo);
+    // 教练获取资讯消息
+    v1.get("/userinfo/getnews", userCenterController.getIndustryNews);
+     // 获取系统和资讯消息数量
+    v1.get("/userinfo/getmessagecount",appsystemController.getmessagecount);
+    // 名称模糊搜索我的预约列表
+    v1.get("/courseinfo/searchreservationlist",ensureAuthorizedController.ensureAuthorized,
+    courseController.searchreservationlist);
 
 //==========================================================================================
 

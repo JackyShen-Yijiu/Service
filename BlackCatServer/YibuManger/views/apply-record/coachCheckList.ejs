@@ -1,5 +1,5 @@
 
-<div class="main" ng-controller="recordlist">
+<div class="main" ng-controller="coachchecklist">
     <div class="main-inner">
         <div class="container">
             <div class="row">
@@ -9,7 +9,7 @@
                         <h3>申请列表</h3>
                         <div style="float: right ; padding-right: 10px" >
                             <div style="float: left;  padding-right: 10px">
-                                <a href="/admin/manage/editActivty"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                                <a href="/admin/manage/editcoachinfo"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
                             </div>
                             <div style="float: right ; padding-right: 10px">
                                 <% include ../public/searchBox %>
@@ -25,10 +25,8 @@
                                         <th> 姓名 </th>
                                         <th> 联系电话</th>
                                         <th> 注册方式</th>
-                                        <th> 报名状态</th>
-                                        <th> 处理状态</th>
+                                        <th> 审核状态</th>
                                         <th> 班级类型</th>
-                                        <th> Y码</th>
                                         <th>所属驾校</th>
                                         <th>时间</th>
                                         <th class="td-actions"> 操作</th>
@@ -44,21 +42,14 @@
                                         <td >
                                             <span>app</span>
                                         </td>
-                                        <td ng-switch="content.applystate">
-                                            <span  ng-switch-when="0">未报名</span>
-                                                <span  ng-switch-when="1">申请中</span>
-                                            <span  ng-switch-when="2">报名成功</span>
-                                        </td>
-                                        <td  ng-switch="content.applyinfo.handelstate">
-                                            <span ng-switch-when="0">未处理</span>
-                                            <span ng-switch-when="1">处理中</span>
-                                            <span ng-switch-when="2">处理成功</span>
+                                        <td ng-switch="content.validationstate">
+                                            <span  ng-switch-when="0">未申请</span>
+                                            <span  ng-switch-when="1">申请中</span>
+                                            <span  ng-switch-when="2">审核拒绝</span>
+                                            <span  ng-switch-when="3">审核通过</span>
                                         </td>
                                         <td >
                                             <span>{{content.applyclasstypeinfo.name}}</span>
-                                        </td>
-                                        <td >
-                                            <span>{{content.referrerfcode}}</span>
                                         </td>
                                         <td >
                                             <span>{{content.applyschoolinfo.name}}</span>
@@ -71,7 +62,7 @@
                                         <td class="td-actions">
                                             <a  id="editapplyinfo"
                                                 ng-click="editApplyinfo(content._id,content.name)"
-                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
+                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <a href="#"
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
                                         </td>
@@ -87,11 +78,11 @@
                     <div id="editpage" class="widget-content"  style="display: none">
                         <div class="control-group">
                             <div class="alert">
-                                姓名： <strong>  {{formData.name}}</strong>
+                                教练姓名： <strong>  {{formData.name}}</strong>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 报名教练： <strong>  {{formData.applycoachinfo.name}}</strong>
-                                </div>
                             </div>
+                        </div>
                         <div class="control-group">
                             <div class="alert">
                                 报名驾校： <strong>  {{formData.applyschoolinfo.name}}</strong>
@@ -106,45 +97,37 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <div class="alert-info">
-                                报名状态：    <select style="margin-top: 10px"  ng-disabled="formData.applystate==0" class="span2" id="applystate" ng-model="formData.applystate" >
-                                    <option value=0>未报名</option>
-                                    <option value=1>报名中</option>
-                                    <option value=2>报名成功</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="control-group">
                             <div class="alert-info text-center">
-                                处理状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate==0" class="span2" id="handelstate" ng-model="formData.applyinfo.handelstate" >
-                                    <option value=0>未处理</option>
-                                    <option value=1>处理中</option>
-                                    <option value=2>处理成功</option>
+                                审核状态：    <select style="margin-top: 10px" ng-disabled="formData.applystate!='1'" class="span2" id="handelstate" ng-model="formData.applyinfo.handelstate" >
+                                    <option value="0">未处理</option>
+                                    <option value="1">处理中</option>
+                                    <option value="2">审核拒绝</option>
+                                    <option value="3">审核通过</option>
                                 </select>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="alert-info text-center">
                                 处理信息：   <textarea  style="margin-top: 10px"   id="superiorservice"
-                                                    rows="3" ng-model="formData.applyinfo.handelmessage" placeholder=""></textarea>
+                                                   rows="3" ng-model="formData.applyinfo.handelmessage" placeholder=""></textarea>
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate==0" >处理</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate!='1'" >处理</button>
+                    </div>
                 </div>
-            </div>
 
+            </div>
+            <!-- /row -->
         </div>
-        <!-- /row -->
+        <!-- /container -->
     </div>
-    <!-- /container -->
-</div>
-<!-- /main-inner -->
+    <!-- /main-inner -->
 </div>
 
 
 <script>
-    ybxcApp.controller("recordlist",function($scope,$http){
+    ybxcApp.controller("coachchecklist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
         initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?");
@@ -175,16 +158,6 @@
                 // area : ['800px' , '520px'],
                 content:$("#editpage")
             });
-        };
-        $scope.auditestudent=function(){
-            if(  $scope.formData._id===undefined){
-                layer.msg('没有找到用户信息', {
-                    icon: 2,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                });
-                return;
-            }
         }
-
     });
 </script>

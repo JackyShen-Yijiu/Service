@@ -4,6 +4,8 @@
 
 var BasePushmessage=require("./PushMessage/JPushBase");
 var log=require("./systemlog");
+var mongodb = require('../models/mongodb');
+var SystemMessageModel=mongodb.SystemMessageModel;
 var title="一步学车—教练端";
 var alterinfo={
     AuditSuccess:"您提交的验证申请已通过，可以接受预约订单啦",
@@ -55,6 +57,14 @@ exports.pushWalletUpdate=function(userid,callback){
         if(err){
             return callback(err);
         }
+       var  sysmessage=new    SystemMessageModel();
+        sysmessage.createtime=new Date();
+        sysmessage.title=title;
+        sysmessage.description=alterinfo.WalletUpdate;
+        sysmessage.detial=alterinfo.WalletUpdate;
+        sysmessage.userid=userid;
+        sysmessage.Messagetype=0;
+        sysmessage.save(function(err,data){});
         return callback(null,data);
     })
 }

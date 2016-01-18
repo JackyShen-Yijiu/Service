@@ -18,6 +18,7 @@ var  CoachSchema=new Schema({
     address: String,   // 地址
     introduction:String, // 简介
     Gender:String,  //  x性别
+    coachtype: {type:Number,default:0},  // 教练类型  教练的方式 0 挂靠教练  1直营教练
     //维度
     latitude: {type:Number,default:0},  //纬度
     longitude: {type:Number,default:0},  // 经度
@@ -69,9 +70,12 @@ var  CoachSchema=new Schema({
         newmessagereminder:{ type: Boolean, default: false},  //  新消息提醒
         classremind:{ type: Boolean, default: false}// 开课提醒
     },
-
+    // 绑定银行卡列表
+    bankcardlist:[{name:String, cardnumber:String,cardbank:String}],
     // 我所服务的班级列,
     serverclasslist:[{type: Schema.Types.ObjectId, ref: 'classtype'} ],
+    // 我的标签列表
+    tagslist:[{type: Schema.Types.ObjectId, ref: 'coachtags'} ],
     // 用户积分状态
     integralstate:{type:Number,default:0},
     // 用户积分发放人员列表
