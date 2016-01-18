@@ -1022,6 +1022,7 @@ exports.setCoachClassInfo=function(classinfo,callback){
                 return callback("查询教练出错"+err);
             }
             postclasslist=classinfo.classtypelist.split(",");
+            console.log(postclasslist);
             classtypeModel.find({schoolid:data.driveschool,"is_using":true})
                 .populate("vipserverlist")
                 .exec(function(err,classlist){
