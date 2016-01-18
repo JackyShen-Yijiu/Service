@@ -1049,7 +1049,10 @@ exports.setCoachClassInfo=function(classinfo,callback){
                     })
                     postclasslist.forEach(function(r,index){
                         if(r.length>1){
-                        var idx = data.serverclasslist.indexOf(new mongodb.ObjectId(r));
+                            var idx=-1;
+                            if (data.serverclasslist!=undefined&& data.serverclasslist.length>0){
+                         idx = data.serverclasslist.indexOf(new mongodb.ObjectId(r));}
+
                         if (idx == -1) {
                             data.serverclasslist.push(new mongodb.ObjectId(r));
                         }}
