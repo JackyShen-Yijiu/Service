@@ -986,14 +986,16 @@ exports.getCoachStudentList=function(coachinfo,callback){
                     var leavecoursecount=0;
                     var missingcoursecount=0;
                     if (r.subject.subjectid==2){
-                        subjectprocess= r.subjecttwo.progress;
-                        leavecoursecount:r.subjecttwo.totalcourse- r.subjecttwo.finishcourse-r.subjecttwo.missingcourse;
+                        subjectprocess= r.subjecttwo.progress?r.subjecttwo.progress:"";
+                        leavecoursecount:r.subjecttwo.totalcourse-
+                        r.subjecttwo.finishcourse-r.subjecttwo.missingcourse?r.subjecttwo.missingcourse:0;
                         missingcoursecount= r.subjecttwo.missingcourse?r.subjecttwo.missingcourse:0;
                     }
                     else if(r.subject.subjectid==3)
                     {
-                        subjectprocess= r.subjectthree.progress;
-                        leavecoursecount:r.subjectthree.totalcourse- r.subjectthree.finishcourse-r.subjectthree.missingcourse;
+                        subjectprocess= r.subjectthree.progress?r.subjecttwo.progress:"";
+                        leavecoursecount:r.subjectthree.totalcourse-
+                        r.subjectthree.finishcourse-r.subjectthree.missingcourse?r.subjectthree.missingcourse:0;
                         missingcoursecount= r.subjectthree.missingcourse?r.subjectthree.missingcourse:0;
                     }
                     var user={
