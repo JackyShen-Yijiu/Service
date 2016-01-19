@@ -912,7 +912,7 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
     reservationmodel.find( { coachid:new mongodb.ObjectId(coachid)
         ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
             ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
-        ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish}]
+        ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
         ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
         .select("userid reservationstate reservationcreatetime begintime endtime subject " +
         "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment  endclassnum learningcontent")
@@ -1095,7 +1095,8 @@ exports.getCoachReservationList=function(queryinfo,callback){
     //带评价
     if(queryinfo.reservationstate ==appTypeEmun.ReservationState.ucomments){
         searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
-            reservationstate:queryinfo.reservationstate,
+            "$or":[{reservationstate:queryinfo.reservationstate},
+                {reservationstate:appTypeEmun.ReservationState.signin}],
             is_coachcomment:false}
     };
     // 已完成
@@ -1245,7 +1246,10 @@ exports.getmonthapplydata=function(coachid,year,month,callback){
 };
 // 教练获取没有处理的预约申请
 exports.getreservationapply=function(coachid,callback){
-    reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"reservationstate":appTypeEmun.ReservationState.applying})
+    reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"reservationstate":appTypeEmun.ReservationState.applying,
+        $or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
+        ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
+        ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]})
         .select("userid reservationstate reservationcreatetime begintime endtime subject is_shuttle shuttleaddress classdatetimedesc")
         .populate("userid","_id  name headportrait applyschoolinfo")
         .sort({"begintime":-1})
