@@ -184,14 +184,14 @@ exports.worktimes=[
     }
 ]
 exports.examquestioninfo={
-    subjectone:{questionlisturl:"http://123.57.63.15:3600/question",
-        questiontesturl:"http://123.57.63.15:3600/questiontest",
-        questionerrorurl:"http://123.57.63.15:3600/questionwronglist"
+    subjectone:{questionlisturl:"http://www.yibuxueche.com/question",
+        questiontesturl:"http://www.yibuxueche.com/questiontest",
+        questionerrorurl:"http://www.yibuxueche.com/questionwronglist"
     },
 
-subjectfour:{questionlisturl:"http://123.57.63.15:3600/questionlist-kemusi.html",
-    questiontesturl:"http://123.57.63.15:3600/questiontest-kemusi.html",
-    questionerrorurl:"http://123.57.63.15:3600/questionwronglist-kemusi.html"
+subjectfour:{questionlisturl:"http://www.yibuxueche.com/questionlist-kemusi.html",
+    questiontesturl:"http://www.yibuxueche.com/questiontest-kemusi.html",
+    questionerrorurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html"
 }
 }
 exports.integralrule={

@@ -31,8 +31,10 @@ var  addtags =function(){
     var   temptag=new tags();
     temptag.tagname="五星级教练";
     temptag.tagtype=0;
+    temptag.color="#ffb814";
     temptag.save();
 }
+addtags();
  var  addsystemnew=function(){
      var tem=new systemmessage();
      tem.userid="5616352721ec29041a9af889";
@@ -41,7 +43,7 @@ var  addtags =function(){
      tem.detial="金额增加通知恭喜您获得1元";
      tem.save();
  }
-addsystemnew();
+//addsystemnew();
 var addActivity=function(){
     var temptivityModel=new ActivityModel();
     temptivityModel.name="一步vip包过班";

@@ -1092,6 +1092,13 @@ exports.getCoachReservationList=function(queryinfo,callback){
              reservationstate:{"$in":[appTypeEmun.ReservationState.applycancel,appTypeEmun.ReservationState.applyrefuse,
                  appTypeEmun.ReservationState.systemcancel]}}
     };
+    //新订单
+    if(queryinfo.reservationstate ==appTypeEmun.ReservationState.applying){
+        searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
+            "$or":[{reservationstate:queryinfo.reservationstate},
+                {reservationstate:appTypeEmun.ReservationState.applyconfirm}],
+            is_coachcomment:false}
+    };
     //带评价
     if(queryinfo.reservationstate ==appTypeEmun.ReservationState.ucomments){
         searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
@@ -1102,7 +1109,8 @@ exports.getCoachReservationList=function(queryinfo,callback){
     // 已完成
     if(queryinfo.reservationstate ==appTypeEmun.ReservationState.finish){
         searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid),
-            "$or":[{reservationstate:queryinfo.reservationstate},{
+            "$or":[{reservationstate:queryinfo.reservationstate},
+                {reservationstate:appTypeEmun.ReservationState.nosignin},{
                 reservationstate:appTypeEmun.ReservationState.ucomments,
                 is_coachcomment:true
             }]}
