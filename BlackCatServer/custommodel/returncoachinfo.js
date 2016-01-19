@@ -38,7 +38,7 @@ exports.resBaseCoachInfo=function(user){
     this.worktimespace=user.worktimespace;
     this.serverclass=user.serverclasslist?user.serverclasslist.length:0;
     this.coachtype=user.coachtype?user.coachtype:0;
-    this.leavebegintime=user.leavebegintime?user.leavebegintime:"";
-    this.leaveendtime=user.leaveendtime?user.leaveendtime:"";
+    this.leavebegintime=user.leavebegintime? new Date(user.leavebegintime)/1000:"";
+    this.leaveendtime=user.leaveendtime? new Date(user.leaveendtime)/1000:"";
 
 };
