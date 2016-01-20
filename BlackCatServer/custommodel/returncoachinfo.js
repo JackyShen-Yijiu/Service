@@ -1,6 +1,7 @@
 /**
  * Created by v-lyf on 2015/9/2.
  */
+var _ = require("underscore");
 //返回教练基本信息
 exports.resBaseCoachInfo=function(user){
     this.coachid=user._id;
@@ -34,7 +35,7 @@ exports.resBaseCoachInfo=function(user){
     this.shuttlemsg=user.shuttlemsg;
     this.introduction=user.introduction;
     this.worktimedesc=user.worktimedesc;
-    this.workweek=user.workweek;
+    this.workweek=user.workweek?_.sortBy(user.workweek):[];
     this.worktimespace=user.worktimespace;
     this.serverclass=user.serverclasslist?user.serverclasslist.length:0;
     this.coachtype=user.coachtype?user.coachtype:0;
