@@ -923,7 +923,7 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                 return callback("查询数据出错："+err);
             }
             process.nextTick(function(){
-                var list=[]
+                var list=[];
                 data.forEach(function(r,index){
                     var listone= {
                         _id: r.id,
@@ -932,8 +932,8 @@ exports.getCoachDaysreservation=function(coachid,date,callback){
                             appTypeEmun.ReservationState.finish: r.reservationstate,
                         reservationcreatetime: r.reservationcreatetime,
                         courseprocessdesc: r.courseprocessdesc,
-                        begintime :(r.begintime).toFormat("HH:00"),
-                        endtime :(r.endtime).toFormat("HH:00"),
+                        begintime :(r.begintime).toFormat("HH24:00"),
+                        endtime :(r.endtime).toFormat("HH24:00"),
                         leavecoursecount:0,
                         missingcoursecount:0,
                         learningcontent: r.learningcontent

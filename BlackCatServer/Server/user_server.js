@@ -2504,8 +2504,8 @@ exports.getAllCoachtags=function(coachid,callback){
                         _id:item._id,
                         tagname:item.tagname,
                         tagtype:item.tagtype,
-                        coachid:item.tagtype,
-                        is_audit:item.tagtype,
+                        coachid:item.coachid,
+                        is_audit:item.is_audit,
                         color:item.color?item.color:colorarray[colorid],
                         is_choose: choosedata.indexOf(item._id)>-1?true:false,
                     }
@@ -2517,8 +2517,8 @@ exports.getAllCoachtags=function(coachid,callback){
                         _id:item._id,
                         tagname:item.tagname,
                         tagtype:item.tagtype,
-                        coachid:item.tagtype,
-                        is_audit:item.tagtype,
+                        coachid:item.coachid,
+                        is_audit:item.is_audit,
                         color:item.color?item.color:colorarray[colorid],
                         is_choose: choosedata.indexOf(item._id)>-1?true:false,
                 }
