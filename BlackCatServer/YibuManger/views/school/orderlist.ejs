@@ -1,0 +1,167 @@
+<div class="main" ng-controller="orderlist">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>订单列表</h3>
+                        <div style="float: right ; padding-right: 10px" >
+                            <div style="float: left;  padding-right: 10px;padding-top:4px ">
+                               <input type="date" class="span2" id="begindate" placeholder="开始日期"
+                                      ng-model="formData.begindate " onclick="laydate()">
+                                <input type="date" class="span2" id="enddate" placeholder="结束日期"
+                                       ng-model="formData.enddate " onclick="laydate()">
+                                <select class="span1" id="reservationstate"  ng-model="formData.reservationstate"  >
+                                    <option value=0 >状态</option>
+                                    <option value=1>新订单</option>
+                                    <option value=2>已取消</option>
+                                    <option value=3>已确认</option>
+                                    <option value=6>待评价</option>
+                                    <option value=7>已完成</option>
+                                    <option value=9>已签到</option>
+                                    <option value=10>未签到</option>
+                                </select>
+                                <select class="span2" id="searchtype"  ng-model="formData.searchtype"   >
+                                    <option value=0 >--条件--</option>
+                                    <option value=1>学员姓名</option>
+                                    <option value=2>教练姓名</option>
+                                    <option value=3>学员手机号</option>
+                                </select>
+                                <input type="text" name="searchKey" id="searchInput" class="span2 pull-right"
+                                       placeholder="查询内容" ng-model="formData.searchKey" />
+                                <a class="btn btn-sm btn-default"  type="button" ng-click="searchinfo()">查询</a>
+                            </div>
+                        </div>
+
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th> 单号 </th>
+                                        <th> 学员</th>
+                                        <th> 学员手机号</th>
+                                        <th> 教练 </th>
+                                        <th> 科目</th>
+                                        <th> 预约时间</th>
+                                        <th> 上课时间</th>
+                                        <th> 结束时间</th>
+                                        <th> 状态</th>
+                                        <th class="td-actions"> 操作</th>
+                                    </tr>
+                                    <tr class="datalist" ng-repeat="content in data">
+
+                                        <td >
+                                            <a href="#?classtypeid={{content._id}}" >
+                                                <span>{{content._id}}</span> </a>
+                                        </td>
+                                        <td >
+                                            <span>{{content.userid.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.userid.mobile}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.coachid.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.subject.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.reservationcreatetime |date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.begintime |date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.endtime |date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                                        </td>
+                                        <td >
+                                            <span  ng-switch="content.reservationstate">
+                                             <div ng-switch-when=1>
+                                                预约中
+                                             </div>
+                                                <div ng-switch-when=2>
+                                                    学员取消
+                                                </div>
+                                                <div ng-switch-when=3>
+                                                    已接受
+                                                </div>
+                                                 <div ng-switch-when=4>
+                                                     教练拒绝
+                                                 </div>
+                                                 <div ng-switch-when=5>
+                                                     待确认学完
+                                                 </div>
+                                                <div ng-switch-when=6>
+                                                    待评价
+                                                </div>
+                                                 <div ng-switch-when=8>
+                                                     系统取消
+                                                 </div>
+                                                 <div ng-switch-when=7>
+                                                     已完成
+                                                 </div>
+                                                 <div ng-switch-when=9>
+                                                     已签到
+                                                 </div>
+                                                <div ng-switch-when=10>
+                                                    未签到
+                                                </div>
+                                            </span>
+                                        </td>
+
+                                        <td class="td-actions">
+                                            <a href="#" ng-disabled="content.reservationstate>3"
+                                               class="btn btn-small btn-success" >取消 </a>
+                                        </td>
+
+
+                                    </tr>
+                                </table>
+                            </div><!-- /.box-body -->
+
+                        </div><!-- /.box -->
+                        <% include ../public/tableFooter %>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /main-inner -->
+</div>
+
+<script type="text/javascript" src="/js/laydate.js"></script>
+<script>
+    ybxcApp.controller("orderlist",function($scope,$http){
+        getsearchinfo=function(){
+            var searchinfo="";
+            for (var o in $scope.formData){
+                searchinfo= searchinfo+o+"="+ $scope.formData[o]+"&";
+            }
+            return searchinfo;
+        }
+        $scope.formData = {reservationstate:"0"};
+        //$scope.formData.=0;
+        $scope.formData.searchtype="0";
+        //获取文档列表信息
+        searchinfo=getsearchinfo();
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
+
+        $scope.searchinfo=function(){
+            searchinfo=getsearchinfo();
+            console.log(searchinfo);
+            initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
+        }
+    });
+
+
+
+</script>

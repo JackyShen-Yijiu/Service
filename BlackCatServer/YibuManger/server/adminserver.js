@@ -15,6 +15,7 @@ var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
 var classtypemodel=mongodb.ClassTypeModel;
 var usermodel=mongodb.UserModel;
+var reservationmodel=mongodb.ReservationModel;
 var cache=require("../../Common/cache");
 require('date-utils');
 var _ = require("underscore");
@@ -239,6 +240,39 @@ exports.getStatitic=function(req,res){
      }
  }
 
+// 订单管理
+exports.getorderlist=function(req,res){
+    var schoolid =req.query.schoolid;
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    if (schoolid===undefined||schoolid==""){
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    var searchinfo={
+        "driveschool":new mongodb.ObjectId(schoolid)
+    }
+    reservationmodel.find(searchinfo)
+        .select("userid coachid reservationstate reservationcreatetime begintime endtime subject")
+        .populate("userid","_id name mobile")
+        .populate("coachid","_id name mobile")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({reservationcreatetime:-1})
+        .exec(function(err,data){
+            defaultFun.getModelCount(reservationmodel,searchinfo,function (err, ordercount) {
+                returninfo = {
+                    pageInfo: {
+                        totalItems: ordercount,
+                        currentPage: index,
+                        limit: limit,
+                        pagecount: Math.floor(ordercount / limit) + 1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        })
+}
 
 //====================================b班级管理
 exports.saveClassType=function(req,res){
