@@ -936,13 +936,15 @@ exports.getStudentInfo=function(userid,callback){
             var missingcoursecount=0;
                     if (data.subject.subjectid==2){
                         subjectprocess= data.subjecttwo.progress;
-                        leavecoursecount=data.subjecttwo.totalcourse- data.subjecttwo.finishcourse-data.subjecttwo.missingcourse;
+                        leavecoursecount=r.subjecttwo.totalcourse-
+                            r.subjecttwo.finishcourse-(r.subjecttwo.missingcourse?r.subjecttwo.missingcourse:0);
                         missingcoursecount= data.subjecttwo.missingcourse?data.subjecttwo.missingcourse:0;
                     }
                     else if(data.subject.subjectid==3)
                     {
                         subjectprocess=  data.subjectthree.progress;
-                        leavecoursecount=data.subjectthree.totalcourse- data.subjectthree.finishcourse-data.subjectthree.missingcourse;
+                        leavecoursecount=r.subjectthree.totalcourse-
+                            r.subjectthree.finishcourse-(r.subjectthree.missingcourse?r.subjectthree.missingcourse:0);
                         missingcoursecount= data.subjectthree.missingcourse?data.userid.subjectthree.missingcourse:0;
                     }
                     var user={
@@ -993,15 +995,11 @@ exports.getCoachStudentList=function(coachinfo,callback){
                     }
                     else if(r.subject.subjectid==3)
                     {
-                        console.log(r.subjectthree.totalcourse);
-                        console.log(r.subjectthree.finishcourse);
-                        console.log(r.subjectthree.missingcourse);
-                        console.log(leavecoursecount);
+
                         subjectprocess= r.subjectthree.progress?r.subjecttwo.progress:"";
                         leavecoursecount=r.subjectthree.totalcourse-
                         r.subjectthree.finishcourse-(r.subjectthree.missingcourse?r.subjectthree.missingcourse:0);
                         missingcoursecount= r.subjectthree.missingcourse?r.subjectthree.missingcourse:0;
-                        console.log(leavecoursecount);
                     }
                     var user={
                         "_id": r._id,
