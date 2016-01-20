@@ -936,13 +936,13 @@ exports.getStudentInfo=function(userid,callback){
             var missingcoursecount=0;
                     if (data.subject.subjectid==2){
                         subjectprocess= data.subjecttwo.progress;
-                        leavecoursecount:data.subjecttwo.totalcourse- data.subjecttwo.finishcourse-data.subjecttwo.missingcourse;
+                        leavecoursecount=data.subjecttwo.totalcourse- data.subjecttwo.finishcourse-data.subjecttwo.missingcourse;
                         missingcoursecount= data.subjecttwo.missingcourse?data.subjecttwo.missingcourse:0;
                     }
                     else if(data.subject.subjectid==3)
                     {
                         subjectprocess=  data.subjectthree.progress;
-                        leavecoursecount:data.subjectthree.totalcourse- data.subjectthree.finishcourse-data.subjectthree.missingcourse;
+                        leavecoursecount=data.subjectthree.totalcourse- data.subjectthree.finishcourse-data.subjectthree.missingcourse;
                         missingcoursecount= data.subjectthree.missingcourse?data.userid.subjectthree.missingcourse:0;
                     }
                     var user={
