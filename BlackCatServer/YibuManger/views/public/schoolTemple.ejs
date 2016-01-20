@@ -66,12 +66,16 @@
 <div class="subnavbar">
     <div class="subnavbar-inner">
         <div class="container">
-            <ul class="mainnav">
-                <li class="active"><a href="/admin/manage/schoolmain?schoolid=<%=schoolid%>"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
+            <ul class="mainnav" id="menu">
+                <li ><a href="/admin/manage/schoolmain?schoolid=<%=schoolid%>"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
                 <li><a href="/admin/manage/trainingfieldlist"><i class="icon-list-alt"></i><span>训练场 </span> </a> </li>
-                <li><a href="/admin/manage/classtypelist"><i class="icon-facetime-video"></i><span>班级</span> </a></li>
-                <li><a href="/admin/manage/coachlist"><i class="icon-bar-chart"></i><span>教练</span> </a> </li>
-                <li><a href="#"><i class="icon-code"></i><span>学员</span> </a> </li>
+                <li><a href="/admin/manage/classtypelist"><i class="icon-th-large"></i><span>班级</span> </a></li>
+                <li><a href="/admin/manage/coachlist"><i class="icon-group"></i><span>教练</span> </a> </li>
+                <li><a href="#"><i class=" icon-user"></i><span>学员</span> </a> </li>
+                <li><a href="#"><i class="icon-reorder"></i><span>订单管理</span> </a> </li>
+                <li><a href="#"><i class="icon-pencil"></i><span>课程安排</span> </a> </li>
+                <li><a href="#"><i class=" icon-comment"></i><span>评价管理</span> </a> </li>
+                <li><a href="#"><i class="icon-wrench"></i><span>APP 设置</span> </a> </li>
                 <!--<li class="dropdown"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-long-arrow-down"></i><span>Drops</span> <b class="caret"></b></a>-->
                 <!--<ul class="dropdown-menu">-->
                 <!--<li><a href="icons.html">Icons</a></li>-->
@@ -106,7 +110,32 @@
     <!-- /footer-inner -->
 </div>
 
+<script type="text/javascript">
+    $("document").ready(function(){
+        $("#menu li").click(function(){
+            $("#menu li").removeClass("active");//首先移除全部的active
+            $(this).addClass("active");//选中的添加acrive
+        });
+        var urlstr = location.href;
+        //alert((urlstr + '/').indexOf($(this).attr('href')));
+        var urlstatus=false;
+        $("#menu a").each(function (index) {
+            if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
+               // $(this).addClass('active');
+                if (!urlstatus){
+                $("#menu li").eq(index).addClass('active');
+                urlstatus = true;}
+            } else {
+                if (!urlstatus){
+                    $("#menu li").eq(index).removeClass('active');
+                 }
+              //  $(this).removeClass('active');
+            }
+        });
+        if (!urlstatus) {$("#menu li").eq(0).addClass('active'); }
+    });
 
+</script>
 
 </body>
 </html>
