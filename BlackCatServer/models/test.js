@@ -27,6 +27,11 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 
+reservationmodel.findOne({reservationstate:appTypeEmun.ReservationState.applyconfirm,
+   "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}},function(err,data){
+    console.log("查询成功");
+    console.log(data);
+})
 var  addtags =function(){
     var   temptag=new tags();
     temptag.tagname="五星级教练";
@@ -34,7 +39,7 @@ var  addtags =function(){
     temptag.color="#ffb814";
     temptag.save();
 }
-addtags();
+//addtags();
  var  addsystemnew=function(){
      var tem=new systemmessage();
      tem.userid="5616352721ec29041a9af889";
@@ -276,12 +281,12 @@ syncReservationdesc=function(userid,callback){
         console.log(data);
     }) */
 
-reservationmodel.update({
- reservationstate:appTypeEmun.ReservationState.unconfirmfinish},
- {$set:{reservationstate:appTypeEmun.ReservationState.nosignin}},{safe: true, multi: true},
- function(err,data){
- console.log(data);
- })
+//reservationmodel.update({
+// reservationstate:appTypeEmun.ReservationState.unconfirmfinish},
+// {$set:{reservationstate:appTypeEmun.ReservationState.nosignin}},{safe: true, multi: true},
+// function(err,data){
+// console.log(data);
+// })
 addserverlsit=function(){
     var vipserver=new VipServerModel;
     vipserver.name="接送";

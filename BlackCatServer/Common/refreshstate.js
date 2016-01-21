@@ -48,9 +48,9 @@ var j = schedule.scheduleJob(rule, function(){
         function() { return boolasync },
         function(cb) {
             reservationmodel.findOneAndUpdate({reservationstate:appTypeEmun.ReservationState.applyconfirm,
-                is_signin:false,endtime:{ "$lt": new Date()}} ,
-                { $set: { reservationstate:appTypeEmun.ReservationState.nosignin }},
-                {new: true},function(err,doc){
+                    "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}} ,{new:false},
+                { $set: { reservationstate:appTypeEmun.ReservationState.nosignin }}
+                ,function(err,doc){
                     if(err){
                         cb(err);
                     }
@@ -60,16 +60,16 @@ var j = schedule.scheduleJob(rule, function(){
                     }
                     if(doc){
                     usermodel.findById(new mongodb.ObjectId(doc.userid),function(err,data){
-                        if (newdata.subject.subjectid==2){
-                            data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
-                            data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
+                        if (doc.subject.subjectid==2){
+                            data.subjecttwo.reservation=data.subjecttwo.reservation-doc.coursehour;;
+                            data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+doc.coursehour;
                             data.subjecttwo.progress=doc.courseprocessdesc;
                             data.subjecttwo.reservationid=doc._id;
                             data.subjecttwo.missingcourse= data.subjecttwo.missingcourse+doc.coursehour;
                         }
-                        if (newdata.subject.subjectid==3){
-                            data.subjectthree.reservation=data.subjectthree.reservation-newdata.coursehour;
-                            data.subjectthree.finishcourse=data.subjectthree.finishcourse+newdata.coursehour;
+                        if (doc.subject.subjectid==3){
+                            data.subjectthree.reservation=data.subjectthree.reservation-doc.coursehour;
+                            data.subjectthree.finishcourse=data.subjectthree.finishcourse+doc.coursehour;
                             data.subjectthree.progress=doc.courseprocessdesc;
                             data.subjectthree.reservationid=doc._id;
                             data.subjecttwo.missingcourse= data.subjectthree.missingcourse+doc.coursehour
