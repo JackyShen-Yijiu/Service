@@ -276,6 +276,12 @@ syncReservationdesc=function(userid,callback){
         console.log(data);
     }) */
 
+reservationmodel.update({
+ reservationstate:appTypeEmun.ReservationState.unconfirmfinish},
+ {$set:{reservationstate:appTypeEmun.ReservationState.nosignin}},{safe: true, multi: true},
+ function(err,data){
+ console.log(data);
+ })
 addserverlsit=function(){
     var vipserver=new VipServerModel;
     vipserver.name="接送";

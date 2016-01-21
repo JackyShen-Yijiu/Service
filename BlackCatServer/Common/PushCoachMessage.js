@@ -124,7 +124,7 @@ exports.pushNewReservation=function(userid,reservationid,callback){
         userid:userid,
         reservationid:reservationid
     }
-    BasePushmessage.PushToStudent(alterinfo.NewReservation,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.NewReservation,function(err,data){
+    BasePushmessage.PushToCoach(alterinfo.NewReservation,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.NewReservation,function(err,data){
         if(err){
             return callback(err);
         }
@@ -142,7 +142,7 @@ exports.pushReservationCancel=function(userid,reservationid,callback){
         userid:userid,
         reservationid:reservationid
     }
-    BasePushmessage.PushToStudent(alterinfo.ReservationCancel,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.ReservationCancel,function(err,data){
+    BasePushmessage.PushToCoach(alterinfo.ReservationCancel,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.ReservationCancel,function(err,data){
         if(err){
             return callback(err);
         }
