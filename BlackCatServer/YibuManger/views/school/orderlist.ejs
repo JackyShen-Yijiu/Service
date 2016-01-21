@@ -156,6 +156,7 @@
         initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
 
         $scope.searchinfo=function(){
+            console.log($scope.formData);
             searchinfo=getsearchinfo();
             console.log(searchinfo);
             initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
