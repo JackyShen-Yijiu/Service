@@ -32,7 +32,7 @@ try{
 var j = schedule.scheduleJob(rule, function(){
    // console.log((new Date()).addMinutes(-30));
     // 订单完成 已签到 -----
-    console.log(new Date().toString()+": 开始更新订单状态状态");
+    //console.log(new Date().toString()+": 开始更新订单状态状态");
     reservationmodel.update({reservationstate:appTypeEmun.ReservationState.signin,is_signin:true,endtime:{ "$lt": new Date()}} ,
         { $set: { reservationstate:appTypeEmun.ReservationState.ucomments }},{safe: false, multi: true},function(err,doc){
             console.log(new Date().toString()+": 更新已签到状态结果：");
@@ -48,8 +48,8 @@ var j = schedule.scheduleJob(rule, function(){
         function() { return boolasync },
         function(cb) {
             reservationmodel.findOneAndUpdate({reservationstate:appTypeEmun.ReservationState.applyconfirm,
-                    "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}} ,{new:false},
-                { $set: { reservationstate:appTypeEmun.ReservationState.nosignin }}
+                    "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}} ,
+                { $set: { reservationstate:appTypeEmun.ReservationState.nosignin }},{new:true}
                 ,function(err,doc){
                     if(err){
                         cb(err);
@@ -58,21 +58,24 @@ var j = schedule.scheduleJob(rule, function(){
                         boolasync=false;
                         cb("没有查到未签到数据");
                     }
+                    //console.log(doc.userid);
                     if(doc){
                     usermodel.findById(new mongodb.ObjectId(doc.userid),function(err,data){
                         if (doc.subject.subjectid==2){
-                            data.subjecttwo.reservation=data.subjecttwo.reservation-doc.coursehour;;
-                            data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+doc.coursehour;
+                            data.subjecttwo.reservation=parseInt(data.subjecttwo.reservation)-parseInt(doc.coursehour);
+                            data.subjecttwo.finishcourse=parseInt(data.subjecttwo.finishcourse)+parseInt(doc.coursehour);
                             data.subjecttwo.progress=doc.courseprocessdesc;
                             data.subjecttwo.reservationid=doc._id;
-                            data.subjecttwo.missingcourse= data.subjecttwo.missingcourse+doc.coursehour;
+                            data.subjecttwo.missingcourse=parseInt(data.subjecttwo.missingcourse?data.subjecttwo.missingcourse:0
+                                )+parseInt(doc.coursehour);
                         }
                         if (doc.subject.subjectid==3){
-                            data.subjectthree.reservation=data.subjectthree.reservation-doc.coursehour;
-                            data.subjectthree.finishcourse=data.subjectthree.finishcourse+doc.coursehour;
+                            data.subjectthree.reservation=parseInt(data.subjectthree.reservation)-parseInt(doc.coursehour);
+                            data.subjectthree.finishcourse=parseInt(data.subjectthree.finishcourse)+parseInt(doc.coursehour);
                             data.subjectthree.progress=doc.courseprocessdesc;
                             data.subjectthree.reservationid=doc._id;
-                            data.subjecttwo.missingcourse= data.subjectthree.missingcourse+doc.coursehour
+                            data.subjecttwo.missingcourse= parseInt(data.subjectthree.missingcourse?data.subjectthree.missingcourse:0
+                                )+parseInt(doc.coursehour);
                         }
                         //console.log(data);
                         data.save(function(err){
