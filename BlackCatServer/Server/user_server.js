@@ -931,7 +931,7 @@ exports.getStudentInfo=function(userid,callback){
                 return callback("查询出错" + err);
             }
             if(!data){
-                return callback("没有查询到此用户 ");
+                return callback("没有查询到此用户");
             }
             var subjectprocess = "";
             var leavecoursecount = 0;
