@@ -930,7 +930,9 @@ exports.getStudentInfo=function(userid,callback){
             if (err) {
                 return callback("查询出错" + err);
             }
-
+            if(!data){
+                return callback("没有查询到此用户 ");
+            }
             var subjectprocess = "";
             var leavecoursecount = 0;
             var missingcoursecount = 0;
