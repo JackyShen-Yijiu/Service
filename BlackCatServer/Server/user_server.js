@@ -926,27 +926,28 @@ exports.getStudentInfo=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
         .select("_id mobile name headportrait subject subjecttwo subjectthree address applyschoolinfo " +
         " carmodel displayuserid")
-        .exec(function(err,data){
-            if(err){
-                return callback("查询出错"+err);
+        .exec(function(err,data) {
+            if (err) {
+                return callback("查询出错" + err);
             }
 
-                    var subjectprocess="";
-            var leavecoursecount=0;
-            var missingcoursecount=0;
-                    if (data.subject.subjectid==2){
-                        subjectprocess= data.subjecttwo.progress;
-                        leavecoursecount=data.subjecttwo.totalcourse-
-                            data.subjecttwo.finishcourse-(data.subjecttwo.missingcourse?data.subjecttwo.missingcourse:0);
-                        missingcoursecount= data.subjecttwo.missingcourse?data.subjecttwo.missingcourse:0;
-                    }
-                    else if(data.subject.subjectid==3)
-                    {
-                        subjectprocess=  data.subjectthree.progress;
-                        leavecoursecount=data.subjectthree.totalcourse-
-                            data.subjectthree.finishcourse-(data.subjectthree.missingcourse?data.subjectthree.missingcourse:0);
-                        missingcoursecount= data.subjectthree.missingcourse?data.userid.subjectthree.missingcourse:0;
-                    }
+            var subjectprocess = "";
+            var leavecoursecount = 0;
+            var missingcoursecount = 0;
+            if (data.subject){
+                if (data.subject.subjectid == 2) {
+                    subjectprocess = data.subjecttwo.progress;
+                    leavecoursecount = data.subjecttwo.totalcourse -
+                        data.subjecttwo.finishcourse - (data.subjecttwo.missingcourse ? data.subjecttwo.missingcourse : 0);
+                    missingcoursecount = data.subjecttwo.missingcourse ? data.subjecttwo.missingcourse : 0;
+                }
+                else if (data.subject.subjectid == 3) {
+                    subjectprocess = data.subjectthree.progress;
+                    leavecoursecount = data.subjectthree.totalcourse -
+                        data.subjectthree.finishcourse - (data.subjectthree.missingcourse ? data.subjectthree.missingcourse : 0);
+                    missingcoursecount = data.subjectthree.missingcourse ? data.userid.subjectthree.missingcourse : 0;
+                }
+        }
                     var user={
                         "_id": data._id,
                         "mobile": data.mobile,

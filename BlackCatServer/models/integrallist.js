@@ -2,17 +2,17 @@
  * Created by li on 2015/11/6.
  */
 
-// »ı·Ö·¢·ÅÀúÊ·¼ÇÂ¼±í
+// ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê·ï¿½ï¿½Â¼ï¿½ï¿½
 var mongoose = require('mongoose');
 var seqlist=require("./idautoinc");
 var Schema = mongoose.Schema;
 
 var  IntegrallistSchema = new Schema({
-    userid:String, // ÓÃ»§id
-    createtime:{type:Date,default:Date.now()},// ×¢²áÊ±¼ä
-    usertype:Number, // 1 Ñ§Ô± 2 ½ÌÁ·
-    amount :Number, //·¢·ÅÊıÁ¿
-    type:Number  // »ı·ÖÀàĞÍ
+    userid:String, // ï¿½Ã»ï¿½id
+    createtime:{type:Date,default:Date.now()},// ×¢ï¿½ï¿½Ê±ï¿½ï¿½
+    usertype:Number, // 1 Ñ§Ô± 2 ï¿½ï¿½ï¿½ï¿½
+    amount :Number, //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    type:Number  // ç±»å‹ //1 æ³¨å†Œå‘æ”¾ 2 é‚€è¯·å¥½å‹å‘æ”¾ 3 è´­ä¹°å•†å“
 });
 
 IntegrallistSchema.plugin(seqlist.plugin, {

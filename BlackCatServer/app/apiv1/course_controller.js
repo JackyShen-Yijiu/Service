@@ -395,46 +395,53 @@ exports.getmonthapplydata= function(req,res){
 
 //  用户签到
 exports.courseSignin=function(req,res){
-    var sigininfo={
-        userid:req.body.userid,
-        coachid:req.body.coachid,
-        reservationid:req.body.reservationid,
-        codecreatetime:req.body.codecreatetime,
-        userlatitude:req.body.userlatitude,
-        userlongitude:req.body.userlongitude,
-        coachlatitude:req.body.coachlatitude,
-        coachlongitude:req.body.coachlongitude
-    }
-    if (sigininfo.userid===undefined|| sigininfo.coachid===undefined ||
-        sigininfo.reservationid===undefined|| sigininfo.codecreatetime===undefined ||
-        sigininfo.userlatitude===undefined|| sigininfo.userlongitude===undefined ||
-        sigininfo.coachlatitude===undefined|| sigininfo.coachlatitude===undefined ){
-        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
-    };
-    now=new Date();
-    if ((now-new Date(sigininfo.codecreatetime*1000))>20*60*1000){
-        return res.json(
-            new BaseReturnInfo(0,"您的二维码生成已经超时，请重新生成扫描",[]));
-    }
-    if(sigininfo.coachid!=req.userId){
-        return res.json(
-            new BaseReturnInfo(0,"无法确认请求用户",""));
-    };
-    // 判断 距离
-    var distance = geolib.getDistance(
-        {latitude: sigininfo.userlatitude, longitude: sigininfo.userlongitude},
-        {latitude: sigininfo.coachlatitude, longitude: sigininfo.coachlongitude},
-        10);
-    if(distance>1000){
-        return res.json(
-            new BaseReturnInfo(0,"签到距离大于1000米，无法签到！",""));
-    }
-    courseserver.courseSignin(sigininfo,function(err,data){
-        if (err){
-            return res.json(new BaseReturnInfo(0,err,""));
+    try {
+        var sigininfo = {
+            userid: req.body.userid,
+            coachid: req.body.coachid,
+            reservationid: req.body.reservationid,
+            codecreatetime: req.body.codecreatetime,
+            userlatitude: parseFloat(req.body.userlatitude),
+            userlongitude:parseFloat( req.body.userlongitude),
+            coachlatitude:parseFloat( req.body.coachlatitude),
+            coachlongitude: parseFloat(req.body.coachlongitude)
         }
-        return res.json(new BaseReturnInfo(1,"",data));
-    });
+        if (sigininfo.userid === undefined || sigininfo.coachid === undefined ||
+            sigininfo.reservationid === undefined || sigininfo.codecreatetime === undefined ||
+            sigininfo.userlatitude === undefined || sigininfo.userlongitude === undefined ||
+            sigininfo.coachlatitude === undefined || sigininfo.coachlatitude === undefined) {
+            return res.json(new BaseReturnInfo(0, "获取参数错误", []));
+        }
+        ;
+        now = new Date();
+        if ((now - new Date(sigininfo.codecreatetime * 1000)) > 20 * 60 * 1000) {
+            return res.json(
+                new BaseReturnInfo(0, "您的二维码生成已经超时，请重新生成扫描", []));
+        }
+        if (sigininfo.coachid != req.userId) {
+            return res.json(
+                new BaseReturnInfo(0, "无法确认请求用户", ""));
+        }
+        ;
+        // 判断 距离
+        var distance = geolib.getDistance(
+            {latitude: sigininfo.userlatitude, longitude: sigininfo.userlongitude},
+            {latitude: sigininfo.coachlatitude, longitude: sigininfo.coachlongitude},
+            10);
+        if (distance > 1000) {
+            return res.json(
+                new BaseReturnInfo(0, "签到距离大于1000米，无法签到！", ""));
+        }
+        courseserver.courseSignin(sigininfo, function (err, data) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, err, ""));
+            }
+            return res.json(new BaseReturnInfo(1, "", data));
+        });
+    }
+    catch (ex){
+        return res.json(new BaseReturnInfo(0, "签到出错", ""));
+    }
 }
 // 教练获取所有的预约列表
 exports.getCoachReservationList=function(req,res){

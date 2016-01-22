@@ -94,8 +94,6 @@ exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
             process.nextTick(function(){
                 driveschoollist=[];
             driveschool.forEach(function(r, idx){
-                console.log(r.latitude);
-                console.log(r.longitude);
                 var oneschool= {
                     distance : geolib.getDistance(
                     {latitude: latitude, longitude: longitude},

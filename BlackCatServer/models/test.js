@@ -27,6 +27,7 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 
+console(parseFloat(""));
 reservationmodel.findOne({reservationstate:appTypeEmun.ReservationState.applyconfirm,
    "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}},function(err,data){
     console.log("查询成功");
