@@ -82,6 +82,7 @@ var  CoachSchema=new Schema({
     integralpaylist:[{id:Number,userid:String,usertype:Number}],
     //是否已经注册mobim
     is_registermobim:{type:Number,default:0},
+    cartype:String, //车品牌  富康、奔驰等
     maxprice:Number,  // 最高价格
     minprice:Number  // 最低价格
 });

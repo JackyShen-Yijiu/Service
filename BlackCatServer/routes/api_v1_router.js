@@ -130,7 +130,8 @@ v1.delete('/userinfo/favoriteschool/:id',ensureAuthorizedController.ensureAuthor
 //获取附近的驾校
 v1.get('/driveschool/nearbydriveschool', driveSchoolController.getNearbydriveSchool);
 //获取驾校详情
-v1.get('/driveschool/getschoolinfo/:schoolid',ensureAuthorizedController.getUseridByReq, driveSchoolController.getSchoolInfo);
+v1.get('/driveschool/getschoolinfo/:schoolid',ensureAuthorizedController.getUseridByReq,
+    driveSchoolController.getSchoolInfo);
 //获取教学的课程类型
 v1.get("/driveschool/schoolclasstype/:schoolid",driveSchoolController.getSchoolClassType);
 //获取附近的练车场

@@ -21,18 +21,28 @@ var ActivityModel=mongodb.ActivityModel;
 var auditurl=require("../Config/sysconfig").validationurl;
 var tags=mongodb.CoachTagsModel;
 var systemmessage=mongodb.SystemMessageModel;
+var schoolbus=mongodb.SchoolBusRouteModel;
 require('date-utils');
 var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
 
-console(parseFloat(""));
-reservationmodel.findOne({reservationstate:appTypeEmun.ReservationState.applyconfirm,
-   "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}},function(err,data){
-    console.log("查询成功");
-    console.log(data);
-})
+// 添加路线
+var addschoolbus=function(){
+    var tembus=new schoolbus();
+    tembus.schoolid="562dcc3ccb90f25c3bde40da";
+    tembus.routename="上地线";
+    tembus.routecontent="上地-西二旗-生命科学院-一步驾校";
+    tembus.save();
+}
+addschoolbus();
+//console(parseFloat(""));
+//reservationmodel.findOne({reservationstate:appTypeEmun.ReservationState.applyconfirm,
+//   "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}},function(err,data){
+//    console.log("查询成功");
+//    console.log(data);
+//})
 var  addtags =function(){
     var   temptag=new tags();
     temptag.tagname="五星级教练";

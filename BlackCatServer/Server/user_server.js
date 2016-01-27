@@ -2402,6 +2402,7 @@ exports.getUserinfoServer=function(type,userid,callback){
         coachmode.findById(new mongodb.ObjectId(userid))
             .populate("tagslist"," _id  tagname tagtype color")
             .populate("trainfield"," _id  pictures fieldname phone")
+            .populate("serverclasslist","classname carmodel cartype classdesc price onsaleprice",{"is_using":true})
             .exec(function(err,coachdata){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
@@ -2412,6 +2413,7 @@ exports.getUserinfoServer=function(type,userid,callback){
             returnmodel.coachid =coachdata._id;
                 returnmodel.tagslist=coachdata.tagslist;
                 returnmodel.trainfield=coachdata.trainfield;
+                returnmodel.serverclasslist=coachdata.serverclasslist;
             return callback(null,returnmodel);
         });
     }else

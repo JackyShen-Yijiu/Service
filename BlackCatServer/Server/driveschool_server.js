@@ -8,6 +8,7 @@ var schoolModel=mongodb.DriveSchoolModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var classtypeModel=mongodb.ClassTypeModel;
 var cache=require('../Common/cache');
+var cachedata=require('../Common/cachedata');
 var geolib = require('geolib');
 var _ = require("underscore");
 var async = require('async');
@@ -246,6 +247,7 @@ exports.getClassTypeBySchoolId=function(schoolid,cartype,callback){
 // 获取驾校详情
 exports.getSchoolInfoserver=function(schoolid,userid,callback){
     async.waterfall([
+        //获取是否喜欢该驾校
         function(cb){
             if(!userid){
                 cb(null,0);
@@ -262,13 +264,36 @@ exports.getSchoolInfoserver=function(schoolid,userid,callback){
                 })
             }
         },
+        // 获取驾校练车场
         function(favoritSchool,cb){
+            cachedata.getSchooltrainingfiled(schoolid,function(err,filddata){
+                trainingfiledpic=[];
+                filddata.forEach(function(r,index){
+                    if(r.pictures){
+                        for(var  i=0 ;i<r.pictures.length;i++){
+                            trainingfiledpic.push(r.pictures[i]);
+                        }
+                    }
+                })
+                cb(err,{favoritSchool:favoritSchool,trainingfiledpiclist:trainingfiledpic})
+            })
+        },
+        // 获取班车路线
+        function(data,cb){
+            cachedata.getSchoolBusRoute(schoolid,function(err,busroutedata){
+                data.schoolbusroute=busroutedata;
+                cb(err,data);
+            })
+        },
+        function(otherdata,cb){
             schoolModel.findById(new mongodb.ObjectId(schoolid),function(err,schooldata){
                 if(err||!schooldata){
                     return callback("查询驾校详情出错："+err);
                 }
                 var data =new  resbaseschoolinfomode(schooldata);
-                data.is_favoritschool=favoritSchool;
+                data.is_favoritschool=otherdata.favoritSchool;
+                data.trainingfiledpiclist=otherdata.trainingfiledpiclist;
+                data.schoolbusroute=otherdata.schoolbusroute;
                 return cb(null,data);
             });
         }
