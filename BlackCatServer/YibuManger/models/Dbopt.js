@@ -25,6 +25,7 @@ var DbOpt = {
             return oldPsd;
         }
 }
+//console.log(DbOpt.encrypt("123456","yibuxueche")); dd6264ae7c976899
 
 module.exports = DbOpt;
 ;

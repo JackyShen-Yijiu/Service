@@ -53,7 +53,7 @@ var  returnAdminRouter=function(io) {
             if(validator.isUserName(userName) && validator.isPsd(password))
             {
 
-                AdminUser.findOne({'userName':userName//,'password':newPsd
+                AdminUser.findOne({'userName':userName,'password':newPsd
                      }).populate('group').exec(function(err,user){
                     if(err){
                         res.json(err);
@@ -151,13 +151,47 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
+    //编辑教练详情
+    router.get("/manage/editcoachinfo" ,function(req, res, next) {
+        var schoolid=req.session.schoolid;
+        if(req.session.schoolid===undefined){
+            return   res.render(error);
+        }
+        console.log(schoolid);
+        basedatafun.getSchooltrainingfiled(schoolid,req.session.schooldata,function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.fieldname
+                };
+                return info;
+            });
+            console.log(filedlist);
+            res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo",filedlist));
+        });
+
+    });
     // 学员列表
     router.get("/manage/studentlist" ,function(req, res, next) {
         res.render('school/studentlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/studentlist"));
     });
     //编辑学员信息
     router.get("/manage/editstudentinfo" ,function(req, res, next) {
-        res.render('school/editStudent', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editstudentinfo"));
+        var schoolid=req.session.schoolid;
+        if(req.session.schoolid===undefined){
+            return   res.render(error);
+        }
+        basedatafun.getschoolclasstype(schoolid,function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.classname
+                };
+                return info;
+            });
+            res.render('school/editStudent', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editstudentinfo",filedlist));
+        });
+
     });
     // app 设置
     router.get("/manage/appsetting" ,function(req, res, next) {
@@ -194,7 +228,7 @@ var  returnAdminRouter=function(io) {
         });
 
     });
-
+//======================================================================================================================
     //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
         res.render('Ycode/Ycodelist', adminFunc.setPageInfo(req,res,"/admin/manage/Ycodelist"));
@@ -207,26 +241,7 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachCheckList" ,function(req, res, next) {
         res.render('apply-record/coachCheckList', adminFunc.setPageInfo(req,res,"/admin/manage/coachCheckList"));
     });
-    //编辑教练详情
-    router.get("/manage/editcoachinfo" ,function(req, res, next) {
-        var schoolid=req.session.schoolid;
-        if(req.session.schoolid===undefined){
-         return   res.render(error);
-        }
-        console.log(schoolid);
-        basedatafun.getSchooltrainingfiled(schoolid,req.session.schooldata,function(err,data){
-            filedlist=  _.map(data,function(item,i) {
-                var info = {
-                    id: item._id,
-                    name: item.fieldname
-                };
-                return info;
-            });
-            console.log(filedlist);
-            res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo",filedlist));
-        });
 
-    });
 
     //==================================================================================================================
 
@@ -253,6 +268,7 @@ var  returnAdminRouter=function(io) {
     // 学员信息
     router.get("/manage/getstudentlist",adminserver.getstudentlist);
     router.get("/manage/getstudentbyid",adminserver.getstudentbyid);
+    router.post("/manage/savestudentinfo",adminserver.saveStudentInfo);
     // 训练场信息处理
     router.get("/manage/gettrainingfieldlist",adminserver.getTrainingFieldList);
     router.get("/manage/gettrainingfieldbyid",adminserver.getTrainingFieldbyId);

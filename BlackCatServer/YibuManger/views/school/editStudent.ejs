@@ -36,82 +36,47 @@
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                               ng-model="formData.logoimg"	   >
+                                                               ng-model="formData.headportrait.originalpic"	   >
                                                         <button class="btn" type="button" id="picklogimg">选择头像</button>
                                                         <img id="logimgimg" style="width: 60px;height: 60px">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="control-group">
-                                                <label class="control-label" for="validationstate">验证状态</label>
-                                                <div class="controls">
-                                                    <select class="span4" id="validationstate"    >
-                                                        <option value="0">未申请</option>
-                                                        <option value="1">申请中</option>
-                                                        <option value="2">拒绝</option>
-                                                        <option value="3" selected> 通过</option>
-                                                    </select>
-                                                </div> <!-- /controls -->
-
-                                            </div> <!-- /control-group -->
 
                                             <div class="control-group">
                                                 <label class="control-label">性别</label>
                                                 <div class="controls">
-                                                    <label class="checkbox inline">
-                                                        <input name="subject" type="radio" value="2"> 男
-                                                    </label>
-
-                                                    <label class="checkbox inline">
-                                                        <input name="subject" type="radio" value="3"> 女
-                                                    </label>
+                                                    <select class="span4" id="gender"   ng-model="formData.gender"  >
+                                                        <option value="男">男</option>
+                                                        <option value="女">女</option>
+                                                    </select>
                                                 </div>		<!-- /controls -->
                                             </div> <!-- /control-group -->
 
-                                            <div class="control-group">
-                                                <label class="control-label" for="nickname">昵称</label>
-                                                <div class="controls">
-                                                    <input type="text" class="span6" id="nickname" ng-model="formData.nickname">
-                                                </div> <!-- /controls -->
-                                            </div> <!-- /control-group -->
 
                                             <div class="control-group">
                                                 <label class="control-label" for="personSign">个性签名</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6" id="personSign" ng-model="formData.personSign">
+                                                    <input type="text" class="span6" id="personSign" ng-model="formData.signature">
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
 
-                                            <div class="control-group">
-                                                <label class="control-label" for="birthday" >生日</label>
-                                                <div class="controls">
-                                                    <input type="text" class="span4  laydate-icon" id="birthday" onclick="laydate()">
-                                                </div><!-- /controls -->
-                                            </div> <!-- /control-group -->
 
                                             <div class="control-group">
                                                 <label class="control-label" for="mobile">联系电话</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6" id="mobile" ng-model="formData.mobile">
+                                                    <input type="tel" class="span6" id="mobile" ng-model="formData.mobile" required>
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.mobile.$error.required"
+                                                         role="alert">手机号不能为空</div>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
 
 
                                             <div class="control-group">
-                                                <label class="control-label" for="province">家庭地址</label>
+                                                <label class="control-label" for="province">地址</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span2 disabled"  id="province"
-                                                           ng-model="formData.province"  disabled> 省
-                                                    <input type="text" class="span2 disabled" id="city"
-                                                           ng-model="formData.city" disabled> 市
-                                                    <br/>
-                                                    <br/>
                                                     <input type="text" class="span6 disabled"  id="address" name="address"
                                                            ng-model="formData.address"    placeholder="详细地址" required>
-                                                    <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
-                                                    <input type="hidden" id="latitude" ng-model="formData.latitude"  >
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
-                                                         role="alert">地址必须</div>
                                                 </div> <!-- /controls -->
                                             </div><!-- /control-group -->
 
@@ -122,96 +87,42 @@
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
 
-                                            <div class="control-group">
-                                                <label class="control-label" for="studentnumber">学号</label>
-                                                <div class="controls">
-                                                    <input type="text" class="span4" id="studentnumber" ng-model="formData.studentnumber">
-                                                </div> <!-- /controls -->
-                                            </div> <!-- /control-group -->
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="examnumber">准考证号</label>
-                                                <div class="controls">
-                                                    <input type="text" class="span4 " id="examnumber" ng-model="formData.examnumber">
-                                                </div> <!-- /controls -->
-                                            </div> <!-- /control-group -->
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="price">报名价格</label>
-                                                <div class="controls">
-                                                    <input name="price"  type="number" ng-model="formData.price" class="span2" id="price" value="100"  required>
-                                                </div>
-                                            </div> <!-- /control-group -->
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="trainplace">训练场地</label>
-                                                <div class="controls">
-                                                    <select class="span4" id="trainplace"    >
-                                                        <option value=1>训练场地1</option>
-                                                        <option value=2>训练场地2</option>
-                                                        <option value=3>训练场地3</option>
-                                                        <option value=4>训练场地4</option>
-                                                        <option value=5>训练场地5</option>
-                                                    </select>
-                                                </div> <!-- /controls -->
-
-                                            </div> <!-- /control-group -->
 
                                             <div class="control-group">
                                                 <label class="control-label" for="trainplace">报名班型</label>
                                                 <div class="controls">
-                                                    <select class="span4" id="trainplace"    >
-                                                        <option value=1>普通班</option>
-                                                        <option value=2>包过班</option>
-                                                        <option value=3>免费班</option>
+                                                    <select class="span4" id="trainplace"  ng-model="formData.applyclasstype" required   >
+                                                        <% extradata.forEach(function(r,index){ %>
+                                                        <option value="<%=r.id%>"><%=r.name%></option>
+                                                        <%})%>
                                                     </select>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
-
                                             <div class="control-group">
-                                                <label class="control-label" for="coach">报名教练</label>
+                                                <label class="control-label" for="carmodel">驾照类型</label>
                                                 <div class="controls">
-                                                    <input name="coach"  type="text" ng-model="formData.coach" class="span2" id="coach" value="100"  required>
-                                                </div>
-                                            </div> <!-- /control-group -->
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="studycartype">学习车型</label>
-                                                <div class="controls">
-                                                    <select class="span4" id="studycartype"    >
-                                                        <option value=1>班级车型</option>
-                                                        <option value=2>班级车型</option>
-                                                        <option value=3>班级车型</option>
+                                                    <select class="span4" id="carmodel" ng-model="formData.carmodel.modelsid" required   >
+                                                        <option value=1>C1</option>
+                                                        <option value=2>C2</option>
+                                                        <option value=3>O</option>
                                                     </select>
                                                 </div> <!-- /controls -->
+
                                             </div> <!-- /control-group -->
+
 
                                             <div class="control-group">
                                                 <label class="control-label" for="studyspeed">学习进度</label>
                                                 <div class="controls">
-                                                    <select class="span4" id="studyspeed"    >
+                                                    <select class="span4" id="studyspeed"  ng-model="formData.subject.subjectid" required  >
                                                         <option value=1>科目一</option>
                                                         <option value=2>科目二</option>
                                                         <option value=3>科目三</option>
-                                                        <option value=3>科目四</option>
+                                                        <option value=4>科目四</option>
+                                                        <option value=5>已学完</option>
                                                     </select>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
-
-                                            <div class="control-group">
-                                                <label class="control-label">身份</label>
-                                                <div class="controls">
-                                                    <label class="checkbox inline">
-                                                        <input name="subject" type="radio" value="2"> 学员
-                                                    </label>
-
-                                                    <label class="checkbox inline">
-                                                        <input name="subject" type="radio" value="3"> 学员
-                                                    </label>
-                                                </div>		<!-- /controls -->
-                                            </div> <!-- /control-group -->
-
-
 
                                             <br />
                                             <div class="form-actions">
@@ -259,6 +170,8 @@
                         }else{
                             $scope.formData = response.data;
                             console.log(response.data);
+                            $scope.formData.carmodel.modelsid=$scope.formData.carmodel.modelsid.toString();
+                            $scope.formData.subject.subjectid= $scope.formData.subject.subjectid.toString();
                         }
                     })
         }else{

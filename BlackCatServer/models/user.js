@@ -119,8 +119,9 @@ var  UserSchema=new Schema({
     // 用户积分发放人员列表
     integralpaylist:[{id:Number,userid:String,usertype:Number}],
     //是否已经注册mobim
-    is_registermobim:{type:Number,default:0}
-
+    is_registermobim:{type:Number,default:0},
+    // 学员来源
+    source:{type:Number,default:0}   // 0 app 注册 2  后台添加  2 微信报名  .....
 });
 UserSchema.index({mobile: 1}, {unique: true});
 module.exports = mongoose.model('User', UserSchema);

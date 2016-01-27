@@ -139,6 +139,22 @@ exports.getStatitic=function(req,res){
         filedinfo.loc={type:"Point",coordinates:[filedinfo.longitude,filedinfo.latitude]};
         return filedinfo;
     },
+     getStudentinfo:function(req){
+          studentinfo={
+              name:req.body.name,
+              headportrait :req.body.headportrait,
+              gender :req.body.gender,
+              signature :req.body.signature,
+              mobile :req.body.mobile,
+              address :req.body.address,
+              idcardnumber :req.body.idcardnumber,
+              applyclasstype :req.body.applyclasstype,
+              carmodel :req.body.carmodel,
+              subject :req.body.subject,
+          }
+         studentinfo.carmodel=basedatafun.getcarmodel(studentinfo.carmodel.modelsid);
+         studentinfo.subject=basedatafun.getcarmodel(studentinfo.subject.subjectid);
+     },
      getCoachinfo:function(req){
          coachinfo={
              name:req.body.name,
@@ -569,7 +585,39 @@ exports.getstudentbyid  =function(req,res){
         }
         return res.json(new BaseReturnInfo(1, "", userdata))
     });
-}
+};
+exports.saveStudentInfo=function(req,res){
+    coachinfo=defaultFun.getCoachinfo(req);
+    var coachid= req.body.coachid;
+    if (coachid===undefined||coachid==""){
+        var savecoach= new  coachmodel(coachinfo);
+        basedatafun.getUserCount(function(err,countdata){
+            savecoach.displaycoachid=countdata.value.displayid;
+            savecoach.invitationcode=countdata.value.invitationcode;
+            savecoach.password="e10adc3949ba59abbe56e057f20f883e";
+            //savecoach.loc.coordinates=[savecoach.longitude,savecoach.latitude];
+            savecoach.save(function(err,data){
+                if(err){
+                    return res.json(new BaseReturnInfo(0, "保存教练出错："+err, "") );
+                }else{
+                    return res.json(new BaseReturnInfo(1, "", "sucess") );
+                }
+            })
+        })
+
+    }
+    else {
+        var conditions = {_id : coachid};
+        var update = {$set : coachinfo};
+        coachmodel.update(conditions, update,function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改教练出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+};
 
 //=====================================训练场管理
 exports.getTrainingFieldList=function(req,res){

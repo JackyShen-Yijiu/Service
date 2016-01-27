@@ -8,6 +8,7 @@ var commondata = require('../../Config/commondata.js');
 var schoolModel=mongodb.DriveSchoolModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
+var classtype=mongodb.ClassTypeModel;
 var vipserver=mongodb.VipServerModel;
  var userCountModel=mongodb.UserCountModel;
 var cache=require("../../Common/cache");
@@ -85,6 +86,22 @@ var basedataFunc = {
                 trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,fileddata){
                         cache.set("schooltrainingfield" + schoolid, fileddata, 60 * 5, function (err) {});
                     return callback(null, fileddata);
+
+                })
+            }
+            else{
+                return callback(null,data);
+            }
+        })
+    },
+    getschoolclasstype:function(schoolid,callback){
+        cache.get("getschoolclasstype"+schoolid,function(err,data){
+            //console.log(data);
+            if(!data||data.length==0){
+                //console.log(data);
+                classtype.find({"schoolid":new mongodb.ObjectId(schoolid)},function(err,classdata){
+                    cache.set("getschoolclasstype" + schoolid, classdata, 60 * 5, function (err) {});
+                    return callback(null, classdata);
 
                 })
             }
