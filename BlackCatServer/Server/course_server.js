@@ -879,7 +879,7 @@ exports.GetComment=function(queryinfo,callback){
     }else if(queryinfo.type==appTypeEmun.UserType.Coach){
         reservationmodel.find({"coachid":new mongodb.ObjectId(queryinfo.userid),"is_comment":"true"})
             .select("userid comment finishtime")
-            .populate("userid","_id  name headportrait  ")
+            .populate("userid","_id  name headportrait carmodel   applyclasstypeinfo ")
             .skip((queryinfo.index-1)*10)
             .limit(10)
             .sort({"comment.commenttime":-1})

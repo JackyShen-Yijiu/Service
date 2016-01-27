@@ -73,6 +73,12 @@ exports.saveFeedback=function(feedbackinfo,callback){
         feedback.network=feedbackinfo.network;
         feedback.resolution=feedbackinfo.resolution;
     feedback.createtime=new Date();
+    feedback.feedbacktype=feedbackinfo.feedbacktype;  // 反馈类型  0 平台反馈 1 投诉教练 2  投诉驾校
+    feedback.name=feedbackinfo.name ;
+    feedback.feedbackusertype=feedbackinfo.feedbackusertype ;  //投诉类型  0 匿名投诉 1 实名投诉
+    feedback.moblie=feedbackinfo.moblie; // 投诉人手机号
+    feedback.becomplainedname=feedbackinfo.becomplainedname ;  //被投诉姓名
+    feedback.piclist=feedbackinfo.piclist.split(',');   // 图片列表
     //console.log(feedback.createtime);
     feedback.save(function(err){
         if(err){

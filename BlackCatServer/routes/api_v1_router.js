@@ -158,7 +158,8 @@ v1.get("/userinfo/getapplyschoolinfo",ensureAuthorizedController.ensureAuthorize
 // 获取我的预约进度
 v1.get("/userinfo/getmyprogress",ensureAuthorizedController.ensureAuthorized,userController.getMyProgress);
 // 获取我当前可以预约的教练
-v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensureAuthorized,userController.getUsefulCoachList);
+v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensureAuthorized,
+    userController.getUsefulCoachList);
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 // 用户预约课程

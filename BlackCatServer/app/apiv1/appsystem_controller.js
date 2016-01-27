@@ -212,7 +212,13 @@ exports.postUserFeedBack=function(req,res){
         feedbackmessage:req.body.feedbackmessage,
         mobileversion:req.body.mobileversion,
         network:req.body.network,
-        resolution:req.body.network
+        resolution:req.body.network,
+        feedbacktype:req.body.feedbacktype?req.body.feedbacktype:0,  // 反馈类型  0 平台反馈 1 投诉教练 2  投诉驾校
+        name:req.body.name?req.body.name:"" ,
+        feedbackusertype:req.body.feedbackusertype?req.body.feedbackusertype:1,  //投诉类型  0 匿名投诉 1 实名投诉
+        moblie:req.body.moblie?req.body.moblie:"", // 投诉人手机号
+        becomplainedname:req.body.becomplainedname?req.body.becomplainedname:"",  //被投诉姓名
+        piclist:req.body.piclist?req.body.piclist:""  // 图片列表
     }
     //console.log(feedbackinfo);
 

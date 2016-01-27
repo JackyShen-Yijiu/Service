@@ -750,7 +750,7 @@ exports.searchCoach=function(searchinfo,callback){
     if(searchinfo.ordertype==3){
         ordercondition.minprice=1;
     }
-    console.log(searchcondition);
+    //console.log(searchcondition);
     coachmode.find(searchcondition)
         .select("")
         .sort(ordercondition)
@@ -871,7 +871,10 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         Seniority: r.Seniority,
                         latitude: r.latitude,
                         longitude: r.longitude,
-                        subject: r.subject
+                        subject: r.subject,
+                        maxprice: r.maxprice,  // 最高价格
+                        minprice: r.minprice,  // 最低价格
+                        carmodel: r.carmodel
 
                     }
                     //  r.restaurantId = r._id;
@@ -1173,7 +1176,6 @@ exports.getUsefulCoachList=function(useid,index,callback){
                         coachlist.forEach(function (r, idx) {
                             var returnmodel = { //new resbasecoachinfomode(r);
                                 coachid: r._id,
-
                                 name: r.name,
                                 driveschoolinfo: r.driveschoolinfo,
                                 headportrait: r.headportrait,
@@ -1183,8 +1185,8 @@ exports.getUsefulCoachList=function(useid,index,callback){
                                 Seniority: r.Seniority,
                                 latitude: r.latitude,
                                 longitude: r.longitude,
-                                subject: r.subject
-
+                                subject: r.subject,
+                                Gender: r.Gender
                             }
                             //  r.restaurantId = r._id;
                             // delete(r._id);
@@ -2399,6 +2401,7 @@ exports.getUserinfoServer=function(type,userid,callback){
     } else if(type==appTypeEmun.UserType.Coach) {
         coachmode.findById(new mongodb.ObjectId(userid))
             .populate("tagslist"," _id  tagname tagtype color")
+            .populate("trainfield"," _id  pictures fieldname phone")
             .exec(function(err,coachdata){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
@@ -2408,6 +2411,7 @@ exports.getUserinfoServer=function(type,userid,callback){
             //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
             returnmodel.coachid =coachdata._id;
                 returnmodel.tagslist=coachdata.tagslist;
+                returnmodel.trainfield=coachdata.trainfield;
             return callback(null,returnmodel);
         });
     }else
