@@ -58,7 +58,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="trainfield">训练场地</label>
                                                 <div class="controls">
-                                                    <select class="span4" id="trainfield"    >
+                                                    <select class="span4" id="trainfield"  required  >
                                                         <% extradata.forEach(function(r,index){ %>
                                                         <option value="<%=r.id%>"><%=r.name%></option>
                                                         <%})%>
@@ -295,6 +295,11 @@
                         $scope.formData.starlevel="2";
                         $scope.formData.begintimeint="8";
                         $scope.formData.endtimeint="19";
+                        $("input[name='week']:checkbox").each(function(){
+
+                                $(this).attr("checked","true");
+
+                        });
                     }
 
         $scope.processForm = function(isValid){
@@ -315,6 +320,7 @@
                                 alert(response.msg);
                             }else{
                                 alert("修改成功");
+                                window.location.href="/admin/manage/coachlist";
                             }
                         })
             }else {
@@ -328,6 +334,7 @@
                                 alert(response.msg);
                             }else{
                                 alert("添加成功");
+                                window.location.href="/admin/manage/coachlist";
                             }
                         })
             }
@@ -356,6 +363,13 @@
                     $scope.formData.subject.push($(this).attr('value'));
                 }
             });
+            if($scope.formData.trainfield==undefined||$scope.formData.trainfield.length==0){
+                layer.msg("请选择训练场地", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             return true;
         }
     });

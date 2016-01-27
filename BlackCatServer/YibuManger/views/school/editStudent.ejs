@@ -172,15 +172,11 @@
                             console.log(response.data);
                             $scope.formData.carmodel.modelsid=$scope.formData.carmodel.modelsid.toString();
                             $scope.formData.subject.subjectid= $scope.formData.subject.subjectid.toString();
+                            $("#logimgimg").attr("src",$scope.formData.headportrait.originalpic);
                         }
                     })
         }else{
-            $scope.formData.Seniority=1;
-            $scope.formData.passrate=90;
-            $scope.formData.studentcount=90;
-            $scope.formData.starlevel="2";
-            $scope.formData.begintimeint="8";
-            $scope.formData.endtimeint="19";
+
         }
 
         $scope.processForm = function(isValid){
@@ -189,18 +185,25 @@
                 alert("参数错误");
                 return;
             }
-            if($scope.formData.coachid!=undefined&&$scope.formData.coachid!="")
+            if($scope.formData._id!=undefined&&$scope.formData._id!="")
             {
                 if(!savedata()){
                     return;
                 }
-                console.log($scope.formData);
-                $http.post("/admin/manage/savecoachinfo",$scope.formData)
+                //console.log($scope.formData);
+                $http.post("/admin/manage/savestudentinfo",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
-                                alert(response.msg);
+                                layer.msg(response.msg, {
+                                    icon: 2,
+                                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                });
                             }else{
-                                alert("修改成功");
+                                layer.msg("修改成功", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                              //  window.location.href="/admin/manage/studentlist";
                             }
                         })
             }else {
@@ -208,12 +211,19 @@
                     return;
                 }
                 console.log($scope.formData);
-                $http.post("/admin/manage/savecoachinfo",$scope.formData)
+                $http.post("/admin/manage/savestudentinfo",$scope.formData)
                         .success(function(response){
                             if (response.type==0){
-                                alert(response.msg);
+                                layer.msg(response.msg, {
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                });
                             }else{
-                                alert("添加成功");
+                                layer.msg("添加成功", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                              //  window.location.href="/admin/manage/studentlist";
                             }
                         })
             }
@@ -221,16 +231,28 @@
         };
 
         var savedata=function(){
-            $scope.formData.logoimg=$("#logimg").val();
-            $scope.formData.starlevel=$("#starlevel").val();
-            $scope.formData.validationstate=$("#validationstate").val();
-            $scope.formData.trainfield=$("#trainfield").val();
-            $scope.formData.begintimeint=$("#begintimeint").val();
-            $scope.formData.endtimeint=$("#endtimeint").val();
-            $scope.formData.driveschool="<%=schoolid%>";
-            $scope.formData.carmodel=$("#carmodel").val();
-            $scope.formData.workweek=[];
-            $scope.formData.subject=[];
+            $scope.formData.headportrait.originalpic=$("#logimg").val();
+            if($scope.formData.applyclasstype==undefined||$scope.formData.applyclasstype.length==0){
+                layer.msg("请选择训班型", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
+            if($scope.formData.carmodel.modelsid==undefined||$scope.formData.carmodel.modelsid.length==0){
+                layer.msg("请选择驾照类型", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
+            if($scope.formData.subject.subjectid==undefined||$scope.formData.subject.subjectid.length==0){
+                layer.msg("请选择学习进度", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             return true;
         }
     });

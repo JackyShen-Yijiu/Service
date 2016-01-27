@@ -78,6 +78,21 @@ var basedataFunc = {
             cache.set("schooltrainingfield"+schoolid,fileddata,60*5,function(err){});
         })
     },
+    gettrainingfiledbyid:function(trainingfiledid,callback){
+        cache.get("gettrainingfiledbyid"+trainingfiledid,function(err,data){
+            //console.log(data);
+            if(!data){
+                trainingfiledModel.findById(new mongodb.ObjectId(trainingfiledid),function(err,fileddata){
+                    cache.set("gettrainingfiledbyid" +trainingfiledid, fileddata, 60 * 5, function (err) {});
+                    return callback(null, fileddata);
+
+                })
+            }
+            else{
+                return callback(null,data);
+            }
+        })
+    },
     getSchooltrainingfiled:function(schoolid,schooldata,callback){
         cache.get("schooltrainingfield"+schoolid,function(err,data){
             //console.log(data);
@@ -86,6 +101,22 @@ var basedataFunc = {
                 trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,fileddata){
                         cache.set("schooltrainingfield" + schoolid, fileddata, 60 * 5, function (err) {});
                     return callback(null, fileddata);
+
+                })
+            }
+            else{
+                return callback(null,data);
+            }
+        })
+    },
+    getclasstypebyid:function(classtypeid,callback){
+        cache.get("getclasstypebyid"+classtypeid,function(err,data){
+            //console.log(data);
+            if(!data){
+                //console.log(data);
+                classtype.findById(new mongodb.ObjectId(classtypeid),function(err,classdata){
+                    cache.set("getschoolclasstype" + classtypeid, classdata, 60 * 5, function (err) {});
+                    return callback(null, classdata);
 
                 })
             }
