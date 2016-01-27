@@ -13,13 +13,23 @@
                                 <div class="widget-content">
                                     <h6 class="bigstats"> 驾校今日运营情况简介  </h6>
                                     <div id="big_stats" class="cf">
-                                        <div class="stat">学员 <i class="icon-anchor"></i> <span class="value">851</span> </div>
+                                        <div class="stat">报名学员 <i class="icon-anchor"></i> <span class="value">
+                                                <%=extradata.summarydata.applystudentcount%></span> </div>
                                         <!-- .stat -->
-                                        <div class="stat">教练 <i class="icon-thumbs-up-alt"></i> <span class="value">423</span> </div>
+                                        <div class="stat">总课时 <i class="icon-thumbs-up-alt"></i> <span class="value">
+                                                 <%=extradata.summarydata.coachstotalcoursecount%>
+                                            </span> </div>
                                         <!-- .stat -->
-                                        <div class="stat">课时 <i class="icon-twitter-sign"></i> <span class="value">922</span> </div>
+                                        <div class="stat">预约学时 <i class="icon-twitter-sign"></i> <span class="value">
+                                                 <%=extradata.summarydata.reservationcoursecountday%>
+                                            </span> </div>
                                         <!-- .stat -->
-                                        <div class="stat">预约 <i class="icon-bullhorn"></i> <span class="value">25%</span> </div>
+                                        <div class="stat">评论 <i class="icon-bullhorn"></i> <span class="value">
+                                                 <%=extradata.summarydata.commentstudentcount.goodcommnent%>
+                                                <!--<%=extradata.summarydata.commentstudentcount.generalcomment%>/-->
+                                                <!--<%=extradata.summarydata.commentstudentcount.badcomment%>-->
+                                            </span> </div>
+
                                         <!-- .stat -->
                                     </div>
                                 </div>
@@ -35,8 +45,19 @@
                         </div>
                         <!-- /widget-header -->
                         <div class="widget-content">
-                            <div id='calendar'>
-                            </div>
+                            <ul class="news-items">
+                            <% extradata.newsinfo.forEach(function(r,index){ %>
+                                <li>
+
+                                    <div class="news-item-date"> <img src="<%=r.logimg%>"style="width: 60px;height: 60px"> </div>
+                                    <div class="news-item-detail">
+                                        <a   href="<%=r.contenturl%>>" class="news-item-title" target="_blank"><%=r.title%></a>
+                                        <p class="news-item-preview"><%=r.description%> </p>
+                                    </div>
+
+                                </li>
+                            <%})%>
+                            </ul>
                         </div>
                         <!-- /widget-content -->
                     </div>
@@ -50,15 +71,30 @@
                         </div>
                         <!-- /widget-header -->
                         <div class="widget-content">
-                            <div class="shortcuts"> <a href="javascript:;" class="shortcut"><i class="shortcut-icon icon-list-alt"></i><span
-                                            class="shortcut-label">Apps</span> </a><a href="javascript:;" class="shortcut"><i
-                                            class="shortcut-icon icon-bookmark"></i><span class="shortcut-label">Bookmarks</span> </a><a href="javascript:;" class="shortcut"><i class="shortcut-icon icon-signal"></i> <span class="shortcut-label">Reports</span> </a><a href="javascript:;" class="shortcut"> <i class="shortcut-icon icon-comment"></i><span class="shortcut-label">Comments</span> </a><a href="javascript:;" class="shortcut"><i class="shortcut-icon icon-user"></i><span
-                                            class="shortcut-label">Users</span> </a><a href="javascript:;" class="shortcut"><i
-                                            class="shortcut-icon icon-file"></i><span class="shortcut-label">Notes</span> </a><a href="javascript:;" class="shortcut"><i class="shortcut-icon icon-picture"></i> <span class="shortcut-label">Photos</span> </a><a href="javascript:;" class="shortcut"> <i class="shortcut-icon icon-tag"></i><span class="shortcut-label">Tags</span> </a> </div>
+                            <div class="shortcuts">
+                                <% extradata.coachdata.forEach(function(r,index){
+                                if (index>9){return}%>
+                                <a href="javascript:;" class="shortcut">
+                                    <i><img src="<%=r.headportrait.originalpic%>"style="width:60px;height: 60px;" alt="" class="img-responsive"></i><span
+                                            class="shortcut-label"><%=r.name%></span> </a>
+                                <%})%>
+                                <!--<a href="javascript:;" class="shortcut"><i-->
+                                    <!--&gt;<img src="" alt="" class="img-responsive">-->
+                                    <!--</i><span class="shortcut-label">Name</span> </a>-->
+                                <!--<a href="javascript:;" class="shortcut"><i><img-->
+                                                <!--src="" alt="" class="img-responsive"></i> <span class="shortcut-label">Name</span> </a><a href="javascript:;" class="shortcut"> <i><img-->
+                                                <!--src="" alt="" class="img-responsive"></i><span class="shortcut-label">Name</span> </a><a href="javascript:;" class="shortcut"><i><img-->
+                                                <!--src="" alt="" class="img-responsive"></i><span-->
+                                            <!--class="shortcut-label">Name</span> </a><a href="javascript:;" class="shortcut"><i-->
+                                    <!--&gt;<img src="" alt="" class="img-responsive"></i><span class="shortcut-label">Name</span> </a><a href="javascript:;" class="shortcut"><i><img-->
+                                                <!--src="" alt="" class="img-responsive"></i> <span class="shortcut-label">Name</span> </a><a href="javascript:;" class="shortcut"> <i><img-->
+                                                <!--src="" alt="" class="img-responsive"></i><span class="shortcut-label">Name</span> </a>-->
+                            </div>
                             <!-- /shortcuts -->
                         </div>
                         <!-- /widget-content -->
                     </div>
+
                     <!-- /widget -->
                     <div class="widget">
                         <div class="widget-header"> <i class="icon-signal"></i>

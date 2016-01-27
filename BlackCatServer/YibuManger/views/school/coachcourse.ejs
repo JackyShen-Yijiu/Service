@@ -5,11 +5,11 @@
                 <div class="span12">
                     <div class="widget-header">
                         <i class="icon-th-large"></i>
-                        <h3>订单列表</h3>
+                        <h3>教练课程安排</h3>
                         <div style="float: right ; padding-right: 10px" >
                             <div style="float: left;  padding-right: 10px;padding-top:4px ">
-                               <input type="date" class="span2" id="begindate" placeholder="开始日期"
-                                      ng-model="formData.begindate" onclick="laydate()">
+                                <input type="date" class="span2" id="begindate" placeholder="开始日期"
+                                       ng-model="formData.begindate" onclick="laydate()">
                                 <input type="date" class="span2" id="enddate" placeholder="结束日期"
                                        ng-model="formData.enddate" onclick="laydate()">
                                 <select class="span1" id="reservationstate"  ng-model="formData.reservationstate"  >
@@ -40,8 +40,8 @@
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-                                        <th> 单号 </th>
-                                        <th> 学员</th>
+                                        <th> 姓名 </th>
+                                        <th> 手机号</th>
                                         <th> 学员手机号</th>
                                         <th> 教练 </th>
                                         <th> 科目</th>
@@ -52,7 +52,6 @@
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
-
                                         <td >
                                             <a href="/admin/manage/orderdetial?orderid={{content._id}}" >
                                                 <span>{{content._id}}</span> </a>
@@ -81,7 +80,7 @@
                                         <td >
                                             <span  ng-switch="content.reservationstate">
                                              <div ng-switch-when=1>
-                                                预约中
+                                                 预约中
                                              </div>
                                                 <div ng-switch-when=2>
                                                     学员取消
@@ -138,36 +137,3 @@
 <!-- /main-inner -->
 </div>
 
-<script type="text/javascript" src="/js/laydate.js"></script>
-<script>
-    ybxcApp.controller("orderlist",function($scope,$http){
-        getsearchinfo=function(){
-            var searchinfo="";
-            for (var o in $scope.formData){
-                searchinfo= searchinfo+o+"="+ $scope.formData[o]+"&";
-            }
-            searchinfo= searchinfo+"begindates="+ Math.round($scope.formData.begindate.getTime()/1000)+"&";
-            searchinfo= searchinfo+"enddates="+   Math.round($scope.formData.enddate.getTime()/1000)+"&";
-            return searchinfo;
-        }
-        $scope.formData = {reservationstate:"0"};
-        //$scope.formData.=0;
-        $scope.formData.searchtype="0";
-        $scope.formData.begindate=(new Date());
-        $scope.formData.enddate=(new Date());
-        //获取文档列表信息
-        searchinfo=getsearchinfo();
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
-
-        $scope.searchinfo=function(){
-            $scope.formData.begindate=new Date( $("#begindate").val());
-            $scope.formData.enddate=new Date($("#enddate").val());
-            searchinfo=getsearchinfo();
-            console.log(searchinfo);
-            initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
-        }
-    });
-
-
-
-</script>

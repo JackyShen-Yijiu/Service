@@ -49,6 +49,13 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
+app.use(function(req, res, next){
+
+  res.locals.schooldata=req.session.schooldata;
+  res.locals.adminUserInfo = req.session.adminUserInfo;
+  next();
+});
 app.use('/', admin);
 app.use('/admin', validat);
 app.use('/admin', admin);

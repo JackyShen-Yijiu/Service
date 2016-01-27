@@ -37,15 +37,58 @@ var basedataFunc = {
             }
         })
     },
-    getSchooltrainingfiled:function(schoolid,callback){
-        cache.get("schooltrainingfield"+schoolid,function(err,data){
+    getschoolinfo: function(schoolid,callback){
+        cache.get("schoolinfo"+schoolid,function(err,data){
             if(!data){
-                trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,fileddata){
-                    cache.set("schooltrainingfield"+schoolid,fileddata,function(err){});
-                    return callback(null,fileddata);
+                schoolModel.findById(new mongodb.ObjectId(schoolid),function(err,schooldata){
+                    cache.set("schoolinfo"+schoolid,schooldata,function(err){});
+                    return callback(null,schooldata);
                 })
             }
             if(data){
+                return callback(null,data);
+            }
+        })
+    },
+    adddefaulttrainingfiled:function(schooldata,callback){
+        var tempdata=new trainingfiledModel();
+        tempdata.fieldname=schooldata+"本部练车场";
+        tempdata.is_validation=true;
+        tempdata.fieldlevel=schooldata.schoollevel;
+        tempdata.latitude=schooldata.latitude;
+        tempdata.longitude=schooldata.longitude;
+        tempdata.province=schooldata.province;
+        tempdata.city=schooldata.city;
+        tempdata.county=schooldata.county;
+        tempdata.address=schooldata.address;
+        tempdata.responsible=schooldata.responsible;
+        tempdata.phone=schooldata.phone;
+        tempdata.driveschool=schooldata._id;
+        tempdata.save(function(err,data){
+            trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schooldata._id)},function(err,fileddata){
+                cache.set("schooltrainingfield"+schooldata._id,fileddata,function(err){});
+                return callback(null,fileddata)
+            });
+            return callback(err,data);
+        });
+    },
+    reftrainingfiled:function(schoolid,callback){
+        trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,fileddata){
+            cache.set("schooltrainingfield"+schoolid,fileddata,60*5,function(err){});
+        })
+    },
+    getSchooltrainingfiled:function(schoolid,schooldata,callback){
+        cache.get("schooltrainingfield"+schoolid,function(err,data){
+            //console.log(data);
+            if(!data||data.length==0){
+                //console.log(data);
+                trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,fileddata){
+                        cache.set("schooltrainingfield" + schoolid, fileddata, 60 * 5, function (err) {});
+                    return callback(null, fileddata);
+
+                })
+            }
+            else{
                 return callback(null,data);
             }
         })

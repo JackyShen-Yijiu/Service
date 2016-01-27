@@ -1080,6 +1080,7 @@ exports.searchreservationlist=function(queryinfo,callback){
          })
 
 };
+
 // 教练获取我的预约列表
 exports.getCoachReservationList=function(queryinfo,callback){
     var searchinfo= { coachid:new mongodb.ObjectId(queryinfo.coachid)}
@@ -1160,6 +1161,16 @@ exports.getCoachReservationList=function(queryinfo,callback){
             })
         })
 };
+
+//var   queryinfo={
+//    coachid:"5666365ef14c20d07ffa6ae8",
+//    reservationstate:6,
+//    index:1
+//};
+//getCoachReservationList (queryinfo, function(err,data){
+//    console.log(data);
+//});
+
 var   getcoachmonthdata=function(coachid,beginDate,endDate,callback){
     reservationmodel.aggregate([{$match:{
         "coachid":new mongodb.ObjectId(coachid),

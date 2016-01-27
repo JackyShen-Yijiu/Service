@@ -747,6 +747,9 @@ exports.searchCoach=function(searchinfo,callback){
     if(searchinfo.ordertype==2){
         ordercondition.starlevel=-1;
     }
+    if(searchinfo.ordertype==3){
+        ordercondition.minprice=1;
+    }
     console.log(searchcondition);
     coachmode.find(searchcondition)
         .select("")
@@ -777,11 +780,11 @@ exports.searchCoach=function(searchinfo,callback){
                             is_shuttle: r.is_shuttle,
                             latitude: r.latitude,
                             longitude: r.longitude,
-                            subject: r.subject
+                            subject: r.subject,
+                            maxprice: r.maxprice,  // 最高价格
+                            minprice: r.minprice  // 最低价格
                         }
                         driveschoollist.push(oneschool);
-                        //  r.restaurantId = r._id;
-                        // delete(r._id);
                     });
                     if (searchinfo.ordertype==0||searchinfo.ordertype==1)
                     {

@@ -26,7 +26,9 @@ var AdminUserSchema = new Schema({
         type : String,
         ref : 'AdminGroup'
 
-    }
+    },
+    schoolid:String,  //  所在驾校id 
+    usertype:{ type:Number, default: 0 }  // O  管理员   1 驾校管理人员
 });
 
 

@@ -31,10 +31,9 @@ function checkinfo(user,pwd){
 	 dataType : "json",
      success: function(data){
      if(data.type == 1){
-		window.location.href="/admin/manage/schoollsit";
+		window.location.href="/admin/manage/main";
 		}else if(data.type == 0){
-			
-		 $("#error_el").text("用户名或密码错误");
+		 $("#error_el").text(data.msg);
 	   }
    }
 })

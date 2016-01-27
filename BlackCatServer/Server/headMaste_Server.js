@@ -191,33 +191,4 @@ exports.getIndustryNews=function(searchinfo,callback){
             })
         })
 }
-exports.getIndustryNews=function(searchinfo,callback){
-    if(searchinfo.seqindex==0){
-        searchinfo.seqindex=Number.MAX_VALUE;
-    };
-    industryNewsModel.find({seqindex:{$lt:searchinfo.seqindex}})
-        .sort({seqindex:-1})
-        .limit(searchinfo.count)
-        .exec(function (err,data){
-            if(err){
-                return  callback("查询资讯出错："+err);
-            }
-            process.nextTick(function(){
-                var newslist=[];
-                data.forEach(function(r,indx){
-                    var news={
-                        newsid:r._id,
-                        title: r.title,
-                        logimg: r.logimg,
-                        description: r.description,
-                        contenturl: r.contenturl,
-                        createtime: r.createtime,
-                        newstype: r.newstype? r.newstype:0,
-                        seqindex: r.seqindex
-                    }
-                    newslist.push(news);
-                })
-                return callback(null,newslist);
-            })
-        })
-}
+

@@ -36,7 +36,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
     }else if (searchinfo.ordertype==3){
         ordercondition.minprice=1;
     }
-    //console.log(searchcondition);
+    console.log(searchcondition);
     //console.log(ordercondition);
     //console.log(searchinfo);
     schoolModel.find(searchcondition)

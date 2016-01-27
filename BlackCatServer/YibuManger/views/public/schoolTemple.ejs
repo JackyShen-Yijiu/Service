@@ -34,21 +34,22 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container"> <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span
-                        class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span> </a><a class="brand" href="/admin/manage/schoollsit">一步驾校后台管理</a>
+                        class="icon-bar"></span><span class="icon-bar">
+                </span><span class="icon-bar"></span> </a><a class="brand" href="/admin/manage/main"><%=schooldata.name%>/一步学车APP后台管理</a>
             <div class="nav-collapse">
                 <ul class="nav pull-right">
+                    <!--<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i-->
+                                    <!--class="icon-cog"></i> Account <b class="caret"></b></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="javascript:;">Settings</a></li>-->
+                            <!--<li><a href="javascript:;">Help</a></li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                    class="icon-cog"></i> Account <b class="caret"></b></a>
+                                    class="icon-user"></i>  <%=adminUserInfo.name%> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="javascript:;">Settings</a></li>
-                            <li><a href="javascript:;">Help</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                    class="icon-user"></i> 一步学车 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="javascript:;">Profile</a></li>
-                            <li><a href="javascript:;">Logout</a></li>
+                            <li><a href="javascript:;">驾校信息</a></li>
+                            <li><a href="/admin/logout">退出</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -71,11 +72,11 @@
                 <li><a href="/admin/manage/trainingfieldlist"><i class="icon-list-alt"></i><span>训练场 </span> </a> </li>
                 <li><a href="/admin/manage/classtypelist"><i class="icon-th-large"></i><span>班级</span> </a></li>
                 <li><a href="/admin/manage/coachlist"><i class="icon-group"></i><span>教练</span> </a> </li>
-                <li><a href="#"><i class=" icon-user"></i><span>学员</span> </a> </li>
+                <li><a href="/admin/manage/studentlist"><i class=" icon-user"></i><span>学员</span> </a> </li>
                 <li><a href="/admin/manage/orderlist"><i class="icon-reorder"></i><span>订单管理</span> </a> </li>
-                <li><a href="#"><i class="icon-pencil"></i><span>课程安排</span> </a> </li>
-                <li><a href="#"><i class=" icon-comment"></i><span>评价管理</span> </a> </li>
-                <li><a href="#"><i class="icon-wrench"></i><span>APP 设置</span> </a> </li>
+                <!--<li><a href="/admin/manage/coachcourse"><i class="icon-pencil"></i><span>课程安排</span> </a> </li>-->
+                <!--<li><a href="#"><i class=" icon-comment"></i><span>评价管理</span> </a> </li>-->
+                <li><a href="/admin/manage/appsetting"><i class="icon-wrench"></i><span>APP 设置</span> </a> </li>
                 <!--<li class="dropdown"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-long-arrow-down"></i><span>Drops</span> <b class="caret"></b></a>-->
                 <!--<ul class="dropdown-menu">-->
                 <!--<li><a href="icons.html">Icons</a></li>-->

@@ -13,12 +13,16 @@ var activtyModel= mongodb.ActivityModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
+var usermodel=mongodb.UserModel;
 var classtypemodel=mongodb.ClassTypeModel;
 var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
+var headMasterOperation=require("../../Server/headmaster_operation_server");
+var userCenterServer=require("../../Server/headMaste_Server");
 var cache=require("../../Common/cache");
 require('date-utils');
 var _ = require("underscore");
+var eventproxy   = require('eventproxy');
 exports.getStatitic=function(req,res){
 
 }
@@ -196,6 +200,11 @@ exports.getStatitic=function(req,res){
                  })
              }
          coachinfo.worktime=worktimes;
+         coachinfo.latitude=req.session.schooldata.latitude;
+         coachinfo.longitude=req.session.schooldata.longitude;
+         coachinfo.loc=req.session.schooldata.loc;
+         coachinfo.province=req.session.schooldata.province;
+         coachinfo.city=req.session.schooldata.city;
          return coachinfo;
 
      },
@@ -245,12 +254,22 @@ exports.getorderlist=function(req,res){
     var schoolid =req.query.schoolid;
     var index=req.query.index?req.query.index:0;
     var limit=req.query.limit?req.query.limit:10;
+    var reservationstate =req.query.reservationstate?req.query.reservationstate:0;
+    var begindate=req.query.begindates;
+    var enddate=req.query.enddates;
+    var searchtype =req.query.searchtype?req.query.searchtype:0;  // 0  全部  1 学员姓名 2 教练姓名 3 手机号 4 用户id 5 教练id
     if (schoolid===undefined||schoolid==""){
         return res.json(new BaseReturnInfo(0, "参数错误", ""));
     };
     var searchinfo={
-        "driveschool":new mongodb.ObjectId(schoolid)
-    }
+        "driveschool":new mongodb.ObjectId(schoolid),
+        reservationcreatetime: { $gte: new Date(begindate*1000).clearTime(), $lte:(new Date(enddate*1000)).addDays(1).clearTime()}
+    };
+    // 预约状态
+    if(reservationstate>0){
+        searchinfo.reservationstate=reservationstate;
+    };
+    // 预约时间
     reservationmodel.find(searchinfo)
         .select("userid coachid reservationstate reservationcreatetime begintime endtime subject")
         .populate("userid","_id name mobile")
@@ -427,7 +446,8 @@ exports.saveCoachInfo=function(req,res){
        basedatafun.getUserCount(function(err,countdata){
             savecoach.displaycoachid=countdata.value.displayid;
             savecoach.invitationcode=countdata.value.invitationcode;
-            savecoach.loc.coordinates=[savecoach.longitude,savecoach.latitude];
+           savecoach.password="e10adc3949ba59abbe56e057f20f883e";
+            //savecoach.loc.coordinates=[savecoach.longitude,savecoach.latitude];
             savecoach.save(function(err,data){
                 if(err){
                     return res.json(new BaseReturnInfo(0, "保存教练出错："+err, "") );
@@ -494,6 +514,61 @@ exports.getcoachbyid=function(req,res){
         }
       return  res.json(new BaseReturnInfo(1, "", coachinfo));
     })
+};
+//=======================================学员管理
+exports.getstudentlist=function(req,res){
+    var schoolid =req.query.schoolid;
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    var name=req.query.searchKey?req.query.searchKey:"";
+    var searchinfo={
+        "applyschool":schoolid,
+        "applystate":2,
+        "name":new RegExp(name)
+    }
+    usermodel.find(searchinfo)
+        .select("_id name mobile  headportrait subject carmodel applycoachinfo applyclasstypeinfo")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(usermodel,searchinfo,function (err, coachcount) {
+                //var coachlist=[];
+                //data.forEach(function (r, index) {
+                //    var onedata = {
+                //        name: r.name,
+                //        coachid: r._id,
+                //        mobile: r.mobile,
+                //        carmodel: r.carmodel,
+                //        trainfieldlinfo: r.trainfieldlinfo,
+                //        createtime: r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS")
+                //    }
+                //    coachlist.push(onedata);
+                //});
+                returninfo = {
+                    pageInfo: {
+                        totalItems: coachcount,
+                        currentPage: index,
+                        limit: limit,
+                        pagecount: Math.floor(coachcount / limit) + 1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            });
+        })
+};
+exports.getstudentbyid  =function(req,res){
+    var studentid=req.query.studentid;
+    if (studentid===undefined||studentid==""){
+      return   res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    usermodel.findById(new mongodb.ObjectId(studentid),function(err,userdata) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
+        }
+        return res.json(new BaseReturnInfo(1, "", userdata))
+    });
 }
 
 //=====================================训练场管理
@@ -505,6 +580,9 @@ exports.getTrainingFieldList=function(req,res){
     trainingfiledModel.find({driveschool:new mongodb.ObjectId(schoolid)})
         .select("_id phone  driveschool fieldname address responsible")
         .exec(function(err,datalist){
+            if (datalist.length==0){
+
+            }
             process.nextTick(function(){
                var filedlist=[];
                 datalist.forEach(function(r,index){
@@ -537,6 +615,7 @@ exports.saveTrainingField=function(req,res){
     fieldinfo=defaultFun.getfiledinfo(req);
      var trainfild= trainingfiledModel(fieldinfo);
     trainfild.save(function(err,data){
+        basedatafun.reftrainingfiled(req.session.schoolid,function(err,data){});
         if(err){
             return res.json(new BaseReturnInfo(0, "保存训练场出错："+err, "") );
         }else{
@@ -588,6 +667,7 @@ exports.updateTrainingField=function(req,res){
     req.body.updateDate = new Date();
     var update = {$set : filedinfo};
     trainingfiledModel.update(conditions, update,function(err,data){
+        basedatafun.reftrainingfiled(req.session.schoolid,function(err,data){});
         if(err){
             return res.json(new BaseReturnInfo(0, "修改训练场出错："+err, "") );
         }else{
@@ -846,6 +926,108 @@ exports.getSchoolInfoById=function(req,res){
         }
         res.json(new BaseReturnInfo(1, "", schoolinfo));
     })
+}
+
+exports.getmainPagedata=function(schoolid,callback){
+    var queryinfo={
+        userid: "",
+        searchtype: 1,
+        schoolid: schoolid,
+        seqindex:0,
+        count:3
+    };
+    var proxy = new eventproxy();
+    proxy.fail(callback);
+    proxy.all('mainpagedata',"schooldata","newsinfo","coachdata" ,function (mainpagedata,schooldata,newsinfo,coachdata){
+            var retruninfo={
+                summarydata:mainpagedata,
+                schooldata:schooldata,
+                newsinfo:newsinfo,
+                coachdata:coachdata
+            }
+            return callback(null,retruninfo);
+    });
+    // 获取在校学生 科目一*四
+    headMasterOperation.getMainPageData(queryinfo,proxy.done('mainpagedata'));
+    basedatafun.getschoolinfo(schoolid,proxy.done('schooldata'));
+    userCenterServer.getIndustryNews(queryinfo,proxy.done('newsinfo'));
+    getSchoolallCoach(schoolid,proxy.done('coachdata'));
+}
+
+
+//查询驾校所有教练
+var getSchoolallCoach=function(schoolid,callback){
+    cache.get("schoolcoach"+schoolid,function(err,data){
+        if (err) {
+            return callback(err);
+        }
+        if(data){
+            return callback(null,data);
+        }else{
+            coachmodel.find({"driveschool":new mongodb.ObjectId(schoolid),
+                    "is_validation":true})
+                .select("_id name  mobile headportrait  starlevel")
+                .sort({"starlevel":-1})
+                .exec(function(err,coachdata){
+                    if(err){
+                        return callback(err);
+                    }
+                    cache.set("schoolcoach"+schoolid, coachdata,60*20,function(){});
+                    return callback(null,coachdata);
+                })
+        }
+    })
+};
+//查询教练的课时学
+var getCoachCourseplan=function (schoolid,beginDate,endDate,callback){
+    cache.get('getCoachCourseplan:'+schoolid+beginDate, function(err,data) {
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            reservationmodel.aggregate([{$match:{
+               // "_id":new mongodb.ObjectId("56a3730ad63f293669053c5d"),
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "begintime": { $gte: beginDate, $lt:endDate}
+                    ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+                        {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]
+                }},
+                {"$project":{"coachid":"$coachid",
+                    "coursehour":"$coursehour",
+                    "begintime2":"$begintime",
+                    "day":{"$dayOfMonth":{$add:['$begintime',28800000]}}}}
+                    ,{$group:{_id:{"coachid":"$coachid","day":"$day"},coursecount : {$sum : "$coursehour"}}}
+                    ,{"$sort":{coursecount:-1}}
+                ],
+                function(err,data){
+                    if(err){
+                        return callback(err);
+                    }
+                    console.log(data);
+                    cache.set('getCoachCourseplan:'+schoolid+beginDate, data,60*1,function(){});
+                    return callback(null,data);
+                }
+            )
+        }
+    });
+};
+//var begintime=(new Date()).addDays(-1).clearTime();
+//var enddate=(new Date()).addDays(7).clearTime();
+//var schoolid="562dcc3ccb90f25c3bde40da";
+//getCoachCourseDetial(schoolid,begintime,enddate,function(err,data){
+//    console.log(err);
+//   /// console.log(data);
+//}
+//
+//)
+// 驾校获取课程安排
+exports.getcoachcourse=function(schoolid,callback){
+    var begintime=(new Date()).clearTime();
+    var enddate=(new Date()).addDays(7).clearTime();
+    coachmodel.find(searchinfo)
+        .select("_id name mobile  createtime carmodel trainfieldlinfo")
 }
 
 //==========================================主页信息

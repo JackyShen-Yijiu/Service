@@ -81,7 +81,9 @@ var  CoachSchema=new Schema({
     // 用户积分发放人员列表
     integralpaylist:[{id:Number,userid:String,usertype:Number}],
     //是否已经注册mobim
-    is_registermobim:{type:Number,default:0}
+    is_registermobim:{type:Number,default:0},
+    maxprice:Number,  // 最高价格
+    minprice:Number  // 最低价格
 });
 
 /**

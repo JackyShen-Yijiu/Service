@@ -46,10 +46,10 @@
                         </ul>
                     </li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                    class="icon-user"></i> 一步学车 <b class="caret"></b></a>
+                                    class="icon-user"></i> <%=adminUserInfo.name%> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="javascript:;">Profile</a></li>
-                            <li><a href="javascript:;">Logout</a></li>
+                            <li><a href="/admin/logout">退出</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -67,8 +67,8 @@
 <div class="subnavbar">
     <div class="subnavbar-inner">
         <div class="container">
-            <ul class="mainnav">
-                <li class="active"><a href="#"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
+            <ul class="mainnav" id="menu">
+                <li><a href="/admin/manage/main"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
                 <li><a href="/admin/manage/schoollsit"><i class="icon-list-alt"></i><span>驾校管理 </span> </a> </li>
                 <li><a href="/admin/manage/recordlist"><i class="icon-list"></i><span>报名审核</span></a> </li>
                 <li><a href="/admin/manage/coachCheckList"><i class="icon-reorder"></i><span>教练审核</span></a> </li>
@@ -110,7 +110,32 @@
     <!-- /footer-inner -->
 </div>
 
+<script type="text/javascript">
+    $("document").ready(function(){
+        $("#menu li").click(function(){
+            $("#menu li").removeClass("active");//首先移除全部的active
+            $(this).addClass("active");//选中的添加acrive
+        });
+        var urlstr = location.href;
+        //alert((urlstr + '/').indexOf($(this).attr('href')));
+        var urlstatus=false;
+        $("#menu a").each(function (index) {
+            if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
+                // $(this).addClass('active');
+                if (!urlstatus){
+                    $("#menu li").eq(index).addClass('active');
+                    urlstatus = true;}
+            } else {
+                if (!urlstatus){
+                    $("#menu li").eq(index).removeClass('active');
+                }
+                //  $(this).removeClass('active');
+            }
+        });
+        if (!urlstatus) {$("#menu li").eq(0).addClass('active'); }
+    });
 
+</script>
 
 </body>
 </html>
