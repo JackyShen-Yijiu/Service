@@ -123,6 +123,28 @@
                                                     </select>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="Seniority">科目二</label>
+                                                <div class="controls">
+                                                    总学时
+                                                    <input  type="number"   class="span1" ng-model="formData.subjecttwo.totalcourse"   id="Seniority" value="0" required >
+                                                    &nbsp;&nbsp;完成学时&nbsp;
+                                                    <input  type="number" ng-model="formData.subjecttwo.finishcourse"   class="span1" id="passrate" value="90" required>%
+                                                    &nbsp;&nbsp;漏课学时&nbsp;
+                                                    <input  type="number" ng-model="formData.subjecttwo.missingcourse"   class="span1" id="studentcount" value="0" required >
+                                                </div>
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="Seniority">科目三</label>
+                                                <div class="controls">
+                                                    总学时
+                                                    <input  type="number"   class="span1" ng-model="formData.subjectthree.totalcourse"   id="Seniority" value="0" required >
+                                                    &nbsp;&nbsp;完成学时&nbsp;
+                                                    <input  type="number" ng-model="formData.subjectthree.finishcourse"   class="span1" id="passrate" value="90" required>%
+                                                    &nbsp;&nbsp;漏课学时&nbsp;
+                                                    <input  type="number" ng-model="formData.subjectthree.missingcourse"   class="span1" id="studentcount" value="0" required >
+                                                </div>
+                                            </div> <!-- /control-group -->
 
                                             <br />
                                             <div class="form-actions">
@@ -176,7 +198,9 @@
                         }
                     })
         }else{
-
+//            $scope.formData.subjectthree.totalcourse=16;
+//            $scope.formData.subjecttwo.totalcourse=24;
+            $scope.formData.headportrait={};
         }
 
         $scope.processForm = function(isValid){
