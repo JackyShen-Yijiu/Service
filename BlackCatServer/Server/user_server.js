@@ -1223,10 +1223,11 @@ exports.addFavoritCoach=function(userid,coachid,callback){
             user.favorcoach = [new mongodb.ObjectId(coachid)];
         }
 
-        user.save(function (err) {
+        user.save(function (err,data) {
             if (err) {
                 return callback('保存出錯：' + err);
             }
+            cache.set("Favoritcoach"+userid,data.favorcoach,function(err){});
             return callback(null, "success");
 
         })
@@ -1247,10 +1248,11 @@ exports.delFavoritCoach=function(userid,coachid,callback){
             var idx = user.favorcoach.indexOf(new mongodb.ObjectId(coachid));
             if (idx != -1) {
                 user.favorcoach.splice(idx, 1);
-                user.save(function (err) {
+                user.save(function (err,data) {
                     if (err) {
                         return callback('保存出錯：' + err);
                     }
+                    cache.set("Favoritcoach"+userid,data.favorcoach,function(err){});
                     return callback(null, "success");
 
                 })
@@ -2385,7 +2387,7 @@ exports.updateCoachServer=function(updateinfo,callback){
 };
 
 //获取用户信息
-exports.getUserinfoServer=function(type,userid,callback){
+exports.getUserinfoServer=function(type,userid,getuserid,callback){
     if(type==appTypeEmun.UserType.User){
         usermodel.findById(new mongodb.ObjectId(userid),function(err,userdata) {
             if (err || !userdata) {
@@ -2414,7 +2416,24 @@ exports.getUserinfoServer=function(type,userid,callback){
                 returnmodel.tagslist=coachdata.tagslist;
                 returnmodel.trainfield=coachdata.trainfield;
                 returnmodel.serverclasslist=coachdata.serverclasslist;
-            return callback(null,returnmodel);
+                returnmodel.is_favoritcoach=0;
+
+                if (getuserid){
+                    cache.get("Favoritcoach"+getuserid,function(err,data){
+                        if(data){
+                            var idx = data.indexOf(coachdata._id);
+                            if (idx != -1) {
+                                returnmodel.is_favoritcoach=1;
+                            }
+                            returnmodel.is_favoritcoach=0;
+                        }
+                        returnmodel.is_favoritcoach=0;
+                        return callback(null,returnmodel);
+                    })
+                }
+                else {
+                 return callback(null,returnmodel);
+                }
         });
     }else
     {

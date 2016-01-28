@@ -716,7 +716,7 @@ exports.getUserinfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",{}));
     };
-    userserver.getUserinfoServer(apptype,userid,function(err,data){
+    userserver.getUserinfoServer(apptype,userid,req.userId, function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));
         }
