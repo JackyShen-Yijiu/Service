@@ -152,6 +152,8 @@ exports.getStatitic=function(req,res){
               carmodel :req.body.carmodel,
               subject :req.body.subject,
               applyschool:req.session.schooldata._id,
+              subjecttwo:req.body.subjecttwo,
+              subjectthree:req.body.subjectthree,
               applyschoolinfo:{},
               applyclasstypeinfo:{},
           }
@@ -202,9 +204,12 @@ exports.getStatitic=function(req,res){
              shuttlemsg:req.body.shuttlemsg,
              serverclasslist:req.body.serverclasslist,
              trainfield:req.body.trainfield,
-             carmodel:req.body.carmodel
+             carmodel:req.body.carmodel,
+             driveschoolinfo:{}
          };
 
+         coachinfo.driveschoolinfo.id=req.session.schooldata._id;
+         coachinfo.driveschoolinfo.name=req.session.schooldata.name;
          coachinfo.headportrait.originalpic=req.body.logoimg;
          coachinfo.subject=_.map(coachinfo.subject,function(item,i){
              return  basedatafun.getsubject(item);
@@ -241,8 +246,6 @@ exports.getStatitic=function(req,res){
          coachinfo.loc=req.session.schooldata.loc;
          coachinfo.province=req.session.schooldata.province;
          coachinfo.city=req.session.schooldata.city;
-         console.log("训练场");
-         console.log(coachinfo.trainfield);
          if(coachinfo.trainfield!=undefined&&coachinfo.trainfield.length>0){
              basedatafun.gettrainingfiledbyid(coachinfo.trainfield,function(err,data){
                  console.log(data);
@@ -491,18 +494,23 @@ exports.saveCoachInfo=function(req,res) {
         defaultFun.getCoachinfo(req, function(coachinfo) {
             var coachid = req.body.coachid;
             if (coachid === undefined || coachid == "") {
-                var savecoach = new coachmodel(coachinfo);
-                basedatafun.getUserCount(function (err, countdata) {
-                    savecoach.displaycoachid = countdata.value.displayid;
-                    savecoach.invitationcode = countdata.value.invitationcode;
-                    savecoach.password = "e10adc3949ba59abbe56e057f20f883e";
-                    //savecoach.loc.coordinates=[savecoach.longitude,savecoach.latitude];
-                    savecoach.save(function (err, data) {
-                        if (err) {
-                            return res.json(new BaseReturnInfo(0, "保存教练出错：" + err, ""));
-                        } else {
-                            return res.json(new BaseReturnInfo(1, "", "sucess"));
-                        }
+                defaultFun.getModelCount(coachmodel,{"mobile":coachinfo.mobile},function(err,count) {
+                    if (count > 0) {
+                        return res.json(new BaseReturnInfo(0, "用户已存在", ""));
+                    }
+                    var savecoach = new coachmodel(coachinfo);
+                    basedatafun.getUserCount(function (err, countdata) {
+                        savecoach.displaycoachid = countdata.value.displayid;
+                        savecoach.invitationcode = countdata.value.invitationcode;
+                        savecoach.password = "e10adc3949ba59abbe56e057f20f883e";
+                        //savecoach.loc.coordinates=[savecoach.longitude,savecoach.latitude];
+                        savecoach.save(function (err, data) {
+                            if (err) {
+                                return res.json(new BaseReturnInfo(0, "保存教练出错：" + err, ""));
+                            } else {
+                                return res.json(new BaseReturnInfo(1, "", "sucess"));
+                            }
+                        })
                     })
                 })
 
