@@ -43,28 +43,36 @@ function showQuestions(questoinBody, status, enable) {
      setData.questionAnswer =questionAnswer;
      setData.questionImg =questionImg;
      setData.questionVedio =questionVedio;
+
      var strtxtData=JSON.stringify(setData);
   window.localStorage.setItem(questionId,strtxtData);
 
   //读取本地数据
-  for(var intI=0;intI<localStorage.length;intI++){
-    //获取key值
-    var strKey= window.localStorage.key(intI);
-    var getData=JSON.parse(window.localStorage.getItem(strKey))
-    $("#question_title").text(QIndex + "、" + getData.question);//形式：题号、题目内容
-    $("#questionIndex").text(QIndex + "/" + Allcount);
-    $(".questionDiv *").prop('disabled',false);
-    $("#confirmBtn").css("background-color", "#efefef");
-    $("#confirmBtn").prop('disabled',true);
-    $("#li_answer2").css("border-bottom", "");
-    selectAns = 0;
-  }
+  //for(var intI=0;intI<localStorage.length;intI++){
+  //  //获取key值
+  //  var strKey= window.localStorage.key(intI);
+  //  var getData=JSON.parse(window.localStorage.getItem(strKey))
+  //  $("#question_title").text(QIndex + "、" + getData.question);//形式：题号、题目内容
+  //  $("#questionIndex").text(QIndex + "/" + Allcount);
+  //  $(".questionDiv *").prop('disabled',false);
+  //  $("#confirmBtn").css("background-color", "#efefef");
+  //  $("#confirmBtn").prop('disabled',true);
+  //  $("#li_answer2").css("border-bottom", "");
+  //  selectAns = 0;
+  //}
 
    if(enable){
 
    }else{
 
    }
+    $("#question_title").text(QIndex + "、" + questoinBody.question);//形式：题号、题目内容
+    $("#questionIndex").text(QIndex + "/" + Allcount);
+    $(".questionDiv *").prop('disabled',false);
+    $("#confirmBtn").css("background-color", "#efefef");
+    $("#confirmBtn").prop('disabled',true);
+    $("#li_answer2").css("border-bottom", "");
+    selectAns = 0;
 
   $("#li_answer1").css("background-color", "#FFFFFF");
   $("#li_answer2").css("background-color", "#FFFFFF");
