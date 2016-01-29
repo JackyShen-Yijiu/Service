@@ -28,6 +28,27 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 
+industryNewsModel.update({},{ $set: { "newstype": 0 }},{safe: false, multi: true},function(err,doc){
+    console.log(doc);})
+//reservationmodel.update({"is_comment":true} ,
+//{ $set: { "comment.commentcontent": "教练不错，教的好，好" }},{safe: false, multi: true},function(err,doc){
+//    console.log(doc);
+//})
+
+//reservationmodel.update({"is_coachcomment":true} ,
+//    { $set: { "coachcomment.commentcontent": "学员不错，学的很快" }},{safe: false, multi: true},function(err,doc){
+//        console.log(doc);
+//    })
+//  保存测试
+//ActivityModel.findOne({},function(err,data){
+//    console.log(data);
+//    data.county="海淀区";
+//    data.test1="海淀区";
+//    data.save(function(err,data){
+//        console.log(data);
+//    })
+//})
+
 // 添加路线
 var addschoolbus=function(){
     var tembus=new schoolbus();
@@ -36,7 +57,7 @@ var addschoolbus=function(){
     tembus.routecontent="上地-西二旗-生命科学院-一步驾校";
     tembus.save();
 }
-addschoolbus();
+//addschoolbus();
 //console(parseFloat(""));
 //reservationmodel.findOne({reservationstate:appTypeEmun.ReservationState.applyconfirm,
 //   "$or":[ {is_signin:false},{is_signin:null}],endtime:{ "$lt": new Date()}},function(err,data){
