@@ -12,8 +12,6 @@ var ActivitycouponSchema=new Schema({
     couponmoney:Number, // 优惠金额
     state:{type:Number,default:0},    //   1未消费  2过期  3作废    4 已消费
     remark:String,   // 备注信息
-    usetime:Date,    // 使用实际
-    productid:String  // 购买商品id
 });
 ActivitycouponSchema.index({mobile: 1});
 ActivitycouponSchema.index({couponcode:-1});

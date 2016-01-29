@@ -243,3 +243,10 @@ exports.getmessagecount=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     })
 }
+
+// 验证活动优惠卷是否正确
+exports.verifyactivitycoupon=function(req,res){
+   var  mobile=req.query.mobile;
+    var couponcode=req.query.couponcode;
+
+}

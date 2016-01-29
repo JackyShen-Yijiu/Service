@@ -256,6 +256,12 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
     courseController.searchreservationlist);
 
 //==========================================================================================
+//========================================================V1.5==================
+    //  验证活动验证码
+    v1.get("/system/verifyactivitycoupon",ensureAuthorizedController.ensureAuthorized,
+        appsystemController.getmessagecount);
+
+//===========================================================
 
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);

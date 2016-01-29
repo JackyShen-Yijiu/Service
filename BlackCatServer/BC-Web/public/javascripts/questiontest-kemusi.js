@@ -12,7 +12,7 @@ function init() {
     answered=false;
     min = 45;
     sec = 0;
-
+    previouslylist= [];
     startTime();
     nextQestion();
 }
@@ -87,19 +87,31 @@ var QIndex;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
 var answered=false;
+var previouslylist= [];
 
 function nextQestion(){
   if(QIndex < Allcount){
     console.log("next");
     $("#number_title").text(++QIndex);
     getQuestionByID(ExaminIDs[QIndex - 1], showQuestions);
+
+    if(QIndex == 1){
+      $("#btnNext").text("下一题");
+      //获取做题开始时间
+      sTime=new Date().getTime();
+    }
     if(QIndex == 100){ 
       $("#btnNext").text("结束");
+      endTime=new Date().getTime();
     }
   }else{ 
     clearTimeout(t);
     $("body").addClass("loading");
     $("#test_result").text(rightCount + "分");
+
+    //把成绩传到后台(insert功能)
+    $.get(apiHost + "questiontest",{grade:rightCount, sTime:sTime,endTime:endTime})
+
   }
 }
 function preQestion(){
@@ -113,29 +125,40 @@ function preQestion(){
 function answerIsRight(){
   //$("#rightAnswer").show();
   //$("#wrongAnswer").hide();
-  if(answered == false){
+  if(answered == false) {
     answered = true;
-    rightCount++;
-    $("#rightCount").text(rightCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-
-  }
+    if (previouslylist.indexOf(ExaminIDs[QIndex - 1]) == -1)
+      rightCount++;
+     $("#rightCount").text(rightCount);
+     $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+      previouslylist.push(ExaminIDs[QIndex - 1]);
+    }
 }
+
 function answerIsWrong(){
   //$("#rightAnswer").hide();
   //$("#wrongAnswer").show();
   if(answered == false){
-    answered = true;
-    wrongCount++;
-    $("#wrongCount").text(wrongCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-    kemusi_wronglist.push(ExaminIDs[QIndex - 1]);
+     answered = true;
+    if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1){
+      wrongCount++;
+      $("#wrongCount").text(wrongCount);
+      $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
+      previouslylist.push(ExaminIDs[QIndex - 1]);
+    }
+    if(kemusi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1){
+      kemusi_wronglist.push(ExaminIDs[QIndex - 1]);
+    }
+
   }
 }
 
 var min;
 var sec;
 var t;
+var sTime;
+var endTime;
+
 
 function startTime()
 {
@@ -151,6 +174,9 @@ function startTime()
     clearTimeout(t);
     $("body").addClass("loading");
     $("#test_result").text(rightCount + "分");
+
+    $.get(apiHost + "questiontest",{grade:rightCount,sTime:sTime,endTime:endTime})
+
   }else{
     //document.getElementById('timer_txt').innerHTML=checkTime(min)+":"+checkTime(sec);
     $("#timer_txt").html(checkTime(min)+":"+checkTime(sec));
@@ -225,8 +251,7 @@ function tjanswer_m(li_, answer){
   if(hexc($(li_).css('backgroundColor')) == "#ffffff"){
     $(li_).css("background-color", "#efefef");
     selectAns++;
-  }else
-  {
+  }else {
     $(li_).css("background-color", "#ffffff");
     selectAns--;
   }

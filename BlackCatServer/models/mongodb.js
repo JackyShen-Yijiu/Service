@@ -79,3 +79,4 @@ exports.UserCashOutModel=require("./purse/usercashout");
 exports.CoachTagsModel=require("./coachtags");
 exports.SystemMessageModel=require("./systemmessage");
 exports.SchoolBusRouteModel=require("./schoolbusroute");
+exports.ActivityCouponModel=require("./activitycoupon");
