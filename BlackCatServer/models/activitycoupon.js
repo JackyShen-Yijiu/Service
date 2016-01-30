@@ -8,6 +8,7 @@ var ActivitycouponSchema=new Schema({
     mobile:String, // 用户ID
     createtime:{type:Date,default:Date.now()}, //创建时间
     endtime:{type:Date,default:Date.now()},
+    usetime:Date,
     couponcode:String,  //优惠码
     couponmoney:Number, // 优惠金额
     state:{type:Number,default:0},    //   1未消费  2过期  3作废    4 已消费

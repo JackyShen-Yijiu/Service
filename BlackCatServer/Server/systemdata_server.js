@@ -199,13 +199,22 @@ exports.getProductDetail=function(productid,callback){
 
 
 exports.getActivity=function(cityname,callback){
+    var datenow=new Date();
  activityModel.find({"is_using":true,
      "city":new RegExp(cityname),"enddate":{$gte:new Date()}})
+     .sort({"createtime":-1})
      .exec(function(err,data){
          if(err){
              return callback("查询活动出错"+err);
          }
          list= _.map(data,function(item,i){
+             var activitystate=1; // 0 未开始 1 正在进行  2  已过期
+             if( datenow<new Date(item.begindate)){
+                 activitystate=0;
+             }
+             else if(datenow>new Date(item.enddate)){
+                 activitystate=2;
+             }
              var one={
                  id:item._id,
                  name:item.name,
@@ -214,6 +223,7 @@ exports.getActivity=function(cityname,callback){
                  contenturl:item.contenturl,
                  enddate:item.enddate,
                  address:item.address,
+                 activitystate:activitystate
              }
              return one;
          });

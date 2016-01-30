@@ -463,6 +463,29 @@ exports.postenrollverification=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+//  用户支付信息确认
+exports.usercouponforpay=function(req,res){
+    var payconfirminfo= {
+        userid:req.body.userid,
+        couponcode:req.body.couponcode?req.body.couponcode:"",
+        payoderid:req.body.payoderid
+    };
+    if (payconfirminfo.userid===undefined||
+        applyinfo.couponcode === undefined||applyinfo.payoderid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    if(payconfirminfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.usercouponforpay(payconfirminfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 //用户报名
 exports.postapplySchool=function(req,res){
@@ -479,7 +502,8 @@ exports.postapplySchool=function(req,res){
         userpic:req.body.userpic,
         carmodel:req.body.carmodel,
         applyagain:req.body.applyagain?req.body.applyagain:0,
-        fcode:req.body.fcode?req.body.fcode:""
+        fcode:req.body.fcode?req.body.fcode:"",
+        paytype:req.body.paytype?req.body.paytype:0  // 支付方式 1  线下支付  2 线上支付
         };
     if (applyinfo.name===undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined
@@ -502,11 +526,11 @@ exports.postapplySchool=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    userserver.applyschoolinfo(applyinfo,function(err,data){
+    userserver.applyschoolinfo(applyinfo,function(err,data,extradata){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
-        return res.json(new BaseReturnInfo(1,"",data));
+        return res.json(new BaseReturnInfo(1,"",data,extradata));
     });
 
 

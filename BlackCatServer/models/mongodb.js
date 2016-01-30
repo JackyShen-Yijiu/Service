@@ -80,3 +80,4 @@ exports.CoachTagsModel=require("./coachtags");
 exports.SystemMessageModel=require("./systemmessage");
 exports.SchoolBusRouteModel=require("./schoolbusroute");
 exports.ActivityCouponModel=require("./activitycoupon");
+exports.UserPayModel=require("./userpay");

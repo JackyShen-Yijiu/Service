@@ -36,6 +36,7 @@ var coupon=mongodb.Coupon;
 var CoachTag=mongodb.CoachTagsModel;
 var UserCashOutModel=mongodb.UserCashOutModel;
 var SystemMessage=mongodb.SystemMessageModel;
+var UserPayModel=mongodb.UserPayModel;
 require('date-utils');
 var _ = require("underscore");
 
@@ -2087,6 +2088,14 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
                       return callback("所报车型与课程的类型不同，请重新选择");
                   }
+                      getuserpayorder(applyinfo.userid,function(err,payorder){
+                          if(err){
+                              return callback("查询订单出错："+err);
+                          }
+                          if (payorder==1){
+                              return callback("您有需要支付的订单，请先支付");
+                          }
+
                   userdata.idcardnumber=applyinfo.idcardnumber?applyinfo.idcardnumber:userdata.idcardnumber;
                   userdata.name =applyinfo.name;
                   userdata.telephone=applyinfo.telephone;
@@ -2122,8 +2131,16 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       coachdata.studentcoount=coachdata.studentcoount+1;
                       classtypedata.save();
                       coachdata.save();
-                      return callback(null,"success");
+                      if (applyinfo.paytype==2){
+                          createuserpayorder(newuserdata,classtypedata,function(err,payorderdata){
+                      return callback(null,"success",payorderdata);
+                          })
+                      }else
+                      {
+                          return callback(null,"success");
+                      }
                   });
+                      })
 
               });
           });
@@ -2133,7 +2150,78 @@ exports.applyschoolinfo=function(applyinfo,callback){
 
   });
 };
+var getuserpayorder=function(userid,callback){
+    UserPayModel.findOne({userid:userid},function(err,userpaydata){
+        if(userpaydata){
+            if (userpaydata.userpaystate==1||userpaydata.userpaystate==0||userpaydata.userpaystate==3) {
+                return callback(err, 1);
+            }else {
+                return callback (err,0);
+            }
+        }
+        else {
+            return callback (err,0);
+        }
+    })
+}
+//   用户线上支付 生成支付订单
+var createuserpayorder=function(userdata,classdata,callback){
+    var  userpayinfo=new  UserPayModel();
+    userpayinfo.userid=userdata._id;
+    userpayinfo.userpaystate=0;
+    userpayinfo.creattime=new Date();
+    userpayinfo.payendtime=(new Date()).addDays(3);
+    userpayinfo.applyschoolinfo=userdata.applyschoolinfo;
+    userpayinfo.applyclasstypeinfo.id=classdata._id;
+    userpayinfo.applyclasstypeinfo.name=classdata.classname;
+    userpayinfo.applyclasstypeinfo.price=classdata.price;
+    userpayinfo.applyclasstypeinfo.onsaleprice=classdata.onsaleprice?classdata.onsaleprice:classdata.price;
+    userpayinfo.paymoney=classdata.onsaleprice;
+    userpayinfo.save(function(err,data){
+        if(err){
+           return callback("生成支付订单失败："+err);
+        }
+        return callback(null,data);
 
+    });
+};
+// 用户订单使用优惠
+exports.usercouponforpay=function(payconfirminfo,callback){
+    UserPayModel.findOne({"_id":payconfirminfo.payoderid,
+        "userid":payconfirminfo.userid},function(err,userpaydata){
+        if (err){
+            return callback("查询支付信息失败："+err);
+        }
+        if (!userpaydata){
+            return callback("没有查询到订单信息");
+        }
+        if(userpaydata.userpaystate!=0){
+            return callback("订单状态不能使用优惠券");
+        }
+        activityCouponModel.findOne({"couponcode":payconfirminfo.couponcode,"state":1,
+                "endtime":{$gt: (new Date())}})
+            .exec(function(err,data){
+                if (!data){
+                    return callback ("没有找到优惠券信息");
+                }
+                userpaydata.activitycoupon=data._id;
+                userpaydata.couponcode=data.couponcode;
+                userpaydata.discountmoney=data.couponmoney;
+                userpaydata.paymoney=(classdata.onsaleprice?classdata.onsaleprice:classdata.price)-data.couponmoney;
+                userpaydata.save(function(err,newuserpaydata){
+                    if (err){
+                        return callback ("使用优惠券失败");
+                    }
+                    data.usetime=new Date();
+                    data.state=4; // 以消费
+                    data.save(function(err,data){});
+                    return callback(null,newuserpaydata);
+
+                });
+
+            })
+    })
+}
 //更新用户信息
 exports.updateUserServer=function(updateinfo,callback){
     usermodel.findById(new mongodb.ObjectId(updateinfo.userid),function(err,userdata){

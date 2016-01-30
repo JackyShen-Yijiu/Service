@@ -260,6 +260,9 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
     //  验证活动验证码
     v1.get("/system/verifyactivitycoupon",ensureAuthorizedController.ensureAuthorized,
         appsystemController.verifyactivitycoupon);
+// 用户订单使用优惠
+v1.post("/userinfo/usercouponforpay",ensureAuthorizedController.ensureAuthorized,
+    userController.usercouponforpay);
 
 //===========================================================
 
