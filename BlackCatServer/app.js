@@ -12,6 +12,7 @@ var apiRouterV1 = require('./routes/api_v1_router.js');
 var apiRouterV2=require('./routes/api_v2_router.js');
 var apiRouterHeadMaster=require('./routes/api_headmaster_router.js');
 var apipushtest=require('./routes/api_push_test.js');
+var paynotice=require('./routes/paynotice.js');
 var index=require('./routes/index.js');
 var logType=require("./custommodel/emunapptype").LogType;
 var log=require("./Common/systemlog");
@@ -69,6 +70,8 @@ app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
 app.use('/api/headmaster', apiRouterHeadMaster);
 app.use('/api/pushtest', apipushtest);
+
+app.use('/paynotice/', paynotice);
 
 app.use('/validation', index);
 
