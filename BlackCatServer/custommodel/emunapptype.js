@@ -42,7 +42,7 @@ exports.ApplyState={
     NotApply:0, // 没有申请
     Applying:1, // 申请中
     Applyed:2, // 申请成功
-    Applyvalidation:3// 申请验证
+    Applyvalidation:3// 申请验证 （舍弃）
 }
 // 预约状态
 exports.ReservationState={

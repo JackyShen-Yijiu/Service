@@ -100,7 +100,8 @@ v1.post("/userinfo/personalsetting",ensureAuthorizedController.ensureAuthorized,
 //教练申请验证
 v1.post("/userinfo/applyverification",ensureAuthorizedController.ensureAuthorized,userController.coachApplyVerification);
 //根据用户或者教练的id获取基本信息
-v1.get('/userinfo/getuserinfo/:type/userid/:userid',userController.getUserinfo);
+v1.get('/userinfo/getuserinfo/:type/userid/:userid',ensureAuthorizedController.getUseridByReq,
+    userController.getUserinfo);
 //  教练的登录后获取自己的详情(返回信息和登录信息一样)
 v1.get('/userinfo/getcoachinfo',ensureAuthorizedController.ensureAuthorized,userController.getCoachinfo);
 // 修改密码
@@ -255,6 +256,12 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
     courseController.searchreservationlist);
 
 //==========================================================================================
+//========================================================V1.5==================
+    //  验证活动验证码
+    v1.get("/system/verifyactivitycoupon",ensureAuthorizedController.ensureAuthorized,
+        appsystemController.getmessagecount);
+
+//===========================================================
 
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
