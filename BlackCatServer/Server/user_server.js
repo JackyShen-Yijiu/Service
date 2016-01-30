@@ -839,13 +839,12 @@ exports.getNearCoach=function(latitude, longitude, radius,callback){
 // 获取学校下面的教练
 exports.getSchoolCoach=function(coachinfo,callback){
     //{"name":new RegExp(schoolname)}
-    var searchinfo={"driveschool":new mongodb.ObjectId(coachinfo.schoolid)};
+    var searchinfo={"driveschool":new mongodb.ObjectId(coachinfo.schoolid),"is_lock":false,
+    "is_validation": true};
     if (coachinfo.name&&coachinfo.name!=""){
         searchinfo.name=new RegExp(coachinfo.name);
     }
     coachmode.find(searchinfo)
-        .where("is_lock").equals("false")
-        .where("is_validation").equals("true")
         .populate("serverclasslist","classname carmodel cartype  price onsaleprice",{"is_using":true})
         .skip((coachinfo.index-1)*10)
         .limit(10)
