@@ -875,7 +875,7 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         maxprice: r.maxprice?r.maxprice:0,  // 最高价格
                         minprice: r.minprice?r.minprice:0,  // 最低价格
                         carmodel: r.carmodel,
-                        serverclasslist: r.serverclasslist?serverclasslist:[]
+                        serverclasslist: r.serverclasslist? r.serverclasslist:[]
 
                     }
                     //  r.restaurantId = r._id;
