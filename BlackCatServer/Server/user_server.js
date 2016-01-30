@@ -846,6 +846,7 @@ exports.getSchoolCoach=function(coachinfo,callback){
     coachmode.find(searchinfo)
         .where("is_lock").equals("false")
         .where("is_validation").equals("true")
+        .populate("serverclasslist","classname carmodel cartype  price onsaleprice",{"is_using":true})
         .skip((coachinfo.index-1)*10)
         .limit(10)
         .exec(function(err ,coachlist){
@@ -874,7 +875,8 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         subject: r.subject,
                         maxprice: r.maxprice?r.maxprice:0,  // 最高价格
                         minprice: r.minprice?r.minprice:0,  // 最低价格
-                        carmodel: r.carmodel
+                        carmodel: r.carmodel,
+                        serverclasslist: r.serverclasslist?serverclasslist:[]
 
                     }
                     //  r.restaurantId = r._id;
