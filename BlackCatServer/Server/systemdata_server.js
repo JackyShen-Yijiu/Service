@@ -14,6 +14,7 @@ var userconsultModel=mongodb.UserConsultModel;
 var activityModel=mongodb.ActivityModel;
 var systemmessageModel=mongodb.SystemMessageModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
+var activityCouponModel= mongodb.ActivityCouponModel;
 var prodcutdetail=require("../Config/sysconfig").validationurl.prodcutdetail;
 require('date-utils');
 
@@ -266,5 +267,20 @@ exports.getOpenCitylist=function(callback){
        }
    })
 
+};
+
+// 获取活动的优惠吗
+exports.getverifyactivitycoupon=function(mobile,couponcode,callback){
+    activityCouponModel.findOne({"mobile":mobile,"couponcode":couponcode,"state":1,
+            "endtime":{$gt: (new Date())}})
+        .exec(function(err,data){
+            if (err){
+               return callback("查询优惠卷出错:"+err);
+            }
+            if (!data){
+                return callback("没有查询到优惠卷");
+            }
+            return callback(null,data);
+        })
 }
 

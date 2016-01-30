@@ -196,7 +196,7 @@ exports.postUserConsult=function(req,res){
         content:req.body.content,
         userid:req.body.userid
     };
-    console.log(userinfo);
+    //console.log(userinfo);
     sysstemserver.saveUserConsult(userinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
@@ -248,5 +248,13 @@ exports.getmessagecount=function(req,res){
 exports.verifyactivitycoupon=function(req,res){
    var  mobile=req.query.mobile;
     var couponcode=req.query.couponcode;
-
+    if (mobile===undefined||couponcode===undefined){
+        return   res.json(new BaseReturnInfo(0,"参数错误",{}));
+    };
+    sysstemserver.getverifyactivitycoupon(mobile,couponcode,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }

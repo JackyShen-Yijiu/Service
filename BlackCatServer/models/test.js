@@ -22,14 +22,25 @@ var auditurl=require("../Config/sysconfig").validationurl;
 var tags=mongodb.CoachTagsModel;
 var systemmessage=mongodb.SystemMessageModel;
 var schoolbus=mongodb.SchoolBusRouteModel;
+var activityCouponModel= mongodb.ActivityCouponModel;
 require('date-utils');
 var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
-
-industryNewsModel.update({},{ $set: { "newstype": 0 }},{safe: false, multi: true},function(err,doc){
-    console.log(doc);})
+addactivityCouponModel=function(){
+     var temp =new activityCouponModel();
+     temp.mobile="15652305650";
+    temp.createtime=(new Date());
+    temp.endtime=(new Date()).addDays(200);
+    temp.couponcode=123456;
+    temp.couponmoney=800;
+    temp.state=1;
+    temp.save();
+}
+addactivityCouponModel();
+//industryNewsModel.update({},{ $set: { "newstype": 0 }},{safe: false, multi: true},function(err,doc){
+//    console.log(doc);})
 //reservationmodel.update({"is_comment":true} ,
 //{ $set: { "comment.commentcontent": "教练不错，教的好，好" }},{safe: false, multi: true},function(err,doc){
 //    console.log(doc);

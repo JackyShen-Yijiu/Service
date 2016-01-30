@@ -229,6 +229,7 @@ exports.getClassTypeBySchoolId=function(schoolid,cartype,callback){
                         is_vip: r.is_vip,
                         classdesc: r.classdesc,
                         price: r.price,
+                        onsaleprice: r.onsaleprice,
                         carmodel: r.carmodel,
                         cartype:r.cartype,
                         classdesc:r.classdesc,
