@@ -781,8 +781,8 @@ exports.searchCoach=function(searchinfo,callback){
                             latitude: r.latitude,
                             longitude: r.longitude,
                             subject: r.subject,
-                            maxprice: r.maxprice,  // 最高价格
-                            minprice: r.minprice  // 最低价格
+                            maxprice: r.maxprice?r.maxprice:0,  // 最高价格
+                            minprice: r.minprice?r.minprice:0,  // 最低价格
                         }
                         driveschoollist.push(oneschool);
                     });
@@ -872,8 +872,8 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         latitude: r.latitude,
                         longitude: r.longitude,
                         subject: r.subject,
-                        maxprice: r.maxprice,  // 最高价格
-                        minprice: r.minprice,  // 最低价格
+                        maxprice: r.maxprice?r.maxprice:0,  // 最高价格
+                        minprice: r.minprice?r.minprice:0,  // 最低价格
                         carmodel: r.carmodel
 
                     }
