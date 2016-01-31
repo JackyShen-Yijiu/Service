@@ -11,6 +11,20 @@ var AlipayConfig = {
 
 // 交易安全检验码，由数字和字母组成的32位字符串
     key:"dfc16nxjp7g57kkf1xcukwmkp37bab3d",
+    // z支付宝公钥
+
+    alipaypubkey:"-----BEGIN PUBLIC KEY-----"+ "\r\n" +
+    "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHk"+ "\r\n" +
+    "rIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEs"+ "\r\n" +
+    "raprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2Q"+ "\r\n" +
+    "hUrCmZYI/FCEa3/cNMW0QIDAQAB"+ "\r\n" +
+    "-----END PUBLIC KEY-----",
+    //alipaypubkey:"-----BEGIN PUBLIC KEY-----"+ "\r\n" +
+    //"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNb6OYvMg1/V8W1Ye4wQU+WuvA"+ "\r\n" +
+    //"dyA0r/Up+wQf3lJjJ/7Gqq50pWZyU3Z1KK/WFLiMGVjWh21RXyM6KhT/Tc/ksZ7y"+ "\r\n" +
+    //"q2cdNfisBpCZEFoMA9fWTA2e1vj5dqf3aUpjrF2uWlUPOP46GqY8wlNuucI6GXjY"+ "\r\n" +
+    //"Bft05bvOarnFKjbUQQIDAQAB"+ "\r\n" +
+    //"-----END PUBLIC KEY-----",
 
 // 签约支付宝账号或卖家收款支付宝帐户
     seller_email:"ybpay@ybxch.com",
@@ -45,6 +59,11 @@ var AlipayNotify={
     verity:function(params,callback){
         var mysign=getMySign(params);
         var sign = params["sign"]?params["sign"]:"";
+        console.log("sign");
+        console.log(sign);
+        console.log("mysine");
+        console.log(mysign);
+        console.log(mysign==sign);
         if(mysign==sign){
 
             var responseTxt = "true";
@@ -101,11 +120,27 @@ var getMySign = function (params) {
         }
 
     }
-    prestr = prestr + AlipayConfig.key; //把拼接后的字符串再与安全校验码直接连接起来
-    //body=Hello&buyer_email=13758698870&buyer_id=2088002007013600&discount=-5&extra_common_param=你好，这是测试商户的广告。&gmt_close=2008-10-22 20:49:46&gmt_create=2008-10-22 20:49:31&gmt_payment=2008-10-22 20:49:50&gmt_refund=2008-10-29 19:38:25&is_total_fee_adjust=N&notify_id=70fec0c2730b27528665af4517c27b95&notify_time=2009-08-12 11:08:32&notify_type=交易状态同步通知(trade_status_sync)&out_trade_no=3618810634349901&payment_type=1&price=10.00&quantity=1&refund_status=REFUND_SUCCESS&seller_email=chao.chenc1@alipay.com&seller_id=2088002007018916&sign=_p_w_l_h_j0b_gd_aejia7n_ko4_m%2Fu_w_jd3_nx_s_k_mxus9_hoxg_y_r_lunli_pmma29_t_q%3D%3D&sign_type=DSA&subject=iphone手机&total_fee=10.00&trade_no=2008102203208746&trade_status=TRADE_FINISHED&use_coupon=N
+    //prestr = prestr + AlipayConfig.key; //把拼接后的字符串再与安全校验码直接连接起来
+    //body=Hello&buyer_email=13758698870&buyer_id=2088002007013600&discount=-5&extra_common_param=你好，这是测试商户的广告。
+    // &gmt_close=2008-10-22 20:49:46&gmt_create=2008-10-22 20:49:31&gmt_payment=2008-10-22 20:49:50&
+    // gmt_refund=2008-10-29 19:38:25&is_total_fee_adjust=N&notify_id=70fec0c2730b27528665af4517c27b95&notify_time=2009-08-12
+    // 11:08:32&notify_type=交易状态同步通知(trade_status_sync)&out_trade_no=3618810634349901&payment_type=1&price=10.00&quantity=1
+    // &refund_status=REFUND_SUCCESS&seller_email=chao.chenc1@alipay.com&seller_id=2088002007018916&
+    // sign=_p_w_l_h_j0b_gd_aejia7n_ko4_m%2Fu_w_jd3_nx_s_k_mxus9_hoxg_y_r_lunli_pmma29_t_q%3D%3D&sign_type=DSA&subject=iphone手机
+    // &total_fee=10.00&trade_no=2008102203208746&trade_status=TRADE_FINISHED&use_coupon=N
 
+    console.log(prestr);
     var crypto = require('crypto');
-    return crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");
+    //return crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");
+   //return crypto.createHash('RSA-SHA1').update(prestr, AlipayConfig.input_charset).digest("hex");
+    var sign = params["sign"]?params["sign"]:"";
+    console.log("sign.length");
+    console.log(sign.length);
+    var verify = crypto.createVerify('RSA-SHA1');
+    verify.update(prestr);
+    var result = verify.verify(AlipayConfig.alipaypubkey, sign,"base64");
+    console.log("验证结果："+result);
+    return return crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");;
 };
 var requestUrl=function(host,path,callback){
     var https = require('https');
