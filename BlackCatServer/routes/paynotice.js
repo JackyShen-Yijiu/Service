@@ -75,6 +75,8 @@ var AlipayNotify={
 
                 requestUrl(AlipayConfig.ALIPAY_HOST,veryfy_path,function(responseTxt){
                     if(responseTxt){
+                        console.log("responseTxt");
+                        console.log(responseTxt);
                         callback(true);
                     }else{
                         callback(false);
@@ -134,13 +136,11 @@ var getMySign = function (params) {
     //return crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");
    //return crypto.createHash('RSA-SHA1').update(prestr, AlipayConfig.input_charset).digest("hex");
     var sign = params["sign"]?params["sign"]:"";
-    console.log("sign.length");
-    console.log(sign.length);
     var verify = crypto.createVerify('RSA-SHA1');
-    verify.update(prestr);
-    var result = verify.verify(AlipayConfig.alipaypubkey, sign,"base64");
+    verify.update(prestr,"UTF-8");
+    var result = verify.verify(AlipayConfig.alipaypubkey, sign);
     console.log("验证结果："+result);
-    return  crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");;
+     return sign;
 };
 var requestUrl=function(host,path,callback){
     var https = require('https');
