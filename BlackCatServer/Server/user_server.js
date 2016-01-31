@@ -639,13 +639,14 @@ exports.updateMobile=function(mobileinfo,callback){
                 if (userinstace) {
                     return callback("改手机号已经存在，请更换手机号");
                 }
+                usermodel.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
+                    if (err) {
+                        return callback("更新手机号出错：" + err)
+                    }
+                    return callback(null, "success");
+                })
             })
-            usermodel.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
-                if (err) {
-                    return callback("更新手机号出错：" + err)
-                }
-                return callback(null, "success");
-            })
+
         }else if( mobileinfo.usertype==appTypeEmun.UserType.Coach)
         {
             coachmode.findOne({mobile: mobileinfo.mobile}, function (err, userinstace) {
