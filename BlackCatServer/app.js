@@ -37,6 +37,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(partials());
 
+app.use(function(req,res,next){
+  if(req.url=='/paynotice'||req.url=='/alipay/alipay'){
+    req.headers['content-type']='application/x-www-form-urlencoded';
+  }
+  next();
+});
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -66,12 +72,7 @@ app.use(express.static(path.join(__dirname, 'public')));
   d.run(next);
 });*/
 
-app.use(function(req,res,next){
-  if(req.url=='/paynotice'||req.url=='/alipay/alipay'){
-    req.headers['content-type']='application/x-www-form-urlencoded';
-  }
-  next();
-});
+
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
