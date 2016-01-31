@@ -140,7 +140,7 @@ var getMySign = function (params) {
     verify.update(prestr);
     var result = verify.verify(AlipayConfig.alipaypubkey, sign,"base64");
     console.log("验证结果："+result);
-    return return crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");;
+    return  crypto.createHash('md5').update(prestr, AlipayConfig.input_charset).digest("hex");;
 };
 var requestUrl=function(host,path,callback){
     var https = require('https');
