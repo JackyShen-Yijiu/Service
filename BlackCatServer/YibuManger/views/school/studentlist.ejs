@@ -28,6 +28,8 @@
                                         <th>教练</th>
                                         <th> 班型</th>
                                         <th class="td-actions"> 操作</th>
+                                        <th class="td-actions">预约教练
+                                        </th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
 
@@ -47,12 +49,15 @@
                                             <span>{{content.applyclasstypeinfo.name}}</span>
                                         </td>
 
-
                                         <td class="td-actions">
                                             <a href="/admin/manage/editstudentinfo?studentid={{content._id}}"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <a href="#"
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                        </td>
+                                        <td class="td-actions">
+                                            <a href="/admin/manage/reserveCoach?studentid={{content._id}}"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-phone-sign"> </i></a>
                                         </td>
 
 

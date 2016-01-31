@@ -151,6 +151,10 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
+    // 获取预约教练列表
+    router.get("/manage/reserveCoach" ,function(req, res, next) {
+        res.render('school/reserveCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/reserveCoach"));
+    });
     //编辑教练详情
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
         var schoolid=req.session.schoolid;
