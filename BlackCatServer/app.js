@@ -65,6 +65,13 @@ app.use(express.static(path.join(__dirname, 'public')));
   //d.add(res);
   d.run(next);
 });*/
+
+app.use(function(req,res,next){
+  if(req.url=='/paynotice'||req.url=='/alipay/alipay'){
+    req.headers['content-type']='application/x-www-form-urlencoded';
+  }
+  next();
+});
 app.use('/api/v1', apiRouterV1);
 app.use('/api/', apiRouterV1);
 app.use('/api/v2', apiRouterV2);
