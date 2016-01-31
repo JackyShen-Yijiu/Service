@@ -38,8 +38,11 @@ app.set('view engine', 'ejs');
 app.use(partials());
 
 app.use(function(req,res,next){
+  console(req.url);
+  console(req.headers['content-type']);
   if(req.url=='/alipay'||req.url=='/alipay/test'){
     req.headers['content-type']='application/x-www-form-urlencoded';
+    console(req.headers['content-type']);
   }
   next();
 });
