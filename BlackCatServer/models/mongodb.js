@@ -81,3 +81,4 @@ exports.SystemMessageModel=require("./systemmessage");
 exports.SchoolBusRouteModel=require("./schoolbusroute");
 exports.ActivityCouponModel=require("./activitycoupon");
 exports.UserPayModel=require("./userpay");
+exports.AliPayNoticeModel=require("./alipaynotice");
