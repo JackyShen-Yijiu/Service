@@ -21,6 +21,22 @@ var log=require("./Common/systemlog");
 
 var app = express();
 
+app.use(function(req,res,next){
+  console.log(req.url);
+  console.log(req.headers['content-type']);
+  if(req.url=='/alipay'||req.url=='/alipay/test'){
+    req.headers['content-type']='application/x-www-form-urlencoded';
+    console.log(req.headers['content-type']);
+  }
+  next();
+});
+app.use(function(req,res,next){
+  if(req.url=='/alipay'||req.url=='/alipay/test'){
+    req.headers['content-type']='application/x-www-form-urlencoded';
+  }
+  next();
+});
+
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -37,15 +53,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(partials());
 
-app.use(function(req,res,next){
-  console(req.url);
-  console(req.headers['content-type']);
-  if(req.url=='/alipay'||req.url=='/alipay/test'){
-    req.headers['content-type']='application/x-www-form-urlencoded';
-    console(req.headers['content-type']);
-  }
-  next();
-});
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
