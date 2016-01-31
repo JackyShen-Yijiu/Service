@@ -113,8 +113,10 @@ router.get("/alipay",function(req,res){
         var params=req.query;
 
 
+    console.log(req);
     console.log("req.query()");
     console.log(req.query);
+
     console.log("req.body()");
     console.log(req.body);
         var trade_no = req.query.trade_no;				//支付宝交易号
@@ -122,6 +124,7 @@ router.get("/alipay",function(req,res){
         var total_fee = req.query.total_fee;	        //获取总金额
         var subject = req.query.subject;//商品名称、订单名称
         var body = "";
+    console.log(trade_no);
         if(req.query.body != null){
             body = req.query.body;//商品描述、订单备注、描述
         }
