@@ -38,7 +38,7 @@ app.set('view engine', 'ejs');
 app.use(partials());
 
 app.use(function(req,res,next){
-  if(req.url=='/paynotice'||req.url=='/alipay/alipay'){
+  if(req.url=='/alipay'||req.url=='/alipay/test'){
     req.headers['content-type']='application/x-www-form-urlencoded';
   }
   next();
