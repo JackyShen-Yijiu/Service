@@ -2198,7 +2198,7 @@ exports.usercouponforpay=function(payconfirminfo,callback){
         if(userpaydata.userpaystate!=0){
             return callback("订单状态不能使用优惠券");
         }
-        activityCouponModel.findOne({"couponcode":payconfirminfo.couponcode,"state":1,
+        activityCouponModel.findOne({"_id":payconfirminfo.couponid,"couponcode":payconfirminfo.couponcode,"state":1,
                 "endtime":{$gt: (new Date())}})
             .exec(function(err,data){
                 if (!data){

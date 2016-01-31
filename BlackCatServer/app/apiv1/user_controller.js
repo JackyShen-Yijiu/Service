@@ -469,10 +469,12 @@ exports.usercouponforpay=function(req,res){
     var payconfirminfo= {
         userid:req.body.userid,
         couponcode:req.body.couponcode?req.body.couponcode:"",
+        couponid:req.body.couponid,
         payoderid:req.body.payoderid
     };
     if (payconfirminfo.userid===undefined||
-        applyinfo.couponcode === undefined||applyinfo.payoderid === undefined) {
+        applyinfo.couponcode === undefined||applyinfo.payoderid === undefined||
+        applyinfo.couponid === undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     };
