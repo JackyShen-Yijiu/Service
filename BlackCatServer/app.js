@@ -24,14 +24,14 @@ var app = express();
 app.use(function(req,res,next){
   console.log(req.url);
   console.log(req.headers['content-type']);
-  if(req.url=='/alipay'||req.url=='/alipay/test'){
+  if(req.url=='/paynotice/alipay'||req.url=='/paynotice/alipay'){
     req.headers['content-type']='application/x-www-form-urlencoded';
     console.log(req.headers['content-type']);
   }
   next();
 });
 app.use(function(req,res,next){
-  if(req.url=='/alipay'||req.url=='/alipay/test'){
+  if(req.url=='/paynotice/alipay'||req.url=='/paynotice/alipay'){
     req.headers['content-type']='application/x-www-form-urlencoded';
   }
   next();
