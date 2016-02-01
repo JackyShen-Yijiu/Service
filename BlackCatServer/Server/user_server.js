@@ -37,6 +37,7 @@ var CoachTag=mongodb.CoachTagsModel;
 var UserCashOutModel=mongodb.UserCashOutModel;
 var SystemMessage=mongodb.SystemMessageModel;
 var UserPayModel=mongodb.UserPayModel;
+var activityCouponModel=mongodb.ActivityCouponModel;
 require('date-utils');
 var _ = require("underscore");
 
