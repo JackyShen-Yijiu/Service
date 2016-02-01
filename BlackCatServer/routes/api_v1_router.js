@@ -263,6 +263,9 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
 // 用户订单使用优惠
 v1.post("/userinfo/usercouponforpay",ensureAuthorizedController.ensureAuthorized,
     userController.usercouponforpay);
+// 获取 我的报名支付订单
+v1.get("/userinfo/getmypayorder",ensureAuthorizedController.ensureAuthorized,
+    userController.getMyApplyPayOrder);
 
 //===========================================================
 

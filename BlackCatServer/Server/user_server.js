@@ -2152,6 +2152,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
 
   });
 };
+
+
 var getuserpayorder=function(userid,callback){
     UserPayModel.findOne({userid:userid},function(err,userpaydata){
         if(userpaydata){
@@ -2187,6 +2189,22 @@ var createuserpayorder=function(userdata,classdata,callback){
 
     });
 };
+
+//　用户获取我的报名支付订单列表
+exports.getMyApplyPayOrder=function(userid,orderstate,callback){
+    var seacrchinfo={
+        userid:userid
+    }
+    if (orderstate>-1){
+        seacrchinfo.userpaystate=orderstate;
+    }
+    UserPayModel.find(seacrchinfo,function(err,userpaydata){
+        if(err){
+            return callback("查询支付订单失败:"+err);
+        }
+        return callback(null,userpaydata)
+    })
+}
 // 用户订单使用优惠
 exports.usercouponforpay=function(payconfirminfo,callback){
     UserPayModel.findOne({"_id":payconfirminfo.payoderid,

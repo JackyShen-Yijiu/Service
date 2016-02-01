@@ -489,6 +489,21 @@ exports.usercouponforpay=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 获取用户报名支付的订单
+exports.getMyApplyPayOrder=function(req,res){
+    var userid= req.query.userid;
+    var orderstate=req.query.orderstate?req.query.orderstate:-1;
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getMyApplyPayOrder(userid,orderstate,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 //用户报名
 exports.postapplySchool=function(req,res){
     console.log(req.body);

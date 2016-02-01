@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 
 var UserPaySchema= new Schema({
     userid:{type: Schema.Types.ObjectId, ref: 'User'},   // 用户userid
-    userpaystate:{type:Number,default:0} , // 0 订单生成  1 开始支付  2 支付成功 3 支付失败 4 订单取消
+    userpaystate:{type:Number,default:0} , // 0 订单生成    2 支付成功 3 支付失败 4 订单取消
     creattime:Date,  // 订单生成时间
     payendtime:Date,                  // 支付订单结束时间
     beginpaytime:Date,// 开始 支付时间
