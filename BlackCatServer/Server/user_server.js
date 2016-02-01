@@ -2249,7 +2249,8 @@ exports.usercouponforpay=function(payconfirminfo,callback){
                 userpaydata.activitycoupon=data._id;
                 userpaydata.couponcode=data.couponcode;
                 userpaydata.discountmoney=data.couponmoney;
-                userpaydata.paymoney=(classdata.onsaleprice?classdata.onsaleprice:classdata.price)-data.couponmoney;
+                userpaydata.paymoney=(userpaydata.applyclasstypeinfo.onsaleprice?
+                        userpaydata.applyclasstypeinfo.onsaleprice:userpaydata.applyclasstypeinfo.price)-data.couponmoney;
                 userpaydata.save(function(err,newuserpaydata){
                     if (err){
                         return callback ("使用优惠券失败");
