@@ -1220,6 +1220,7 @@ exports.addFavoritCoach=function(userid,coachid,callback){
                 user.favorcoach.push(new mongodb.ObjectId(coachid));
             }
             else {
+                cache.set("Favoritcoach"+userid,user.favorcoach,function(err){});
                 return callback('已经存在');
             }
         } else {

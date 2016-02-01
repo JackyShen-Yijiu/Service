@@ -210,7 +210,7 @@ router.post("/alipay",function(req,res){
                     //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
                     if (trade_status == "TRADE_FINISHED") {
                         savenoticedata.is_deal = 3; //暂时不用处理
-                        savenoticedata.dealreamk = "建议完成,暂时不用处理";
+                        savenoticedata.dealreamk = "订单完成,暂时不用处理";
                         savenoticedata.save(function (err, data) {
                         });
                         res.end("success");
@@ -284,7 +284,7 @@ router.post("/alipay",function(req,res){
                         //该种交易状态只在一种情况下出现——开通了高级即时到账，买家付款成功后。
                     } else {
                         savenoticedata.is_deal = 3; //暂时不用处理
-                        savenoticedata.dealreamk = "建议完成,暂时不用处理";
+                        savenoticedata.dealreamk = "暂时不用处理";
                         savenoticedata.save(function (err, data) {
                         });
                         res.end("success");
