@@ -2041,7 +2041,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
-      if(userdata.applycount>1){
+      if(userdata.applycount>10){
           return  callback("您已经超过了最大报名次数");
       }
       if(userdata.applystate>appTypeEmun.ApplyState.Applying){
