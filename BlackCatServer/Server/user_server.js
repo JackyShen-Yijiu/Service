@@ -2512,13 +2512,11 @@ exports.getUserinfoServer=function(type,userid,getuserid,callback){
                 if (getuserid){
                     cache.get("Favoritcoach"+getuserid,function(err,data){
                         if(data){
-                            var idx = data.indexOf(coachdata._id);
+                            var idx = data.indexOf(coachdata._id.toString());
                             if (idx != -1) {
                                 returnmodel.is_favoritcoach=1;
                             }
-                            returnmodel.is_favoritcoach=0;
                         }
-                        returnmodel.is_favoritcoach=0;
                         return callback(null,returnmodel);
                     })
                 }
@@ -2627,7 +2625,7 @@ exports.getAllCoachtags=function(coachid,callback){
                         coachid:item.coachid,
                         is_audit:item.is_audit,
                         color:item.color?item.color:colorarray[colorid],
-                        is_choose: choosedata.indexOf(item._id)>-1?true:false,
+                        is_choose: choosedata.indexOf(item._id.toString())>-1?true:false,
                     }
                     return  systemitem;
                 });
@@ -2640,7 +2638,7 @@ exports.getAllCoachtags=function(coachid,callback){
                         coachid:item.coachid,
                         is_audit:item.is_audit,
                         color:item.color?item.color:colorarray[colorid],
-                        is_choose: choosedata.indexOf(item._id)>-1?true:false,
+                        is_choose: choosedata.indexOf(item._id.toString())>-1?true:false,
                 }
                     return  systemitem;
                 });

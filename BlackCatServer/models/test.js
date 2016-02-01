@@ -28,17 +28,31 @@ var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
-addactivityCouponModel=function(){
-     var temp =new activityCouponModel();
-     temp.mobile="15652305650";
-    temp.createtime=(new Date());
-    temp.endtime=(new Date()).addDays(200);
-    temp.couponcode=123456;
-    temp.couponmoney=800;
-    temp.state=1;
-    temp.save();
-}
-addactivityCouponModel();
+var  getuserid="56937987e6b6a92c09a54d6b";
+var coachdataid="5666365ef14c20d07ffa6ae8";
+cache.get("Favoritcoach"+getuserid,function(err,data){
+    if(data){
+        var idx = data.indexOf(coachdataid);
+        console.log(coachdataid);
+        console.log(data);
+        console.log(idx);
+        if (idx != -1) {
+            //returnmodel.is_favoritcoach=1;
+        }
+    }
+   // return callback(null,returnmodel);
+})
+//addactivityCouponModel=function(){
+//     var temp =new activityCouponModel();
+//     temp.mobile="15652305650";
+//    temp.createtime=(new Date());
+//    temp.endtime=(new Date()).addDays(200);
+//    temp.couponcode=123456;
+//    temp.couponmoney=800;
+//    temp.state=1;
+//    temp.save();
+//}
+//addactivityCouponModel();
 //industryNewsModel.update({},{ $set: { "newstype": 0 }},{safe: false, multi: true},function(err,doc){
 //    console.log(doc);})
 //reservationmodel.update({"is_comment":true} ,
