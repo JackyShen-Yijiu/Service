@@ -69,7 +69,8 @@ v1.get("/userinfo/receivemycupon",ensureAuthorizedController.ensureAuthorized,us
 ////=====================================Y码相关=======================================
 //======================================用户信息======================================
 //  用户报名验证 v1.1 版
-v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,userController.postenrollverificationv2);
+v1.post("/userinfo/enrollverificationv2",ensureAuthorizedController.ensureAuthorized,
+    userController.postenrollverificationv2);
 // 用户购买商品
 v1.post("/userinfo/buyproduct",ensureAuthorizedController.ensureAuthorized,userController.userBuyProduct);
 // 用户获取我购买的商品列表

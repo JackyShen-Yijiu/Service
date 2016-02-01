@@ -412,7 +412,8 @@ var getSchoolStudentCount=function(schoolid,callback){
            return callback(null,data);
         } else {
             usermodel.aggregate([{$match:{"applyschool":new mongodb.ObjectId(schoolid)
-                    ,"applystate":{$ne : appTypeEmun.ApplyState.NotApply}
+                    ,"applystate":{$ne : appTypeEmun.ApplyState.NotApply,
+                "subject.subjectid":{"$in":[1,2,3,4]}}
                 }},
                     {$group:{_id:"$subject.subjectid",studentcount : {$sum : 1}}}],
                 function(err,studentdata){
