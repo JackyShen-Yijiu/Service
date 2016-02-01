@@ -2155,18 +2155,21 @@ exports.applyschoolinfo=function(applyinfo,callback){
 
 
 var getuserpayorder=function(userid,callback){
-    UserPayModel.findOne({userid:userid},function(err,userpaydata){
-        if(userpaydata){
-            if (userpaydata.userpaystate==1||userpaydata.userpaystate==0||userpaydata.userpaystate==3) {
-                return callback(err, 1);
-            }else {
-                return callback (err,0);
-            }
-        }
-        else {
-            return callback (err,0);
-        }
-    })
+    UserPayModel.update({userid:userid,userpaystate:0},{userpaystate:4},function(err,data){
+        return callback (err,0);
+    });
+    //UserPayModel.findOne({userid:userid},function(err,userpaydata){
+    //    if(userpaydata){
+    //        if (userpaydata.userpaystate==1||userpaydata.userpaystate==0||userpaydata.userpaystate==3) {
+    //            return callback(err, 1);
+    //        }else {
+    //            return callback (err,0);
+    //        }
+    //    }
+    //    else {
+    //        return callback (err,0);
+    //    }
+    //})
 }
 //   用户线上支付 生成支付订单
 var createuserpayorder=function(userdata,classdata,callback){
@@ -2202,7 +2205,25 @@ exports.getMyApplyPayOrder=function(userid,orderstate,callback){
         if(err){
             return callback("查询支付订单失败:"+err);
         }
-        return callback(null,userpaydata)
+        var returndatalist=[];
+        userpaydata.forEach(function(r,index){
+        var returndata ={
+            _id:r._id,
+            userpaystate:r.userpaystate,
+            creattime:r.creattime,
+            payendtime:r.payendtime,
+            beginpaytime:r.beginpaytime,
+            paychannel:r.paychannel,
+            applyschoolinfo:r.applyschoolinfo,
+            applyclasstypeinfo:r.applyclasstypeinfo,
+            discountmoney:r.discountmoney,
+            paymoney:r.paymoney,
+            activitycoupon:r.activitycoupon?r.activitycoupon:"",
+            couponcode:r.couponcode?r.couponcode:"",
+        };
+            returndatalist.push(returndata);
+        })
+        return callback(null,returndatalist);
     })
 }
 // 用户订单使用优惠

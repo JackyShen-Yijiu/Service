@@ -17,7 +17,7 @@ var UserPaySchema= new Schema({
     applyclasstypeinfo:{name:String,id:String,price:Number,onsaleprice:Number}, // 报考班型 信息
     // 活动优惠卷
     activitycoupon:{type: Schema.Types.ObjectId, ref: 'activitycoupon'},
-    couponcode:String,  // 优惠卷
+    couponcode:{type:String,default:""},  // 优惠卷
     // 优惠金额
     discountmoney:{type:Number,default:0},
     paymoney:Number,   // 实际支付金额
