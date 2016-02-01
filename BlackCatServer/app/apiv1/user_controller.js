@@ -473,8 +473,8 @@ exports.usercouponforpay=function(req,res){
         payoderid:req.body.payoderid
     };
     if (payconfirminfo.userid===undefined||
-        applyinfo.couponcode === undefined||applyinfo.payoderid === undefined||
-        applyinfo.couponid === undefined) {
+        payconfirminfo.couponcode === undefined||payconfirminfo.payoderid === undefined||
+        payconfirminfo.couponid === undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     };
