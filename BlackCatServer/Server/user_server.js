@@ -1954,7 +1954,7 @@ exports.getMyProgress=function(userid,callback){
 // 获取用户的报名状态
   exports.getMyApplyState=function(userid,callback){
       usermodel.findById(new mongodb.ObjectId(userid))
-          .select("applystate applyinfo applycount")
+          .select("applystate applyinfo applycount paytype paytypestatus")
           .exec(function(err,userdata){
               if(err){
                   return  callback("查询错误："+err);
@@ -1963,6 +1963,8 @@ exports.getMyProgress=function(userid,callback){
                   return  callback("没有查询到用户信息");
               }
               userdata.applycount=userdata.applycount?userdata.applycount:0;
+              userdata.paytype=userdata.paytype?userdata.paytype:1;   // 线下支付
+              userdata.paytypestatus=userdata.paytypestatus?userdata.paytypestatus:0;   // 未支付
               return callback(null,userdata);
           })
   }
@@ -2203,6 +2205,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyinfo.applytime=new Date();
                   userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
                       userdata.scanauditurl=auditurl.applyurl+userdata._id;
+                          userpaydata.paytype=applyinfo.paytype;
+                          userpaydata.paytypestatus=0;
                   //console.log(userdata);
                   // 保存 申请信息
                   userdata.save(function(err,newuserdata){

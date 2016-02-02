@@ -121,7 +121,11 @@ var  UserSchema=new Schema({
     //是否已经注册mobim
     is_registermobim:{type:Number,default:0},
     // 学员来源
-    source:{type:Number,default:0}   // 0 app 注册 2  后台添加  2 微信报名  .....
+    source:{type:Number,default:0} ,  // 0 app 注册 2  后台添加  2 微信报名  .....
+    // 用户支付类型
+    paytype:{type:Number,default:1}, //  1 线下支付， 2 线上支付
+    // 用户支付状态
+    paytypestatus:{type:Number,default:0} // 0 未支付  20支付成功(等待验证)  30 支付失败
 });
 UserSchema.index({mobile: 1}, {unique: true});
 module.exports = mongoose.model('User', UserSchema);

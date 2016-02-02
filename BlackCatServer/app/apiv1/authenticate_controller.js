@@ -10,12 +10,11 @@ var secretParam= require('../../Server/jwt-secret').secretParam;
 exports.ensureAuthorized = function(req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
-    if (typeof bearerHeader !== 'undefined') {
+    if (typeof bearerHeader !== 'undefined'&&bearerHeader!="") {
         req.token = bearerHeader;
         verifyToken(bearerHeader, function(ret, decode){
             if(ret){
                 if(decode.userId === undefined){
-
                     return res.json(new BaseReturnInfo(0,"No user id was found In authenticated",""));
                 }
                 req.userId = decode.userId;
@@ -32,8 +31,6 @@ exports.ensureAuthorized = function(req, res, next) {
 exports.getUseridByReq = function(req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
-    console.log("bearerHeader");
-    console.log(bearerHeader);
     if (typeof bearerHeader !== 'undefined'&&bearerHeader!="") {
         req.token = bearerHeader;
         verifyToken(bearerHeader, function(ret, decode){

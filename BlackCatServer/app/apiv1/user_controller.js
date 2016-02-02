@@ -535,7 +535,7 @@ exports.postapplySchool=function(req,res){
         carmodel:req.body.carmodel,
         applyagain:req.body.applyagain?req.body.applyagain:0,
         fcode:req.body.fcode?req.body.fcode:"",
-        paytype:req.body.paytype?req.body.paytype:0  // 支付方式 1  线下支付  2 线上支付
+        paytype:req.body.paytype?req.body.paytype:1  // 支付方式 1  线下支付  2 线上支付
         };
     if (applyinfo.name===undefined||
         applyinfo.telephone === undefined||applyinfo.userid === undefined
