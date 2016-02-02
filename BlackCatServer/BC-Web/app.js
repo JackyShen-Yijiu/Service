@@ -18,6 +18,15 @@ var vipservice = require('./routes/vipServicesRoutes');
 
 var app = express();
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type, Authorization');
+  if (req.method.toUpperCase() === 'OPTIONS') {
+    return res.end();
+  }
+  next();
+});
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'ejs');
