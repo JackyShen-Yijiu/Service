@@ -28,6 +28,20 @@ var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
+
+var schoolid="562dcc3ccb90f25c3bde40da"
+usermodel.aggregate([{$match:{"applyschool":new mongodb.ObjectId(schoolid)
+        ,"applystate":{$ne : appTypeEmun.ApplyState.NotApply
+             }
+    }},
+        {$group:{_id:"$subject.subjectid",studentcount : {$sum : 1}}}],
+    function(err,studentdata){
+        if (err){
+          console.log(err);
+        }
+
+        console.log(studentdata);
+    })
 var  getuserid="56937987e6b6a92c09a54d6b";
 var coachdataid="5666365ef14c20d07ffa6ae8";
 cache.get("Favoritcoach"+getuserid,function(err,data){

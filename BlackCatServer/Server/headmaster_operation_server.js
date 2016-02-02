@@ -412,8 +412,7 @@ var getSchoolStudentCount=function(schoolid,callback){
            return callback(null,data);
         } else {
             usermodel.aggregate([{$match:{"applyschool":new mongodb.ObjectId(schoolid)
-                    ,"applystate":{$ne : appTypeEmun.ApplyState.NotApply,
-                "subject.subjectid":{"$in":[1,2,3,4]}}
+                    ,"applystate":{$ne : appTypeEmun.ApplyState.NotApply}
                 }},
                     {$group:{_id:"$subject.subjectid",studentcount : {$sum : 1}}}],
                 function(err,studentdata){
@@ -423,11 +422,12 @@ var getSchoolStudentCount=function(schoolid,callback){
                     var studentlist=[];
                     if(studentdata&& studentdata.length>0){
                         studentdata.forEach(function(r,index){
+                            if (r._id>=1 && r._id<=4){
                             listone={
                                 subjectid: r._id,
                                 studentcount: r.studentcount
                             }
-                            studentlist.push(listone);
+                            studentlist.push(listone);}
                         })
                     }
                     cache.set('studentcount:'+schoolid, studentlist,60*10,function(){});
