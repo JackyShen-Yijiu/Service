@@ -2205,8 +2205,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyinfo.applytime=new Date();
                   userdata.applyinfo.handelstate=appTypeEmun.ApplyHandelState.NotHandel;
                       userdata.scanauditurl=auditurl.applyurl+userdata._id;
-                          userpaydata.paytype=applyinfo.paytype;
-                          userpaydata.paytypestatus=0;
+                          userdata.paytype=applyinfo.paytype;
+                          userdata.paytypestatus=0;
                   //console.log(userdata);
                   // 保存 申请信息
                   userdata.save(function(err,newuserdata){
