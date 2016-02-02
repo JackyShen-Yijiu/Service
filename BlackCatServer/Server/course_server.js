@@ -323,7 +323,49 @@ exports.postReservation=function(reservationinfo,callback){
     });
 };
 
-
+exports.getmyuncommentreservation=function(userid,subjectid,callback){
+    var searhinfo={userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid,
+    "reservationstate":6,is_comment:false ,is_complaint:false};
+    reservationmodel.find(searhinfo)
+        .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
+            "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime ")
+        .populate("coachid","_id name driveschoolinfo headportrait")
+        .sort({begintime:-1})
+        .exec(function(err,reservationlist){
+            if(err){
+                return    callback("查询语言信息出错："+err)
+            }
+            process.nextTick(function(){
+                var list=[];
+                reservationlist.forEach(function(r,index){
+                    var coachinfo={
+                        "coachid":r.coachid._id,
+                        _id :r.coachid._id,
+                        name:r.coachid.name,
+                        headportrait:r.coachid.headportrait,
+                        driveschoolinfo:r.coachid.driveschoolinfo
+                    };
+                    var listone= {
+                        _id: r._id,
+                        coachid: coachinfo,
+                        reservationstate: (r.reservationstate==appTypeEmun.ReservationState.ucomments&&r.is_comment)?
+                            appTypeEmun.ReservationState.finish: r.reservationstate,
+                        reservationcreatetime: r.reservationcreatetime,
+                        subject: r.subject,
+                        is_shuttle: r.is_shuttle,
+                        shuttleaddress: r.shuttleaddress,
+                        courseprocessdesc: r.courseprocessdesc,
+                        classdatetimedesc: r.classdatetimedesc,
+                        trainfieldlinfo: r.trainfieldlinfo,
+                        begintime: r.begintime,
+                        endtime: r.endtime
+                    }
+                    list.push(listone);
+                })
+                return callback(null,list);
+            })
+        });
+};
 //获取用户的预约信息
 exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
     var searhinfo={userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid};

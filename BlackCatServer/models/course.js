@@ -23,16 +23,36 @@ var CourseSchema=new Schema({
 
 CourseSchema.statics.findCourse = function(coachid, _date, callback){
 
-   // console.log('find: ' + _mobile);
+    // console.log('find: ' + _mobile);
 
     this.find({ coachid:new mongoose.Types.ObjectId(coachid),
         coursedate: new Date(_date) }, function(err, result) {
-      //  coursedate: { $gte: new Date(_date), $lte: new Date(_date) }}, function(err, result) {
+        //  coursedate: { $gte: new Date(_date), $lte: new Date(_date) }}, function(err, result) {
         //console.log(result);
         //if(result != null) console.log('found: ' + _mobile);
-       return  callback(err, result);
+        return  callback(err, result);
     });
+};
+CourseSchema.statics.findfullCourseTimely = function(timeid, _date,schoolid,  callback){
 
+    // console.log('find: ' + _mobile);
+    this.find({ "coursetime.timeid":timeid,
+        "driveschool":schoolid,
+        "coursedate": new Date(_date) })
+        .select("coachid coursestudentcount  selectedstudentcount")
+        .exec( function(err, result) {
+        //  coursedate: { $gte: new Date(_date), $lte: new Date(_date) }}, function(err, result) {
+        //console.log(result);
+        //if(result != null) console.log('found: ' + _mobile);
+           var  coacidlist=[];
+            result.forEach(function(r,index){
+                if (r.coursestudentcount== r.selectedstudentcount)
+                {
+                    coacidlist.push(r.coachid);
+                }
+            })
+        return  callback(err, coacidlist);
+    });
 };
 CourseSchema.index({coachid: 1});
 CourseSchema.index({coursedate: 1});

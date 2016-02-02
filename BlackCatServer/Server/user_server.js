@@ -22,6 +22,7 @@ var cache=require('../Common/cache');
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
 var coachmode=mongodb.CoachModel;
+var coursemode=mongodb.CourseModel;
 var userCountModel=mongodb.UserCountModel;
 var schoolModel=mongodb.DriveSchoolModel;
 var classtypeModel=mongodb.ClassTypeModel;
@@ -1136,6 +1137,84 @@ exports.getCoachClassInfo=function(userid,callback){
                 })
             })
         })
+}
+//获取当前时段可以预约教练
+exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback){
+    usermodel.findById(new mongodb.ObjectId(useid),function(err,user){
+        if(err){
+            return callback("查询出错"+err);
+        }
+        if(!user){
+            return callback("没有查到相关用户信息");
+        }
+        //判断用户状态
+        if(user.is_lock==true)
+        {
+            return  callback("此用户已锁定，请联系客服");
+        }
+        //判断用户的预约权限
+        if(user.applystate!=2)
+        {
+            return  callback("用户没有报名的权限");
+        }
+        if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
+            return  callback("该用户现阶段不能预约课程:"+user.subject.name);
+        }
+        coachmode.find({is_lock:false,is_validation:true,
+                driveschool:new mongodb.ObjectId(user.applyschool),
+                //"carmodel.modelsid":user.carmodel.modelsid,
+                "subject.subjectid":{'$in':[user.subject.subjectid]}})
+            .sort({"passrate": -1})
+            //.skip((index-1)*10)
+            //.limit(10)
+            .exec(function(err ,coachlist) {
+                if (err || !coachlist  ) {
+                    console.log(err);
+                    return callback("get coach list failed" + err);
+
+                } else if(coachlist.length == 0)
+                {
+                    return callback(null,coachlist);
+                }
+                else {
+                    coursemode.findfullCourseTimely(timeid,coursedate,user.applyschool,function(err,coursedata){
+                       if(err) {
+                           return callback("查询教练出错：" + err);
+                       }
+                        //console.log(coursedata);
+                        //console.log(coachlist.length);
+                        process.nextTick(function () {
+                            rescoachlist = [];
+                            coachlist.forEach(function (r, idx) {
+                                //console.log(r._id);
+                                 if (coursedata.indexOf(r._id)==-1) {
+                                     var returnmodel = { //new resbasecoachinfomode(r);
+                                         coachid: r._id,
+                                         name: r.name,
+                                         driveschoolinfo: r.driveschoolinfo,
+                                         headportrait: r.headportrait,
+                                         starlevel: r.starlevel,
+                                         is_shuttle: r.is_shuttle,
+                                         passrate: r.passrate,
+                                         Seniority: r.Seniority,
+                                         latitude: r.latitude,
+                                         longitude: r.longitude,
+                                         subject: r.subject,
+                                         Gender: r.Gender
+                                     }
+                                     //  r.restaurantId = r._id;
+                                     // delete(r._id);
+                                     rescoachlist.push(returnmodel);
+                                 }
+                            });
+                            callback(null, rescoachlist);
+                        });
+                    })
+
+                }
+            });
+
+    });
 }
 exports.getUsefulCoachList=function(useid,index,callback){
     usermodel.findById(new mongodb.ObjectId(useid),function(err,user){

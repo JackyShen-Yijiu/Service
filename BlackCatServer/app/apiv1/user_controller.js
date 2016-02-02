@@ -379,6 +379,21 @@ exports.getUsefulCoachList=function(req,res){
         }
     });
 }
+// 获取 当前时段可以预约的教练
+exports.getUsefulCoachListtimely=function(req,res){
+    var  index=req.params.index?req.params.index:1;
+    var  useid=req.userId;
+    var  coursedate=req.query.coursedate;
+    var  timeid =req.query.timeid ;
+    userserver.getUsefulCoachListtimely(useid,index,coursedate,timeid,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
 // 用户获取我的报名状态
 exports.getMyApplyState=function(req,res){
     var userid =req.query.userid;

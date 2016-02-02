@@ -163,12 +163,18 @@ v1.get("/userinfo/getmyprogress",ensureAuthorizedController.ensureAuthorized,use
 // 获取我当前可以预约的教练
 v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensureAuthorized,
     userController.getUsefulCoachList);
+//  获取 当前时段我可以预约的教练
+v1.get("/userinfo/getusefulcoachtimely/index/:index",ensureAuthorizedController.ensureAuthorized,
+    userController.getUsefulCoachListtimely);
+
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 // 用户预约课程
 v1.post("/courseinfo/userreservationcourse",ensureAuthorizedController.ensureAuthorized,courseController.postReservation);
 // 获取我的订单 用户
 v1.get("/courseinfo/getmyreservation",ensureAuthorizedController.ensureAuthorized,courseController.getuserresveration);
+// 获取我当前待评价列表
+v1.get("/courseinfo/getmyuncommentreservation",ensureAuthorizedController.ensureAuthorized,courseController.getmyuncommentreservation);
 // 根据预约id获取详情
 v1.get("/courseinfo/userreservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,
     courseController.userGetReservationInfo);

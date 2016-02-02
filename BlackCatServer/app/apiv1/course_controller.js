@@ -61,7 +61,28 @@ exports.postReservation=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
-
+// 获取我的待评价列表
+exports.getmyuncommentreservation=function(req,res){
+    var userid=req.query.userid;
+    var subjectid = req.query.subjectid;
+    if(subjectid===undefined){
+        subjectid=2;
+    }
+    if(!req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法验证权限",[]));
+    }
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserver.getmyuncommentreservation(userid,subjectid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.getuserresveration=function(req,res){
    var userid=req.query.userid;
     var subjectid = req.query.subjectid;
