@@ -45,7 +45,7 @@ function showQuestions(questoinBody, status, enable) {
      setData.questionVedio =questionVedio;
 
      var strtxtData=JSON.stringify(setData);
-  window.localStorage.setItem(questionId,strtxtData);
+  //window.localStorage.setItem(questionId,strtxtData);
 
   //读取本地数据
   //for(var intI=0;intI<localStorage.length;intI++){
