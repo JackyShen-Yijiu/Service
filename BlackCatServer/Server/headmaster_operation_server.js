@@ -1240,6 +1240,7 @@ exports.getComplaintDetails=function(queryinfo,callback){
             process.nextTick(function(){
                 var complaintlist=[];
                 data.forEach(function(r,index){
+                   // console.log(r.userid);
                     complaintinfo={
                         reservationid: r._id,
                         complaintreason: r.complaint.reason,
