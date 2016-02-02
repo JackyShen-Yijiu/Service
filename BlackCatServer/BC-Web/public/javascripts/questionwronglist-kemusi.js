@@ -16,6 +16,7 @@ function getUserInfo(id, callback){
           }else{
             myExamID = userInfo.kemusi_wronglist;
             Allcount = myExamID.length;
+            previouslylist = [];//清空上一份试题
             console.log("userinfo: " + userInfo);
             console.log("Allcount: " + Allcount);
             if(Allcount > 0){
@@ -63,6 +64,7 @@ var QIndex = 0;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
 var answered=false;
+var previouslylist= [];
 
 function nextQestion(){
   selectAns = 0;
@@ -101,7 +103,7 @@ function answerIsRight(){
     rightCount++;
     $("#rightCount").text(rightCount);
     $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-
+    myExamID.splice(ExaminIDs[QIndex - 1],1);//删除作对的题
   }
 }
 function answerIsWrong(){

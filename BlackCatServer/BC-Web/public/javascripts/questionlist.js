@@ -86,7 +86,7 @@ var QIndex = 0;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
 var answered=false;
-
+var previouslylist= [];
 
 
 function answerIsRight(){
@@ -94,10 +94,11 @@ function answerIsRight(){
   //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-    rightCount++;
-    $("#rightCount").text(rightCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-
+      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+          rightCount++;
+          $("#rightCount").text(rightCount);
+          $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+      }
   }
 }
 function answerIsWrong(){
@@ -105,10 +106,15 @@ function answerIsWrong(){
   //$("#wrongAnswer").show();
   if(answered == false){
     answered = true;
-    wrongCount++;
-    $("#wrongCount").text(wrongCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-    kemuyi_wronglist.push(myExamID[QIndex - 1]);
+
+      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1){
+      wrongCount++;
+      $("#wrongCount").text(wrongCount);
+      $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
+      }
+      if(kemuyi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+          kemuyi_wronglist.push(myExamID[QIndex - 1]);
+      }
   }
 }
 

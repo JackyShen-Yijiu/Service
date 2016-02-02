@@ -1,5 +1,6 @@
 
 var userInfo;
+
 function init() {
     console.log('init.');
 
@@ -16,6 +17,7 @@ function getUserInfo(id, callback){
           }else{
             myExamID = userInfo.kemuyi_wronglist;
             Allcount = myExamID.length;
+            previouslylist = [];//清空上一份试题
             console.log("userinfo: " + userInfo);
             console.log("Allcount: " + Allcount);
             if(Allcount > 0){
@@ -63,6 +65,8 @@ var QIndex = 0;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
 var answered=false;
+var previouslylist= [];
+
 
 function nextQestion(){
   if(QIndex < Allcount){
@@ -83,9 +87,14 @@ function answerIsRight(){
   //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-    rightCount++;
-    $("#rightCount").text(rightCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
+
+      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+          rightCount++;
+          $("#rightCount").text(rightCount);
+          $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
+          previouslylist.push(ExaminIDs[QIndex - 1]);
+          myExamID.splice(ExaminIDs[QIndex - 1],1);//删除作对的题
+      }
   }
 }
 function answerIsWrong(){
@@ -93,9 +102,12 @@ function answerIsWrong(){
   //$("#wrongAnswer").show();
   if(answered == false){
     answered = true;
-    wrongCount++;
-    $("#wrongCount").text(wrongCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
+      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+          wrongCount++;
+          $("#wrongCount").text(wrongCount);
+          $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
+          previouslylist.push(ExaminIDs[QIndex - 1]);
+      }
   }
 }
 

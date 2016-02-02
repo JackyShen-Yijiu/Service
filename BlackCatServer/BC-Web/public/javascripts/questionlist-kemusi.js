@@ -9,7 +9,7 @@ function go(_chapter){
 function init() {
     console.log('init. user id is: ' + userID);
     //chapter = 1;//getUrlParam('chapter');
-
+    previouslylist = [];
     switch(chapter){
       case 1:
         chapexamids = chap_4_1_examids;
@@ -118,17 +118,18 @@ var QIndex = 0;
 var currentQuestion;
 var rightCount=0, wrongCount=0;
 var answered=false;
-
+var previouslylist= [];
 
 function answerIsRight(){
   //$("#rightAnswer").show();
   //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-    rightCount++;
-    $("#rightCount").text(rightCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-
+    if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+      rightCount++;
+      $("#rightCount").text(rightCount);
+      $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+    }
   }
 }
 function answerIsWrong(){
@@ -136,10 +137,16 @@ function answerIsWrong(){
   //$("#wrongAnswer").show();
   if(answered == false){
     answered = true;
-    wrongCount++;
-    $("#wrongCount").text(wrongCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-    kemusi_wronglist.push(myExamID[QIndex - 1]);
+
+    if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+      wrongCount++;
+      $("#wrongCount").text(wrongCount);
+      $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+      }
+
+      if(kemusi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+        kemusi_wronglist.push(myExamID[QIndex - 1]);
+      }
   }
 }
 
