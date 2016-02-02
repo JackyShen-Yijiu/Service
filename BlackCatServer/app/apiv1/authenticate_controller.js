@@ -32,6 +32,7 @@ exports.ensureAuthorized = function(req, res, next) {
 exports.getUseridByReq = function(req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
+    console.log(bearerHeader);
     if (typeof bearerHeader !== 'undefined') {
         req.token = bearerHeader;
         verifyToken(bearerHeader, function(ret, decode){
