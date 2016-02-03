@@ -18,6 +18,7 @@ var CourseSchema=new Schema({
     courseuser:[{type: Schema.Types.ObjectId, ref: 'User'}], // 选择学生人
     // 閫夋嫨璇ヨ绋嬬殑璁㈠崟
     coursereservation:[{type: Schema.Types.ObjectId, ref: 'reservation'}], //预约id
+    signinstudentcount:{type:Number,default:0} , // 签到学生数量
     carmodelid :Number, // 车型 id c1 c2
     subjectid:Number, // 科目id
     coachname: String , // 教练名称

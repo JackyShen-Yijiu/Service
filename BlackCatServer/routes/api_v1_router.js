@@ -215,6 +215,8 @@ v1.get("/courseinfo/coachreservationlist",ensureAuthorizedController.ensureAutho
     courseController.getCoachReservationList);
 // 教练获取某一天的预约列表
 v1.get("/courseinfo/daysreservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoachDaysreservation);
+// 教练获取一节课程的预约列表
+v1.get("/courseinfo/coursereservationlist",ensureAuthorizedController.ensureAuthorized,courseController.getCoursereservationlist);
 // 教练获取预约详情
 v1.get("/courseinfo/reservationinfo/:reservationid",ensureAuthorizedController.ensureAuthorized,courseController.coachGetReservationInfo)
 //接受或者拒绝预约

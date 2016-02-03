@@ -955,6 +955,59 @@ exports.GetComment=function(queryinfo,callback){
 
             })
     }
+};
+// 获取教练某一课程的预约新信息
+exports.getCoursereservationlist=function(coachid,courseid,callback){
+    coursemode.findById(new mongodb.ObjectId(coachid),function(err,coursedata){
+        if(err){
+            return callback("查询数据出错："+err);
+        }
+        if(!coursedata){
+            return callback("没有查询到课程数据");
+        }
+        reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"_id":{"$in":coursedata.coursereservation}
+                ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
+                    ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
+                    ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
+                ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
+            .select("userid reservationstate reservationcreatetime begintime endtime subject " +
+                "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment  endclassnum learningcontent")
+            .populate( "userid"," _id  name headportrait  subjecttwo subjectthree")
+            .sort({"begintime":1})
+            .exec(function(err,data){
+                if(err){
+                    return callback("查询数据出错："+err);
+                }
+                process.nextTick(function(){
+                    var list=[];
+                    data.forEach(function(r,index){
+                        var listone= {
+                            _id: r.id,
+                            userid: r.userid,
+                            reservationstate: (r.is_coachcomment&&r.reservationstate==appTypeEmun.ReservationState.ucomments)?
+                                appTypeEmun.ReservationState.finish: r.reservationstate,
+                            reservationcreatetime: r.reservationcreatetime,
+                            courseprocessdesc: r.courseprocessdesc,
+                            begintime :(r.begintime).toFormat("HH24:00"),
+                            endtime :(r.endtime).toFormat("HH24:00"),
+                            leavecoursecount:0,
+                            missingcoursecount:0,
+                            learningcontent: r.learningcontent
+                        };
+                        if (r.subject.subjectid==2){
+                            listone.leavecoursecount= r.userid.subjecttwo.totalcourse- r.endclassnum;
+                            listone.missingcoursecount= r.userid.subjecttwo.missingcourse;
+                        }else if(r.subject.subjectid==3){
+                            listone.leavecoursecount= r.userid.subjectthree.totalcourse- r.endclassnum;
+                            listone.missingcoursecount= r.userid.subjectthree.missingcourse;
+                        }
+                        list.push(listone);
+                    })
+                    return callback(null,list);
+                })
+
+            })
+    })
 }
 // 教练 获取某一天的上课信息
 exports.getCoachDaysreservation=function(coachid,date,callback){
