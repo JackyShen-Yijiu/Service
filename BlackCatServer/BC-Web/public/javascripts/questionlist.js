@@ -10,6 +10,8 @@ function init() {
     console.log('init. user id is: ' + userID);
     //chapter = 1;//getUrlParam('chapter');
 
+    previouslylist= [];
+
     switch(chapter){
       case 1:
         chapexamids = chap_1_examids;
@@ -61,7 +63,10 @@ function nextQestion(){
     $("#number_title").text(++QIndex);
     getQuestionByID(myExamID[QIndex - 1], showQuestions, true);
     //getQuestionByID(29, showQuestions, true);
+
   }
+
+
 }
 function preQestion(){
   if(QIndex > 1){
@@ -94,12 +99,20 @@ function answerIsRight(){
   //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+      if(previouslylist.indexOf(myExamID[QIndex - 1])==-1) {
           rightCount++;
           $("#rightCount").text(rightCount);
           $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+          previouslylist.push(myExamID[QIndex - 1]);
+
+
       }
   }
+
+
+
+
+
 }
 function answerIsWrong(){
   //$("#rightAnswer").hide();
@@ -107,12 +120,14 @@ function answerIsWrong(){
   if(answered == false){
     answered = true;
 
-      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1){
+      if(previouslylist.indexOf(myExamID[QIndex - 1])==-1){
       wrongCount++;
       $("#wrongCount").text(wrongCount);
       $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
+          previouslylist.push(myExamID[QIndex - 1]);
       }
-      if(kemuyi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+
+      if(kemuyi_wronglist.indexOf(myExamID[QIndex - 1])==-1) {
           kemuyi_wronglist.push(myExamID[QIndex - 1]);
       }
   }

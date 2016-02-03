@@ -80,6 +80,13 @@ function nextQestion(){
   $("#li_answer3").off();
   $("#li_answer4").off();
   $("#confirmBtn").css("background-color", "#efefef");
+
+  if(QIndex == 1){
+    $("#btnNext").text("下一题");
+  }
+  if(QIndex == Allcount){
+    $("#btnNext").text("结束");
+  }
 }
 function preQestion(){
   selectAns = 0;
@@ -100,10 +107,24 @@ function answerIsRight(){
   //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-    rightCount++;
-    $("#rightCount").text(rightCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-    myExamID.splice(ExaminIDs[QIndex - 1],1);//删除作对的题
+
+    if (previouslylist.indexOf(myExamID[QIndex - 1]) == -1) {
+      rightCount++;
+      $("#rightCount").text(rightCount);
+      $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
+      previouslylist.push(myExamID[QIndex - 1]);
+
+      //删除作对的题的id
+      for (var i = 0; i < myExamID.length; i++) {
+        if (myExamID[i] == myExamID[QIndex - 1]) {
+          myExamID.splice(i, 1);
+          //console.log(myExamID)
+        }
+      }
+
+    }
+
+
   }
 }
 function answerIsWrong(){
@@ -111,10 +132,12 @@ function answerIsWrong(){
   //$("#wrongAnswer").show();
   if(answered == false){
     answered = true;
-    wrongCount++;
-    $("#wrongCount").text(wrongCount);
-    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
-    kemusi_wronglist.push(myExamID[QIndex - 1]);
+    if(previouslylist.indexOf(myExamID[QIndex - 1])==-1) {
+      wrongCount++;
+      $("#wrongCount").text(wrongCount);
+      $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
+      previouslylist.push(myExamID[QIndex - 1]);
+    }
   }
 }
 

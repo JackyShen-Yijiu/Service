@@ -9,7 +9,9 @@ function go(_chapter){
 function init() {
     console.log('init. user id is: ' + userID);
     //chapter = 1;//getUrlParam('chapter');
+
     previouslylist = [];
+
     switch(chapter){
       case 1:
         chapexamids = chap_4_1_examids;
@@ -125,10 +127,11 @@ function answerIsRight(){
   //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-    if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+    if(previouslylist.indexOf(myExamID[QIndex - 1])==-1) {
       rightCount++;
       $("#rightCount").text(rightCount);
       $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+      previouslylist.push(myExamID[QIndex - 1]);
     }
   }
 }
@@ -138,13 +141,14 @@ function answerIsWrong(){
   if(answered == false){
     answered = true;
 
-    if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+    if(previouslylist.indexOf(myExamID[QIndex - 1])==-1) {
       wrongCount++;
       $("#wrongCount").text(wrongCount);
       $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
+      previouslylist.push(myExamID[QIndex - 1]);
       }
 
-      if(kemusi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+      if(kemusi_wronglist.indexOf(myExamID[QIndex - 1])==-1) {
         kemusi_wronglist.push(myExamID[QIndex - 1]);
       }
   }

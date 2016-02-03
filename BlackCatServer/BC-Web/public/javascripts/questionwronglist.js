@@ -73,6 +73,8 @@ function nextQestion(){
     console.log("next");
     $("#number_title").text(++QIndex);
     getWrongQuestionByID(myExamID[QIndex - 1], showQuestions);
+
+
   }
 }
 function preQestion(){
@@ -82,31 +84,39 @@ function preQestion(){
     getWrongQuestionByID(myExamID[QIndex - 1], showQuestions);
   }
 }
-function answerIsRight(){
-  //$("#rightAnswer").show();
-  //$("#wrongAnswer").hide();
-  if(answered == false){
-    answered = true;
+function answerIsRight() {
+    //$("#rightAnswer").show();
+    //$("#wrongAnswer").hide();
+    if (answered == false) {
+        answered = true;
 
-      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
-          rightCount++;
-          $("#rightCount").text(rightCount);
-          $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
-          previouslylist.push(ExaminIDs[QIndex - 1]);
-          myExamID.splice(ExaminIDs[QIndex - 1],1);//删除作对的题
-      }
-  }
+        if (previouslylist.indexOf(myExamID[QIndex - 1]) == -1) {
+            rightCount++;
+            $("#rightCount").text(rightCount);
+            $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
+            previouslylist.push(myExamID[QIndex - 1]);
+
+            //删除作对的题的id
+            for (var i = 0; i < myExamID.length; i++) {
+                if (myExamID[i] == myExamID[QIndex - 1]) {
+                    myExamID.splice(i, 1);
+                    //console.log(myExamID)
+                }
+            }
+
+        }
+    }
 }
 function answerIsWrong(){
   //$("#rightAnswer").hide();
   //$("#wrongAnswer").show();
   if(answered == false){
-    answered = true;
-      if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {
+      answered = true;
+      if(previouslylist.indexOf(myExamID[QIndex - 1])==-1) {
           wrongCount++;
           $("#wrongCount").text(wrongCount);
           $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
-          previouslylist.push(ExaminIDs[QIndex - 1]);
+          previouslylist.push(myExamID[QIndex - 1]);
       }
   }
 }
