@@ -1004,6 +1004,9 @@ exports.getCoachStudentList=function(coachinfo,callback){
     }
     // 是否 全部
     var limintcount=coachinfo.index==0?Number.MAX_VALUE:10;
+    if(coachinfo.index==0){
+        coachinfo.index==1;
+    }
       searchinfo.applycoach=mongodb.ObjectId(coachinfo.coachid);
     searchinfo.applystate=2;
     usermodel.find(searchinfo)
