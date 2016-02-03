@@ -985,7 +985,10 @@ exports.getStudentInfo=function(userid,callback){
 }
 //获取教练的学员列表
 exports.getCoachStudentList=function(coachinfo,callback){
-    usermodel.find({"applycoach":new mongodb.ObjectId(coachinfo.coachid)})
+    var  searchinfo={
+    "applycoach":new mongodb.ObjectId(coachinfo.coachid)
+    }
+    usermodel.find()
         .skip((coachinfo.index-1)*10)
         .limit(10)
         .sort({"createtime":-1})

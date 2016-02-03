@@ -127,7 +127,7 @@ try{
                             if (err) {
                                 cb(err)
                             }
-                            if (data.referrerCode&&ata.referrerCode.length>0&&faterdata) {// 找到邀请人
+                            if (data.referrerCode&&data.referrerCode.length>0&&faterdata) {// 找到邀请人
                                 var amount = commonData.passiveregister;
                                 var slfeget = Math.floor(amount * commonData.levelscale);
                                 Calculationfather(faterdata.integralpaylist, amount - slfeget, commonData.levelscale, function (err) {

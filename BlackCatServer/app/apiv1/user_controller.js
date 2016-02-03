@@ -274,7 +274,8 @@ exports.getStudentInfo=function(req,res){
 exports.getStudentList=function(req,res){
     var  coachinfo={
         coachid:req.query.coachid,
-        index:req.query.index?req.query.index:1
+        index:req.query.index?req.query.index:1,
+        studenttype:req.query.studenttype?req.query.studenttype:0
     }
     if(coachinfo.coachid!=req.userId){
         return res.json(

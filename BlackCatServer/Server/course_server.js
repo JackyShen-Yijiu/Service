@@ -106,6 +106,10 @@ var savecourse=function(coachdata,coachid,date,callback){
             course.coursetime.timespace = r.timespace;
             course.coursetime.begintime = r.begintime;
             course.coursetime.endtime = r.endtime;
+            course.carmodelid=coachdata.carmodel.modelsid;
+            course.subjectid=coachdata.subject.length>0?coachdata.subject[0].subjectid:2;
+            course.coachname=coachdata.name;
+            course.platenumber=coachdata.platenumber;
             course.save(function (err, newcouse) {
                 if (err || !newcouse) {
                     return callback("存储课程出错：" + err);
@@ -283,6 +287,11 @@ exports.postReservation=function(reservationinfo,callback){
                         +(new Date(reservationinfo.endtime)).toFormat("HH24:00");;
                     reservation.subject = userdata.subject;
                     reservation.coursehour = coursecount;
+
+                    reservation.carmodelid = userdata.carmodel.modelsid;
+                    reservation.coachname = coachdata.name;
+                    reservation.username = userdata.name;
+                    reservation.idcardnumber = userdata.idcardnumber;
                     arr.forEach(function (r) {
                         reservation.reservationcourse.push(new mongodb.ObjectId(r));
                     });

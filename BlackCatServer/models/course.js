@@ -17,8 +17,11 @@ var CourseSchema=new Schema({
     selectedstudentcount:{type:Number,default:0} , //选择 学生人数
     courseuser:[{type: Schema.Types.ObjectId, ref: 'User'}], // 选择学生人
     // 閫夋嫨璇ヨ绋嬬殑璁㈠崟
-    coursereservation:[{type: Schema.Types.ObjectId, ref: 'reservation'}] //预约id
-
+    coursereservation:[{type: Schema.Types.ObjectId, ref: 'reservation'}], //预约id
+    carmodelid :Number, // 车型 id c1 c2
+    subjectid:Number, // 科目id
+    coachname: String , // 教练名称
+    platenumber:String // 车牌号
 });
 
 CourseSchema.statics.findCourse = function(coachid, _date, callback){

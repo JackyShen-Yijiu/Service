@@ -74,6 +74,12 @@ var ReservationSchema=new Schema({
     // 科目
     subject:{subjectid:{type:Number,default:2},
         name:{type:String,default:"科目二"}},
+    carmodelid:Number,   // 教练类型id 12  c1 C2
+    coachname:String,   //  教练名称
+    username:String,    // 用户 名称
+    idcardnumber:String,  // 用户身份证号
+
+
 });
 
 module.exports = mongoose.model('reservation', ReservationSchema);
