@@ -88,22 +88,20 @@
 <script>
     ybxcApp.controller("reservecoachlist",function($scope,$http){
         $scope.formData = {};
+       // var num=0;
         //获取文档列表信息
         initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
+        var coachid=GetQueryString("coachid");
 
-        //my test datas;
-        $scope.datas=[
-            {name:"刘媛媛",done:false,ready:0,totalnum:4},
-            {name:"刘宏民",done:false,ready:1,totalnum:3},
-            {name:"刘宏民",done:false,ready:2,totalnum:6},
-        ];
 
 
         //提交预约
         $scope.processForm = function(isValid){
+            alert("预约成功");
             console.log(isValid);
+            //如果没有选择任何的时间段
             if (!isValid){
-                alert("参数错误");
+                alert("没有输入任何的时间");
                 return;
             }
             if(true)
@@ -121,6 +119,7 @@
                                 window.location.href="/admin/manage/studentlist";
                             }
                         })
+
             }
 
         };
@@ -153,6 +152,7 @@
                 $(this).css('background-color','');
 
             });
+
         }
 
     });
