@@ -985,12 +985,30 @@ exports.getStudentInfo=function(userid,callback){
 }
 //获取教练的学员列表
 exports.getCoachStudentList=function(coachinfo,callback){
-    var  searchinfo={
-    "applycoach":new mongodb.ObjectId(coachinfo.coachid)
+    var  searchinfo;
+    // 查询类型   // 0 全部 1 理论学员  2  上车学员  3 领证学员
+    if(coachinfo.studenttype==1){
+        searchinfo={
+            "$or":[{"subject.subjectid":1},{"subject.subjectid":4}]
+        }
     }
-    usermodel.find()
+    if(coachinfo.studenttype==2){
+        searchinfo={
+            "$or":[{"subject.subjectid":2},{"subject.subjectid":3}]
+        }
+    }
+    if(coachinfo.studenttype==3){
+        searchinfo={
+            "$or":[{"subject.subjectid":5},{"subject.subjectid":6}]
+        }
+    }
+    // 是否 全部
+    var limintcount=coachinfo.index==0?Number.MAX_VALUE:10;
+      searchinfo.applycoach=mongodb.ObjectId(coachinfo.coachid);
+    searchinfo.applystate=2;
+    usermodel.find(searchinfo)
         .skip((coachinfo.index-1)*10)
-        .limit(10)
+        .limit(limintcount)
         .sort({"createtime":-1})
         .select("_id mobile name headportrait subject subjecttwo subjectthree")
         .exec(function(err,data){
