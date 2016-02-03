@@ -985,7 +985,7 @@ exports.getStudentInfo=function(userid,callback){
 }
 //获取教练的学员列表
 exports.getCoachStudentList=function(coachinfo,callback){
-    var  searchinfo;
+    var  searchinfo={};
     // 查询类型   // 0 全部 1 理论学员  2  上车学员  3 领证学员
     if(coachinfo.studenttype==1){
         searchinfo={
