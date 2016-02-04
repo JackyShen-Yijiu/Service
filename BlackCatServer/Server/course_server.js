@@ -664,6 +664,7 @@ exports.courseSignin=function(sigininfo,callback){
             if(err){
                 return callback("签到出错");
             }
+            coursemode.update({coursereservation:data._id},{$inc:{signinstudentcount:1}},{safe: false, multi: true},function(err,doc){});
             return callback(null,"success")
         })
     })
@@ -958,18 +959,29 @@ exports.GetComment=function(queryinfo,callback){
 };
 // 获取教练某一课程的预约新信息
 exports.getCoursereservationlist=function(coachid,courseid,callback){
-    coursemode.findById(new mongodb.ObjectId(coachid),function(err,coursedata){
+    coursemode.findById(new mongodb.ObjectId(courseid),function(err,coursedata){
         if(err){
             return callback("查询数据出错："+err);
         }
         if(!coursedata){
             return callback("没有查询到课程数据");
         }
-        reservationmodel.find( { coachid:new mongodb.ObjectId(coachid),"_id":{"$in":coursedata.coursereservation}
-                ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
-                    ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
-                    ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
-                ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
+        console.log(coursedata.coursereservation);
+        if (coursedata.coursereservation.length<=0){
+            return callback(null,[]);
+        }
+        var reseridlist=[];
+        for (i=0;i<coursedata.coursereservation.length;i++){
+            reseridlist.push(new mongodb.ObjectId(coursedata.coursereservation[i].toString()));
+        }
+        reservationmodel.find( {
+            coachid:new mongodb.ObjectId(coachid)
+                ,
+            "_id":{"$in":coursedata.coursereservation}
+                //,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
+                //    ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
+                //    ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
+               })
             .select("userid reservationstate reservationcreatetime begintime endtime subject " +
                 "is_shuttle shuttleaddress classdatetimedesc courseprocessdesc is_coachcomment  endclassnum learningcontent")
             .populate( "userid"," _id  name headportrait  subjecttwo subjectthree")
