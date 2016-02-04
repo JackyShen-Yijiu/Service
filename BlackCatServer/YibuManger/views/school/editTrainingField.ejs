@@ -36,9 +36,9 @@
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                               ng-model="formData.logoimg"	   >
+                                                               ng-model="formData.logoimg" >
                                                         <button class="btn" type="button" id="picklogimg">选择投头像</button>
-                                                        <img id="logimgimg" style="width: 60px;height: 60px"><!--更改place-->
+                                                        <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
                                                     </div>
                                                 </div>
                                             </div><!--control group-->
@@ -113,15 +113,17 @@
                                                                        ng-model="formData.trainimg"	   >
                                                                 -->
                                                                 <div style="float:left;margin: 0 6px;">
-                                                                    <img id="trainimgimg1" style="width: 200px;height: 160px;"><!--更改place-->
+                                                                    <input type="hidden" class="span4 m-wrap"   id="trainimg" type="text"disabled
+                                                                           ng-model="formData.trainimg">
+                                                                    <img id="trainimgimg1" style="width: 200px;height: 160px;" >
                                                                     <div class="icon-remove" id="train-icon1"></div>
                                                                 </div>
                                                                 <div style="float:left; margin: 0 6px;">
-                                                                    <img id="trainimgimg2" style="width: 200px;height: 160px"><!--更改place-->
+                                                                    <img id="trainimgimg2" style="width: 200px;height: 160px">
                                                                     <div class="icon-remove" id="train-icon2"></div>
                                                                 </div>
                                                                 <div style="float:left; margin: 0 6px;">
-                                                                    <img id="trainimgimg3" style="width: 200px;height: 160px"><!--更改place-->
+                                                                    <img id="trainimgimg3" style="width: 200px;height: 160px">
                                                                     <div class="icon-remove" id="train-icon3"></div>
                                                                 </div>
                                                                 <button class="btn" type="button" id="picktrainimg">选择图片</button></div>
@@ -182,9 +184,11 @@
                                         $scope.formData = response.data;
                                         console.log(response.data);
                                         $("#logimg").val($scope.formData.logoimg);
-                                        //$("#trainimg").val($scope.formData.trainimg);
-                                        $("#logimgimg").attr("src",$scope.formData.logoimg);//更改place
-                                       // $("#trainimgimg").attr("src",$scope.formData.trainimg);
+                                        $("#logimgimg").attr("src",$scope.formData.logoimg);
+
+                                        $("#trainimg").val($scope.formData.trainimg);
+                                        $("#trainimgimg1").attr("src",$scope.formData.trainimg);
+
                                         setPoint($scope.formData.longitude,$scope.formData.latitude);
                                         $("#latitude").val($scope.formData.latitude);
                                         $("#longitude").val($scope.formData.longitude);
@@ -238,7 +242,8 @@
 
         var savedata=function(){
             $scope.formData.logoimg=$("#logimg").val();
-            //$scope.formData.logoimg1=$("#trainimg").val();
+            //$scope.formData.logimgimg=$("#logimgimg").val();
+            $scope.formData.trainimg=$("#trainimg").val();
             $scope.formData.province=$("#province").val();
             $scope.formData.city=$("#city").val();
             $scope.formData.address=$("#address").val();

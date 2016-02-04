@@ -246,6 +246,23 @@ var  returnAdminRouter=function(io) {
         res.render('apply-record/coachCheckList', adminFunc.setPageInfo(req,res,"/admin/manage/coachCheckList"));
     });
 
+    //商家管理
+    router.get("/manage/businessList" ,function(req, res, next) {
+        res.render('business/businessList', adminFunc.setPageInfo(req,res,"/admin/manage/businessList"));
+    });
+    //添加商家
+    router.get("/manage/editBusiness" ,function(req, res, next) {
+        res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
+    });
+
+    //咨询中心
+    router.get("/manage/industrynewsList" ,function(req, res, next) {
+        res.render('industryNews/industrynewsList', adminFunc.setPageInfo(req,res,"/admin/manage/industrynewsList"));
+    });
+    //获取咨询内容
+    router.get("/manage/editIndustrynews" ,function(req, res, next) {
+        res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews"));
+    });
 
     //==================================================================================================================
 
