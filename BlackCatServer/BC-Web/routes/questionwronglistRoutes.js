@@ -12,6 +12,7 @@ router.get('/', function(req, res, next) {
 router.get('/UserInfo/:userid', getQuestionList);
 router.get('/questionbyid/:id', getQuestionByID);
 router.post('/addWrongQuestion', updateWrongQuestion);
+router.post('/deleteWrongQuestion', deleteWrongQuestion);
 
 function getQuestionList(req, res) {
   console.log("get question from mongo: " + req.params.userid);
@@ -38,7 +39,7 @@ function getQuestionByID(req, res) {
     u.save(function (err, fluffy) {
         if (err) return console.error(err);
         console.log("saved: " + fluffy.id);
-      });    
+      });
   }catch(err){
     console.log(err);
   }*/
@@ -53,6 +54,41 @@ function getQuestionByID(req, res) {
 
 }
 
+function deleteWrongQuestion(req,res){
+    userinfo.FindByID(req.body.id, function(err, questions){
+        if(!err){
+            console.log('finded: ' + questions);
+            if(questions == null){
+                res.contentType('json');
+                res.status(401);
+                res.send(JSON.stringify({ status:"can't  find user" , code:0}));
+                res.end();
+
+            }else{
+                //update
+                var indexidkemuyi = questions.kemuyi_wronglist.indexOf(req.body.wrongid);
+                if (indexidkemuyi>-1){
+                    questions.kemuyi_wronglist.splice(indexidkemuyi, 1);
+                }
+
+                questions.save(function(err, result){
+                    if (!err){
+                        res.contentType('json');
+                        res.send(JSON.stringify({ id: result.id, code:1 }));
+                        res.end();
+                    } else {
+                        res.contentType('json');
+                        res.status(401);
+                        res.send(JSON.stringify({ status:"add wrong question failed" , code:0}));
+                        res.end();
+                    }
+                });
+            }
+        }else{
+
+        }
+    });
+}
 function updateWrongQuestion(req, res){
   console.log('update wrong question.');
   console.log(req.body.kemuyi_wronglist);

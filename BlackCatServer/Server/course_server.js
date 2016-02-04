@@ -1235,7 +1235,7 @@ exports.getCoachReservationList=function(queryinfo,callback){
     reservationmodel.find(searchinfo)
         .select("userid reservationstate reservationcreatetime  subject is_shuttle shuttleaddress classdatetimedesc " +
         " courseprocessdesc trainfieldlinfo  is_coachcomment begintime endtime  endclassnum  learningcontent")
-        .populate("userid","_id  name headportrait subjecttwo subjectthree")
+        .populate("userid","_id  name mobile headportrait subjecttwo subjectthree")
         .skip((queryinfo.index-1)*10)
         .limit(10)
         .sort({"reservationcreatetime":-1})
