@@ -1,0 +1,162 @@
+<link type="text/css" rel="stylesheet" 	href="/css/mask.css" />
+<div class="main" ng-controller="Ycodelist">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div>
+                        <p>查看订单信息/当前订单号:<span>{{1234567}}</span></p>
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <td >
+                                            <label ><h4>订单信息</h4></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >预约教练:<span>{{content.coachid}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >所在学校:<span>{{content.driveschool}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label > 练车场同车学员:<span>{{content.trainfieldid}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >预约课程:<span>{{content.userid}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >训练场信息:<span>{{content.trainfieldlinfo}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >预约状态:<span>{{content.reservationstate}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >预约时间:<span>{{content.reservationcreatetime}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >预约 开始第几个课时:<span>{{content.startclassnum}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >预约到第几个课时:<span>{{content.endclassnum}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >完成时间:<span>{{content.endtime}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >上课时间描述:<span>{{content.classdatetimedesc}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >预约课程:<span>{{content.reservationcourse}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >是否评论:<span>{{content.is_comment}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >评论:<span>{{content.comment}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >教练是否评论:<span>{{content.is_coachcomment}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >教练评论:<span>{{content.coachcomment}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >是否投诉:<span>{{content.is_complaint}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >投诉内容:<span>{{content.complaint}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >是否签到:<span>{{content.is_signin}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >签到时间:<span>{{content.sigintime}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >取消预约原因:<span>{{content.cancelreason}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >是否接送:<span>{{content.is_shuttle}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >接送地址:<span>{{content.shuttleaddress}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >学习内容:<span>{{content.learningcontent}}</span></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label >课程进度描述:<span>{{content.courseprocessdesc}}</span></label>
+                                        </td>
+                                        <td >
+                                            <label >科目:<span>{{content.subject}}</span></label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div><!-- /.box-body -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >修改</button>
+                                <button class="btn">返回</button>
+                            </div> <!-- /form-actions -->
+                        </div><!-- /.box -->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /main-inner -->
+</div>
+
+
+
+
+
+</div><!--mask end-->
+
+
+<script>
+    ybxcApp.controller("Ycodelist",function($scope,$http){
+        $scope.formData = {};
+        //获取文档列表信息
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getactivtylist?");
+
+
+    });
+
+
+
+</script>
+<script src="/js/Ycode-mask.js"></script>

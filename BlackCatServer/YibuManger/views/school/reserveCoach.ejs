@@ -1,0 +1,162 @@
+<style>
+    #mytable td,#mytable th{
+        text-align: center;
+    }
+</style>
+<div class="main" ng-controller="reservecoachlist">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>教练预约列表 </h3>
+                        <div style="float: right ; padding-right: 10px" >
+                            <div style="float: left;  padding-right: 10px">
+                                <a href="/admin/manage/editcoachinfo"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                            </div>
+                            <div style="float: right ; padding-right: 10px">
+                                <% include ../public/searchBox %>
+                            </div>
+                        </div>
+
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <form id="reserve-coach"  name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                    <fieldset>
+                                        <table class="table table-hover" id="mytable">
+                                            <tr>
+                                                <th> 姓名 </th>
+                                                <th>8:00-10:00</th>
+                                                <th>10:00-12:00</th>
+                                                <th>1:00-3:00</th>
+                                                <th>3:00-5:00</th>
+                                                <th>5:00-7:00</th>
+                                                <th class="td-actions"> 预约</th>
+                                            </tr>
+                                            <tr class="datalist" ng-repeat="content in data"  ng-click="changeBg()">
+
+                                                <th style="font-weight: normal;" >
+                                                    <span ng-model="name" >{{content.name}}</span>
+                                                </th>
+                                                <td >
+                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                </td>
+                                                <td >
+                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                </td>
+                                                <td>
+                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                </td>
+
+                                                <th class="td-actions">
+                                                    <button type="submit" class="btn btn-primary"  >预约</button>
+                                                </th>
+
+                                            </tr>
+                                        </table>
+
+                                    </fieldset>
+                                </form>
+
+                            </div><!-- /.box-body -->
+
+                        </div><!-- /.box -->
+                        <% include ../public/tableFooter %>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /main-inner -->
+</div>
+
+
+<script>
+    ybxcApp.controller("reservecoachlist",function($scope,$http){
+        $scope.formData = {};
+       // var num=0;
+        //获取文档列表信息
+        initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
+        var coachid=GetQueryString("coachid");
+
+
+
+        //提交预约
+        $scope.processForm = function(isValid){
+            alert("预约成功");
+            console.log(isValid);
+            //如果没有选择任何的时间段
+            if (!isValid){
+                alert("没有输入任何的时间");
+                return;
+            }
+            if(true)
+            {
+                if(!savedata()){
+                    return;
+                }
+                console.log($scope.formData);
+                $http.post("/admin/manage/#",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("预约成功");
+                                window.location.href="/admin/manage/studentlist";
+                            }
+                        })
+
+            }
+
+        };
+
+        //保存预约
+        var savedata=function(){
+            //$scope.formData.ready="10";
+            $scope.formData.driveschool="<%=schoolid%>";
+            $(".datalist td").each(function(){
+                if ($(this).attr("background-color")!="") {
+                    $scope.formData.ready.push();//预约数量加一
+                }else{
+
+                }
+            });
+            return true;
+        }
+
+
+        //改变颜色
+        $scope.changeBg=function(){
+
+
+            $('.datalist td').toggle(function(){
+
+                $(this) .css('background-color','#00BA8B');//点击的设置为绿色
+                $('.datalist td').not(this).css('background-color','');//其他的全部设置为无色
+
+            },function(){
+                $(this).css('background-color','');
+
+            });
+
+        }
+
+    });
+
+
+
+</script>

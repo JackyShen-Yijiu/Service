@@ -151,6 +151,10 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/coachlist" ,function(req, res, next) {
         res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
     });
+    // 获取预约教练列表
+    router.get("/manage/reserveCoach" ,function(req, res, next) {
+        res.render('school/reserveCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/reserveCoach"));
+    });
     //编辑教练详情
     router.get("/manage/editcoachinfo" ,function(req, res, next) {
         var schoolid=req.session.schoolid;
@@ -242,6 +246,23 @@ var  returnAdminRouter=function(io) {
         res.render('apply-record/coachCheckList', adminFunc.setPageInfo(req,res,"/admin/manage/coachCheckList"));
     });
 
+    //商家管理
+    router.get("/manage/businessList" ,function(req, res, next) {
+        res.render('business/businessList', adminFunc.setPageInfo(req,res,"/admin/manage/businessList"));
+    });
+    //添加商家
+    router.get("/manage/editBusiness" ,function(req, res, next) {
+        res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
+    });
+
+    //咨询中心
+    router.get("/manage/industrynewsList" ,function(req, res, next) {
+        res.render('industryNews/industrynewsList', adminFunc.setPageInfo(req,res,"/admin/manage/industrynewsList"));
+    });
+    //获取咨询内容
+    router.get("/manage/editIndustrynews" ,function(req, res, next) {
+        res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews"));
+    });
 
     //==================================================================================================================
 

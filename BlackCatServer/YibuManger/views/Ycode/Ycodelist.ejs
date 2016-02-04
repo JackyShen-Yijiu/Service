@@ -28,8 +28,9 @@
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
-                                            <a href="/admin/manage/editActivty?activityid={{content.activityid}}" >
-                                                <span id="orderId">{{content.danhao}}</span> </a>
+                                            <a  id="checkinfo"
+                                                ng-click="checkinfo(content._id,content.name)"
+                                                 ><span id="orderId">{{content.danhao}}</span></a>
                                         </td>
                                         <td >
                                             <span>{{content.xueyuan}}</span>
@@ -66,6 +67,48 @@
                         </div><!-- /.box -->
                         <% include ../public/tableFooter %>
                     </div>
+                    <div id="editpage" style="display: block;">
+                        <!--弹出层部分-->
+
+                            <div class="widget-header" style="border-bottom: 1px solid #000;">
+                                <i class="icon-th-large"></i>
+                                <h3>Y码返利详情</h3>
+                            </div> <!-- /widget-header -->
+                            <div class="widget-content">
+                                <table class="table table-hover">
+                                    <tr style="border-bottom: 1px solid #ccc;">
+                                        <th>ID </th>
+                                        <th>姓名</th>
+                                        <th>身份</th>
+                                        <th>Y码</th>
+                                        <th>分利</th>
+                                    </tr>
+                                    <tr class="datalist" ng-repeat="content in data">
+
+                                        <td >
+                                            <span>{{content.ID}}</span> </a>
+                                        </td>
+                                        <td >
+                                            <span>{{content.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.identity}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.Ycode}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.money}}</span>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+
+
+
+
+                    </div>
 
                 </div>
             </div>
@@ -79,56 +122,20 @@
 </div>
 
 
-<!--mask-->
-<div class="mask" id="mask">
-    <div class="Ymoney-show">
-        <div class="widget-header" style="border-bottom: 1px solid #000;">
-            <i class="icon-th-large"></i>
-            <h3>Y码返利详情</h3>
-            <span class="close-icon" style="width:20px;height:20px;position: absolute;top:0px;right:30px; ">
-                <i class="icon-remove-sign"></i>
-            </span>
-        </div> <!-- /widget-header -->
-        <table class="table table-hover">
-            <tr style="border-bottom: 1px solid #ccc;">
-                <th>ID </th>
-                <th>姓名</th>
-                <th>身份</th>
-                <th>Y码</th>
-                <th>分利</th>
-            </tr>
-            <tr class="datalist" ng-repeat="content in data">
-
-                <td >
-                        <span>{{content.ID}}</span> </a>
-                </td>
-                <td >
-                    <span>{{content.name}}</span>
-                </td>
-                <td >
-                    <span>{{content.identity}}</span>
-                </td>
-                <td >
-                    <span>{{content.Ycode}}</span>
-                </td>
-                <td >
-                    <span>{{content.money}}</span>
-                </td>
-
-            </tr>
-        </table>
-    </div>
-
-
-
-</div><!--mask end-->
-
 
 <script>
     ybxcApp.controller("Ycodelist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getactivtylist?");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/#?");
+        layer.open({
+            type: 1,
+            title: '学员姓名--'+name,
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['600px' , '520px'],
+            content:$("#editpage")
+        });
 
 
     });
@@ -136,4 +143,3 @@
 
 
 </script>
-<script src="/js/Ycode-mask.js"></script>
