@@ -115,18 +115,41 @@ function answerIsRight(){
       previouslylist.push(myExamID[QIndex - 1]);
 
       //删除作对的题的id
-      for (var i = 0; i < myExamID.length; i++) {
-        if (myExamID[i] == myExamID[QIndex - 1]) {
-          myExamID.splice(i, 1);
-          //console.log(myExamID)
-        }
-      }
+      deleteWrongQuestion(myExamID[QIndex - 1]);
+     // console.log("myExamID[QIndex - 1]:"+myExamID[QIndex - 1])
 
     }
 
 
   }
 }
+
+
+//在错题库中delete 做对的题
+function deleteWrongQuestion(wrongid){
+  console.log('delete wrong question.');
+  var u = {
+    id: userID,
+    wrongid:wrongid
+  }
+  //console.log("wrongid_id:"+ JSON.stringify(u) );
+  $.post(apiHost + "questionwronglist/deleteWrongQuestion",
+      JSON.stringify(u),
+      function(data){
+
+        if(data.code > 0){
+          return "1";
+        }else if(data.code == -1){
+          return "0";
+        }
+
+      }).fail(function(a, b, c) {
+    console.log('failed.');
+    return "0";
+  });
+
+}
+
 function answerIsWrong(){
   //$("#rightAnswer").hide();
   //$("#wrongAnswer").show();

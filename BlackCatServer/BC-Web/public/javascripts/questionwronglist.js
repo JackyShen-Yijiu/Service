@@ -1,35 +1,38 @@
-
 var userInfo;
 
 function init() {
     console.log('init.');
 
-    getUserInfo(userID, nextQestion);
+   getUserInfo(userID, nextQestion);
 }
 
-function getUserInfo(id, callback){
+function getUserInfo(userID,callback){
     console.log("get user list: " + userID);
+
     $.get(apiHost + "questionwronglist/userinfo/" + userID,
         function(data){
-          userInfo = data;
-          if(userInfo == null){
-            $("body").addClass("loading");
-          }else{
-            myExamID = userInfo.kemuyi_wronglist;
-            Allcount = myExamID.length;
-            previouslylist = [];//清空上一份试题
-            console.log("userinfo: " + userInfo);
-            console.log("Allcount: " + Allcount);
-            if(Allcount > 0){
-              $("body").removeClass("loading");
-              callback(data, "OK");
+            userInfo = data;
+
+            if(userInfo == null){
+                $("body").addClass("loading");
             }else{
-              $("body").addClass("loading");
+                myExamID = userInfo.kemuyi_wronglist;
+                //console.log("userInfo.kemuyi_wronglist:"+ userInfo.kemuyi_wronglist);
+                Allcount = myExamID.length;
+                previouslylist = [];//清空上一份试题
+
+                console.log("Allcount: " + Allcount);
+                if(Allcount > 0){
+                    $("body").removeClass("loading");
+                    callback(data, "OK");
+                }else{
+                    $("body").addClass("loading");
+                }
             }
-          }
         }).fail(function(xHr, status, message){
         callback(message, "Fail");
     });
+
 }
 
 function getWrongQuestionByID(id, callback){
@@ -74,7 +77,14 @@ function nextQestion(){
     $("#number_title").text(++QIndex);
     getWrongQuestionByID(myExamID[QIndex - 1], showQuestions);
 
+      if(QIndex == 1){
 
+          $("#btnNext").text("下一题");
+      }
+      if(QIndex == Allcount){
+          console.log("结束");
+          $("#btnNext").text("结束");
+      }
   }
 }
 function preQestion(){
@@ -97,16 +107,38 @@ function answerIsRight() {
             previouslylist.push(myExamID[QIndex - 1]);
 
             //删除作对的题的id
-            for (var i = 0; i < myExamID.length; i++) {
-                if (myExamID[i] == myExamID[QIndex - 1]) {
-                    myExamID.splice(i, 1);
-                    //console.log(myExamID)
-                }
-            }
+            deleteWrongQuestion(myExamID[QIndex - 1]);
+           // console.log("myExamID[QIndex - 1]:"+myExamID[QIndex - 1])
 
         }
     }
 }
+
+//在错题库中delete 做对的题
+function deleteWrongQuestion(wrongid){
+    console.log('delete wrong question.');
+    var u = {
+        id: userID,
+        wrongid:wrongid
+    }
+    //console.log("wrongid_id:"+ JSON.stringify(u) );
+    $.post(apiHost + "questionwronglist/deleteWrongQuestion",
+        JSON.stringify(u),
+        function(data){
+
+            if(data.code > 0){
+                return "1";
+            }else if(data.code == -1){
+                return "0";
+            }
+
+        }).fail(function(a, b, c) {
+        console.log('failed.');
+        return "0";
+    });
+
+}
+
 function answerIsWrong(){
   //$("#rightAnswer").hide();
   //$("#wrongAnswer").show();
