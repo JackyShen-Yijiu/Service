@@ -1,0 +1,227 @@
+<link rel="stylesheet" href="/css/powerFloat.css"/>
+<link rel="stylesheet" href="/css/xmenu.css"/>
+<div class="main">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <i class="icon-th-large"></i>
+                            <h3>添加教练</h3>
+                        </div><!--widget-header-->
+
+                        <div class="widget-content">
+                            <div class="tabble">
+                                <br>
+                                <div class="tab-pane" id="formcontrols">
+                                    <form  id="edit-profile" class="from-horizontal" name="myForm" novalidate>
+                                        <fieldset>
+                                            <div class="control-group">
+                                                <label for="name" class="control-label">教练名称</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="name" name="name" placeholder="名字最多十个字"
+                                                           required>
+                                                    <div class="alert alert-danger span4" role="alert">2-10个非特殊字符</div>
+                                                </div><!--/control-->
+                                            </div><!--/control-group-->
+
+                                            <div class="control-group">
+                                                <label for="logimg" class="control-label">教练头像</label>
+                                                <div class="controls">
+                                                    <div class="input-append">
+                                                        <input type="text" class="span4 m-wrap" id="logimg" disabled>
+                                                        <button class="btn" type="button" id="picklogimg">选择头像</button>
+                                                        <img  id="logimgimg" style="width: 60px;height: 60px;">
+                                                    </div>
+                                                </div><!--/controls-->
+                                            </div><!--/control-group-->
+
+                                            <div class="control-group">
+                                                <label for="validationstate" class="control-label">验证状态</label>
+                                                <div class="controls">
+                                                    <select  id="validationstate" class="span4">
+                                                        <option value="0">未申请</option>
+                                                        <option value="1">申请中</option>
+                                                        <option value="2">拒绝</option>
+                                                        <option value="3" selected>通过</option>
+                                                    </select>
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="trainfield" class="control-label">训练场地</label>
+                                                <div class="controls">
+                                                    <select id="trainfield" class="span4">
+                                                        <option value="0">训练场一</option>
+                                                    </select>
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="address" class="control-label">地址</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="address" name="address" placeholder="详细地址">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="mobile" class="control-label">联系电话</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="mobile">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="starlevel" class="control-label">教练星级</label>
+                                                <div class="controls">
+                                                    <select id="starlevel" class="span4">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="idcarnumber" class="control-label">身份证号</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span4" id="idcarnumber">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="coachnumber" class="control-label">教练证号</label>
+                                                <div class="controls">
+                                                    <input type="text" id="coachnumber" class="span4">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="drivinglicensenumber" class="control-label">驾照编号</label>
+                                                <div class="controls">
+                                                    <input type="text" id="drivinglicensenumber" class="span4">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="platenumber" class="control-label">车牌号</label>
+                                                <div class="controls">
+                                                    <input type="text" id="platenumber" class="span4">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="Seniority" class="control-label">教龄</label>
+                                                <div class="controls">
+                                                    <input type="number" id="Seniority" class="span1" value="0">
+                                                    &nbsp;&nbsp;通过率&nbsp;
+                                                    <input type="number" class="span1" id="passrate" value="90">%
+                                                    &nbsp;&nbsp;学员数&nbsp;
+                                                    <input type="number" class="span1" id="studentcount" value="0">
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label  class="control-label">教授科目</label>
+                                                <div class="controls">
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="subject" value="2">科目二
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" name="subject" value="3">科目三
+                                                    </label>
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label for="carmodel" class="control-label">驾照类型</label>
+                                                <div class="controls">
+                                                    <select id="carmodel" class="span4">
+                                                        <option value="1">C1</option>
+                                                        <option value="2">C2</option>
+                                                        <option value="3">0</option>
+                                                    </select>
+                                                </div><!--controls-->
+                                            </div><!--control-group-->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="is_validation" >加V认证</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="is_validation" >
+                                                        <option value="1">已认证</option>
+                                                        <option value="0">未认证</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label for="workbegintime" class="control-label">工作时间</label>
+                                                <div class="controls">
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期一
+                                                    </label>
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期二
+                                                    </label>
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期三
+                                                    </label>
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期四
+                                                    </label>
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期五
+                                                    </label>
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期六
+                                                    </label>
+                                                    <label  class="checkbox inline">
+                                                        <input type="checkbox" name="week" value="1">星期日
+                                                    </label>
+                                                </div><!--/controls-->
+                                                <div class="controls">
+                                                    <select id="begintimeint" class="span2">
+                                                        <option value="5">5:00</option>
+                                                        <option value="6">6:00</option>
+                                                        <option value="7">7:00</option>
+                                                        <option value="8" selected>8:00</option>
+                                                        <option value="9">9:00</option>
+                                                    </select>
+                                                    &nbsp;&nbsp;到&nbsp;
+                                                    <select class="span2" id="endtimeint"  >
+                                                        <option value="17">17:00</option>
+                                                        <option value="18"selected>18:00</option>
+                                                        <option value="19">19:00</option>
+                                                        <option value="20">20:00</option>
+                                                        <option value="21">21:00</option>
+                                                    </select>
+                                                </div><!--controls-->
+                                            </div><!--/control-group-->
+
+                                            <div class="control-group">
+                                                <label for="introduction" class="control-label">简介</label>
+                                                <div class="controls">
+                                                    <textarea  id="introduction" rows="3"></textarea>
+                                                </div>
+                                            </div><!--control-group-->
+
+                                            <br>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                                <button class="btn">取消</button>
+                                            </div><!--form-actions-->
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

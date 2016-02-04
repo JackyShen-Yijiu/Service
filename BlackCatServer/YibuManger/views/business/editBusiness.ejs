@@ -1,0 +1,204 @@
+
+<div class="main" ng-controller="addBusiness">
+
+    <div class="main-inner">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="span12">
+
+                    <div class="widget ">
+
+                        <div class="widget-header">
+                            <i class="icon-th-large"></i>
+                            <h3>添加商家</h3>
+                        </div> <!-- /widget-header -->
+                        <div class="widget-content">
+                            <div class="tabbable">
+                                <br>
+                                <div class="tab-pane" id="formcontrols">
+                                    <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                        <fieldset>
+                                            <div class="control-group">
+                                                <label class="control-label" for="name" >商家名称</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多三十个字"
+                                                           ng-minlength="5" ng-maxlength="30" ng-model="formData.businessname" required>
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
+                                                         role="alert">5-30个非特殊字符</div>
+                                                </div> <!-- /controls -->
+                                            </div>
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="logimg">商家头像</label>
+                                                <div class="controls">
+                                                    <div class="input-append">
+                                                        <input class="span4 m-wrap"   id="logimg" type="text"disabled
+                                                               ng-model="formData.logoimg" >
+                                                        <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                        <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
+                                                    </div>
+                                                </div>
+                                            </div><!--control group-->
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="province">商家地址</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span2 disabled"  id="province"
+                                                           ng-model="formData.province"  disabled> 省
+                                                    <input type="text" class="span2 disabled" id="city"
+                                                           ng-model="formData.city" disabled> 市
+                                                    <br/>
+                                                    <br/>
+                                                    <input type="text" class="span6 disabled"  id="address" name="address"
+                                                           ng-model="formData.address"    placeholder="详细地址" required>
+                                                    <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
+                                                    <input type="hidden" id="latitude" ng-model="formData.latitude"  >
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
+                                                         role="alert">地址必须</div>
+                                                </div> <!-- /controls -->
+                                            </div>
+
+
+                                            <div class="control-group"  style="height: 250px;width: 600px">
+                                                <label class="control-label" >地址选择</label>
+                                                <div class="controls">
+                                                    <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="linkman1">联系人</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span2" id="linkman1"  ng-model="formData.responsible" >
+                                                    电话： <input type="text" class="span2" id="linktele1"  ng-model="formData.phone">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <br />
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
+                                                <button class="btn">取消</button>
+                                            </div> <!-- /form-actions -->
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- /widget-content -->
+
+                    </div> <!-- /widget -->
+
+                </div> <!-- /span8 -->
+            </div> <!-- /row -->
+
+        </div> <!-- /container -->
+
+    </div> <!-- /main-inner -->
+
+
+</div> <!-- /main -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
+<script  src="/js/baidumap.js"></script>
+<script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
+<script type="text/javascript" src="/js/qiniu.js"></script>
+<script type="text/javascript" src="/js/qiniuupfile.js"></script>
+<script>
+    $(document).ready(function(){
+        //地图选择地址
+        $("#address").keydown(function (e) {
+            var curKey = e.which;
+            if (curKey == 13) {
+                var address=$("#address").val();
+                setaddress(address);
+                e.preventDefault();
+            }
+
+        });
+        //手动填写地址地图自动选择地址
+        $("#address").blur(function(e){
+            var address=this.value ||"";
+            setaddress(address);
+            e.preventDefault();
+        });
+    });
+</script>
+<script type="application/javascript">
+    ybxcApp.controller("addBusiness",function($scope,$http){
+        $scope.formData = {};
+        var businessid=GetQueryString("businessid");
+        if(businessid !=null && businessid.toString().length>1)
+        {
+            $http.get("getbusinessbyid?businessid="+businessid)
+                    .success(function(response){
+                        if (response.type==0){
+                            alert(response.msg);
+                        }else{
+                            $scope.formData = response.data;
+                            console.log(response.data);
+                            $("#logimg").val($scope.formData.logoimg);
+                            $("#logimgimg").attr("src",$scope.formData.logoimg);
+                            setPoint($scope.formData.longitude,$scope.formData.latitude);
+                            $("#latitude").val($scope.formData.latitude);
+                            $("#longitude").val($scope.formData.longitude);
+                        }
+
+
+                    })
+        }else{
+            //console.log("error");
+        }
+
+        $scope.processForm = function(isValid){
+            console.log(isValid);
+            if (!isValid){
+                alert("参数错误");
+                return;
+            }
+            if($scope.formData.businessid!=undefined&&$scope.formData.businessid!="")
+            {
+                if(!savedata()){
+                    return;
+                }
+                $http.post("/admin/manage/#",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("修改成功");
+                            }
+                        })
+            }else {
+                if(!savedata()){
+                    return;
+                }
+                $http.post("/admin/manage/#",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                alert(response.msg);
+                            }else{
+                                alert("添加成功");
+                            }
+                        })
+            }
+
+        };
+
+        var savedata=function(){
+            $scope.formData.logoimg=$("#logimg").val();
+            $scope.formData.trainimg=$("#trainimg").val();
+            $scope.formData.province=$("#province").val();
+            $scope.formData.city=$("#city").val();
+            $scope.formData.address=$("#address").val();
+            $scope.formData.latitude=$("#latitude").val();
+            $scope.formData.longitude=$("#longitude").val();
+
+            return true;
+        }
+    });
+
+
+
+</script>

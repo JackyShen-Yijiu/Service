@@ -30,17 +30,18 @@
                                                          role="alert">5-30个非特殊字符</div>
                                                 </div> <!-- /controls -->
                                             </div>
+
                                             <div class="control-group">
                                                 <label class="control-label" for="logimg">训练场头像</label>
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                               ng-model="formData.logoimg"	   >
+                                                               ng-model="formData.logoimg" >
                                                         <button class="btn" type="button" id="picklogimg">选择投头像</button>
-                                                        <img id="logimgimg" style="width: 60px;height: 60px">
+                                                        <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div><!--control group-->
 
 
                                             <div class="control-group">
@@ -99,6 +100,41 @@
                                                     <textarea   class="span4" id="introduction" rows="3" ng-model="formData.fielddesc" placeholder="驾校简介"></textarea>
                                                 </div>
                                             </div>
+
+
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="trainimg">训练场展示</label>
+                                                <div class="controls">
+                                                    <div class="widget">
+                                                        <div class="widget-content">
+                                                                <!--
+                                                                <input class="span4 m-wrap"   id="trainimg" type="text"disabled
+                                                                       ng-model="formData.trainimg"	   >
+                                                                -->
+                                                                <div style="float:left;margin: 0 6px;">
+                                                                    <input type="hidden" class="span4 m-wrap"   id="trainimg" type="text"disabled
+                                                                           ng-model="formData.trainimg">
+                                                                    <img id="trainimgimg1" style="width: 200px;height: 160px;" >
+                                                                    <div class="icon-remove" id="train-icon1"></div>
+                                                                </div>
+                                                                <div style="float:left; margin: 0 6px;">
+                                                                    <img id="trainimgimg2" style="width: 200px;height: 160px">
+                                                                    <div class="icon-remove" id="train-icon2"></div>
+                                                                </div>
+                                                                <div style="float:left; margin: 0 6px;">
+                                                                    <img id="trainimgimg3" style="width: 200px;height: 160px">
+                                                                    <div class="icon-remove" id="train-icon3"></div>
+                                                                </div>
+                                                                <button class="btn" type="button" id="picktrainimg">选择图片</button></div>
+
+                                                        </div>
+
+                                                    </div>
+                                            </div>
+
+
+
                                             <div class="control-group">
                                                 <label class="control-label" for="linkman1">联系人</label>
                                                 <div class="controls">
@@ -106,7 +142,6 @@
                                                     电话： <input type="text" class="span2" id="linktele1"  ng-model="formData.phone">
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
-
                                             <br />
                                             <div class="form-actions">
                                                 <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
@@ -149,7 +184,11 @@
                                         $scope.formData = response.data;
                                         console.log(response.data);
                                         $("#logimg").val($scope.formData.logoimg);
-                                        $("#logimgimg").attr("src",$scope.formData.logoimg)
+                                        $("#logimgimg").attr("src",$scope.formData.logoimg);
+
+                                        $("#trainimg").val($scope.formData.trainimg);
+                                        $("#trainimgimg1").attr("src",$scope.formData.trainimg);
+
                                         setPoint($scope.formData.longitude,$scope.formData.latitude);
                                         $("#latitude").val($scope.formData.latitude);
                                         $("#longitude").val($scope.formData.longitude);
@@ -203,6 +242,8 @@
 
         var savedata=function(){
             $scope.formData.logoimg=$("#logimg").val();
+            //$scope.formData.logimgimg=$("#logimgimg").val();
+            $scope.formData.trainimg=$("#trainimg").val();
             $scope.formData.province=$("#province").val();
             $scope.formData.city=$("#city").val();
             $scope.formData.address=$("#address").val();
@@ -215,6 +256,19 @@
         }
     });
 
-
+   //删除训练场图片
+    $("#train-icon1").click(function(){
+        $("#trainimgimg1").removeAttr("src");
+    });
+    $("#train-icon2").click(function(){
+        $("#trainimgimg2").removeAttr("src");
+    });
+    $("#train-icon3").click(function(){
+        $("#trainimgimg3").removeAttr("src");
+    });
+  //手写定位地图
+    $("#address").on("blur", function(){
+        setaddress(this.value ||"");
+    });
 
 </script>
