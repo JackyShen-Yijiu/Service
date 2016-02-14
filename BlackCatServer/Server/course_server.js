@@ -35,12 +35,22 @@ exports.GetCoachCourse=function(coachid,date ,callback){
         // 判断星期
         var temptime=new Date(date);
         var i=temptime.getDay();
-        if(i==0){i=7}
+
         //console.log(coachdata.workweek);
 
         var index=coachdata.workweek.indexOf(i);
         if(index==-1){
-            return callback("该教练今天不工作");
+            if(i==0){i=7;
+                var index2=coachdata.workweek.indexOf(i);
+                if(index2==-1){
+                    return callback("该教练今天不工作");
+                }
+            }
+            else {
+                return callback("该教练今天不工作");
+            }
+
+
         }
         coursemode.findCourse(coachid,date,function(err,coursedata){
          if(err){
@@ -186,8 +196,12 @@ syncReservationdesc=function(userid,callback){
                                 })
                             })
                         })
+                        callback(null);
                     })
                 }
+            }
+            else{
+                callback(null);
             }
         });
 }
@@ -318,10 +332,13 @@ exports.postReservation=function(reservationinfo,callback){
                             if (err) {
                                 return callback("保存预约出错：" + err);
                             }
-                            syncReservationdesc(data._id);
+
                             pushcoach.pushNewReservation(newreservation.coachid,newreservation._id,function(err,data){});
                             // console.log("返回成果");
-                            return callback(null, "success");
+                            syncReservationdesc(data._id,function(){
+                                return callback(null, "success");
+                            });
+
                         });
 
                     });
@@ -493,9 +510,12 @@ exports.userCancelReservation=function(reservation,callback){
                         if (err){
                             return callback("取消课程出错");
                         }
-                        syncReservationdesc(reservation.userid);
+
                         pushcoach.pushReservationCancel(newdata.coachid,newdata._id,function(err,data){});
-                        return callback(null,"success");
+                        syncReservationdesc(reservation.userid,function(err,data){
+                            return callback(null,"success");
+                        });
+
                     })
                 })
 
@@ -1534,8 +1554,10 @@ exports.coachHandleInfo=function(handleinfo,callback){
                                 return callback("取消课程出错");
                             }
                             pushstudent.pushReservationCancel(newdata.userid,newdata._id,function(err,data){});
-                            syncReservationdesc(newdata.userid);
-                            return callback(null,"success");
+                            syncReservationdesc(newdata.userid,function(err,data){
+                                return callback(null,"success");
+                            });
+
                         })
                     })
 
