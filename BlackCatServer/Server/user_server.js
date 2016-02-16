@@ -1241,6 +1241,11 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
     });
 }
 exports.getUsefulCoachList=function(useid,index,callback){
+    var limintcount=10;
+    if(index==-1){
+        limintcount=100;
+        index=1;
+    }
     usermodel.findById(new mongodb.ObjectId(useid),function(err,user){
         if(err){
             return callback("查询出错"+err);
@@ -1267,7 +1272,7 @@ exports.getUsefulCoachList=function(useid,index,callback){
         "subject.subjectid":{'$in':[user.subject.subjectid]}})
             .sort({"passrate": -1})
             .skip((index-1)*10)
-            .limit(10)
+            .limit(limintcount)
             .exec(function(err ,coachlist) {
                 if (err || !coachlist  ) {
                     console.log(err);

@@ -20,6 +20,11 @@
 
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
+                        <table class="table table-hover" id="mytable">
+                            <tr class="datalist" ng-repeat="content in CoachList"  >
+                                <td ng-repeat="coach in content" >{{coach.name}}</td>
+                            </tr>
+                        </table>
                         <div class="box">
                             <div class="box-body table-responsive no-padding">
                                 <form id="reserve-coach"  name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
@@ -86,13 +91,43 @@
 <script>
     ybxcApp.controller("reservecoachlist",function($scope,$http){
         $scope.formData = {};
+        $scope.CoachList = {};
        // var num=0;
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
-        var coachid=GetQueryString("coachid");
+        //initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
+        var studentid=GetQueryString("studentid");
+        $http.get("/admin/manage/getUsefulCoachList?studentid="+studentid).success(function(result){
+            console.log(result)
+            if(result.type==1){
+                $scope.CoachList= result.data;
+                initCoachlist();
+            }
+            else if (result.type==0){
+                layer.msg(result.msg, {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }
+        })
+        var initCoachlist=function(){
+            var  colcount =10;
+            var rowcount=Math.ceil($scope.CoachList.length/colcount);// 向上整出
+            var tArray = new Array();
+            for(var k=0;k<rowcount;k++){
+                tArray[k]=new Array();
+                for (var i=0;i<colcount;i++){
+                    if((k*colcount +i+1)>=$scope.CoachList.length){
+                        break;
+                    }
+                    tArray[k][i]=$scope.CoachList[(k*colcount)+i];
+                }
+            }
+            $scope.CoachList=tArray;
 
+            }
+        $scope.getcoursebycoach=function(coachid){
 
-
+        }
         //提交预约
         $scope.processForm = function(isValid){
             alert("预约成功");

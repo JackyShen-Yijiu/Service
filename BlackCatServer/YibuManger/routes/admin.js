@@ -301,6 +301,11 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/saveclasstype",adminserver.saveClassType);
     //订单管理
     router.get("/manage/getorderlist",adminserver.getorderlist);
+    // 学员预约
+    router.get("/manage/getUsefulCoachList",adminserver.getUsefulCoachList);
+    // 获取教练课程安排
+    router.get("/manage/getcoursebycoach",adminserver.getcoursebycoach);
+
 
     //=================================================================================================================
 

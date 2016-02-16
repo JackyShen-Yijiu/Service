@@ -19,6 +19,7 @@ var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var headMasterOperation=require("../../Server/headmaster_operation_server");
 var userCenterServer=require("../../Server/headMaste_Server");
+var userserver=require("../../Server/user_server");
 var cache=require("../../Common/cache");
 require('date-utils');
 var _ = require("underscore");
@@ -1134,6 +1135,41 @@ exports.getcoachcourse=function(schoolid,callback){
     var enddate=(new Date()).addDays(7).clearTime();
     coachmodel.find(searchinfo)
         .select("_id name mobile  createtime carmodel trainfieldlinfo")
+}
+
+//获取我可以预约的教练
+exports.getUsefulCoachList=function(req,res){
+    var userid=req.query.studentid;
+    var index=-1;
+    userserver.getUsefulCoachList(userid,index,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
+}
+// 获取某一 教练的课程安排
+exports.getcoursebycoach=function(req,res){
+    var  coachid=req.query.coachid;
+    var  date=req.query.date;
+    if (coachid===undefined|| date===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    var now = new Date();
+    var coursedate=new Date(date);
+    //console.log(now.getDaysBetween(coursedate));
+    // 只能获取七天内的课程信息
+    if(now.getDaysBetween(coursedate)>7||now.getDaysBetween(coursedate)<0){
+        return res.json(new BaseReturnInfo(0,"无法获取该时间段的课程安排",""));
+    }
+    courseserver.GetCoachCourse(coachid,date,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 
 //==========================================主页信息
