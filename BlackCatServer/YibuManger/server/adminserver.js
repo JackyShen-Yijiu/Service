@@ -1003,7 +1003,7 @@ exports.getSchoolist=function(req,res){
                             name: r.name,
                             shcoolid: r._id,
                             address: r.address,
-                            createtime:r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS"),
+                            createtime:(new Date(r.createtime)).toFormat("YYYY-MM-DD HH24:MI:SS"),
                             applyingstudentcount:summarydata.applyingstudentcount,
                             reservationcoursecount:summarydata.reservationcoursecount,
                             complaintcount:summarydata.complaintcount,
