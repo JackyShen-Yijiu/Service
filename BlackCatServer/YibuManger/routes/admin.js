@@ -26,7 +26,6 @@ var options = require('../util/config.js').options;
 var moment = require('moment');
 var randomstring = require("randomstring");
 var store = require('../util/store.js');
-var busboy = require('connect-busboy');
 require('date-utils');
 var pngword = new PW(PW.GRAY);
 
@@ -381,8 +380,7 @@ var  returnAdminRouter=function(io) {
                 break;
         }
         if (action == 'uploadimage' || action == 'uploadvideo' || action == 'uploadfile') {
-            console.log(req.files);
-            console.log("busboy");
+
 
             var file = req.files['upfile'];
 
