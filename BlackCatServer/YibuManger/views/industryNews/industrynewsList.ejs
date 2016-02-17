@@ -33,7 +33,7 @@
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
                                         <td >
-                                            <a href="/admin/manage/editIndustrynews?activityid={{content.activityid}}" >
+                                            <a href="/admin/manage/editIndustrynews?activityid={{content._id}}" >
                                                 <span>{{content.title}}</span> </a>
                                         </td>
                                         <td >
@@ -59,7 +59,7 @@
                                         </td>
 
                                         <td class="td-actions">
-                                            <a href="/admin/manage/editIndustrynews?activityid={{content.activityid}}"
+                                            <a href="/admin/manage/editIndustrynews?newsid={{content._id}}"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i>
                                             编辑</a>
                                             <!--<a href="#"-->

@@ -366,7 +366,7 @@
                             alert(response.msg);
                         }else{
                             $scope.formData = response.data;
-                            console.log(response.data);
+                            //console.log(response.data);
                             $("#logimgimg").attr("src",$scope.formData.logoimg)
                             setPoint($scope.formData.longitude,$scope.formData.latitude);
                             $("#latitude").val($scope.formData.latitude);

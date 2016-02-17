@@ -1,4 +1,8 @@
-
+<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
 <div class="main" ng-controller="editIndustrynews">
 
     <div class="main-inner">
@@ -20,17 +24,60 @@
                             <div class="tabbable">
                                 <br>
                                 <div class="tab-pane" id="formcontrols">
-                                    <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                    <form id="edit-profile" class="form-horizontal" name="myForm"
+                                          ng-submit="processForm(myForm.$valid)"  novalidate>
                                         <fieldset>
+                                            <div class="control-group">
+                                                <label class="control-label" for="title" >标题</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6 " name="title"    id="title"  placeholder="标题最多三十个字"
+                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.title" required>
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
+                                                         role="alert">2-30个非特殊字符</div>
+                                                </div> <!-- /controls -->
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="logimg">文章图</label>
+                                                <div class="controls">
+                                                    <div class="input-append">
+                                                        <input class="span4 m-wrap"   id="logimg" type="text"disabled
+                                                               ng-model="formData.logimg"	   >
+                                                        <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                        <img id="logimgimg" style="width: 60px;height: 60px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="newstype">文章类型</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="newstype"  >
+                                                        <option value="0">行业资讯</option>
+                                                        <option value="1">笑话</option>
+                                                    </select>
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="description">文章描述</label>
+                                                <div class="controls">
+                                                    <textarea   class="span4" id="description" rows="3" ng-model="formData.description"
+                                                                placeholder="文章描述"></textarea>
+
+                                                </div>
+                                            </div>
                                             <!--one-->
                                             <div class="control-group">
-                                                <p>编辑器的内容</p>
+                                                <label class="control-label" for="content">文章内容</label>
+                                                <div class="controls">
+                                                    <!--<textarea   class="span4" id="content" rows="3" ng-model="formData.content"-->
+                                                                <!--placeholder="文章内容"></textarea>-->
+                                                    <script id="editor" type="text/plain" style="width:500px;height:600px;"></script>
+                                                </div>
                                             </div><!-- /one end -->
-
                                             <br />
                                             <div class="form-actions">
-                                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
-                                                <button class="btn" type="reset">取消</button>
+                                                <button type="submit" class="btn btn-primary"
+                                                        ng-disabled="myForm.$invalid" >提交</button>
+                                                <!--<button class="btn" type="reset">取消</button>-->
                                             </div> <!-- /form-actions -->
                                         </fieldset>
                                     </form>
@@ -49,7 +96,83 @@
 
 </div> <!-- /main -->
 
+<script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
+<script type="text/javascript" src="/js/qiniu.js"></script>
+<script type="text/javascript" src="/js/qiniuupfile.js"></script>
+<script type="application/javascript">
+    var ue = UE.getEditor('editor');
+    UE.getEditor('editor');
+    ybxcApp.controller("editIndustrynews",function($scope,$http){
 
+        $scope.formData = {};
+        var newsid=GetQueryString("newsid")
+                    if(newsid !=null && newsid.toString().length>1)
+                    {
+                        $http.get("getindustrynewsByid?newsid="+newsid)
+                                .success(function(response){
+                                    if (response.type==0){
+                                        layer.msg(response.msg, {
+                                            icon: 2,
+                                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                        });
+                                    }else{
+                                        console.log(response.data);
+                                        $scope.formData=response.data;
+                                        $("#logimgimg").attr("src",$scope.formData.logimg);
+                                        $("#newstype").val($scope.formData.newstype);
+                                        UE.getEditor('editor').setContent($scope.formData.content?$scope.formData.content:"");
+                                       // UE.getEditor('editor').getContent()
+                                    }
+                                })
+                    }else{
+
+                        $("#registertime").val($scope.formData.registertime);
+                        $("#privilegelevel").val($scope.formData.privilegelevel);
+                        $("#is_validation").val($scope.formData.is_validation);
+                    }
+
+        $scope.processForm = function(isValid){
+            console.log(isValid);
+            if (!isValid){
+                alert("参数错误");
+                return;
+            }
+
+                if(!savedata()){
+                    return;
+                }
+                $http.post("/admin/manage/updateindustrynews",$scope.formData)
+                        .success(function(response){
+                            if (response.type==0){
+                                layer.msg(response.msg, {
+                                    icon: 2,
+                                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                            }else{
+                                layer.msg("更新成功", {
+                                    icon: 1,
+                                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                                window.location.href="/admin/manage/industrynewsList";
+                            }
+                        })
+
+
+        };
+
+        var savedata=function(){//写入数据
+            $scope.formData.logimg=$("#logimg").val();
+            $scope.formData.newstype=$("#newstype").val();
+            $scope.formData.content=UE.getEditor('editor').getContent();
+            console.log( $scope.formData);
+            return true;
+        }
+    });
+
+
+
+</script>
 
 
 

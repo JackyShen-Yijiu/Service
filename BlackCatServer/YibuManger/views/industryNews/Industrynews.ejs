@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻详情</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+</head>
+<body>
+<div class="main"  ng-controller="advisoryLink">
+    <div id="wrap" style="background-color:#fff;">
+        <!-- Begin page content -->
+        <div class="container">
+            <div class="page-header">
+                <h2><%=data.title%></h2>
+                <br>
+                <span><%=data.createtime2%>&nbsp;&nbsp;&nbsp;来源：一步学车</span>
+                <!--增加一个分享开始-->
+                <div class="bdsharebuttonbox bdshare-button-style0-16" style="float:right;" data-bd-bind="">
+                    <a href="#" class="bds_more" data-cmd="more"></a>
+                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                </div>
+                <!--增加一个分享结束-->
+
+            </div>
+           <%-data.content-%>
+
+        </div>
+        <div id="footer">
+            <div class="container">
+                <p class="muted credit">@2015 <a href="http://www.yibuxueche.com/">一步学车</a> .</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--分享控制-->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["weixin","sqq","qzone","tqf","tsina","tqq","renren","fx","huaban","kaixin001","copy","print"],"viewText":"分享到：","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+</body>
+</html>

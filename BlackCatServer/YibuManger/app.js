@@ -14,6 +14,7 @@ var RedisStore = require('connect-redis')(session);
 var settings = require("./models/config/settings");
 //验证器
 var validat = require('./routes/validat');
+var multer  = require('multer');
 
 var app = express();
 app.use(function(req, res, next) {
@@ -30,11 +31,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(partials());
 
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//app.use(bodyParser({uploadDir:'./tmp'}));
 app.use(logger('dev'));
+//app.use(bodyParser({uploadDir:'./temp'}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(multer({ dest: './uploads/'}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -56,6 +61,8 @@ app.use(function(req, res, next){
   res.locals.adminUserInfo = req.session.adminUserInfo;
   next();
 });
+
+
 app.use('/', admin);
 app.use('/admin', validat);
 app.use('/admin', admin);

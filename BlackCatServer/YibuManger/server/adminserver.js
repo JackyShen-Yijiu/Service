@@ -913,6 +913,65 @@ exports.getindustrynewsList=function(req,res){
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         });
+};
+exports.getindustrynewsByid=function(req,res){
+    var newsid=req.query.newsid;
+    if (newsid===undefined||newsid==""){
+        res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    industryNewsModel.findById(new mongodb.ObjectId(newsid),function(err,industryNews) {
+        if (err) {
+            res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
+        }
+        if (!industryNews) {
+            res.json(new BaseReturnInfo(0, "没有查询到信息", ""));
+        }
+        res.json(new BaseReturnInfo(1, "", industryNews));
+    })
+};
+exports.getindustrynewsByid2=function(newsid,callback){
+
+    industryNewsModel.findById(new mongodb.ObjectId(newsid),function(err,industryNews) {
+        if (err) {
+            callback (new BaseReturnInfo(0, "查询出错:" + err, ""));
+        }
+        if (!industryNews) {
+            callback(new BaseReturnInfo(0, "没有查询到信息", ""));
+        }
+        callback(new BaseReturnInfo(1, "", industryNews));
+    })
+};
+exports.updateindustrynews=function(req,res){
+    var _id=req.body._id;
+    if (_id===undefined||_id==""){
+        var industryNews= new  industryNewsModel(req.body);
+        industryNews.createtime=new Date();
+        industryNews.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
+            }else{
+                industryNewsModel.update({"_id":data._id},
+                    {$set : {contenturl:"http://manage.yibuxueche.com/news?newsid="+data._id}},function(err,update){});
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+    else
+    {
+        var conditions = {_id :new mongodb.ObjectId( req.body._id)};
+        var updateinfo=req.body;
+        //updateinfo._id=undefined;
+        delete  updateinfo._id;
+        var update = {$set : updateinfo};
+
+        industryNewsModel.update(conditions, update,{safe: true,upsert : true},function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
 }
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){

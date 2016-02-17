@@ -21,6 +21,13 @@ var RW = require('../util/randomWord');
 var rw = RW('abcdefghijklmnopqrstuvwxyz1234567890');
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var appsystemController=require('../../app/apiv1/appsystem_controller');
+
+var options = require('../util/config.js').options;
+var moment = require('moment');
+var randomstring = require("randomstring");
+var store = require('../util/store.js');
+var busboy = require('connect-busboy');
+require('date-utils');
 var pngword = new PW(PW.GRAY);
 
 /* GET home page. */
@@ -263,6 +270,15 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/editIndustrynews" ,function(req, res, next) {
         res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews"));
     });
+    router.get("/news" ,function(req, res, next) {
+        var newsid=req.query.newsid;
+        adminserver.getindustrynewsByid2(newsid,function(data){
+            data.data.createtime2= (new Date(data.data.createtime)).toFormat("YYYY-MM-DD");
+            console.log(data.data.createtime2);
+            res.render('industryNews/Industrynews',data);
+        })
+
+    });
 
     //==================================================================================================================
 
@@ -317,8 +333,96 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getactivitybyid",adminserver.getactivitybyid);
     //行业信息
     router.get("/manage/getindustrynewsList",adminserver.getindustrynewsList);
+    router.get("/manage/getindustrynewsByid",adminserver.getindustrynewsByid);
+    router.post("/manage/updateindustrynews",adminserver.updateindustrynews);
 
+    router.get('/qiniu', function(req, res, next) {
+        var params = req.query;
+        var action = params['action'];
+        if (action == 'config') {
+            res.send(options.ueditorConfig);
+        } else if (action == 'listimage' || action == 'listfile') {
+            var start = parseInt(params['start'] || 0);
+            var size = parseInt(params['size'] || 10);
 
+            var storeParams = {
+                prefix: action == 'listimage' ? 'image/' : 'file/',
+                start: start,
+                limit: size
+            }
+
+            store.listQiniu(storeParams, function(err, ret) {
+                res.send(ret);
+               // return next();
+            })
+
+        } else {
+            res.send();
+        }
+
+       // return next();
+    });
+
+    router.post('/qiniu', function(req, res, next) {
+        var params = req.query;
+
+        var action = params['action'];
+        console.log(action);
+        var key = '/' + moment().format('YYYYMMDD') + '/' + (+new Date()) + randomstring.generate(6);
+        switch (action) {
+            case 'uploadvideo':
+                key = 'video' + key;
+                break;
+            case 'uploadfile':
+                key = 'file' + key;
+                break;
+            default:
+                key = 'image' + key;
+                break;
+        }
+        if (action == 'uploadimage' || action == 'uploadvideo' || action == 'uploadfile') {
+            console.log(req.files);
+            console.log("busboy");
+
+            var file = req.files['upfile'];
+
+            if (!file) {
+                res.send();
+              //  return next();
+            }
+
+            if (action == 'uploadfile') {
+                key += '/' + file.name;
+            }
+
+            var storeParams = {
+                key: key,
+                filePath: file.path,
+                fileName: file.name
+            }
+
+            store.fileToQiniu(storeParams, function(err, ret) {
+                res.send(ret);
+               // return next();
+            })
+        } else if (action == 'uploadscrawl') {
+            var data = req.params['upfile'];
+            if (!data) {
+                res.send();
+               // return next();
+            }
+
+            var storeParams = {
+                key: key,
+                data: new Buffer(data, 'base64')
+            }
+
+            store.dataToQiniu(storeParams, function(err, ret) {
+                res.send(ret);
+               // return next();
+            })
+        }
+    });
 
 return router;
 }

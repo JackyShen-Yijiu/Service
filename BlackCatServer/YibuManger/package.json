@@ -21,6 +21,9 @@
     "validator": "^3.37.0",
     "express-partials": "*",
     "connect-redis": "^3.0.1",
+    "moment": "^2.10.2",
+    "randomstring": "^1.0.5",
+    "multer":"^0.1.8",
     "underscore":"1.8.3"
   }
 }
