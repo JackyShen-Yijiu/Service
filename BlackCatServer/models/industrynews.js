@@ -12,9 +12,10 @@ var Schema = mongoose.Schema;
 var  IndustryNewsSchema = new Schema({
     createtime:{type:Date,default:Date.now()},//  ����ʱ��
     title:String,   //����
-    logimg:String,  // log ͼƬ
+    logimg:String,  //
     description:String,  // ������Ϣ
     contenturl:String,   // ���ݵ���Ϣ
+    content:String, // 文章内容
     newstype:{type:Number,default:0},  // 咨询类型  0 行业咨询 1 笑话
     viewcount:{type:Number,default:0},  // �������
     sharecount:{type:Number,default:0}  // �������

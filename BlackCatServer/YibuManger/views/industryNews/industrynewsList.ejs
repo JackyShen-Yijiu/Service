@@ -60,9 +60,10 @@
 
                                         <td class="td-actions">
                                             <a href="/admin/manage/editIndustrynews?activityid={{content.activityid}}"
-                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a href="#"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i>
+                                            编辑</a>
+                                            <!--<a href="#"-->
+                                               <!--class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>-->
                                         </td>
 
                                     </tr>
@@ -89,7 +90,7 @@
     ybxcApp.controller("industrynewsList",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getactivtylist?");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getindustrynewsList?");
 
 
     });

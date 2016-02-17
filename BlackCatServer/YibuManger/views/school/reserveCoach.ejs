@@ -10,19 +10,22 @@
                 <div class="span12">
                     <div class="widget-header">
                         <i class="icon-th-large"></i>
-                        <h3>教练预约列表 </h3>
+                        <h3>学员预约教练</h3>
                         <div style="float: right ; padding-right: 10px" >
-
-                            <div style="float: right ; padding-right: 10px">
-                                <% include ../public/searchBox %>
-                            </div>
+                            预约日期：
+                            <input type="date" class="span2" id="coursedata" placeholder="开始日期"
+                                   ng-model="coursedata" onclick="laydate()">
                         </div>
 
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
                         <table class="table table-hover" id="mytable">
-                            <tr class="datalist" ng-repeat="content in CoachList"  >
-                                <td ng-repeat="coach in content" >{{coach.name}}</td>
+                            <tr  class="datalist"   ng-repeat="content in CoachList"  ng-click="changeBg()" >
+                                <td ng-repeat="coach in content"  >
+                                   <a class="btn btn-sm btn-default"
+                                      type="button" ng-click="getcoursebycoach(coach.coachid)" > {{coach.name}}
+                                   </a>
+                                </td>
                             </tr>
                         </table>
                         <div class="box">
@@ -32,48 +35,62 @@
                                         <table class="table table-hover" id="mytable">
                                             <tr>
                                                 <th> 姓名 </th>
-                                                <th>8:00-10:00</th>
-                                                <th>10:00-12:00</th>
-                                                <th>1:00-3:00</th>
-                                                <th>3:00-5:00</th>
-                                                <th>5:00-7:00</th>
+                                                <th>课程日期</th>
+                                                <th>课程时间</th>
+                                                <th>人数</th>
                                                 <th class="td-actions"> 预约</th>
                                             </tr>
-                                            <tr class="datalist" ng-repeat="content in data"  ng-click="changeBg()">
+                                            <tr ng-repeat="content in data"  >
 
                                                 <th style="font-weight: normal;" >
-                                                    <span ng-model="name" >{{content.name}}</span>
+                                                    <span ng-model="name" >{{content.coachname}}</span>
                                                 </th>
                                                 <td >
-                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                    <span>{{content.coursebegintime |date:'yyyy-MM-dd'}}</span>
                                                 </td>
                                                 <td>
-                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                    <span>{{content.coursebegintime |date:'HH:00'}}/
+                                                    {{content.courseendtime |date:'HH:00'}}</span>
                                                 </td>
-                                                <td >
-                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
-                                                </td>
+
                                                 <td>
-                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
-                                                </td>
-                                                <td>
-                                                    <span>{{content.ready}}/{{content.totalnum}}</span>
+                                                    <span>{{content.selectedstudentcount}}/{{content.coursestudentcount}}</span>
                                                 </td>
 
                                                 <th class="td-actions">
-                                                    <button type="submit" class="btn btn-primary"  >预约</button>
+                                                    <a class="btn btn-sm btn-default"
+                                                       type="button"
+                                                       ng-show="content.courseuser.indexOf(studentid)==-1&&
+                                                     content.selectedstudentcount !=content.coursestudentcount "
+                                                       ng-click="ChooseCoures(content._id)">
+                                                        <h6 ng-show="courseischoose(content._id)">
+                                                            取消选择
+                                                        </h6>
+                                                     <h6 ng-show="!courseischoose(content._id)">
+                                                            选择
+                                                        </h6>
+
+                                                    </a>
+                                                    <a
+                                                       ng-show="content.courseuser.indexOf(studentid)>-1">
+                                                        <h6> 已预约</h6>
+                                                    </a>
+                                                    <a
+                                                       ng-show="content.selectedstudentcount ==content.coursestudentcount">
+                                                        <h6> 已约满 </h6>
+                                                    </a>
+
                                                 </th>
 
                                             </tr>
                                         </table>
-
+                                        <button type="submit" class="btn btn-primary" ng-disabled="choosecourse.length<=0">提交</button>
                                     </fieldset>
                                 </form>
 
                             </div><!-- /.box-body -->
 
                         </div><!-- /.box -->
-                        <% include ../public/tableFooter %>
                     </div>
 
                 </div>
@@ -87,17 +104,20 @@
 <!-- /main-inner -->
 </div>
 
-
+<script type="text/javascript" src="/js/laydate.js"></script>
 <script>
     ybxcApp.controller("reservecoachlist",function($scope,$http){
         $scope.formData = {};
         $scope.CoachList = {};
+        $scope.choosecourse = [];
+        $scope.studentid="";
+        $scope.coursedata=new Date();
        // var num=0;
         //获取文档列表信息
         //initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
         var studentid=GetQueryString("studentid");
+        $scope.studentid=studentid;
         $http.get("/admin/manage/getUsefulCoachList?studentid="+studentid).success(function(result){
-            console.log(result)
             if(result.type==1){
                 $scope.CoachList= result.data;
                 initCoachlist();
@@ -126,12 +146,46 @@
 
             }
         $scope.getcoursebycoach=function(coachid){
-
+            $scope.choosecourse=[];
+            $scope.data={};
+            var timespan=parseInt(new Date($("#coursedata").val()).getTime()/1000);
+            $http.get("/admin/manage/getcoursebycoach?coachid="+coachid+"&date="+timespan).success(function(result){
+                if(result.type==1){
+                    $scope.data= result.data;
+                    console.log($scope.data);
+                }
+                else if (result.type==0){
+                    layer.msg(result.msg, {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+            })
         }
+        $scope.courseischoose=function(courseid){
+            if ($scope.choosecourse.indexOf(courseid)>-1){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        $scope.ChooseCoures=function(courseid){
+            if($scope.choosecourse.length>3){
+                return;
+            }
+            var  index=$scope.choosecourse.indexOf(courseid);
+
+            if (index>-1){
+                $scope.choosecourse.splice(index, 1);
+            }
+            else {
+                $scope.choosecourse.push(courseid);
+            }
+        }
+
         //提交预约
         $scope.processForm = function(isValid){
-            alert("预约成功");
-            console.log(isValid);
             //如果没有选择任何的时间段
             if (!isValid){
                 alert("没有输入任何的时间");
@@ -140,18 +194,29 @@
             if(true)
             {
                 if(!savedata()){
+                    layer.msg("获取信息出错", {
+                        icon: 2,
+                        time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                    });
                     return;
                 }
                 console.log($scope.formData);
-                $http.post("/admin/manage/#",$scope.formData)
-                        .success(function(response){
-                            if (response.type==0){
-                                alert(response.msg);
-                            }else{
-                                alert("预约成功");
-                                window.location.href="/admin/manage/studentlist";
-                            }
-                        })
+                $http.post("/admin/manage/postReservation",$scope.formData)
+                    .success(function(response){
+                        if (response.type==0){
+                            layer.msg(response.msg, {
+                                icon: 2,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            });
+                           return;
+                        }else{
+                            layer.msg("预约成功", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            });
+                            $scope.getcoursebycoach($scope.formData.coachid);
+                        }
+                    })
 
             }
 
@@ -159,15 +224,38 @@
 
         //保存预约
         var savedata=function(){
-            //$scope.formData.ready="10";
-            $scope.formData.driveschool="<%=schoolid%>";
-            $(".datalist td").each(function(){
-                if ($(this).attr("background-color")!="") {
-                    $scope.formData.ready.push();//预约数量加一
-                }else{
-
+            $scope.formData={};
+            if ( $scope.choosecourse.length<=0){
+                return false;
+            }
+            var choosecoursedata=[];
+            for(var i=0;i<$scope.choosecourse.length;i++){
+                for(var j=0;j<$scope.data.length;j++){
+                    if ($scope.data[j]._id==$scope.choosecourse[i]){
+                        choosecoursedata.push($scope.data[j]);
+                        break;
+                    }
                 }
-            });
+            }
+            if (choosecoursedata.length!=$scope.choosecourse.length){
+                return false;
+            }
+            // 排序
+            choosecoursedata.sort(function(a,b)
+            {return a.coursebegintime> b.coursebegintime?1:-1});
+            //判断是否连续
+            for(var i=0;i<choosecoursedata.length-1;i++){
+                if(choosecoursedata[i].coursetime.timeid+1!=choosecoursedata[i+1].coursetime.timeid){
+                    return false;
+                }
+            }
+            $scope.formData.userid=$scope.studentid;
+            $scope.formData.coachid=choosecoursedata[0].coachid;
+            $scope.formData.address="";
+            $scope.formData.begintime=choosecoursedata[0].coursebegintime;
+            $scope.formData.endtime=choosecoursedata[choosecoursedata.length-1].courseendtime;
+            $scope.formData.courselist=$scope.choosecourse.join(",");
+            //console.log($scope.formData);
             return true;
         }
 

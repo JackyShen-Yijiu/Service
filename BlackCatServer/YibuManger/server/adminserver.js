@@ -10,6 +10,7 @@ var appWorkTimes=commondata.worktimes;
 var  basedatafun=require("./basedatafun");
 var schoolModel=mongodb.DriveSchoolModel;
 var activtyModel= mongodb.ActivityModel;
+var industryNewsModel= mongodb.IndustryNewsModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
@@ -20,6 +21,7 @@ var reservationmodel=mongodb.ReservationModel;
 var headMasterOperation=require("../../Server/headmaster_operation_server");
 var userCenterServer=require("../../Server/headMaste_Server");
 var userserver=require("../../Server/user_server");
+var courseserver=require("../../Server/course_server");
 var cache=require("../../Common/cache");
 require('date-utils');
 var _ = require("underscore");
@@ -875,6 +877,43 @@ exports.getactivtylist=function(req,res){
             })
         });
 }
+//==============行业信息
+exports.getindustrynewsList=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+
+    industryNewsModel.find()
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(industryNewsModel,{},function (err,industryNewscount) {
+                industryNewsinfo= _.map(data,function(item,index){
+                    info={
+                        createtime:item.createtime,
+                        _id:item._id,
+                        title:item.title,
+                        description:item.description,
+                        contenturl:item.contenturl,
+                        newstype:item.newstype,
+                        viewcount:item.viewcount,
+                        sharecount:item.sharecount,
+                    }
+                    return info;
+                })
+                returninfo = {
+                    pageInfo:{
+                        totalItems: industryNewscount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(industryNewscount/limit )+1
+                    },
+                    datalist: industryNewsinfo
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+}
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
     var index=req.query.index?req.query.index:0;
@@ -1158,15 +1197,46 @@ exports.getcoursebycoach=function(req,res){
         return res.json(new BaseReturnInfo(0,"获取参数错误",""));
     }
     var now = new Date();
+    console.log(date);
+    console.log(new Date(date*1000));
+    date= new Date(date*1000).toFormat("YYYY-MM-DD");
     var coursedate=new Date(date);
-    //console.log(now.getDaysBetween(coursedate));
-    // 只能获取七天内的课程信息
+    //console.log(date);
+    //// 只能获取七天内的课程信息
     if(now.getDaysBetween(coursedate)>7||now.getDaysBetween(coursedate)<0){
         return res.json(new BaseReturnInfo(0,"无法获取该时间段的课程安排",""));
     }
     courseserver.GetCoachCourse(coachid,date,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+// 用户提交数据
+exports.postReservation=function(req,res){
+    var reservationinfo= {
+        userid:req.body.userid,
+        coachid:req.body.coachid,
+        courselist:req.body.courselist,
+        is_shuttle:req.body.is_shuttle,
+        address : req.body.address,
+        begintime:req.body.begintime,
+        endtime:req.body.endtime
+    };
+    if (reservationinfo.userid === undefined
+        ||reservationinfo.coachid === undefined ||reservationinfo.courselist === undefined
+        ||reservationinfo.begintime === undefined ||reservationinfo.endtime === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+    if(!reservationinfo.courselist||reservationinfo.courselist.length<=0){
+        return res.json(
+            new BaseReturnInfo(0,"课程不能为空",""));
+    }
+    courseserver.postReservation(reservationinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });

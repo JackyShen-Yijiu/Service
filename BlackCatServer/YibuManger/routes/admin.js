@@ -255,7 +255,7 @@ var  returnAdminRouter=function(io) {
         res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
     });
 
-    //咨询中心
+    //行业信息
     router.get("/manage/industrynewsList" ,function(req, res, next) {
         res.render('industryNews/industrynewsList', adminFunc.setPageInfo(req,res,"/admin/manage/industrynewsList"));
     });
@@ -305,7 +305,8 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getUsefulCoachList",adminserver.getUsefulCoachList);
     // 获取教练课程安排
     router.get("/manage/getcoursebycoach",adminserver.getcoursebycoach);
-
+    // 提交预约数据
+    router.post("/manage/postReservation",adminserver.postReservation);
 
     //=================================================================================================================
 
@@ -314,6 +315,9 @@ var  returnAdminRouter=function(io) {
     //保存活动信息
     router.post("/manage/updateactivty",adminserver.updateactivty);
     router.get("/manage/getactivitybyid",adminserver.getactivitybyid);
+    //行业信息
+    router.get("/manage/getindustrynewsList",adminserver.getindustrynewsList);
+
 
 
 return router;
