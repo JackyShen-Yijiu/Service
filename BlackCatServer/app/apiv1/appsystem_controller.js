@@ -162,6 +162,15 @@ exports.getOpenCitylist=function(req,res){
     })
 
 };
+exports.getChildOpenCitylist=function(req,res){
+    var cityid=req.query.cityid?req.query.cityid:1;
+    sysstemserver.getChildOpenCitylist(cityid,function(err ,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
 // 获取该地区的显示方式
 exports.getlocationShowType=function(req,res){
     var cityname=req.query.cityname;

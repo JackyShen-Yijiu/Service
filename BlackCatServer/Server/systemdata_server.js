@@ -284,6 +284,41 @@ exports.getOpenCitylist=function(searchtype,callback){
    })
 
 };
+exports.getChildOpenCitylist=function(cityid,callback){
+    cache.get("getChildOpenCitylist"+cityid,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            var search={
+                "is_open":true,
+                "fatherid":cityid
+            }
+
+            cityInfoModel.find(search)
+                .select("indexid name")
+                .sort({index:1})
+                .exec(function(err,data){
+                    if(err){
+                        return callback("查找出错："+err);
+                    }
+                    console.log(data);
+                    list= _.map(data,function(item,i){
+                        var one={
+                            id:item.indexid,
+                            name:item.name
+                        }
+                        return one;
+                    });
+                    cache.set("getChildOpenCitylist"+cityid,list,60*5,function(err){});
+                    return callback(null,list);
+                })
+        }
+    })
+
+};
 
 // 获取活动的优惠吗
 exports.getverifyactivitycoupon=function(mobile,couponcode,callback){
