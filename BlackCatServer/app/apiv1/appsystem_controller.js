@@ -118,6 +118,7 @@ exports.getMallProductList=function(req,res){
         cityname:req.query.cityname?req.query.cityname:""
     };
     //console.log(seachinfo);
+    seachinfo.producttype=new Boolean(seachinfo.producttype);
     sysstemserver.getMallProduct(seachinfo,function(err ,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));

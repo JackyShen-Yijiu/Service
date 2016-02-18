@@ -79,7 +79,7 @@ var  UserSchema=new Schema({
     },
     //科目二上课信息
     subjecttwo:{
-        totalcourse:{type:Number,default:24},
+        totalcourse:{type:Number,default:3},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
         missingcourse:{type:Number,default:0}, // 漏课数量
@@ -99,11 +99,11 @@ var  UserSchema=new Schema({
     },
     // 科目四学习
     subjectfour:{
-        totalcourse:{type:Number,default:24},
+        totalcourse:{type:Number,default:3},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
         missingcourse:{type:Number,default:0}, // 漏课数量
-        progress:{type:String,default:"未开始"}, // 学习进度
+        progress:{type:String,default:"未开始"}, //学习进度
         reservationid:String, //学习进度id
         officialhours:{type:Number,default:0} // 官方学时
     },

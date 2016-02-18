@@ -421,7 +421,7 @@ exports.userlogin= function(usertype,userinfo,callback){
           } else
           {
               if(!userinstace){
-                  return callback("用户不存在 ");
+                  return callback("用户不存在");
               }else {
                   if (userinstace.password == userinfo.password){
                        var token = jwt.sign({

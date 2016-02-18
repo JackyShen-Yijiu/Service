@@ -29,11 +29,19 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 
-coursemode.findfullCourseTimely(5,"2016-02-02",function(err,data){
-    console.log(err);
-    console.log("findfullCourseTimely");
-    console.log(data);
-})
+mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":false})
+    .populate("merchantid","",{"city":new RegExp("北京")})
+    .sort({"productprice" : 1})
+    .skip((1-1)*10)
+    .limit(10)
+    .exec(function(err,productlist){
+        console.log(productlist);
+    })
+//coursemode.findfullCourseTimely(5,"2016-02-02",function(err,data){
+//    console.log(err);
+//    console.log("findfullCourseTimely");
+//    console.log(data);
+//})
 //var schoolid="562dcc3ccb90f25c3bde40da"
 //usermodel.aggregate([{$match:{"applyschool":new mongodb.ObjectId(schoolid)
 //        ,"applystate":{$ne : appTypeEmun.ApplyState.NotApply
@@ -46,20 +54,20 @@ coursemode.findfullCourseTimely(5,"2016-02-02",function(err,data){
 //        }
 //        console.log(studentdata);
 //    })
-var  getuserid="56937987e6b6a92c09a54d6b";
-var coachdataid="5666365ef14c20d07ffa6ae8";
-cache.get("Favoritcoach"+getuserid,function(err,data){
-    if(data){
-        var idx = data.indexOf(coachdataid);
-        console.log(coachdataid);
-        console.log(data);
-        console.log(idx);
-        if (idx != -1) {
-            //returnmodel.is_favoritcoach=1;
-        }
-    }
-   // return callback(null,returnmodel);
-})
+//var  getuserid="56937987e6b6a92c09a54d6b";
+//var coachdataid="5666365ef14c20d07ffa6ae8";
+//cache.get("Favoritcoach"+getuserid,function(err,data){
+//    if(data){
+//        var idx = data.indexOf(coachdataid);
+//        console.log(coachdataid);
+//        console.log(data);
+//        console.log(idx);
+//        if (idx != -1) {
+//            //returnmodel.is_favoritcoach=1;
+//        }
+//    }
+//   // return callback(null,returnmodel);
+//})
 //addactivityCouponModel=function(){
 //     var temp =new activityCouponModel();
 //     temp.mobile="15652305650";
