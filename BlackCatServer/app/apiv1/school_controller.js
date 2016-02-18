@@ -4,21 +4,25 @@
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var driverSchool=require('../../Server/driveschool_server');
 exports.getNearbydriveSchool=function(req,res){
-    var latitude = parseFloat(req.query.latitude);
-    var longitude = parseFloat(req.query.longitude);
-    var radius = req.query.radius ? parseInt(req.query.radius) : 1000;
-    driverSchool.getNearDriverSchool(latitude,longitude,radius,function(err,data){
-        if (err)
-        {
-            return res.json(new BaseReturnInfo(0,err,[]));
-        }else{
-            return res.json(new BaseReturnInfo(1,"",data));
-        }
-    });
+    try {
+        var latitude = parseFloat(req.query.latitude);
+        var longitude = parseFloat(req.query.longitude);
+        var radius = req.query.radius ? parseInt(req.query.radius) : 1000;
+        driverSchool.getNearDriverSchool(latitude, longitude, radius, function (err, data) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, err, []));
+            } else {
+                return res.json(new BaseReturnInfo(1, "", data));
+            }
+        });
+    }catch  (ex){
+        return res.json(new BaseReturnInfo(0, ex.message, []));
+    }
+
 };
 exports.searchSchool=function(req,res){
     var  searchinfo= {
-         latitude : parseFloat(req.query.latitude),
+        latitude : parseFloat(req.query.latitude),
      longitude : parseFloat(req.query.longitude),
      cityname : req.query.cityname?req.query.cityname:"",
      licensetype : req.query.licensetype?req.query.licensetype:"",
@@ -27,7 +31,6 @@ exports.searchSchool=function(req,res){
      count : req.query.count ? parseInt(req.query.count) : 1,
     schoolname:req.query.schoolname?req.query.schoolname:"",
 }
-
     driverSchool.searchDriverSchool(searchinfo,function(err,data){
         if (err)
         {

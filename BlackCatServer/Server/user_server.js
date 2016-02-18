@@ -1977,6 +1977,9 @@ exports.getMyProgress=function(userid,callback){
             if(err){
                 return  callback("查询错误："+err);
             }
+            if(!userdata){
+                return  callback("不存在学员信息");
+            }
             return callback(null,userdata);
         })
 }

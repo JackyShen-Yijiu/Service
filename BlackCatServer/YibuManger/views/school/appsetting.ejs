@@ -24,7 +24,7 @@
                             <div class="tabbable tabs-left ">
                                 <ul class="nav nav-tabs ">
                                     <li>
-                                        <a href="#coachworktime" data-toggle="tab">教练工作时间</a>
+                                        <a href="#coachworktime" data-toggle="tab">自定义教练工作时间</a>
                                     </li>
                                     <li  class="active"><a href="#coachcomment" data-toggle="tab">教练评价</a></li>
                                     <li  ><a href="#orderday" data-toggle="tab">预约天数</a></li>
@@ -37,10 +37,60 @@
 
                                 <div class="tab-content span9">
                                     <div class="tab-pane" id="coachworktime">
-
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                教练自己设定工作时间：
+                                                <select class="span4" id="carmodel"    >
+                                                    <option value="1">允许</option>
+                                                    <option value="2">不允许</option>
+                                                </select>
+                                                </div>
+                                            <label class="control-label" for="workbegintime">工作时间：</label>
+                                            <div class="controls">
+                                                <label class="checkbox inline">
+                                                    <input  name="week" type="checkbox" value="1"> 星期一
+                                                </label>
+                                                <label class="checkbox inline">
+                                                    <input name="week" type="checkbox" value="2"> 星期二
+                                                </label>
+                                                <label class="checkbox inline">
+                                                    <input  name="week" type="checkbox" value="3"> 星期三
+                                                </label>
+                                                <label class="checkbox inline">
+                                                    <input  name="week" type="checkbox" value="4"> 星期四
+                                                </label>
+                                                <label class="checkbox inline">
+                                                    <input name="week" type="checkbox" value="5"> 星期五
+                                                </label>
+                                                <label class="checkbox inline">
+                                                    <input name="week" type="checkbox" value="6"> 星期六
+                                                </label>
+                                                <label class="checkbox inline">
+                                                    <input  name="week" type="checkbox" value="7"> 星期日
+                                                </label>
+                                            </div>		<!-- /controls -->
+                                            <br/>
+                                            <div class="controls">
+                                                <select class="span2" id="begintimeint"  >
+                                                    <option value="5">5:00</option>
+                                                    <option value="6" >6:00</option>
+                                                    <option value="7">7:00</option>
+                                                    <option value="8" selected>8:00</option>
+                                                    <option value="9">9:00</option>
+                                                </select>
+                                                &nbsp;&nbsp;到&nbsp;
+                                                <select class="span2" id="endtimeint"  >
+                                                    <option value="17">17:00</option>
+                                                    <option value="18"selected>18:00</option>
+                                                    <option value="19">19:00</option>
+                                                    <option value="20">20:00</option>
+                                                    <option value="21">21:00</option>
+                                                </select>
+                                            </div>
+                                        </div> <!-- /control-group -->
                                     </div>
-
                                     <div class="tab-pane active" id="coachcomment">
+
                                     </div>
                                     <div class="tab-pane" id="orderday">
 
