@@ -152,7 +152,9 @@ exports.getActivity=function(req,res){
 }
 //  获取开通城市列表
 exports.getOpenCitylist=function(req,res){
-    sysstemserver.getOpenCitylist(function(err ,data){
+    // 查询类型0 全部开放城市  1 热门城市
+    var searchtype=req.query.searchtype?req.query.searchtype:0;
+    sysstemserver.getOpenCitylist(searchtype,function(err ,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));
         }

@@ -248,15 +248,21 @@ exports.locationShowType=function(cityname,callback){
             }
             return callback(null,showtype);});
 }
-exports.getOpenCitylist=function(callback){
-   cache.get("opencitylist",function(err,data){
+exports.getOpenCitylist=function(searchtype,callback){
+   cache.get("opencitylist"+searchtype,function(err,data){
        if(err){
            return callback(err);
        }
        if (data) {
            return callback(null,data);
        }else{
-           cityInfoModel.find({"is_open":true})
+           var search={
+               "is_open":true
+           }
+           if((searchtype+0)==1){
+               search.is_hotcity=true
+           }
+           cityInfoModel.find(search)
                .select("indexid name")
                .sort({index:1})
                .exec(function(err,data){
@@ -271,7 +277,7 @@ exports.getOpenCitylist=function(callback){
                        }
                        return one;
                    });
-                   cache.set("opencitylist",list,60*5,function(err){});
+                   cache.set("opencitylist"+searchtype,list,60*5,function(err){});
                    return callback(null,list);
                })
        }

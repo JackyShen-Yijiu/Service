@@ -1972,7 +1972,7 @@ exports.getapplyschoolinfo=function(userid,callback){
 // 获取学习进度
 exports.getMyProgress=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
-        .select("subject subjecttwo subjectthree")
+        .select("subject subjectone subjecttwo subjectthree subjectfour")
         .exec(function(err,userdata){
             if(err){
                 return  callback("查询错误："+err);

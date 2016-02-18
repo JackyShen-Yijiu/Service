@@ -67,6 +67,16 @@ var  UserSchema=new Schema({
     favorcoach: [{type: Schema.Types.ObjectId, default:null, ref: 'coach'}],
     // 喜欢的驾校
     favorschool: [{type: Schema.Types.ObjectId, default:null, ref: 'DriveSchool'}],
+    //科目一上课信息
+    subjectone:{
+        totalcourse:{type:Number,default:24},
+        reservation:{type:Number,default:0},
+        finishcourse:{type:Number,default:0},// 学习进度
+        missingcourse:{type:Number,default:0}, // 漏课数量
+        progress:{type:String,default:"未开始"}, // 学习进度
+        reservationid:String, //学习进度id
+        officialhours:{type:Number,default:0} // 官方学时
+    },
     //科目二上课信息
     subjecttwo:{
         totalcourse:{type:Number,default:24},
@@ -74,7 +84,8 @@ var  UserSchema=new Schema({
         finishcourse:{type:Number,default:0},// 学习进度
         missingcourse:{type:Number,default:0}, // 漏课数量
         progress:{type:String,default:"未开始"}, // 学习进度
-        reservationid:String //学习进度id
+        reservationid:String, //学习进度id
+        officialhours:{type:Number,default:0} // 官方学时
     },
     // 科目三上课信息
     subjectthree:{
@@ -83,7 +94,18 @@ var  UserSchema=new Schema({
         finishcourse:{type:Number,default:0},
         missingcourse:{type:Number,default:0}, // 漏课数量
         progress:{type:String,default:"未开始"}, // 学习进度
-        reservationid:String //学习进度id
+        reservationid:String, //学习进度id
+        officialhours:{type:Number,default:0} // 官方学时
+    },
+    // 科目四学习
+    subjectfour:{
+        totalcourse:{type:Number,default:24},
+        reservation:{type:Number,default:0},
+        finishcourse:{type:Number,default:0},// 学习进度
+        missingcourse:{type:Number,default:0}, // 漏课数量
+        progress:{type:String,default:"未开始"}, // 学习进度
+        reservationid:String, //学习进度id
+        officialhours:{type:Number,default:0} // 官方学时
     },
     vipserverlist:[{id:Number,name:String}], // 我所享受的vip服务列表
     // 是否进行报考验证

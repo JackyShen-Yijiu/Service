@@ -12,7 +12,9 @@ var CityInfoSchema = new Schema({
     ciytype:Number,
     fatherid:Number,
     is_open :{type:Boolean,default:false},
+    is_hotcity:{type:Boolean,default:false}, // 是否热门城市
     showtype:{type:Number,default:0},  // 0 驾校， 1教练
+
 });
 
 CityInfoSchema.index({is_open: 1});
