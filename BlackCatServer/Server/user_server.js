@@ -1298,7 +1298,8 @@ exports.getUsefulCoachList=function(useid,index,callback){
                                 latitude: r.latitude,
                                 longitude: r.longitude,
                                 subject: r.subject,
-                                Gender: r.Gender
+                                Gender: r.Gender,
+                            commentcount: r.commentcount
                             }
                             //  r.restaurantId = r._id;
                             // delete(r._id);

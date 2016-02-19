@@ -401,7 +401,7 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
     reservationmodel.find(searhinfo)
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
         "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime ")
-        .populate("coachid","_id name driveschoolinfo headportrait")
+        .populate("coachid","_id name driveschoolinfo headportrait  Gender")
        .sort({begintime:-1})
         .exec(function(err,reservationlist){
             if(err){
@@ -415,8 +415,8 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
                         _id :r.coachid._id,
                         name:r.coachid.name,
                         headportrait:r.coachid.headportrait,
-                        driveschoolinfo:r.coachid.driveschoolinfo
-                    };
+                        driveschoolinfo:r.coachid.driveschoolinfo,
+                        Gender:r.coachid.Gender}
                     var listone= {
                         _id: r._id,
                         coachid: coachinfo,

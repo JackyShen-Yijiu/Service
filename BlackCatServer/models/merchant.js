@@ -9,6 +9,7 @@ var MerchantSchema=new Schema({
     name:String,  // 商家名字
     logoimg:{type:String,default:''}, //商家图片
     mobile: { type: String, index: true},  // 手机号
+    responsible:{type:String,default:''}, // 负责人
     address:{type:String,default:''} ,  // 商家地址
     desc:String, //商家描述
     confirmnum:String, // 商家确认码

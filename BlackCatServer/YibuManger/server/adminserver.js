@@ -11,6 +11,7 @@ var  basedatafun=require("./basedatafun");
 var schoolModel=mongodb.DriveSchoolModel;
 var activtyModel= mongodb.ActivityModel;
 var industryNewsModel= mongodb.IndustryNewsModel;
+var  merchantmodel=mongodb.MerChantModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
@@ -965,6 +966,60 @@ exports.updateindustrynews=function(req,res){
         var update = {$set : updateinfo};
 
         industryNewsModel.update(conditions, update,{safe: true,upsert : true},function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+}
+//  ===================================商城管理
+exports.getbusinesslist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+
+    merchantmodel.find()
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(merchantmodel,{},function (err,merchantcount) {
+
+                returninfo = {
+                    pageInfo:{
+                        totalItems: merchantcount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(merchantcount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+};
+exports.updatebusiness=function(req,res){
+    var _id=req.body._id;
+    if (_id===undefined||_id==""){
+        var merchant= new  merchantmodel(req.body);
+        merchant.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+    else
+    {
+        var conditions = {_id :new mongodb.ObjectId( req.body._id)};
+        var updateinfo=req.body;
+        //updateinfo._id=undefined;
+        delete  updateinfo._id;
+        var update = {$set : updateinfo};
+
+        merchantmodel.update(conditions, update,{safe: true,upsert : true},function(err,data){
             if(err){
                 return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
             }else{

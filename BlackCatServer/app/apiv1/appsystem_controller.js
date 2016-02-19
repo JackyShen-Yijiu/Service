@@ -117,8 +117,9 @@ exports.getMallProductList=function(req,res){
         producttype:req.query.producttype?req.query.producttype:0,  // 0 实体商品  1 虚拟商品
         cityname:req.query.cityname?req.query.cityname:""
     };
-    //console.log(seachinfo);
-    seachinfo.producttype=new Boolean(seachinfo.producttype);
+    console.log(seachinfo);
+    seachinfo.producttype=Boolean( parseInt(seachinfo.producttype));
+    console.log(seachinfo);
     sysstemserver.getMallProduct(seachinfo,function(err ,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,{}));

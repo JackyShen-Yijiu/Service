@@ -118,7 +118,7 @@ exports.getCourseWare=function( queryinfo,callback){
 };
 
 // 获取商城列表
-exports.getMallProduct=function(searchinfo,callback){
+  exports.getMallProduct=function(searchinfo,callback){
     mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":searchinfo.producttype})
         .populate("merchantid","",{"city":new RegExp(searchinfo.cityname)})
         .sort({"productprice" : 1})

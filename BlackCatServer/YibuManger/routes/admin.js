@@ -256,10 +256,13 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/businessList" ,function(req, res, next) {
         res.render('business/businessList', adminFunc.setPageInfo(req,res,"/admin/manage/businessList"));
     });
-    //添加商家
-    router.get("/manage/editBusiness" ,function(req, res, next) {
-        res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
+    //商品管理
+    router.get("/manage/productslist" ,function(req, res, next) {
+        res.render('business/mallproductlist', adminFunc.setPageInfo(req,res,"/admin/manage/productslist"));
     });
+    //router.get("/manage/editBusiness" ,function(req, res, next) {
+    //    res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
+    //});
 
     //行业信息
     router.get("/manage/industrynewsList" ,function(req, res, next) {
@@ -334,7 +337,9 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getindustrynewsList",adminserver.getindustrynewsList);
     router.get("/manage/getindustrynewsByid",adminserver.getindustrynewsByid);
     router.post("/manage/updateindustrynews",adminserver.updateindustrynews);
-
+    // 商家管理
+    router.get("/manage/getbusinesslist",adminserver.getbusinesslist);
+    router.post("/manage/updatebusiness",adminserver.updatebusiness);
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;
         var action = params['action'];
