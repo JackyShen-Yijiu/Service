@@ -1,0 +1,247 @@
+<div class="main" ng-controller="userlist">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>用户列表</h3>
+                        <div style="float: right ; padding-right: 10px" >
+                            <div style="float: left;  padding-right: 10px">
+                                <a  ng-click="addmerchant()"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                            </div>
+                            <div style="float: right ; padding-right: 10px">
+                                <% include ../public/searchBox %>
+                            </div>
+                        </div>
+
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+
+                                        <th> 账号 </th>
+                                        <th> 姓名</th>
+                                        <th> 邮箱</th>
+                                        <th> 手机号</th>
+                                        <th> 用户类型</th>
+                                        <th> 所在驾校</th>
+                                        <th> 用户状态</th>
+                                        <th class="td-actions"> 操作</th>
+                                    </tr>
+                                    <tr class="datalist" ng-repeat="content in data">
+
+                                        <td >
+                                            <span>{{content.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.mobile}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.province}}/{{content.city}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.responsible}}</span>
+                                        </td>
+
+                                        <td >
+                                            <span>{{content.address}}</span>
+                                        </td>
+                                        <td class="td-actions">
+                                            <a ng-click="editmerchant(content._id,content.name)"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
+                                            <a href="#"
+                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                        </td>
+
+
+                                    </tr>
+                                </table>
+                            </div><!-- /.box-body -->
+
+                        </div><!-- /.box -->
+                        <% include ../public/tableFooter %>
+                    </div>
+                    <div id="editpage" class="widget-content"  style="display: none">
+                        <div class="tabbable">
+                            <br>
+                            <div class="tab-pane" id="formcontrols">
+                                <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                    <fieldset>
+                                        <div class="control-group">
+                                            <label class="control-label" for="name" >商家名称</label>
+                                            <div class="controls">
+                                                <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多三十个字"
+                                                       ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
+                                                     role="alert">5-30个非特殊字符</div>
+                                            </div> <!-- /controls -->
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="logimg">商家头像</label>
+                                            <div class="controls">
+                                                <div class="input-append">
+                                                    <input class="span4 m-wrap"   id="logimg" type="text"disabled
+                                                           ng-model="formData.logoimg" >
+                                                    <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                    <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
+                                                </div>
+                                            </div>
+                                        </div><!--control group-->
+
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="province">商家地址</label>
+                                            <div class="controls">
+                                                <input type="text" class="span2 disabled"  id="province"
+                                                       ng-model="formData.province"  disabled> 省
+                                                <input type="text" class="span2 disabled" id="city"
+                                                       ng-model="formData.city" disabled> 市
+                                                <br/>
+                                                <br/>
+                                                <input type="text" class="span6 disabled"  id="address" name="address"
+                                                       ng-model="formData.address"    placeholder="详细地址" required>
+                                                <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
+                                                <input type="hidden" id="latitude" ng-model="formData.latitude"  >
+                                                <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
+                                                     role="alert">地址必须</div>
+                                            </div> <!-- /controls -->
+                                        </div>
+
+
+                                        <div class="control-group"  style="height: 250px;width: 600px">
+                                            <label class="control-label" >地址选择</label>
+                                            <div class="controls">
+                                                <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="linkman1">联系人</label>
+                                            <div class="controls">
+                                                <input type="text" class="span2" id="responsible"  ng-model="formData.responsible" >
+                                                电话： <input type="phone" class="span2" id="mobile"  ng-model="formData.mobile">
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="confirmmobilelist">验证手机号</label>
+                                            <div class="controls">
+                                                <input type="text" class="span2" id="confirmmobilelist"
+                                                       placeholder="12345678901,12345678901" ng-model="formData.confirmmobilelist" >
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="desc">商家简介</label>
+                                            <div class="controls">
+                                                <textarea   class="span4" id="desc" rows="3" ng-model="formData.desc" placeholder="商家简介"></textarea>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
+                                        </div> <!-- /form-actions -->
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /main-inner -->
+</div>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
+<script  src="/js/baidumap.js"></script>
+<script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
+<script type="text/javascript" src="/js/qiniu.js"></script>
+<script type="text/javascript" src="/js/qiniuupfile.js"></script>
+<script>
+    ybxcApp.controller("userlist",function($scope,$http){
+        $scope.formData = {};
+        //获取文档列表信息
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getadminuserlist?bussinsee=mer");
+
+        $scope.adduser=function(){
+            $scope.formData = {};
+            layer.open({
+                type: 1,
+                title: '添加商家',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['850px' , '520px'],
+                content:$("#editpage")
+            });
+        };
+        $scope.editmerchant=function(merchantid,name){
+            $scope.formData = {};
+            for (i=0;i<$scope.data.length;i++){
+                if ($scope.data[i]._id==merchantid){
+                    $scope.formData=$scope.data[i];
+                    break;
+                }
+            };
+            if ($scope.formData._id===undefined){
+                layer.msg("没有查到商家", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return;
+            };
+            $("#logimgimg").attr("src",$scope.formData.logoimg)
+            layer.open({
+                type: 1,
+                title: '编辑商家：'+name,
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['850px' , '520px'],
+                content:$("#editpage")
+            });
+        }
+        $scope.processForm = function(isValid){
+            if (!isValid){
+                alert("参数错误");
+                return;
+            }
+            if(!savedata()){
+                return;
+            }
+            console.log($scope.formData);
+            $http.post("/admin/manage/updatebusiness",$scope.formData)
+                    .success(function(response){
+                        if (response.type==0){
+                            layer.msg(response.msg, {
+                                icon: 2,
+                                time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                            });
+                        }else{
+                            layer.msg("更新成功", {
+                                icon: 1,
+                                time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                            });
+                            window.location.href="/admin/manage/businessList";
+                        }
+                    })
+        };
+        var savedata=function(){//写入数据
+            $scope.formData.logoimg=$("#logimg").val();
+            $scope.formData.province=$("#province").val();
+            $scope.formData.city=$("#city").val();
+            $scope.formData.address=$("#address").val();
+            return true;
+        }
+    });
+
+
+
+</script>

@@ -24,6 +24,7 @@ var userCenterServer=require("../../Server/headMaste_Server");
 var userserver=require("../../Server/user_server");
 var courseserver=require("../../Server/course_server");
 var cache=require("../../Common/cache");
+var AdminUser = require("../models/AdminUser");
 require('date-utils');
 var _ = require("underscore");
 var eventproxy   = require('eventproxy');
@@ -1031,6 +1032,30 @@ exports.updatebusiness=function(req,res){
 };
 exports.getproductlist=function(req,res){
 
+}
+/// =====================================用户管理
+exports.getadminuserlist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+
+    AdminUser.find()
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({date:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(AdminUser,{},function (err,usercount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: usercount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(usercount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
 }
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
