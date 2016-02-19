@@ -5,7 +5,7 @@
 var express = require('express');
 var router = express.Router();
 //管理员用户组对象
-var AdminGroup = require("../models/AdminGroup");
+var AdminGroup = require("../../models/AdminGroup");
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var validator = require("validator");
 function isAdminLogined(req){

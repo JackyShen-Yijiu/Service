@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var mongodb = require('../../models/mongodb.js');
 //管理员对象
-var AdminUser = require("../models/AdminUser");
+var AdminUser = mongodb.AdminUser;
 //管理员用户组对象
-var AdminGroup = require("../models/AdminGroup");
+var AdminGroup = mongodb.AdminGroup;
 //server
 var adminserver=require("../server/adminserver");
 var basedatafun=require("../server/basedatafun");

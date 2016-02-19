@@ -29,25 +29,51 @@
                                         <th> 用户类型</th>
                                         <th> 所在驾校</th>
                                         <th> 用户状态</th>
+                                        <th> 创建日期</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
+                                            <span>{{content.userName}}</span>
+                                        </td>
+                                        <td >
                                             <span>{{content.name}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.mobile}}</span>
+                                            <span>{{content.email}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.province}}/{{content.city}}</span>
-                                        </td>
-                                        <td >
-                                            <span>{{content.responsible}}</span>
+                                            <span>{{content.phoneNum}}</span>
                                         </td>
 
                                         <td >
-                                            <span>{{content.address}}</span>
+                                            <span ng-switch="content.usertype">
+                                                 <div ng-switch-when=0>
+                                                     管理员
+                                                 </div>
+                                                <div ng-switch-when=1>
+                                                    驾校管理员
+                                                </div></span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.schoolid.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span ng-switch="content.userstate">
+                                                <div ng-switch-when=0>
+                                                    正常
+                                                </div>
+                                                <div ng-switch-when=1>
+                                                    锁定
+                                                </div>
+                                            <div ng-switch-when=2>
+                                                删除
+                                            </div>
+                                            </span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.date|date:'yyyy-MM-dd'}}</span>
                                         </td>
                                         <td class="td-actions">
                                             <a ng-click="editmerchant(content._id,content.name)"
@@ -159,9 +185,6 @@
 </div>
 <!-- /main-inner -->
 </div>
-
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
-<script  src="/js/baidumap.js"></script>
 <script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
 <script type="text/javascript" src="/js/qiniu.js"></script>

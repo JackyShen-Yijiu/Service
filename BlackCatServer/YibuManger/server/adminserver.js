@@ -17,14 +17,14 @@ var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
 var usermodel=mongodb.UserModel;
 var classtypemodel=mongodb.ClassTypeModel;
-var usermodel=mongodb.UserModel;
+//var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var headMasterOperation=require("../../Server/headmaster_operation_server");
 var userCenterServer=require("../../Server/headMaste_Server");
 var userserver=require("../../Server/user_server");
 var courseserver=require("../../Server/course_server");
 var cache=require("../../Common/cache");
-var AdminUser = require("../models/AdminUser");
+var AdminUser = require("../../models/AdminUser");
 require('date-utils');
 var _ = require("underscore");
 var eventproxy   = require('eventproxy');
@@ -1039,6 +1039,7 @@ exports.getadminuserlist=function(req,res){
     var limit=req.query.limit?req.query.limit:10;
 
     AdminUser.find()
+        .populate('schoolid',"_id name")
         .skip((index-1)*limit)
         .limit(limit)
         .sort({date:-1})
