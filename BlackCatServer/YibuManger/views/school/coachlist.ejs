@@ -26,6 +26,7 @@
                                         <th> 联系电话</th>
                                         <th> 科目</th>
                                         <th>训练场</th>
+                                        <th>状态</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
@@ -42,7 +43,19 @@
                                         <td >
                                             <span>{{content.trainfieldlinfo.name}}</span>
                                         </td>
-
+                                        <td >
+                                            <span ng-switch="content.validationstate">
+                                                 <div ng-switch-when=1>
+                                                     申请中
+                                                 </div>
+                                                <div ng-switch-when=2>
+                                                    拒绝
+                                                </div>
+                                                 <div ng-switch-when=3>
+                                                     正常
+                                                 </div>
+                                            </span>
+                                        </td>
 
                                         <td class="td-actions">
                                             <a href="/admin/manage/editcoachinfo?coachid={{content.coachid}}"

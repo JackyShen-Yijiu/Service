@@ -461,7 +461,7 @@ exports.getCoachlist=function(req,res){
         "name":new RegExp(schoolname)
     }
     coachmodel.find(searchinfo)
-        .select("_id name mobile  createtime carmodel trainfieldlinfo")
+        .select("_id name mobile  createtime carmodel trainfieldlinfo validationstate")
         .skip((index-1)*limit)
         .limit(limit)
         .sort({createtime:-1})
@@ -475,7 +475,8 @@ exports.getCoachlist=function(req,res){
                         mobile: r.mobile,
                         carmodel: r.carmodel,
                         trainfieldlinfo: r.trainfieldlinfo,
-                        createtime: r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS")
+                        createtime: r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS"),
+                        validationstate: r.validationstate
                     }
                     coachlist.push(onedata);
                 });
