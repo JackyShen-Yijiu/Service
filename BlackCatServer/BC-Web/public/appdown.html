@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #lond{
+            width: 100%;
+            height: 400px;
+            font-size: 40px;
+
+            text-align: center;
+            line-height: 400px;
+
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<p id="lond"><i>请在浏览器中打开!</i></p>
+<script>
+    var u = navigator.userAgent;
+    if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+        window.location.href = "/ybxueche_student.apk";
+    } else if (u.indexOf('iPhone') > -1){
+        document.getElementById('lond').style='display:block';
+        window.location.href = "https://itunes.apple.com/cn/app/yi-bu-xue-che/id1060105429?l=en&mt=8";
+    }
+</script>
+</body>
+</html>
