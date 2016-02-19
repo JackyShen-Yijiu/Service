@@ -466,6 +466,11 @@
             $scope.formData.is_validation=$("#is_validation").val();
             $scope.formData.privilegelevel=$("#privilegelevel").val();
             //判断经纬度是否正确
+            if($scope.formData.latitude===undefined||$scope.formData.latitude==""||
+                    $scope.formData.longitude===undefined|| $scope.formData.longitude==""){
+                alert("请在地图上选择地址");
+                return false;
+            }
 
 
             if($("#licensetype").val()==""){
