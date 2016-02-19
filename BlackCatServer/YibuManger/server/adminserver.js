@@ -1027,6 +1027,9 @@ exports.updatebusiness=function(req,res){
             }
         })
     }
+};
+exports.getproductlist=function(req,res){
+
 }
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){

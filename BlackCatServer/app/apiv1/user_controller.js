@@ -371,7 +371,8 @@ userserver.getMyProgress(userid,function(err,data){
 exports.getUsefulCoachList=function(req,res){
     var  index=req.params.index?req.params.index:1;
     var  useid=req.userId;
-    userserver.getUsefulCoachList(useid,index,function(err,data){
+    var searchname =req.query.searchname?req.query.searchname:"";
+    userserver.getUsefulCoachList(useid,index,searchname,function(err,data){
         if (err)
         {
             return res.json(new BaseReturnInfo(0,err,[]));

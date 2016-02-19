@@ -1240,7 +1240,7 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
 
     });
 }
-exports.getUsefulCoachList=function(useid,index,callback){
+exports.getUsefulCoachList=function(useid,index,searchname,callback){
     var limintcount=10;
     if(index==-1){
         limintcount=100;
@@ -1268,6 +1268,7 @@ exports.getUsefulCoachList=function(useid,index,callback){
         }
         coachmode.find({is_lock:false,is_validation:true,
             driveschool:new mongodb.ObjectId(user.applyschool),
+            name:new RegExp(searchname),
             //"carmodel.modelsid":user.carmodel.modelsid,
         "subject.subjectid":{'$in':[user.subject.subjectid]}})
             .sort({"passrate": -1})

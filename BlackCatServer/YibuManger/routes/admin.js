@@ -342,6 +342,7 @@ var  returnAdminRouter=function(io) {
     // 商家管理
     router.get("/manage/getbusinesslist",adminserver.getbusinesslist);
     router.post("/manage/updatebusiness",adminserver.updatebusiness);
+    router.get("/manage/getproductlist",adminserver.getproductlist);
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;
         var action = params['action'];
