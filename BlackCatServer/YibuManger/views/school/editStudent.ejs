@@ -65,7 +65,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="mobile">联系电话</label>
                                                 <div class="controls">
-                                                    <input type="tel" class="span6" id="mobile" ng-model="formData.mobile" required>
+                                                    <input type="tel" name="mobile" class="span6" id="mobile" ng-model="formData.mobile" required>
                                                     <div class="alert alert-danger span4"  ng-show="myForm.mobile.$error.required"
                                                          role="alert">手机号不能为空</div>
                                                 </div> <!-- /controls -->
@@ -77,6 +77,8 @@
                                                 <div class="controls">
                                                     <input type="text" class="span6 disabled"  id="address" name="address"
                                                            ng-model="formData.address"    placeholder="详细地址" required>
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
+                                                         role="alert">地址不能为空</div>
                                                 </div> <!-- /controls -->
                                             </div><!-- /control-group -->
 
@@ -248,7 +250,7 @@
                                     icon: 1,
                                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                 });
-                              //  window.location.href="/admin/manage/studentlist";
+                                window.location.href="/admin/manage/studentlist";
                             }
                         })
             }
