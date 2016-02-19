@@ -1355,6 +1355,43 @@ exports.postReservation=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 提交用户申请信息
+exports.auditstudentapplyinfo=function(req,res){
+    var auditinfo={
+        userid:req.body.userid,
+        applystate:req.body.applystate+0,
+        handelstate:req.body.handelstate+0,
+        handelmessage:req.body.handelmessage
+    };
+    if (auditinfo.applystate<=10){
+        return res.json(new BaseReturnInfo(0,"审核状态出错",""));
+    }
+    usermodel.findById(auditinfo.userid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,"查询用户出错："+err,""));
+        }
+        if(!data){
+            return res.json(new BaseReturnInfo(0,"没有查到用户",""));
+        }
+        data.applystate=auditinfo.applystate;
+        if( data.applystate=2 ){
+            data.subject.subjectid=1;
+            data.subject.name="科目一";
+        }
+        data.applyinfo.handelstate=auditinfo.handelstate;
+        if (data.applyinfo.handelmessage===undefined){
+            data.applyinfo.handelmessage=[auditinfo.handelmessage];
+        }else {
+            data.applyinfo.handelmessage.push(auditinfo.handelmessage);
+        }
+        data.save(function(err,newdata){
+            if (err){
+                return res.json(new BaseReturnInfo(0,"处理出错："+err,""));
+            }
+            return res.json(new BaseReturnInfo(1,"","success"));
+        })
+    });
+}
 
 //==========================================主页信息
 exports.getApplySchoolinfo=function(req,res){

@@ -132,7 +132,8 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate==0" >处理</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="formData.applystate==0"
+                                ng-click="auditestudent()">处理</button>
                 </div>
             </div>
 
@@ -179,14 +180,37 @@
             });
         };
         $scope.auditestudent=function(){
-            if(  $scope.formData._id===undefined){
+
+            if($scope.formData._id===undefined){
                 layer.msg('没有找到用户信息', {
                     icon: 2,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                });
+                })
                 return;
+            };
+                console.log($scope.formData);
+                $http.post("/admin/manage/auditstudentapplyinfo",{
+                    userid:$scope.formData._id,
+                    applystate:$scope.formData.applystate,
+                    handelstate:$scope.formData.applyinfo.handelstate,
+                    handelmessage:$scope.formData.applyinfo.handelmessage
+                }).success(function(response){
+                    if (response.type==0){
+                        layer.msg(response.msg, {
+                            icon: 2,
+                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                        });
+                    }else{
+                        layer.msg("审核成功", {
+                            icon: 1,
+                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                        });
+                        window.location.href="/admin//manage/recordlist";
+                    }
+                })
+
             }
-        }
+
 
     });
 </script>
