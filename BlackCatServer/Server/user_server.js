@@ -785,6 +785,8 @@ exports.searchCoach=function(searchinfo,callback){
                             latitude: r.latitude,
                             longitude: r.longitude,
                             subject: r.subject,
+                            Gender: r.Gender,
+                            commentcount: r.commentcount,
                             maxprice: r.maxprice?r.maxprice:0,  // 最高价格
                             minprice: r.minprice?r.minprice:0,  // 最低价格
                         }
