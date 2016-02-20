@@ -765,9 +765,9 @@ var  getReservationCourseCountDay=function(schoolid,beginDate,endDate,callback){
     })
 }
 
-//var begintime=(new Date("2015-11-14")).clearTime();
-//var endtime=(new Date("2015-11-15")).clearTime();
-//getReservationCourseCountDay("56306293f3001f6e21f6e520" ,begintime,endtime,function(err,data){
+//var begintime=(new Date("2016-02-20")).clearTime();
+//var endtime=(new Date("2016-02-21")).clearTime();
+//getReservationCourseCountDay("56947dcd5180e10078ed6b3b" ,begintime,endtime,function(err,data){
 //    console.log(data)
 //});
 

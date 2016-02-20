@@ -29,14 +29,14 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 
-mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":false})
-    .populate("merchantid","",{"city":new RegExp("北京")})
-    .sort({"productprice" : 1})
-    .skip((1-1)*10)
-    .limit(10)
-    .exec(function(err,productlist){
-        console.log(productlist);
-    })
+//mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":false})
+//    .populate("merchantid","",{"city":new RegExp("北京")})
+//    .sort({"productprice" : 1})
+//    .skip((1-1)*10)
+//    .limit(10)
+//    .exec(function(err,productlist){
+//        console.log(productlist);
+//    })
 //coursemode.findfullCourseTimely(5,"2016-02-02",function(err,data){
 //    console.log(err);
 //    console.log("findfullCourseTimely");
@@ -261,23 +261,23 @@ var updataschool=function(){
     //                })});
 
     coachmode.find()
-        .select("_id driveschool")
-        .exec(function(err,data){
-            data.forEach(function(r,index){
-                coachmode.update({_id: r._id} ,
-                    { $set: { starlevel: 5 }},{safe: false, multi: true},function(err,doc){
-                        console.log(doc);
-                    })
-                reservationmodel.update({coachid: r._id} ,
-                    { $set: { "comment.commentcontent": "教练不错，教的好，好",driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
-                        console.log(doc);
-                    })
-                coursemode.update({coachid: r._id} ,
-                    { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
-                        console.log(doc);
-                    })
-            })
+    .select("_id driveschool")
+    .exec(function(err,data){
+        data.forEach(function(r,index){
+            coachmode.update({_id: r._id} ,
+                { $set: { starlevel: 5 }},{safe: false, multi: true},function(err,doc){
+                    console.log(doc);
+                })
+            //reservationmodel.update({coachid: r._id} ,
+            //    { $set: { "comment.commentcontent": "教练不错，教的好，好",driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+            //        console.log(doc);
+            //    })
+            coursemode.update({coachid: r._id} ,
+                { $set: { driveschool: r.driveschool }},{safe: false, multi: true},function(err,doc){
+                    console.log(doc);
+                })
         })
+    })
 }
 //updataschool();
 addcourseware=function(){

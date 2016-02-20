@@ -4,7 +4,7 @@
 var url = require('url');
 
 var adminFunc = {
-    setPageInfo : function(req,res,currentLink){
+    setPageInfo : function(req,res,currentLink,extradata){
 
         var searchKey = '';
         if(req.url){
@@ -13,6 +13,7 @@ var adminFunc = {
         }
         console.log(searchKey);
         return {
+            extradata:extradata,
             searchKey : searchKey,
             currentLink : currentLink,
             layout : 'public/adminTemple'

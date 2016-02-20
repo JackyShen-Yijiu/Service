@@ -15,6 +15,21 @@ var cache=require("../../Common/cache");
 
 
 var basedataFunc = {
+    getAllSchoolList:function(callback){
+        cache.get("allschoolinfolist",function(err,data){
+            if(!data){
+                schoolModel.find({is_validation:true})
+                    .select("_id name")
+                    .exec(function(err,schooldata){
+                    cache.set("allschoolinfolist",schooldata,60,function(err){});
+                    return callback(null,schooldata);
+                })
+            }
+            if(data){
+                return callback(null,data);
+            }
+        })
+    },
     getUserCount:function(callback) {
         userCountModel.getUserCountInfo(function (err, data) {
             //userCountModel.findAndModify({}, [],{$inc:{'displayid':1},$inc:{'invitationcode':1}},

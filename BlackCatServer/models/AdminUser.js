@@ -15,7 +15,7 @@ var AdminUserSchema = new Schema({
     userName : String,
     password:   String,
     email : String,
-    phoneNum : Number,
+    phoneNum : String,
     comments : String,
     date: { type: Date, default: Date.now },
     logo: { type: String, default: "" },

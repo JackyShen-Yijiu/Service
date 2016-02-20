@@ -290,7 +290,13 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.is_shuttle = reservationinfo.is_shuttle ? (reservationinfo.is_shuttle == 1 ? true : false) : false;
                     reservation.shuttleaddress = reservationinfo.address ? reservationinfo.address : "";
                     reservation.reservationcreatetime = new Date();
+                if (coachdata.usersetting.classremind){
+                    reservation.reservationstate = appTypeEmun.ReservationState.applyconfirm;
+                }
+                else {
                     reservation.reservationstate = appTypeEmun.ReservationState.applying;
+                }
+
                     reservation.trainfieldid=coachdata.trainfield;
                      reservation.trainfieldlinfo.id=coachdata.trainfieldlinfo.id;
                      reservation.trainfieldlinfo.name=coachdata.trainfieldlinfo.name;
@@ -1420,8 +1426,9 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
     reservationmodel.findOne({_id:new mongodb.ObjectId(reservationid),
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
-        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment")
-        .populate("coachid","_id  name headportrait  driveschoolinfo ")
+        "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment" +
+            " learningcontent begintime endtime")
+        .populate("coachid","_id  name headportrait  driveschoolinfo  starlevel")
         .exec(function(err,resdata){
             if(err){
                 return callback("查询数据出错："+err);
@@ -1437,21 +1444,26 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
                 _id :resdata.coachid._id,
                 name:resdata.coachid.name,
                 headportrait:resdata.coachid.headportrait,
-                driveschoolinfo:resdata.coachid.driveschoolinfo
+                starlevel:resdata.coachid.starlevel,
+                driveschoolinfo:resdata.coachid.driveschoolinfo,
+                schoolimage:""
             };
             resdatainfo={
                 reservationstate:resdata.reservationstate,
                 reservationcreatetime:resdata.reservationcreatetime,
                 is_shuttle :resdata.is_shuttle,
-                "shuttleaddress" :resdata.shuttleaddress,
+                shuttleaddress :resdata.shuttleaddress,
                 courseprocessdesc :resdata.courseprocessdesc,
                 classdatetimedesc :resdata.classdatetimedesc,
                 trainfieldlinfo :resdata.trainfieldlinfo,
+                learningcontent :resdata.learningcontent?resdata.learningcontent:"",
+                begintime:resdata.begintime,
+                endtime:resdata.endtime,
                 coachid:coachinfo,
                 subject:resdata.subject
             }
             //resdata.coachid=coachinfo;
-            console.log(coachinfo)
+            //console.log(coachinfo)
             return callback(null,resdatainfo);})
 
 }

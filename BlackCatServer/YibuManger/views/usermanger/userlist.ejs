@@ -8,7 +8,7 @@
                         <h3>用户列表</h3>
                         <div style="float: right ; padding-right: 10px" >
                             <div style="float: left;  padding-right: 10px">
-                                <a  ng-click="addmerchant()"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                                <a  ng-click="adduser()"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
                             </div>
                             <div style="float: right ; padding-right: 10px">
                                 <% include ../public/searchBox %>
@@ -95,74 +95,92 @@
                                 <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
                                     <fieldset>
                                         <div class="control-group">
-                                            <label class="control-label" for="name" >商家名称</label>
+                                            <label class="control-label" for="userName" >账号</label>
                                             <div class="controls">
-                                                <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多三十个字"
-                                                       ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
-                                                <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
+                                                <input type="text" class="span6 " name="userName"    id="userName"  placeholder="账号最多三十个字"
+                                                       ng-minlength="5" ng-maxlength="30" ng-model="formData.userName" required>
+                                                <div class="alert alert-danger span4"  ng-show="myForm.userName.$dirty &&
+                                                myForm.userName.$invalid && !myForm.userName.$pristine"
                                                      role="alert">5-30个非特殊字符</div>
                                             </div> <!-- /controls -->
                                         </div>
-
                                         <div class="control-group">
-                                            <label class="control-label" for="logimg">商家头像</label>
+                                            <label class="control-label" for="name" >姓名</label>
+                                            <div class="controls">
+                                                <input type="text" class="span6 " name="name"    id="name"  placeholder="名称"
+                                                       ng-model="formData.name" required>
+                                                <div class="alert alert-danger span4"  ng-show="myForm.name.$error.required"
+                                                     role="alert">姓名必须</div>
+                                            </div> <!-- /controls -->
+                                        </div>
+
+                                        <div class="control-group" ng-show="formData._id===undefined">
+                                            <label class="control-label" for="password">密码</label>
                                             <div class="controls">
                                                 <div class="input-append">
-                                                    <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                           ng-model="formData.logoimg" >
-                                                    <button class="btn" type="button" id="picklogimg">选择投头像</button>
-                                                    <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
+                                                    <input class="span4 m-wrap"   id="password" type="password"
+                                                           ng-model="formData.password" ng-minlength="5" ng-maxlength="30"  >
+                                                    <div class="alert alert-danger span4"  ng-show="myForm.password.$dirty &&
+                                                myForm.password.$invalid && !myForm.password.$pristine"
+                                                         role="alert">5-30个非特殊字符</div>
                                                 </div>
                                             </div>
                                         </div><!--control group-->
-
-
-                                        <div class="control-group">
-                                            <label class="control-label" for="province">商家地址</label>
+                                        <div class="control-group" ng-show="formData._id===undefined">
+                                            <label class="control-label" for="checkpassword">确认密码</label>
                                             <div class="controls">
-                                                <input type="text" class="span2 disabled"  id="province"
-                                                       ng-model="formData.province"  disabled> 省
-                                                <input type="text" class="span2 disabled" id="city"
-                                                       ng-model="formData.city" disabled> 市
-                                                <br/>
-                                                <br/>
-                                                <input type="text" class="span6 disabled"  id="address" name="address"
-                                                       ng-model="formData.address"    placeholder="详细地址" required>
-                                                <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
-                                                <input type="hidden" id="latitude" ng-model="formData.latitude"  >
-                                                <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
-                                                     role="alert">地址必须</div>
-                                            </div> <!-- /controls -->
-                                        </div>
-
-
-                                        <div class="control-group"  style="height: 250px;width: 600px">
-                                            <label class="control-label" >地址选择</label>
-                                            <div class="controls">
-                                                <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
+                                                <div class="input-append">
+                                                    <input class="span4 m-wrap"   id="checkpassword" type="password"
+                                                           ng-model="formData.checkpassword" >
+                                                </div>
                                             </div>
-                                        </div>
+                                        </div><!--control group-->
+                                        <div class="control-group">
+                                            <label class="control-label" for="phoneNum">手机</label>
+                                            <div class="controls">
+                                                <input type="tel" class="span4" id="phoneNum"  ng-model="formData.phoneNum"
+                                                       required >
+                                                <div class="alert alert-danger span4"  ng-show="myForm.name.$error.required"
+                                                     role="alert">手机号必须</div>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
 
                                         <div class="control-group">
-                                            <label class="control-label" for="linkman1">联系人</label>
+                                            <label class="control-label" for="email">邮箱</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="responsible"  ng-model="formData.responsible" >
-                                                电话： <input type="phone" class="span2" id="mobile"  ng-model="formData.mobile">
+                                                <input type="email" class="span4" id="email"  ng-model="formData.email" >
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group">
-                                            <label class="control-label" for="confirmmobilelist">验证手机号</label>
+                                            <label class="control-label" for="usertype">用户类型</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="confirmmobilelist"
-                                                       placeholder="12345678901,12345678901" ng-model="formData.confirmmobilelist" >
+                                                <select class="span4" id="usertype"   ng-model="formData.usertype" >
+                                                    <option value="0">管理员</option>
+                                                    <option value="1">驾校管理员</option>
+                                                </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group">
-                                            <label class="control-label" for="desc">商家简介</label>
+                                            <label class="control-label" for="userstate">用户状态</label>
                                             <div class="controls">
-                                                <textarea   class="span4" id="desc" rows="3" ng-model="formData.desc" placeholder="商家简介"></textarea>
-                                            </div>
-                                        </div>
+                                                <select class="span4" id="usertype"   ng-model="formData.userstate" >
+                                                    <option value="0">正常</option>
+                                                    <option value="1">锁定</option>
+                                                    <option value="2">删除</option>
+                                                </select>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="schoolid">所在驾校</label>
+                                            <div class="controls">
+                                                <select class="span4" id="usertype" ng-disabled="formData.usertype==0"
+                                                        ng-model="formData.schoolid" >
+                                                    <% extradata.forEach(function(r,index){ %>
+                                                    <option value="<%=r._id%>"><%=r.name%></option>
+                                                    <%})%>
+                                                </select>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
                                         <br />
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
@@ -197,10 +215,10 @@
             $scope.formData = {};
             layer.open({
                 type: 1,
-                title: '添加商家',
+                title: '添加管理员',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '520px'],
+                area : ['850px' , '700px'],
                 content:$("#editpage")
             });
         };
@@ -238,6 +256,7 @@
                 return;
             }
             console.log($scope.formData);
+            return;
             $http.post("/admin/manage/updatebusiness",$scope.formData)
                     .success(function(response){
                         if (response.type==0){
@@ -255,10 +274,6 @@
                     })
         };
         var savedata=function(){//写入数据
-            $scope.formData.logoimg=$("#logimg").val();
-            $scope.formData.province=$("#province").val();
-            $scope.formData.city=$("#city").val();
-            $scope.formData.address=$("#address").val();
             return true;
         }
     });
