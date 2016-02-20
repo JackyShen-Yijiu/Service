@@ -61,7 +61,9 @@ var  returnAdminRouter=function(io) {
             {
 
                 AdminUser.findOne({'userName':userName,'password':newPsd
-                     }).populate('group').exec(function(err,user){
+                     })
+                   // .populate('group').
+                    .exec(function(err,user){
                     if(err){
                         res.json(err);
                     }
