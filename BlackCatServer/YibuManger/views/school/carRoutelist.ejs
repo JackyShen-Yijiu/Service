@@ -1,0 +1,132 @@
+
+<div class="main" ng-controller="classtypelist">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>班车列表</h3>
+                        <div style="float: right ; padding-right: 10px" >
+                            <div style="float: left;  padding-right: 10px">
+                                <a href="/admin/manage/editCarRoute"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                            </div>
+                            <div style="float: right ; padding-right: 10px">
+                                <% include ../public/searchBox %>
+                            </div>
+                        </div>
+
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+
+                                        <th> 路线名称 </th>
+                                        <th> 班车时间</th>
+                                        <th class="td-actions"> 路线浏览</th>
+                                        <th class="td-actions"> 操作</th>
+                                    </tr>
+                                    <tr>
+                                        <td>上地线</td>
+                                        <td>6：00--18：00</td>
+                                        <td>
+                                            <a  id="editapplyinfo"
+                                                ng-click="editApplyinfo()"
+                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-eye-open"> </i></a>
+                                        </td>
+
+                                        <td class="td-actions">
+                                            <a href="/admin/manage/editCarRoute?trainingfiledid={{content.trainingfiledid}}"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
+                                            <a href="#"
+                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                        </td>
+                                    </tr>
+                                    <!--
+                                    <tr class="datalist" ng-repeat="content in data">
+
+                                        <td >
+                                            <span>上地线</span>
+                                        </td>
+                                        <td >
+                                            <span>6：00--18：00</span>
+                                        </td>
+                                        <td >
+                                            <span><a href="#"
+                                                     class="btn btn-small btn-danger" ><i class="btn-icon-only icon-edit "> </i></a></span>
+                                        </td>
+                                        <td >
+                                            <span></span>
+                                        </td>
+
+
+                                        <td class="td-actions">
+                                            <a href="/admin/manage/edittrainingfield?trainingfiledid={{content.trainingfiledid}}"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
+                                            <a href="#"
+                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                        </td>
+
+
+                                    </tr>
+                                    -->
+
+                                </table>
+                            </div><!-- /.box-body -->
+
+                        </div><!-- /.box -->
+                        <% include ../public/tableFooter %>
+                    </div>
+                    <!--start-->
+                    <div id="editpage" style="display: none;">
+                        <!--弹出层部分-->
+
+                        <div class="widget-header" style="border-bottom: 1px solid #000;">
+                            <i class="icon-th-large"></i>
+                            <h3>上地线</h3>
+                        </div> <!-- /widget-header -->
+                        <div class="widget-content">
+                            路线内容
+                        </div>
+
+
+
+
+                    </div>
+                    <!--end-->
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /main-inner -->
+</div>
+
+
+<script>
+    ybxcApp.controller("classtypelist",function($scope,$http){
+        $scope.formData = {};
+        //获取文档列表信息
+        initPagination($scope,$http,"<%=searchKey%>","/manage/#?schoolid=<%=schoolid%>");
+
+        $scope.editApplyinfo=function(){
+            $scope.formData={};
+            layer.open({
+                type: 1,
+                title: '具体路线--'+name,
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['600px' , '520px'],
+                content:$("#editpage")
+            });
+        }
+    });
+
+
+
+</script>

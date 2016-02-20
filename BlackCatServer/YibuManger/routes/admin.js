@@ -206,6 +206,16 @@ var  returnAdminRouter=function(io) {
         });
 
     });
+
+    // 班车路线
+    router.get("/manage/carRoutelist" ,function(req, res, next) {
+        res.render('school/carRoutelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/carRoutelist"));
+    });
+    // 添加班车路线
+    router.get("/manage/editCarRoute" ,function(req, res, next) {
+        res.render('school/editCarRoute', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editCarRoute"));
+    });
+
     // app 设置
     router.get("/manage/appsetting" ,function(req, res, next) {
         res.render('school/appsetting',adminFunc.setSchoolPageInfo(req,res,"/admin/manage/appsetting"));
@@ -241,6 +251,7 @@ var  returnAdminRouter=function(io) {
         });
 
     });
+
 //======================================================================================================================
     //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
@@ -271,10 +282,11 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/industrynewsList" ,function(req, res, next) {
         res.render('industryNews/industrynewsList', adminFunc.setPageInfo(req,res,"/admin/manage/industrynewsList"));
     });
-    //获取咨询内容
+    //获取咨询编辑内容
     router.get("/manage/editIndustrynews" ,function(req, res, next) {
         res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews"));
     });
+<<<<<<< HEAD
     router.get("/news" ,function(req, res, next) {
         var newsid=req.query.newsid;
         adminserver.getindustrynewsByid2(newsid,function(data){
@@ -287,6 +299,11 @@ var  returnAdminRouter=function(io) {
     // 用户管理
     router.get("/manage/adminusermanger" ,function(req, res, next) {
         res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger"));
+=======
+    //咨询链接页面
+    router.get("/manage/advisoryLink" ,function(req, res, next) {
+        res.render('industryNews/advisoryLink', adminFunc.setPageInfo(req,res,"/admin/manage/advisoryLink"));
+>>>>>>> dev2.3
     });
 
     //==================================================================================================================
