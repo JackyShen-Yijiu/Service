@@ -286,10 +286,7 @@ var  returnAdminRouter=function(io) {
     });
     // 用户管理
     router.get("/manage/adminusermanger" ,function(req, res, next) {
-        basedatafun.getAllSchoolList(function(err,data){
-            res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger",data));
-        })
-
+        res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger"));
     });
 
     //==================================================================================================================
