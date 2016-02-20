@@ -239,7 +239,6 @@
             }
 
         };
-
         var savedata=function(){
             $scope.formData.logoimg=$("#logimg").val();
             //$scope.formData.logimgimg=$("#logimgimg").val();
@@ -252,6 +251,11 @@
             $scope.formData.is_validation=$("#is_validation").val();
             $scope.formData.fieldlevel=$("#fieldlevel").val();
             $scope.formData.schoolid="<%=schoolid%>";
+            if($scope.formData.latitude===undefined||$scope.formData.latitude==""||
+                    $scope.formData.longitude===undefined|| $scope.formData.longitude==""){
+                alert("请在地图上选择地址");
+                return false;
+            }
             return true;
         }
     });

@@ -179,7 +179,7 @@
 <script type="application/javascript">
     ybxcApp.controller("editstudent",function($scope,$http){
         $scope.formData = {};
-        $scope.showlicensetype="";
+
         var studentid=GetQueryString("studentid");
         if(studentid !=null && studentid.toString().length>1)
         {
@@ -201,8 +201,14 @@
                         }
                     })
         }else{
-//            $scope.formData.subjectthree.totalcourse=16;
-//            $scope.formData.subjecttwo.totalcourse=24;
+            $scope.formData.subjectthree={};
+            $scope.formData.subjecttwo={};
+            $scope.formData.subjectthree.totalcourse=16;
+            $scope.formData.subjectthree.finishcourse=0;
+            $scope.formData.subjectthree.missingcourse=0;
+            $scope.formData.subjecttwo.totalcourse=24;
+            $scope.formData.subjecttwo.finishcourse=0;
+            $scope.formData.subjecttwo.missingcourse=0;
             $scope.formData.headportrait={};
         }
 

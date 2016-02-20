@@ -62,58 +62,68 @@
                                             </div> <!-- /control-group -->
 
                                             <div class="control-group">
-                                                <label class="control-label" for="price">价格</label>
+                                                <label class="control-label" for="price">市场价格</label>
                                                 <div class="controls">
-                                                    <input name="price"  type="number" ng-model="formData.price" class="span2" id="price" value="100"  required>
+                                                    <input name="price"  type="number" ng-model="formData.price"
+                                                           class="span2" id="price" value="100"  required  placeholder="仅供展示">
 
                                                 </div>
                                                 <div class="alert alert-danger span2"  ng-show="myForm.price.$error.required"
-                                                     role="alert">价格必须</div>
+                                                     role="alert">市场价格必须</div>
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
                                                 <label class="control-label" for="onsaleprice">优惠价格</label>
                                                 <div class="controls">
-                                                    <input   name="onsaleprice"  type="number" ng-model="formData.onsaleprice" class="span2" id="onsaleprice" value="100"  required>
+                                                    <input   name="onsaleprice"  type="number" ng-model="formData.onsaleprice"
+                                                             class="span2" id="onsaleprice" placeholder="用户实际支付" value="100"  required>
                                                 </div>
                                                 <div class="alert alert-danger span2"  ng-show="myForm.onsaleprice.$error.required"
                                                      role="alert">优惠价格必须</div>
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
-                                                <label class="control-label" for="originalprice">原始价格</label>
+                                                <label class="control-label" for="originalprice">成本价格</label>
                                                 <div class="controls">
-                                                    <input   name="originalprice" type="number" ng-model="formData.originalprice" class="span2" id="originalprice" value="100"  required>
+                                                    <input   name="originalprice" type="number" ng-model="formData.originalprice"
+                                                             class="span2" id="originalprice" value="100"
+                                                             placeholder="支付给驾校"
+                                                             required>
 
                                                 </div>
                                                 <div class="alert alert-danger span2"  ng-show="myForm.originalprice.$error.required"
-                                                     role="alert">原始价格必须</div>
+                                                     role="alert">成本价格必须</div>
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
-                                                <label class="control-label" for="systemretains">系统预留</label>
+                                                <label class="control-label" for="systemretains">预留利润</label>
                                                 <div class="controls">
-                                                    <input name="systemretains"  type="number" ng-model="formData.systemretains" class="span2" id="systemretains" value="100"  required>
+                                                    <input name="systemretains"  type="number" ng-model="formData.systemretains"
+                                                           class="span2" id="systemretains" value="100"  required>
 
                                                 </div>
                                                 <div class="alert alert-danger span2"  ng-show="myForm.systemretains.$error.required"
-                                                     role="alert">价格必须</div>
+                                                     role="alert">预留利润必须</div>
                                             </div> <!-- /control-group -->
 
                                             <div class="control-group">
-                                                <label class="control-label" for="feedbackuser">返给用户</label>
+                                                <label class="control-label" for="feedbackuser">用户直返</label>
                                                 <div class="controls">
-                                                    <input name="feedbackuser"  type="number" ng-model="formData.feedbackuser" class="span2" id="feedbackuser" value="100"  required>
+                                                    <input name="feedbackuser"  type="number" ng-model="formData.feedbackuser"
+                                                           placeholder="通过app报名返给用户" class="span2" id="feedbackuser" value="100"  required>
 
                                                 </div>
                                                 <div class="alert alert-danger span2"  ng-show="myForm.feedbackuser.$error.required"
-                                                     role="alert">价格必须</div>
+                                                     role="alert">用户直返</div>
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
-                                                <label class="control-label" for="rewardmoney">返给代理</label>
+                                                <label class="control-label" for="rewardmoney">渠道佣金</label>
                                                 <div class="controls">
-                                                    <input name="rewardmoney"  type="number" ng-model="formData.rewardmoney" class="span2" id="rewardmoney" value="100"  required>
-
+                                                    <input name="rewardmoney"  type="number" ng-model="formData.rewardmoney" class="span2"
+                                                           id="rewardmoney" value="100"  required>
+                                                    （预留利润+用户直返+渠道佣金=优惠价格-成本价格）
                                                 </div>
                                                 <div class="alert alert-danger span2"  ng-show="myForm.rewardmoney.$error.required"
                                                      role="alert">价格必须</div>
+                                                <br>
+
                                             </div> <!-- /control-group -->
 
 
