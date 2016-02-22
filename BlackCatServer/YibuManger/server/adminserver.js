@@ -1313,7 +1313,8 @@ var getCoachCourseplan=function (schoolid,beginDate,endDate,callback){
 //
 //)
 // 驾校获取课程安排
-exports.getcoachcourse=function(schoolid,callback){
+exports.getcoachcourse=function(schoolid,callback)
+{
     var begintime=(new Date()).clearTime();
     var enddate=(new Date()).addDays(7).clearTime();
     coachmodel.find(searchinfo)
@@ -1324,7 +1325,7 @@ exports.getcoachcourse=function(schoolid,callback){
 exports.getUsefulCoachList=function(req,res){
     var userid=req.query.studentid;
     var index=-1;
-    userserver.getUsefulCoachList(userid,index,function(err,data){
+    userserver.getUsefulCoachList(userid,index,"",function(err,data){
         if (err)
         {
             return res.json(new BaseReturnInfo(0,err,[]));
