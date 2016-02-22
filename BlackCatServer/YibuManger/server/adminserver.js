@@ -1057,6 +1057,35 @@ exports.getadminuserlist=function(req,res){
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         });
+};
+exports.updateadminuser=function(req,res){
+    var _id=req.body._id;
+    if (_id===undefined||_id==""){
+        var adminuser= new  AdminUser(req.body);
+        adminuser.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+    else
+    {
+        var conditions = {_id :new mongodb.ObjectId( req.body._id)};
+        var updateinfo=req.body;
+        //updateinfo._id=undefined;
+        delete  updateinfo._id;
+        var update = {$set : updateinfo};
+
+        adminuser.update(conditions, update,{safe: true,upsert : true},function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
 }
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
