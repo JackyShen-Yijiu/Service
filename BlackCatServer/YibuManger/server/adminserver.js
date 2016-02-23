@@ -1044,6 +1044,9 @@ exports.getadminuserlist=function(req,res){
         .limit(limit)
         .sort({date:-1})
         .exec(function(err,data) {
+            if (err){
+                console.log(err);
+            }
             defaultFun.getModelCount(AdminUser,{},function (err,usercount) {
                 returninfo = {
                     pageInfo:{
@@ -1060,6 +1063,7 @@ exports.getadminuserlist=function(req,res){
 };
 exports.updateadminuser=function(req,res){
     var _id=req.body._id;
+    console.log(req.body);
     if (_id===undefined||_id==""){
         var adminuser= new  AdminUser(req.body);
         adminuser.save(function(err,data){
@@ -1074,11 +1078,10 @@ exports.updateadminuser=function(req,res){
     {
         var conditions = {_id :new mongodb.ObjectId( req.body._id)};
         var updateinfo=req.body;
-        //updateinfo._id=undefined;
         delete  updateinfo._id;
         var update = {$set : updateinfo};
-
-        adminuser.update(conditions, update,{safe: true,upsert : true},function(err,data){
+        console.log(update);
+        AdminUser.update(conditions, update,{safe: true,upsert : true},function(err,data){
             if(err){
                 return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
             }else{

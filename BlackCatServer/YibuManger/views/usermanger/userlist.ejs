@@ -74,7 +74,7 @@
                                             <span>{{content.date|date:'yyyy-MM-dd'}}</span>
                                         </td>
                                         <td class="td-actions">
-                                            <a ng-click="editmerchant(content._id,content.name)"
+                                            <a ng-click="edituser(content._id,content.name)"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <a href="#"
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
@@ -154,7 +154,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="usertype">用户类型</label>
                                             <div class="controls">
-                                                <select class="span4" id="usertype"   ng-model="formData.usertype" >
+                                                <select class="span4" id="usertype"   required  >
                                                     <option value="0">管理员</option>
                                                     <option value="1">驾校管理员</option>
                                                 </select>
@@ -163,7 +163,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="userstate">用户状态</label>
                                             <div class="controls">
-                                                <select class="span4" id="usertype"   ng-model="formData.userstate" >
+                                                <select class="span4" id="usertype"     required >
                                                     <option value="0">正常</option>
                                                     <option value="1">锁定</option>
                                                     <option value="2">删除</option>
@@ -173,8 +173,8 @@
                                         <div class="control-group">
                                             <label class="control-label" for="schoolid">所在驾校</label>
                                             <div class="controls">
-                                                <select class="span4" id="usertype" ng-disabled="formData.usertype==0"
-                                                        ng-model="formData.schoolid" >
+                                                <select class="span4" id="schoolid"
+                                                       ng-model="$scope.formData.schoolid" >
                                                     <% extradata.forEach(function(r,index){ %>
                                                     <option value="<%=r._id%>"><%=r.name%></option>
                                                     <%})%>
@@ -222,25 +222,30 @@
                 content:$("#editpage")
             });
         };
-        $scope.editmerchant=function(merchantid,name){
+        $scope.edituser=function(userid,name){
             $scope.formData = {};
             for (i=0;i<$scope.data.length;i++){
-                if ($scope.data[i]._id==merchantid){
+                if ($scope.data[i]._id==userid){
                     $scope.formData=$scope.data[i];
                     break;
                 }
             };
             if ($scope.formData._id===undefined){
-                layer.msg("没有查到商家", {
+                layer.msg("没有查到用户", {
                     icon: 2,
                     time: 5000 //2秒关闭（如果不配置，默认是3秒）
                 });
                 return;
             };
-            $("#logimgimg").attr("src",$scope.formData.logoimg)
+            console.log($scope.formData);
+            $("#usertype").val(($scope.formData.usertype?$scope.formData.usertype:0));
+            $("#usertype").val(($scope.formData.userstate?$scope.formData.userstate:0));
+            if($scope.formData.usertype==1){
+                $("#schoolid").val($scope.formData.schoolid);
+            }
             layer.open({
                 type: 1,
-                title: '编辑商家：'+name,
+                title: '编辑用户：'+name,
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['850px' , '520px'],
@@ -256,8 +261,8 @@
                 return;
             }
             console.log($scope.formData);
-            return;
-            $http.post("/admin/manage/updatebusiness",$scope.formData)
+            //return;
+            $http.post("/admin/manage/updateadminuser",$scope.formData)
                     .success(function(response){
                         if (response.type==0){
                             layer.msg(response.msg, {
@@ -269,11 +274,19 @@
                                 icon: 1,
                                 time: 5000 //2秒关闭（如果不配置，默认是3秒）
                             });
-                            window.location.href="/admin/manage/businessList";
+                           // window.location.href="/admin/manage/adminusermanger";
                         }
                     })
         };
         var savedata=function(){//写入数据
+            $scope.formData.usertype=$("#usertype").val();
+            $scope.formData.userstate=$("#usertype").val();
+            if($scope.formData.usertype==1){
+                $scope.formData.schoolid= $("#schoolid").val();
+            }else {
+                $scope.formData.schoolid=undefined;
+            }
+
             return true;
         }
     });

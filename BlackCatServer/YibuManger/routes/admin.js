@@ -286,7 +286,10 @@ var  returnAdminRouter=function(io) {
     });
     // 用户管理
     router.get("/manage/adminusermanger" ,function(req, res, next) {
-        res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger"));
+        basedatafun.getAllSchoolList(function(err,data){
+            res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger",data));
+        })
+
     });
 
     //==================================================================================================================
@@ -353,7 +356,7 @@ var  returnAdminRouter=function(io) {
 
     // 用户管理
     router.get("/manage/getadminuserlist",adminserver.getadminuserlist);
-    router.get("/manage/updateadminuser",adminserver.updateadminuser);
+    router.post("/manage/updateadminuser",adminserver.updateadminuser);
 
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;
