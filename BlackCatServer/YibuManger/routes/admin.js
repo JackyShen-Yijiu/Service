@@ -291,6 +291,13 @@ var  returnAdminRouter=function(io) {
         })
 
     });
+    // 校长管理
+    router.get("/manage/headmastermanger" ,function(req, res, next) {
+        basedatafun.getAllSchoolList(function(err,data){
+            res.render('usermanger/headMasterlist', adminFunc.setPageInfo(req,res,"/admin/manage/headmastermanger",data));
+        })
+
+    });
 
     //==================================================================================================================
 
@@ -357,6 +364,7 @@ var  returnAdminRouter=function(io) {
     // 用户管理
     router.get("/manage/getadminuserlist",adminserver.getadminuserlist);
     router.post("/manage/updateadminuser",adminserver.updateadminuser);
+    router.get("/manage/deleteadminuser",adminserver.deleteadminuser);
 
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;

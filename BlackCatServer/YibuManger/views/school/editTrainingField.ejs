@@ -187,7 +187,9 @@
                                         $("#logimgimg").attr("src",$scope.formData.logoimg);
 
                                         $("#trainimg").val($scope.formData.trainimg);
-                                        $("#trainimgimg1").attr("src",$scope.formData.trainimg);
+                                        $("#trainimgimg1").attr("src",$scope.formData.pictures[0]);
+                                        $("#trainimgimg2").attr("src",$scope.formData.pictures[1]);
+                                        $("#trainimgimg3").attr("src",$scope.formData.pictures[2]);
 
                                         setPoint($scope.formData.longitude,$scope.formData.latitude);
                                         $("#latitude").val($scope.formData.latitude);
@@ -256,6 +258,17 @@
                 alert("请在地图上选择地址");
                 return false;
             }
+            var  pictureslsit=[];
+             if($("#trainimgimg1").attr("src")!=undefined&&$("#trainimgimg1").attr("src")!=""){
+                 pictureslsit.push($("#trainimgimg1").attr("src"));
+             };
+            if($("#trainimgimg2").attr("src")!=undefined&&$("#trainimgimg2").attr("src")!=""){
+                pictureslsit.push($("#trainimgimg2").attr("src"));
+            }
+            if($("#trainimgimg3").attr("src")!=undefined&&$("#trainimgimg3").attr("src")!=""){
+                pictureslsit.push($("#trainimgimg3").attr("src"));
+            }
+            $scope.formData.pictures=pictureslsit;
             return true;
         }
     });

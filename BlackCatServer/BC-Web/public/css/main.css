@@ -52,7 +52,8 @@ h5 {
     background-color: #e52e2e;
     color: #fff; }
   .btn-large {
-    padding: 15px 40px; }
+    padding: 15px 40px;
+  margin-top: -20px}
 
 /* ==========================================================================
 	General Styles
@@ -102,7 +103,7 @@ ul li {
   #header .header-content {
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     margin: 0 auto;
-    max-width: 1170px;
+    max-width: 980px;
     padding: 31px 0;
     width: 100%;
     -moz-transition: padding 0.1s;
@@ -369,9 +370,11 @@ ul li {
 
 
 #works .container .row .see{font-size: 3.12em;color: #666;width: 100%;margin-top: -2%}
-#works .container .row .see h5{padding: 2px;color: #9a9a9a}
+#works .container .row .see h5{padding: 2px;color: #9a9a9a;margin-top: 5px}
 #works .container{margin-top: 6%}
-#teams .container .row h2{ margin-top: -20px;font-size: 3.02em;color: #666}
+
+#teams .container .row h2{font-size: 3.02em;color: #666}
+
 .work {
   -moz-box-shadow: 0 0 0 1px #fff;
   -webkit-box-shadow: 0 0 0 1px #fff;
@@ -382,9 +385,10 @@ ul li {
   visibility: hidden;
 
 }
-#works{margin-top: -10%;border: 1px solid white}
+#works{margin-top: -10%;border: 1px solid white;}
+
   .work .overlay {
-    background: rgba(232, 69, 69, 0.8);
+    background: rgba(58, 62, 100, 0.75);
     height: 101%;
     left: 0;
     opacity: 0;
@@ -457,7 +461,7 @@ ul li {
     margin-bottom: 20px; }
 .person-content p{text-align: center}
 .social-icons, .footer .footer-share {
-  margin-top: 30px; }
+  margin-top: 20px; }
   .social-icons li, .footer .footer-share li {
     float: left; }
   .social-icons a, .footer .footer-share a {
@@ -503,6 +507,7 @@ ul li {
   width: 80%;
   margin-left: 8%;
   line-height: 1.21em;
+ font-family: "Myriad Set Pro","PingFang SC","Helvetica Neue","Helvetica","STHeitiSC-Light","Arial",sans-serif;
    }
 
 
@@ -623,7 +628,10 @@ min-height: 200px;
 #myCarousel .carousel-inner .item img{
   min-height:200px
 }
-#myCarousel .carousel-inner .item .carousel-caption .fact-bj {background-image: url('../images/lch.png');height:80px;background-size:40%;background-position:center;margin: 0 auto;color: black;background-repeat: no-repeat;margin-top: 15px;}
+#myCarousel .carousel-inner .item .carousel-caption .fact-bj {background-image: url('../images/lch.png');
+  height:80px;background-size:40%;background-position:center;
+  margin: 0 auto;color: black;background-repeat: no-repeat;
+ margin-top: 21%}
 #myCarousel .carousel-inner .item .carousel-caption{
 width: 100%; height: 100%;
   margin: 0 auto;
@@ -638,13 +646,39 @@ width: 100%; height: 100%;
   margin: 25px;
 }
 #myCarousel .carousel-inner .item .carousel-caption h1{
-  margin-top:2.98em;
+
   color: #ffffff;
   text-shadow: 0.2em 0.1em 0.9em rgba(0,0,0,1);
   font-weight:500;
-  font-size:4.85em ;
+  font-size:4.05em ;
   width: 100%;
  letter-spacing:6px;
+  position: absolute;
+  top: 25%;
+  margin-top: 40px;
+}
+#myCarousel .carousel-inner .item .carousel-caption .fact{
+  width: 50%;
+  position: absolute;
+  height: 50px;
+  left: 26%;
+  margin-top: 18%;
+  white-space: nowrap
+}
+#myCarousel .carousel-inner .item .carousel-caption .fact1{
+  width: 50%;
+  position: absolute;
+  height: 50px;
+  left: 26%;
+  margin-top: -4%;
+
+}
+#myCarousel .carousel-inner .item .carousel-caption .btn{
+  position: absolute;
+  border: 1px solid red;
+  margin-left: -5%;
+  top: 60%;
+
 }
 .container .row.fear h2{color:#6c6c6c; }
 #teams{width: 100%;margin: 0;padding: 0;  }
@@ -656,7 +690,7 @@ margin-bottom: 40px;  }
 #teamer img{margin: 0 auto;width: 55%;height: 55%;margin-top: -50px}
 #team img{ margin: 0 auto;display: block;text-align: center;width: 10%;height: auto;}
 #team h2{font-size: 2.86em;color: #6c6c6c;}
-
+#shop{margin-top: 8px}
 #shop .container .person .person-content h4{
 font-style: normal;
 font-weight: 300;
@@ -682,8 +716,8 @@ font-size: 1.20em;
   font-weight: 600;
   color: #ffffff;
   line-height: 120px;
-  background-color: #000;
-  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.75);
+  opacity: 0.75;
 }
 #shop .container .row  .person .person-jq{
   width: 100%;
@@ -696,6 +730,8 @@ font-size: 1.20em;
 }
 #shop .container .row  .person .person-jq .person-jg{
   display: block;
+  font-size: 36px;
+  margin-left: -18px;
 }
 #shop .container .row  .person .person-jq .person-jk{
   font-size: 14px;
@@ -705,10 +741,11 @@ font-size: 1.20em;
 #shop .container .row  .person .person-bj {
   color:#e74c3c;
   font-size: 36px;
-}
-#shop .container .row  .person .person-bj .person-i{
-  font-size: 18px;
   margin-left: -10px;
+}
+#shop .container .row  .person .person-jg .person-i{
+  font-size: 18px;
+
 }
 #shop .container .row  .person  .person-font p{
   font-size: 18px;

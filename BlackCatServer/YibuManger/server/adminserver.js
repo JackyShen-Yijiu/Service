@@ -2,6 +2,8 @@
 /**
  * Created by v-yaf_000 on 2015/12/14.
  */
+var DbOpt = require("../models/Dbopt");
+var settings = require("../models/config/settings");
 var mongodb = require('../../models/mongodb.js');
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var commondata = require('../../Config/commondata.js');
@@ -139,7 +141,8 @@ exports.getStatitic=function(req,res){
             pictures:req.body.pictures,
             fielddesc:req.body.fielddesc,
             driveschool:req.body.schoolid,
-            fielddesc:req.body.fielddesc,
+            pictures:req.body.pictures,
+
     }
         filedinfo.loc={type:"Point",coordinates:[filedinfo.longitude,filedinfo.latitude]};
         return filedinfo;
@@ -704,7 +707,8 @@ exports.getTrainingFieldList=function(req,res){
                         fieldname: r.fieldname,
                         address:r.address,
                         responsible: r.responsible,
-                        phone: r.phone
+                        phone: r.phone,
+                        pictures: r.pictures
                     }
                     filedlist.push(onedata);
                 });
@@ -778,6 +782,7 @@ exports.updateTrainingField=function(req,res){
     var conditions = {_id : trainingfiledid};
     req.body.updateDate = new Date();
     var update = {$set : filedinfo};
+    console.log(update);
     trainingfiledModel.update(conditions, update,function(err,data){
         basedatafun.reftrainingfiled(req.session.schoolid,function(err,data){});
         if(err){
@@ -1037,8 +1042,10 @@ exports.getproductlist=function(req,res){
 exports.getadminuserlist=function(req,res){
     var index=req.query.index?req.query.index:0;
     var limit=req.query.limit?req.query.limit:10;
-
-    AdminUser.find()
+    var name=req.query.searchKey?req.query.searchKey:"";
+   var serchcondition= {"name":new RegExp(name),
+       "$or":[{"userstate":{"$lt":2  }},{"userstate":{$exists: false }}]};
+    AdminUser.find(serchcondition)
         .populate('schoolid',"_id name")
         .skip((index-1)*limit)
         .limit(limit)
@@ -1047,7 +1054,7 @@ exports.getadminuserlist=function(req,res){
             if (err){
                 console.log(err);
             }
-            defaultFun.getModelCount(AdminUser,{},function (err,usercount) {
+            defaultFun.getModelCount(AdminUser,serchcondition,function (err,usercount) {
                 returninfo = {
                     pageInfo:{
                         totalItems: usercount,
@@ -1066,6 +1073,7 @@ exports.updateadminuser=function(req,res){
     console.log(req.body);
     if (_id===undefined||_id==""){
         var adminuser= new  AdminUser(req.body);
+        adminuser.password=DbOpt.encrypt(adminuser.password,settings.encrypt_key);
         adminuser.save(function(err,data){
             if(err){
                 return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
@@ -1080,7 +1088,6 @@ exports.updateadminuser=function(req,res){
         var updateinfo=req.body;
         delete  updateinfo._id;
         var update = {$set : updateinfo};
-        console.log(update);
         AdminUser.update(conditions, update,{safe: true,upsert : true},function(err,data){
             if(err){
                 return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
@@ -1088,6 +1095,31 @@ exports.updateadminuser=function(req,res){
                 return res.json(new BaseReturnInfo(1, "", "sucess") );
             }
         })
+    }
+};
+exports.deleteadminuser=function(req,res){
+    try
+    {
+    var userid=req.query.userid;
+    AdminUser.findById(new mongodb.ObjectId(userid),function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0, "查询用户出错："+err, "") );
+        }
+        if(!data){
+            return res.json(new BaseReturnInfo(0, "没有查询到用户", "") );
+        }
+        data.userstate=2;  // 删除
+        data.save(function(err,newdata){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存用户出错："+err, "") );
+            }
+            else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    })}
+    catch (ex){
+        return res.json(new BaseReturnInfo(0, "删除信息出错："+ex.message, "") );
     }
 }
 ///=====================================驾校管理

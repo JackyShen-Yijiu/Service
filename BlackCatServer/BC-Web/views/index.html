@@ -23,27 +23,28 @@
     <link rel="stylesheet" href="css/flexslider.css">
     <link rel="stylesheet" href="css/jquery.fancybox.css">
     <link rel="stylesheet" href="css/main.css">
-   <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/animate.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <style>
         .banner-text h1 {  font-family: "Myriad Set Pro","PingFang SC","Helvetica Neue","Helvetica","STHeitiSC-Light","Arial",sans-serif;  font-weight: 300;  }
         .banner-text p{  font-family: "Myriad Set Pro","PingFang SC","Helvetica Neue","Helvetica","STHeitiSC-Light","Arial",sans-serif;  }
         @media (min-width: 375px) and (max-width: 667px){
             #myCarousel{  min-height: 300px;  }
             #myCarousel .carousel-inner .item img{  min-height:300px  }
-            #myCarousel .carousel-inner .item .carousel-caption h1{  margin-top: -38px;  color: #ffffff;  text-shadow: 0.2em 0.1em 0.9em rgba(0,0,0,1);  font-weight:500;  font-size:1.05em ;  width: 100%;  letter-spacing:6px;  }
+            #myCarousel .carousel-inner .item .carousel-caption h1{  color: #ffffff;  text-shadow: 0.2em 0.1em 0.9em rgba(0,0,0,1);  font-weight:500;  font-size:1.05em ;  width: 100%;  letter-spacing:6px;  }
             #myCarousel .carousel-inner .item .carousel-caption .fact-bj {background-image: url('images/lch.png');height:80px;background-size:80%;background-position:center;margin: 0 auto;color: black;background-repeat: no-repeat;margin-top: -12px;}
-            #myCarousel .carousel-inner .item .fact{  font-size: 0.82em;  margin-left: 10%;  }
+            #myCarousel .carousel-inner .item .carousel-caption .fact{  font-size: 0.82em;    width: 100%;margin-top: -3%;  margin-left: -21%;  }
             #myCarousel .carousel-inner .item  .btn{display: none}
+            #myCarousel .carousel-inner .item .carousel-caption .fact1{font-size: 0.73em;}
             #works .container .row .see{font-size: 1.12em;color: #666;width: 100%;margin-top: -2%}
         }
         @media screen and (min-width:320px) and (max-width:568px){
             #myCarousel{  min-height: 300px;  }
             #myCarousel .carousel-inner .item img{  min-height:300px  }
-            #myCarousel .carousel-inner .item .carousel-caption h1{  margin-top: -38px;  color: #ffffff;  text-shadow: 0.2em 0.1em 0.9em rgba(0,0,0,1);  font-weight:500;  font-size:1.05em ;  width: 100%;  letter-spacing:6px;  }
+            #myCarousel .carousel-inner .item .carousel-caption h1{ margin-top: 20%;  color: #ffffff;  text-shadow: 0.2em 0.1em 0.9em rgba(0,0,0,1);  font-weight:500;  font-size:1.05em ;  width: 100%;  letter-spacing:6px;  }
             #myCarousel .carousel-inner .item .carousel-caption .fact-bj {background-image: url('images/lch.png');height:80px;background-size:80%;background-position:center;margin: 0 auto;color: black;background-repeat: no-repeat;margin-top: -12px;}
-            #myCarousel .carousel-inner .item .fact{  font-size: 0.82em;  margin-left: 10%;  }
+            #myCarousel .carousel-inner .item .carousel-caption .fact{  font-size: 0.82em;    width: 100%;margin-top: -3%;  margin-left: -21%;  }
+            #myCarousel .carousel-inner .item .carousel-caption .fact1{font-size: 0.73em;}
             #myCarousel .carousel-inner .item  .btn{display: none}
             #team h2{font-size: 1.06em;color: #6c6c6c;}
             #works .container .row .see{font-size: 2.12em;color: #666;width: 100%;margin-top: -2%}
@@ -51,25 +52,25 @@
             #shop .container .row h2{font-size: 2.12em}
         }
 
-      </style>
+    </style>
 </head>
 <body>
-    <section class="banner" role="banner" id="" >
-        <header id="header">
-            <div class="header-content clearfix">
-                <a class="logo" href="#"><img src="images/logo2.png" alt=""></a>
-                <span id="learencar" href="">一步学车</span>
-                <nav class="navigation" role="navigation">
-                    <ul class="primary-nav">
-                        <li><a href="#myCarousel">首页</a></li>
-                        <li><a href="#works">一步保障</a></li>
-                        <li><a href="#teams">关于一步</a></li>
-                        <li><a href="#shop">一步商城</a></li>
-                    </ul>
-                </nav>
-                <a href="#" class="nav-toggle"  >Menu<span></span></a>
-            </div><!-- header content -->
-        </header><!-- header -->
+<section class="banner" role="banner" id="" >
+    <header id="header">
+        <div class="header-content clearfix">
+            <a class="logo" href="#"><img src="images/logo2.png" alt=""></a>
+            <span id="learencar" href="">一步学车</span>
+            <nav class="navigation" role="navigation">
+                <ul class="primary-nav">
+                    <li><a href="#myCarousel">首页</a></li>
+                    <li><a href="#works">一步保障</a></li>
+                    <li><a href="#teams">关于一步</a></li>
+                    <li><a href="#shop">一步商城</a></li>
+                </ul>
+            </nav>
+            <a href="#" class="nav-toggle"  >Menu<span></span></a>
+        </div><!-- header content -->
+    </header><!-- header -->
 
     <div id="myCarousel" class="carousel slide">
         <!-- 轮播（Carousel）指标 -->
@@ -82,381 +83,379 @@
             <div class="item active">
                 <img src="images/banner3.jpg"  alt="First slide" class="img-responsive">
                 <div class="carousel-caption">
-                   <div class="banner-text text-center"   >
+                    <div class="banner-text text-center"   >
                         <h1 >一步郑重承诺</h1>
                         <p class="fact" >联合优质认证驾校  &nbsp 精选五星金牌教练为平台学员提供服务！<br/> 开开心心学车  顺顺利利拿本</p>
                         <a href="#download" class="btn btn-large" > &nbsp;&nbsp;&nbsp; &nbsp;下载APP  &nbsp; &nbsp; &nbsp;  &nbsp;</a>
                     </div>
                 </div><!-- banner text -->
-    </div>
-    <div class="item">
-        <img src="images/banner2.jpg" alt="Second slide" class="img-responsive">
-        <div class="carousel-caption">
-            <div class="banner-text text-center">
-            <h1>学车服务 &nbsp;  只要一步</h1>
-            <p class="fact" >平台保障 + 保障班型</p>
-               <div class="fact-bj"> </div>
+            </div>
+            <div class="item">
+                <img src="images/banner2.jpg" alt="Second slide" class="img-responsive">
+                <div class="carousel-caption">
+                    <div class="banner-text text-center">
+                        <h1>学车服务 &nbsp;  只要一步</h1>
+                        <p class="fact1" >平台保障 + 保障班型</p>
+                        <div class="fact-bj"> </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- 轮播（Carousel）导航 -->
+        <!-- 轮播（Carousel）导航 -->
     </div>
 
-    </section><!-- features -->
+</section><!-- features -->
 
-    <section id="works" class="works section no-padding" >
-        <div class="container" >
-            <div class="row">
-                <div class="col-md-12 col-sm-12 fear text-center" >
-                    <h2 class="see">一步报名 &nbsp;六大保障</h2>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center">
-                    <h5 >One step registration six safeguards </h5>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
-                    <img src="images/h.png" alt=""/>
+<section id="works" class="works section no-padding" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-md-12 col-sm-12 fear text-center" >
+                <h2 class="see">一步报名 &nbsp;六大保障</h2>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center">
+                <h5 >One step registration six safeguards </h5>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
+                <img src="images/h.png" alt=""/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 feature text-center">
+                <span class="icon "> <img src="images/pingtai.svg" class="img-responsive" alt=" " /></span>
+                <div class="feature-content">
+                    <h5>三方平台</h5>
+                    <p>繁琐学车过程，一步平台为您轻松搞定
+                    </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-6 feature text-center">
-                    <span class="icon "> <img src="images/pingtai.svg" class="img-responsive" alt=" " /></span>
-                    <div class="feature-content">
-                        <h5>三方平台</h5>
-                        <p>繁琐学车过程，一步平台为您轻松搞定
-                        </p>
-                    </div>
+            <div class="col-md-4 col-sm-6 feature text-center">
+                <span class="icon"> <img src="images/fuwu.svg" class="img-responsive" alt=" " /></span>
+                <div class="feature-content">
+                    <h5>保证金</h5>
+                    <p style="width: 100%;white-space: nowrap">平台为驾校服务提供保护，用户维权先行赔付</p>
                 </div>
-                <div class="col-md-4 col-sm-6 feature text-center">
-                    <span class="icon"> <img src="images/fuwu.svg" class="img-responsive" alt=" " /></span>
-                    <div class="feature-content">
-                        <h5>保证金</h5>
-                        <p style="width: 100%;white-space: nowrap">平台为驾校服务提供保护，用户维权先行赔付</p>
-                    </div>
+            </div>
+            <div class="col-md-4 col-sm-6 feature text-center">
+                <span class="icon "> <img src="images/guocheng.svg" class="img-responsive" alt=" "/></span>
+                <div class="feature-content">
+                    <h5>学车管家</h5>
+                    <p>学车管家全程跟进服务，消除吃拿卡要</p>
                 </div>
-                <div class="col-md-4 col-sm-6 feature text-center">
-                    <span class="icon "> <img src="images/guocheng.svg" class="img-responsive" alt=" "/></span>
-                    <div class="feature-content">
-                        <h5>学车管家</h5>
-                        <p>学车管家全程跟进服务，消除吃拿卡要</p>
-                    </div>
+            </div>
+            <div class="col-md-4 col-sm-6 feature text-center">
+                <span class="icon "> <img src="images/kefu.svg" class="img-responsive" alt=" " /></span>
+                <div class="feature-content">
+                    <h5>客服在线</h5>
+                    <p>服务7 X 12小时贴心服务，祝您轻松学完拿本</p>
                 </div>
-                <div class="col-md-4 col-sm-6 feature text-center">
-                    <span class="icon "> <img src="images/kefu.svg" class="img-responsive" alt=" " /></span>
-                    <div class="feature-content">
-                        <h5>客服在线</h5>
-                        <p>服务7 X 12小时贴心服务，祝您轻松学完拿本</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 feature text-center" >
+            </div>
+            <div class="col-md-4 col-sm-6 feature text-center" >
                     <span class="icon " >
                         <img src="images/baoxian.svg" class="img-responsive" alt=" " />
                     </span>
-                    <div class="feature-content">
-                        <h5>双重保险</h5>
-                        <p>平台额外赠送意外险，双保险才够安全</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 feature text-center">
-                    <span class="icon"> <img src="images/tousu.svg" class="img-responsive" alt=" "/></span>
-                    <div class="feature-content">
-                        <h5>投诉处理</h5>
-                        <p>投诉直达一步平台，服务更有保障</p>
-                    </div>
+                <div class="feature-content">
+                    <h5>双重保险</h5>
+                    <p>平台额外赠送意外险，双保险才够安全</p>
                 </div>
             </div>
-        </div>
-        <div class="container-fluid" >
-            <div class="row no-gutter">
-                <div class="col-lg-3 col-md-6 col-sm-6 work1">
-                    <a href="images/work 1.jpg" class="work-box1" style="height: 300px">
-                        <img src="images/work 1.jpg" class="img-responsive" alt="">
-                        <div class="overlay1" >
-                            <div class="overlay-caption1">
-                                <h5 >吃拿卡要</h5>
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work">
-                    <a href="images/work 2.jpg" class="work-box">
-                        <img src="images/work 2.jpg" class="img-responsive" alt="">
-                        <div class="overlay">
-                            <div class="overlay-caption">
-                                <h5>先行赔付</h5>
-
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work1">
-                    <a href="images/work 3.jpg" class="work-box1">
-                        <img src="images/work 3.jpg" class="img-responsive" alt="">
-                        <div class="overlay1">
-                            <div class="overlay-caption1">
-                                <h5>服务恶劣</h5>
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work">
-                    <a href="images/work 4.jpg"  class="work-box">
-                        <img src="images/work 4.jpg" class="img-responsive" alt="">
-                        <div class="overlay">
-                            <div class="overlay-caption">
-                                <h5>APP预约</h5>
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work">
-                    <a href="images/work%205.jpg" class="work-box">
-                        <img src="images/work 5.jpg" class="img-responsive" alt="">
-                        <div class="overlay">
-                            <div class="overlay-caption">
-                                <h5>管家监管</h5>
-
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work1">
-                    <a href="images/work 6.jpg" class="work-box1">
-                        <img src="images/work 6.jpg" class="img-responsive" alt="">
-                        <div class="overlay1">
-                            <div class="overlay-caption1">
-                                <h5>隐藏收费</h5>
-
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work">
-                    <a href="images/work 7.jpg" class="work-box">
-                        <img src="images/work 7.jpg" class="img-responsive" alt="">
-                        <div class="overlay">
-                            <div class="overlay-caption">
-                                <h5>三方保障</h5>
-
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 work1">
-                    <a href="images/work-8.jpg" class="work-box1">
-                        <img src="images/work-8.jpg" class="img-responsive" alt="">
-                        <div class="overlay1">
-                            <div class="overlay-caption1">
-                                <h5>约车困难</h5>
-
-                            </div>
-                        </div><!-- overlay -->
-                    </a>
+            <div class="col-md-4 col-sm-6 feature text-center">
+                <span class="icon"> <img src="images/tousu.svg" class="img-responsive" alt=" "/></span>
+                <div class="feature-content">
+                    <h5>投诉处理</h5>
+                    <p>投诉直达一步平台，服务更有保障</p>
                 </div>
             </div>
-        </div>
-    </section><!-- works -->
-    <section id="teams" class="section teams" >
-        <div class="container"  id="team">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 fear text-center"  >
-                    <h2>一步团队&nbsp; 因你而聚</h2>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center">
-                    <h5 style="padding: 2px;color: #9a9a9a">Step team for you and poly  </h5>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
-                    <img src="images/h1.png" alt=""/>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-    <div class="row" id="teamer">
-        <div class="col-md-12 text-center" >
-            <img src="images/zpq.png" alt="" class="img-responsive text-center">
         </div>
     </div>
-        </div>
-    </section><!-- teams -->
-    <section id="testimonials" class="section testimonials no-padding"style="margin-top: -10px" >
-        <div class="container-fluid" >
-            <div class="row no-gutter">
-               <div class="col-md-6"><img src="images/gongsi.jpg" alt="" class="img-responsive"></div>
-               <div class="col-md-6"> <p class="anither" style="font-size: 1.26em"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;北京一步科技是一家朝气蓬勃的互联网公司。我们致力于全程陪伴呵护用户的车生活，用移动互联的技术来为用户学车，用车的过程提供贴心服务以及服务对接。
-               </p>
-                   <p class="anither">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一步学车通过先进的产品技术，新颖的模式，配以优质的线下服务，深入变革驾考行业，树立行业新标杆；让学车变得自主高效，增加教练收入的同时，更让驾校管理变得轻松有序，从而推动整个行业的和谐发展。</p> </div>
+    <div class="container-fluid" >
+        <div class="row no-gutter">
+            <div class="col-lg-3 col-md-6 col-sm-6 work1">
+                <a href="images/work 1.jpg" class="work-box1" style="height: 300px">
+                    <img src="images/work 1.jpg" class="img-responsive" alt="">
+                    <div class="overlay1" >
+                        <div class="overlay-caption1">
+                            <h5 >吃拿卡要</h5>
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work">
+                <a href="images/work 2.jpg" class="work-box">
+                    <img src="images/work 2.jpg" class="img-responsive" alt="">
+                    <div class="overlay">
+                        <div class="overlay-caption">
+                            <h5>先行赔付</h5>
+
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work1">
+                <a href="images/work 3.jpg" class="work-box1">
+                    <img src="images/work 3.jpg" class="img-responsive" alt="">
+                    <div class="overlay1">
+                        <div class="overlay-caption1">
+                            <h5>服务恶劣</h5>
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work">
+                <a href="images/work 4.jpg"  class="work-box">
+                    <img src="images/work 4.jpg" class="img-responsive" alt="">
+                    <div class="overlay">
+                        <div class="overlay-caption">
+                            <h5>APP预约</h5>
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work">
+                <a href="images/work%205.jpg" class="work-box">
+                    <img src="images/work 5.jpg" class="img-responsive" alt="">
+                    <div class="overlay">
+                        <div class="overlay-caption">
+                            <h5>管家监管</h5>
+
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work1">
+                <a href="images/work 6.jpg" class="work-box1">
+                    <img src="images/work 6.jpg" class="img-responsive" alt="">
+                    <div class="overlay1">
+                        <div class="overlay-caption1">
+                            <h5>隐藏收费</h5>
+
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work">
+                <a href="images/work 7.jpg" class="work-box">
+                    <img src="images/work 7.jpg" class="img-responsive" alt="">
+                    <div class="overlay">
+                        <div class="overlay-caption">
+                            <h5>三方保障</h5>
+
+                        </div>
+                    </div><!-- overlay -->
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 work1">
+                <a href="images/work-8.jpg" class="work-box1">
+                    <img src="images/work-8.jpg" class="img-responsive" alt="">
+                    <div class="overlay1">
+                        <div class="overlay-caption1">
+                            <h5>约车困难</h5>
+
+                        </div>
+                    </div><!-- overlay -->
+                </a>
             </div>
         </div>
-    </section><!-- testimonials -->
-    <section  class="section teams" id="shop">
-        <div class="container " >
-            <div class="row">
-                <div class="col-md-12 col-sm-12 fear text-center" >
-                    <h2 style="color: #6c6c6c">一步商城</h2>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center">
-                    <h5 style="padding: 2px;color: #9a9a9a">ONE STEP MALL </h5>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
-                    <img src="images/h.png" alt=""/>
-                </div>
+    </div>
+</section><!-- works -->
+<section id="teams" class="section teams" style="margin-top: 10px;" >
+    <div class="container"  id="team">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 fear text-center"  >
+                <h2>一步团队&nbsp; 因你而聚</h2>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center">
+                <h5 style="padding: 2px;color: #9a9a9a">Step team for you and poly  </h5>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
+                <img src="images/h1.png" alt=""/>
             </div>
         </div>
-        <div class="container">
-            <div class="row text-center ">
-                <div class="col-md-4 col-sm-6 well-bj">
-                    <div class="person">
-                        <p class="person-bx">一步包过班（北京）</p>
-                        <p class="person-jq">
-                            <span class="person-jg" >$4280</span>
-                         <span class="person-jk">驾考类型C1/C2</span></p>
-                        <div class="person-font">
+    </div>
+    <div class="container">
+        <div class="row" id="teamer">
+            <div class="col-md-12 text-center" >
+                <img src="images/zpq.png" alt="" class="img-responsive text-center">
+            </div>
+        </div>
+    </div>
+</section><!-- teams -->
+<section id="testimonials" class="section testimonials no-padding"style="margin-top: -10px" >
+    <div class="container-fluid" >
+        <div class="row no-gutter">
+            <div class="col-md-6"><img src="images/gongsi.jpg" alt="" class="img-responsive"></div>
+            <div class="col-md-6"> <p class="anither" style="font-size: 1.26em"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;北京一步科技是一家朝气蓬勃的互联网公司。我们致力于全程陪伴呵护用户的车生活，用移动互联的技术来为用户学车，用车的过程提供贴心服务以及服务对接。
+            </p>
+                <p class="anither">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一步学车通过先进的产品技术，新颖的模式，配以优质的线下服务，深入变革驾考行业，树立行业新标杆；让学车变得自主高效，增加教练收入的同时，更让驾校管理变得轻松有序，从而推动整个行业的和谐发展。</p> </div>
+        </div>
+    </div>
+</section><!-- testimonials -->
+<section  class="section teams" id="shop" >
+    <div class="container " >
+        <div class="row">
+            <div class="col-md-12 col-sm-12 fear text-center" >
+                <h2 style="color: #6c6c6c;margin-top: -15px">一步商城</h2>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center">
+                <h5 style="padding: 2px;color: #9a9a9a">ONE STEP MALL </h5>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
+                <img src="images/h.png" alt=""/>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row text-center ">
+            <div class="col-md-4 col-sm-6 well-bj">
+                <div class="person">
+                    <p class="person-bx">一步包过班（北京）</p>
+                    <p class="person-jq">
+                        <span class="person-jg" >$4280</span>
+                        <span class="person-jk">驾考类型C1/C2</span></p>
+                    <div class="person-font">
                         <p>平台保障</p>
                         <p >一费到底</p>
                         <p>75天拿本</p>
                         <p>一对一练车</p>
                         <p>…</p>
-                        </div>
-                    </div><!-- person -->
-                </div>
-                <div class="col-md-4 col-sm-6 well-bj2">
-                    <div class="person">
-                        <p class="person-bx">一步保障班（北京）</p>
-                        <p class="person-jq">
-                            <span class="person-bj" >$4700 <span class="person-i">起</span></span>
-                            <span class="person-jk">驾考类型C1/C2</span></p>
-                        <div class="person-font">
+                    </div>
+                </div><!-- person -->
+            </div>
+            <div class="col-md-4 col-sm-6 well-bj2">
+                <div class="person">
+                    <p class="person-bx">一步保障班（北京）</p>
+                    <p class="person-jq">
+                        <span class="person-bj" >$4700 </span>
+                        <span class="person-jk">驾考类型C1/C2</span></p>
+                    <div class="person-font">
                         <p>平台保障</p>
-                        <p >一费到底</p>
-                        <p>75天拿本</p>
+
                         <p>一对一练车</p>
                         <p>…</p>
-                            <div class="text-center person-font3">更多信息，下载app或关注公众号</div>
-                        </div>
-                    </div><!-- person -->
-                </div>
-                <div class="col-md-4 col-sm-6 well-bj3">
-                    <div class="person">
-                        <p class="person-bx">其他班型（泉州）</p>
-                        <p class="person-jq">
-                            <span class="person-jg" >$5980</span>
-                            <span class="person-jk">驾考类型C1/C2</span></p>
-                        <div class="person-font">
+                        <div class="text-center person-font3">更多信息，下载app或关注公众号</div>
+                    </div>
+                </div><!-- person -->
+            </div>
+            <div class="col-md-4 col-sm-6 well-bj3">
+                <div class="person">
+                    <p class="person-bx">其他班型（泉州）</p>
+                    <p class="person-jq">
+                        <span class="person-jg" >$4800<span class="person-i">起</span></span>
+                        <span class="person-jk">驾考类型C1/C2</span></p>
+                    <div class="person-font">
                         <p>平台保障</p>
                         <p >三个月拿本</p>
                         <p>考试优先</p>
                         <p>约车优先</p>
                         <p>…</p>
-                        </div>
-                    </div><!-- person -->
-                </div>
+                    </div>
+                </div><!-- person -->
             </div>
         </div>
-    </section><!-- teams -->
-    <section id="download" class="section download">
-        <div class="container " style=" margin-top: -130px">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 fear text-center" >
-                    <h2 style="color: #6c6c6c">下载APP</h2>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center">
-                    <h5 style="padding: 2px;color: #9a9a9a">Download app </h5>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
-                    <img src="images/h.png" alt=""/>
-                </div>
+    </div>
+</section><!-- teams -->
+<section id="download" class="section download">
+    <div class="container " style=" margin-top: -130px">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 fear text-center" >
+                <h2 style="color: #6c6c6c">下载APP</h2>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center">
+                <h5 style="padding: 2px;color: #9a9a9a">Download app </h5>
+            </div>
+            <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
+                <img src="images/h.png" alt=""/>
             </div>
         </div>
-        <div class="container" >
-            <div class="col-md-3  text-center"  >
-                <img src="images/xyd.png" alt=""/>
-                <h4 >学员端</h4>
+    </div>
+    <div class="container" >
+        <div class="col-md-3  text-center"  >
+            <img src="images/xyd.png" alt=""/>
+            <h4 >学员端</h4>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="images/jld.jpg"   alt=""/>
+            <h4>教练端</h4>
+        </div>
+        <div class="col-md-3  text-center" >
+            <img src="images/fuwu.png" style="" alt=""/>
+            <h4 >微信服务号</h4>
+        </div>
+    </div>
+    <div class="container " style="margin-top:4%;">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 fear text-center" >
+                <h2 style="color: #6c6c6c">合作伙伴</h2>
             </div>
-            <div class="col-md-6 text-center">
-                <img src="images/jld.jpg"   alt=""/>
-                <h4>教练端</h4>
+            <div class="col-md-12 col-sm-12 text-center">
+                <h5 style="padding: 2px;color: #9a9a9a">Partner </h5>
             </div>
-            <div class="col-md-3  text-center" >
-                <img src="images/fuwu.png" style="" alt=""/>
-                <h4 >微信服务号</h4>
+            <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
+                <img src="images/h.png" alt=""/>
             </div>
         </div>
-        <div class="container " style="margin-top:4%;">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 fear text-center" >
-                    <h2 style="color: #6c6c6c">合作伙伴</h2>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center">
-                    <h5 style="padding: 2px;color: #9a9a9a">Partner </h5>
-                </div>
-                <div class="col-md-12 col-sm-12 text-center"  style="height: 95px;line-height: 95px">
-                    <img src="images/h.png" alt=""/>
-                </div>
-            </div>
-        </div>
-        </div>
-        <div id="friendlink " >
-            <div class="container ">
-                <div class="row " >
-                    <div class="col-md-2 col-sm-3 col-md-offset-2 col-xs-6"><img src="images/jzh.png"class="img-responsive" alt=""/></div>
-                    <div class="col-md-2 col-sm-3  col-xs-6"><img src="images/jxlm.png"class="img-responsive" alt=""/></div>
-                    <div class="col-md-2 col-sm-3  col-xs-6"><img src="images/jajt.png"class="img-responsive" alt=""/></div>
-                    <div class="col-md-2 col-sm-3  col-xs-6"><img src="images/zgpa.png"class="img-responsive" alt=""/></div>
+    </div>
+    </div>
+    <div id="friendlink " >
+        <div class="container ">
+            <div class="row " >
+                <div class="col-md-2 col-sm-3 col-md-offset-2 col-xs-6"><img src="images/jzh.png"class="img-responsive" alt=""/></div>
+                <div class="col-md-2 col-sm-3  col-xs-6"><img src="images/jxlm.png"class="img-responsive" alt=""/></div>
+                <div class="col-md-2 col-sm-3  col-xs-6"><img src="images/jajt.png"class="img-responsive" alt=""/></div>
+                <div class="col-md-2 col-sm-3  col-xs-6"><img src="images/zgpa.png"class="img-responsive" alt=""/></div>
 
+            </div>
+        </div>
+    </div>
+</section><!-- download -->
+<footer class="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col col-md-4">
+                    <h5>地址：</h5>
+                    <p>北京市海淀区中关村<br>财富中心E世界大厦C座743</p>
+                </div>
+                <div class="footer-col col-md-4">
+                    <h5>友情链接</h5>
+                    <ul class="footer-share">
+                        <li><img src="images/f.jpg" alt=""></li>
+                        <li><img src="images/n.jpg" alt=""></li>
+                        <li><img src="images/k.jpg" alt=""></li>
+                    </ul>
+                </div>
+                <div class="footer-col col-md-4">
+                    <h5>客服（报名）电话：400-626-9255</h5>
+                    <p>这里，有一帮怀揣梦想的人；这里，有一帮努力追逐的伙伴；这里，有你想要的未来；这里也有你发展的平台；<br/>
+                        （HR）邮箱yb@ybxch.com
+                    </p>
                 </div>
             </div>
         </div>
-    </section><!-- download -->
-    <footer class="footer">
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h5>地址：</h5>
-                        <p>北京市海淀区中关村<br>财富中心E世界大厦C座743</p>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h5>友情链接</h5>
-                        <ul class="footer-share">
-                            <li><a href="javascript:(0)"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="javascript:(0)"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="javascript:(0)"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="javascript:(0)" ><i class="fa fa-google-plus"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h5>客服（报名）电话：400-626-9255</h5>
-                        <p>这里，有一帮怀揣梦想的人；这里，有一帮努力追逐的伙伴；这里，有你想要的未来；这里也有你发展的平台；<br/>
-                            （HR）邮箱yb@ybxch.com
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div><!-- footer top -->
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="col-md-12">
-                    <p id="dostome">2015-2016北京科技有限公司 京ICP备15063627 <br/>技术支持  <i class="fa fa-heart pulse"></i>  <a href="http://kamalchaneman.com/">北京一步科技有限公司</a></p>
-                </div>
+    </div><!-- footer top -->
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="col-md-12">
+                <p id="dostome">2015-2016北京科技有限公司 京ICP备15063627 <br/>技术支持 <img src="images/g.jpg" alt=""> 北京一步科技有限公司</a></p>
             </div>
         </div>
-    </footer><!-- footer -->
-    <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
-    <script src="js/bootstrap.min.js"></script>
- <script src="js/jquery.waypoints.min.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-XXXX-X');
-        ga('send', 'pageview');
-        $('.carousel').carousel({
-            interval: 3000
-        })
-     </script>
-    <script src='//kefu.easemob.com/webim/easemob.js?tenantId=11016&hide=false' async='async'></script>
+    </div>
+</footer><!-- footer -->
+<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.waypoints.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-XXXX-X');
+    ga('send', 'pageview');
+    $('.carousel').carousel({
+        interval: 3000
+    })
+</script>
+<script src='//kefu.easemob.com/webim/easemob.js?tenantId=11016&hide=false' async='async'></script>
 </body>
 </html>

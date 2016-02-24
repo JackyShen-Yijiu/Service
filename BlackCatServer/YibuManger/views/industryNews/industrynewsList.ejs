@@ -33,7 +33,7 @@
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
                                         <td >
-                                            <a href="/admin/manage/editIndustrynews?activityid={{content._id}}" >
+                                            <a href="/news?newsid={{content._id}}" >
                                                 <span>{{content.title}}</span> </a>
                                         </td>
                                         <td >
@@ -43,13 +43,11 @@
                                             <span>{{content.description}}</span>
                                         </td>
                                         <td >
-                                            <!--
+
                                             <a href="{{content.contenturl}}" target="_blank" >
                                                 <span>{{content.contenturl}}</span></a>
-                                            -->
-                                            <a href="/admin/manage/advisoryLink?activityid={{content.activityid}}"
-                                                ><span>{{content.contenturl}}</span>
-                                                </a>
+
+
 
                                         </td>
 

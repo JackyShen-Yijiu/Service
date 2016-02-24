@@ -398,6 +398,24 @@ exports.getmyuncommentreservation=function(userid,subjectid,callback){
             })
         });
 };
+ // 获取我预约过的教练
+exports.getMyReservationCoach=function(userid,callback){
+    reservationmodel.distinct("coachid",{userid:new mongodb.ObjectId(userid)})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询预约教练出错："+err);
+            }
+            coachmode.find({"_id":{"$in":data}})
+                .select("_id name driveschoolinfo headportrait  Gender")
+                .exec(function(err,data){
+                    if(err){
+                        return callback("查询预约教练出错："+err);
+                    }
+                    return callback(null,data);
+            })
+    })
+}
+//getMyReservation("568b21993b4fb24b6b5614a6",function(err,data){})
 //获取用户的预约信息
 exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
     var searhinfo={userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid};
@@ -930,7 +948,7 @@ exports.GetComment=function(queryinfo,callback){
     if(queryinfo.type==appTypeEmun.UserType.User){
         reservationmodel.find({"userid":new mongodb.ObjectId(queryinfo.userid),"is_coachcomment":"true"})
             .select("coachid coachcomment finishtime")
-            .populate("coachid","_id  name headportrait  ")
+            .populate("coachid","_id  name headportrait gender ")
             .skip((queryinfo.index-1)*10)
             .limit(10)
             .sort({"coachcomment.commenttime":-1})

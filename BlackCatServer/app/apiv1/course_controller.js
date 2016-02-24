@@ -28,7 +28,23 @@ exports.GetCourseByCoach=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
-
+exports.getMyReservationCoach=function(req,res){
+    var userid=req.query.userid;
+    if(!req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法验证权限",[]));
+    }
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserver.getMyReservationCoach(userid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.postReservation=function(req,res){
     //console.log(req.body);
     var reservationinfo= {

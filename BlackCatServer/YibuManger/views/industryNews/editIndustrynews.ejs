@@ -121,7 +121,12 @@
                                         $scope.formData=response.data;
                                         $("#logimgimg").attr("src",$scope.formData.logimg);
                                         $("#newstype").val($scope.formData.newstype);
-                                        UE.getEditor('editor').setContent($scope.formData.content?$scope.formData.content:"");
+
+                                        ue.addListener("ready", function () {
+                                            // editor准备好之后才可以使用
+                                            UE.getEditor('editor').setContent($scope.formData.content?$scope.formData.content:"");
+                                        });
+                                        ue.setContent($scope.formData.content?$scope.formData.content:"");
                                        // UE.getEditor('editor').getContent()
                                     }
                                 })
