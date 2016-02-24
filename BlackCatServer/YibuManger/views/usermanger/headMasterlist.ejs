@@ -209,13 +209,13 @@
     ybxcApp.controller("userlist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getadminuserlist?bussinsee=mer");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getheadmasterlist?bussinsee=mer");
 
         $scope.adduser=function(){
             $scope.formData = {};
             layer.open({
                 type: 1,
-                title: '添加管理员',
+                title: '添加驾校校长',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['850px' , '700px'],

@@ -365,6 +365,8 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getadminuserlist",adminserver.getadminuserlist);
     router.post("/manage/updateadminuser",adminserver.updateadminuser);
     router.get("/manage/deleteadminuser",adminserver.deleteadminuser);
+    // 校长管理
+    router.get("/manage/getheadmasterlist",adminserver.getheadmasterlist);
 
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;

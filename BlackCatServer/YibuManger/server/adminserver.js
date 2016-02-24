@@ -19,6 +19,7 @@ var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
 var usermodel=mongodb.UserModel;
 var classtypemodel=mongodb.ClassTypeModel;
+var headMastermodel=mongodb.HeadMasterModel;
 //var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var headMasterOperation=require("../../Server/headmaster_operation_server");
@@ -1121,7 +1122,40 @@ exports.deleteadminuser=function(req,res){
     catch (ex){
         return res.json(new BaseReturnInfo(0, "删除信息出错："+ex.message, "") );
     }
-}
+};
+//=========================================校长管理
+exports.getheadmasterlist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    var name=req.query.searchKey?req.query.searchKey:"";
+    var  schoolid=req.query.schoolid?req.query.schoolid:"";
+    var serchcondition= {"name":new RegExp(name)};
+    if (schoolid!=""){
+        serchcondition.driveschool=new mongodb.ObjectId(schoolid);
+    }
+    headMastermodel.find(serchcondition)
+        .populate('driveschool',"_id name")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({date:-1})
+        .exec(function(err,data) {
+            if (err){
+                console.log(err);
+            }
+            defaultFun.getModelCount(headMastermodel,serchcondition,function (err,headmastercount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: headmastercount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(headmastercount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+};
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
     var index=req.query.index?req.query.index:0;
