@@ -1945,8 +1945,8 @@ exports.getMyWallet=function(queryinfo,callback){
 exports.getapplyschoolinfo=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
         .select("_id  name mobile applystate applyinfo   scanauditurl applyschool" +
-            " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo")
-        .populate("applyschool"," _id  applynotes")
+            " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo paytype  paytypestatus")
+        .populate("applyschool"," _id  applynotes logoimg")
         .exec(function(err,data){
             if(err){
                 return callback("查询用户出错");
@@ -1969,6 +1969,9 @@ exports.getapplyschoolinfo=function(userid,callback){
                 applycoachinfo:data.applycoachinfo,
                 carmodel:data.carmodel,
                 applyclasstypeinfo:data.applyclasstypeinfo,
+                paytype:data.paytype,
+                paytypestatus:data.paytypestatus,
+                schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
                 applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
             }
             return callback(null,userinfo);

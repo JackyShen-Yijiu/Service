@@ -8,7 +8,7 @@
                         <h3>校长列表</h3>
                         <div style="float: right ; padding-right: 10px" >
                             <div style="float: left;  padding-right: 10px">
-                                <a  ng-click="adduser()"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                                <a  ng-click="addheadmaster()"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
                             </div>
                             <div style="float: right ; padding-right: 10px">
                                 <% include ../public/searchBox %>
@@ -20,64 +20,41 @@
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-                                        <th> 账号 </th>
+                                        <th>头像</th>
                                         <th> 姓名</th>
-                                        <th> 邮箱</th>
                                         <th> 手机号</th>
-                                        <th> 用户类型</th>
-                                        <th> 所在驾校</th>
                                         <th> 用户状态</th>
-                                        <th> 创建日期</th>
+                                        <th> 所在驾校</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
 
                                         <td >
-                                            <span>{{content.userName}}</span>
+                                           <img style="height: 60px;width: 60px;"  src="{{content.headportrait}}">
                                         </td>
                                         <td >
                                             <span>{{content.name}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.email}}</span>
-                                        </td>
-                                        <td >
-                                            <span>{{content.phoneNum}}</span>
+                                            <span>{{content.mobile}}</span>
                                         </td>
 
                                         <td >
-                                            <span ng-switch="content.usertype">
-                                                 <div ng-switch-when=0>
-                                                     管理员
-                                                 </div>
-                                                <div ng-switch-when=1>
-                                                    驾校管理员
-                                                </div></span>
+                                            <span>{{content.driveschool.name}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.schoolid.name}}</span>
-                                        </td>
-                                        <td >
-                                            <span ng-switch="content.userstate">
-                                                <div ng-switch-when=0>
+                                            <span ng-switch="content.is_lock">
+                                                <div ng-switch-when=false>
                                                     正常
                                                 </div>
-                                                <div ng-switch-when=1>
+                                                <div ng-switch-when=true>
                                                     锁定
                                                 </div>
-                                            <div ng-switch-when=2>
-                                                删除
-                                            </div>
                                             </span>
                                         </td>
-                                        <td >
-                                            <span>{{content.date|date:'yyyy-MM-dd'}}</span>
-                                        </td>
                                         <td class="td-actions">
-                                            <a ng-click="edituser(content._id,content.name)"
+                                            <a ng-click="editheadmaster(content._id,content.name)"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a ng-click="deleteuser(content._id,content.name)"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
                                         </td>
 
 
@@ -94,20 +71,11 @@
                             <div class="tab-pane" id="formcontrols">
                                 <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
                                     <fieldset>
-                                        <div class="control-group">
-                                            <label class="control-label" for="userName" >账号</label>
-                                            <div class="controls">
-                                                <input type="text" class="span6 " name="userName"    id="userName"  placeholder="账号最多三十个字"
-                                                       ng-minlength="5" ng-maxlength="30" ng-model="formData.userName" required>
-                                                <div class="alert alert-danger span4"  ng-show="myForm.userName.$dirty &&
-                                                myForm.userName.$invalid && !myForm.userName.$pristine"
-                                                     role="alert">5-30个非特殊字符</div>
-                                            </div> <!-- /controls -->
-                                        </div>
+
                                         <div class="control-group">
                                             <label class="control-label" for="name" >姓名</label>
                                             <div class="controls">
-                                                <input type="text" class="span6 " name="name"    id="name"  placeholder="名称"
+                                                <input type="text" class="span6 " name="name"   id="name"  placeholder="名称"
                                                        ng-model="formData.name" required>
                                                 <div class="alert alert-danger span4"  ng-show="myForm.name.$error.required"
                                                      role="alert">姓名必须</div>
@@ -119,7 +87,7 @@
                                             <div class="controls">
                                                 <div class="input-append">
                                                     <input class="span4 m-wrap"   id="password" type="password"
-                                                           ng-model="formData.password" ng-minlength="5" ng-maxlength="30"  >
+                                                           ng-model="formData.password" ng-minlength="5" ng-maxlength="300" required  >
                                                     <div class="alert alert-danger span4"  ng-show="myForm.password.$dirty &&
                                                 myForm.password.$invalid && !myForm.password.$pristine"
                                                          role="alert">5-30个非特殊字符</div>
@@ -136,45 +104,29 @@
                                             </div>
                                         </div><!--control group-->
                                         <div class="control-group">
-                                            <label class="control-label" for="phoneNum">手机</label>
+                                            <label class="control-label" for="mobile">手机</label>
                                             <div class="controls">
-                                                <input type="tel" class="span4" id="phoneNum"  ng-model="formData.phoneNum"
+                                                <input type="tel" class="span4" id="mobile"  ng-model="formData.mobile"
                                                        required >
-                                                <div class="alert alert-danger span4"  ng-show="myForm.name.$error.required"
+                                                <div class="alert alert-danger span4"  ng-show="myForm.mobile.$error.required"
                                                      role="alert">手机号必须</div>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
 
+
                                         <div class="control-group">
-                                            <label class="control-label" for="email">邮箱</label>
+                                            <label class="control-label" for="is_lock">用户状态</label>
                                             <div class="controls">
-                                                <input type="email" class="span4" id="email"  ng-model="formData.email" >
-                                            </div> <!-- /controls -->
-                                        </div> <!-- /control-group -->
-                                        <div class="control-group">
-                                            <label class="control-label" for="usertype">用户类型</label>
-                                            <div class="controls">
-                                                <select class="span4" id="usertype"   required  >
-                                                    <option value="0">管理员</option>
-                                                    <option value="1">驾校管理员</option>
-                                                </select>
-                                            </div> <!-- /controls -->
-                                        </div> <!-- /control-group -->
-                                        <div class="control-group">
-                                            <label class="control-label" for="userstate">用户状态</label>
-                                            <div class="controls">
-                                                <select class="span4" id="userstate"     required >
-                                                    <option value="0">正常</option>
-                                                    <option value="1">锁定</option>
-                                                    <option value="2">删除</option>
+                                                <select class="span4" id="is_lock"     required >
+                                                    <option value=false>正常</option>
+                                                    <option value=true>锁定</option>
                                                 </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group">
                                             <label class="control-label" for="schoolid">所在驾校</label>
                                             <div class="controls">
-                                                <select class="span4" id="schoolid"
-                                                        ng-model="$scope.formData.schoolid" >
+                                                <select class="span4" id="schoolid">
                                                     <% extradata.forEach(function(r,index){ %>
                                                     <option value="<%=r._id%>"><%=r.name%></option>
                                                     <%})%>
@@ -206,23 +158,25 @@
 <script type="text/javascript" src="/js/qiniu.js"></script>
 <script type="text/javascript" src="/js/qiniuupfile.js"></script>
 <script>
-    ybxcApp.controller("userlist",function($scope,$http){
+    ybxcApp.controller("headmasterlist",function($scope,$http){
         $scope.formData = {};
+        var schoolid="<%=schooldata._id%>";
+                console.log(schoolid);
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getheadmasterlist?bussinsee=mer");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getheadmasterlist?bussinsee=mer&schoolid=<%=schooldata._id%>");
 
-        $scope.adduser=function(){
+        $scope.addheadmaster=function(){
             $scope.formData = {};
             layer.open({
                 type: 1,
                 title: '添加驾校校长',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '700px'],
+                area : ['850px' , '600px'],
                 content:$("#editpage")
             });
         };
-        $scope.deleteuser=function(userid,name){
+        $scope.editheadmaster=function(userid,name){
             $scope.formData = {};
             for (i=0;i<$scope.data.length;i++){
                 if ($scope.data[i]._id==userid){
@@ -237,54 +191,15 @@
                 });
                 return;
             };
-            layer.confirm('你确定要删除用户 '+name+' 吗？', {
-                btn: ['确认','返回'] //按钮
-            }, function(){
-                $http.get("/admin/manage/deleteadminuser?userid="+userid) .success(function(response){
-                    if (response.type==0){
-                        layer.msg(response.msg, {
-                            icon: 2,
-                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
-                        });
-                    }else{
-                        layer.msg("删除成功", {
-                            icon: 1,
-                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
-                        });
-                        window.location.href="/admin/manage/adminusermanger";
-                    }
-                })
-            }, function(){
-                return;
-            });
+            $("#is_lock").val(($scope.formData.is_lock?$scope.formData.is_lock:0));
+            $("#schoolid").val($scope.formData.driveschool?$scope.formData.driveschool._id:"");
 
-        }
-        $scope.edituser=function(userid,name){
-            $scope.formData = {};
-            for (i=0;i<$scope.data.length;i++){
-                if ($scope.data[i]._id==userid){
-                    $scope.formData=$scope.data[i];
-                    break;
-                }
-            };
-            if ($scope.formData._id===undefined){
-                layer.msg("没有查到用户", {
-                    icon: 2,
-                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
-                });
-                return;
-            };
-            $("#usertype").val(($scope.formData.usertype?$scope.formData.usertype:0));
-            $("#userstate").val(($scope.formData.userstate?$scope.formData.userstate:0));
-            if($scope.formData.usertype==1){
-                $("#schoolid").val($scope.formData.schoolid?$scope.formData.schoolid._id:"");
-            }
             layer.open({
                 type: 1,
-                title: '编辑用户：'+name,
+                title: '编辑校长：'+name,
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '520px'],
+                area : ['850px' , '500px'],
                 content:$("#editpage")
             });
         }
@@ -298,7 +213,7 @@
             }
             console.log($scope.formData);
             //return;
-            $http.post("/admin/manage/updateadminuser",$scope.formData)
+            $http.post("/admin/manage/updateheadmaster",$scope.formData)
                     .success(function(response){
                         if (response.type==0){
                             layer.msg(response.msg, {
@@ -310,27 +225,30 @@
                                 icon: 1,
                                 time: 5000 //2秒关闭（如果不配置，默认是3秒）
                             });
-                            window.location.href="/admin/manage/adminusermanger";
+                            window.location.href="/admin/manage/headmastermanger";
                         }
                     })
         };
         var savedata=function(){//写入数据
-            $scope.formData.usertype=$("#usertype").val();
-            $scope.formData.userstate=$("#usertype").val();
-            if($scope.formData.usertype==1){
-                $scope.formData.schoolid= $("#schoolid").val();
-                console.log($scope.formData.schoolid);
-                if ( $scope.formData.schoolid.indexOf(undefined)>=0){
-                    layer.msg("必须选择驾校", {
+            $scope.formData.is_lock=$("#is_lock").val();
+            $scope.formData.driveschool= $("#schoolid").val();
+            //console.log($scope.formData.schoolid);
+            if($scope.formData._id===undefined){
+                if ($scope.formData.password!=$scope.formData.checkpassword){
+                    layer.msg("两次密码必须相等", {
                         icon: 2,
                         time: 5000 //2秒关闭（如果不配置，默认是3秒）
-                    });
-                    return false;
-                }
-            }else {
-                $scope.formData.schoolid=undefined;
-            }
+                    }); return false;
 
+                }
+            }
+            if ( $scope.formData.driveschool.indexOf(undefined)>=0){
+                layer.msg("必须选择驾校", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             return true;
         }
     });
