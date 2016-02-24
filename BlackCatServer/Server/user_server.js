@@ -1973,6 +1973,9 @@ exports.getapplyschoolinfo=function(userid,callback){
                 paytypestatus:data.paytypestatus,
                 schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
                 applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
+            };
+            if(userinfo.applyclasstypeinfo.onsaleprice===undefined){
+                userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
             }
             return callback(null,userinfo);
         })
@@ -2241,6 +2244,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyclasstypeinfo.id=applyinfo.classtypeid;
                   userdata.applyclasstypeinfo.name=classtypedata.classname;
                   userdata.applyclasstypeinfo.price=classtypedata.price;
+                          userdata.applyclasstypeinfo.onsaleprice=classtypedata.onsaleprice;
                   userdata.vipserverlist=classtypedata.vipserverlist;
                   userdata.applystate=appTypeEmun.ApplyState.Applying;
                   userdata.applyinfo.applytime=new Date();

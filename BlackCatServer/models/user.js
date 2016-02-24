@@ -56,7 +56,8 @@ var  UserSchema=new Schema({
     applycoachinfo:{name:String,id:String},
     //---------------------申请课程信息
     applyclasstype:{type: Schema.Types.ObjectId, ref: 'classtype'},
-    applyclasstypeinfo:{name:String,id:String,price:Number},
+    applyclasstypeinfo:{name:String,id:String,price:Number,
+        onsaleprice:Number},
 
     displayuserid:{type:String,default:''}, //显示id
     wallet:{type:Number,default:0}, // 钱包

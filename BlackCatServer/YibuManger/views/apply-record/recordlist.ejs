@@ -85,8 +85,8 @@
 
 
                                         <td class="td-actions">
-                                            <a  id="editapplyinfo"
-                                                ng-click="editApplyinfo(content._id,content.name)"
+                                            <a  id="editapplyinfo" ng-disabled="content.applystate!=1"
+                                                ng-click="content.applystate!=1 ||editApplyinfo(content._id,content.name)"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <!--<a href="#"-->
                                                <!--class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>-->
