@@ -248,7 +248,11 @@ var  returnAdminRouter=function(io) {
     });
     //报名记录
     router.get("/manage/recordlist" ,function(req, res, next) {
+        if (req.session.schooldata==""){
         res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist"));
+        }else{
+            res.render('apply-record/recordlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/recordlist"));
+        }
     });
     //教练审核记录
     router.get("/manage/coachCheckList" ,function(req, res, next) {

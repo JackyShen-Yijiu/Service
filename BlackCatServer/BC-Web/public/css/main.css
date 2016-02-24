@@ -687,7 +687,7 @@ width: 100%; height: 100%;
 #teamer{height:60%;
 margin-bottom: 40px;  }
 #team{position: relative;z-index: 9;text-align: center;margin: 0 auto;width: 100%;margin-top:98px;}
-#teamer img{margin: 0 auto;width: 55%;height: 55%;margin-top: -50px}
+#teamer img{margin: 0 auto;width: 100%;height: 100%;margin-top: -50px}
 #team img{ margin: 0 auto;display: block;text-align: center;width: 10%;height: auto;}
 #team h2{font-size: 2.86em;color: #6c6c6c;}
 #shop{margin-top: 8px}

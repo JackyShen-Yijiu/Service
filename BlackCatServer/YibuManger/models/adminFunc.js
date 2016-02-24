@@ -15,6 +15,7 @@ var adminFunc = {
         return {
             extradata:extradata,
             searchKey : searchKey,
+            schoolid:"",
             currentLink : currentLink,
             layout : 'public/adminTemple'
         }

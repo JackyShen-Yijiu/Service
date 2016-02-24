@@ -1565,10 +1565,15 @@ exports.getApplySchoolinfo=function(req,res){
     var index=req.query.index?req.query.index:0;
     var limit=req.query.limit?req.query.limit:10;
     var name=req.query.searchKey?req.query.searchKey:"";
+    var schoolid=req.query.schoolid?req.query.schoolid:"";
     var searchinfo={applystate:1};
     if (name!=""){
         searchinfo={"name":new RegExp(name)};
     }
+    if (schoolid!=""){
+        searchinfo.applyschool=schoolid;
+    }
+    console.log(searchinfo);
     usermodel.find(searchinfo)
         .select("_id name address mobile carmodel  referrerfcode  applystate applyinfo  applyschoolinfo  " +
             "applycoachinfo applyclasstypeinfo  createtime source paytype paytypestatus")

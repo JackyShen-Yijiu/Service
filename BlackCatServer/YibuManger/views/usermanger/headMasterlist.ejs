@@ -160,10 +160,9 @@
 <script>
     ybxcApp.controller("headmasterlist",function($scope,$http){
         $scope.formData = {};
-        var schoolid="<%=schooldata._id%>";
-                console.log(schoolid);
+        var schoolid="<%=schoolid%>";
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getheadmasterlist?bussinsee=mer&schoolid=<%=schooldata._id%>");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getheadmasterlist?bussinsee=mer&schoolid=<%=schoolid%>");
 
         $scope.addheadmaster=function(){
             $scope.formData = {};

@@ -340,6 +340,7 @@ exports.postReservation=function(reservationinfo,callback){
                             }
 
                             pushcoach.pushNewReservation(newreservation.coachid,newreservation._id,function(err,data){});
+                            pushstudent.pushReservationSuccess(newreservation.userid,newreservation._id,function(err,data){});
                             // console.log("返回成果");
                             syncReservationdesc(data._id,function(){
                                 return callback(null, "success");

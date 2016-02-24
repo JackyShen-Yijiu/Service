@@ -164,7 +164,7 @@
     ybxcApp.controller("recordlist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?schoolid=<%=schoolid%>");
         $scope.editApplyinfo=function(userid,name){
             $scope.formData={};
             var   userdata;
