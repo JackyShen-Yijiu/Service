@@ -265,7 +265,9 @@ var  returnAdminRouter=function(io) {
     });
     //商品管理
     router.get("/manage/productslist" ,function(req, res, next) {
-        res.render('business/mallproductlist', adminFunc.setPageInfo(req,res,"/admin/manage/productslist"));
+        basedatafun.getallMerchant(function(err,data) {
+            res.render('business/mallproductlist', adminFunc.setPageInfo(req, res, "/admin/manage/productslist",data));
+        })
     });
     //router.get("/manage/editBusiness" ,function(req, res, next) {
     //    res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));

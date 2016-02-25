@@ -24,9 +24,8 @@
                                         <th>图片</th>
                                         <th> 商品名称 </th>
                                         <th> 价格</th>
-                                        <th> 购买数量</th>
-                                        <th> 剩余数量</th>
-                                        <th> 是否下架</th>
+                                        <th> 购买/总数量</th>
+                                        <th> 状态</th>
                                         <th> 商品类型</th>
                                         <th> 商家</th>
                                         <th> 截止日期</th>
@@ -34,23 +33,30 @@
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
                                         <td >
-                                            <span>{{content.productimg}}</span>
+                                            <img src="{{content.productimg}}" style=" width: 60px;height: 60px"/>
+                                            <span>{{}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.name}}</span>
+                                            <span>{{content.productname}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.mobile}}</span>
+                                            <span>{{content.productprice}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.province}}/{{content.city}}</span>
+                                            <span>{{content.buycount}}/{{content.productcount}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.responsible}}</span>
+                                            <span>{{content.is_using}}</span>
                                         </td>
 
                                         <td >
-                                            <span>{{content.address}}</span>
+                                            <span>{{content.is_scanconsumption}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.merchantid}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.enddate| date: "yyyy-MM-dd"}}</span>
                                         </td>
                                         <td class="td-actions">
                                             <a ng-click="editmerchant(content._id,content.name)"
@@ -74,58 +80,42 @@
                                 <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
                                     <fieldset>
                                         <div class="control-group">
-                                            <label class="control-label" for="name" >商家名称</label>
+                                            <label class="control-label" for="productname" >商品名称</label>
                                             <div class="controls">
-                                                <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多三十个字"
-                                                       ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                <input type="text" class="span6 " name="productname"    id="productname"  placeholder="名称最多三十个字"
+                                                       ng-minlength="2" ng-maxlength="30" ng-model="formData.productname" required>
                                                 <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                     role="alert">5-30个非特殊字符</div>
+                                                     role="alert">2-30个非特殊字符</div>
                                             </div> <!-- /controls -->
                                         </div>
 
                                         <div class="control-group">
-                                            <label class="control-label" for="logimg">商家头像</label>
+                                            <label class="control-label" for="logimg">商品头像</label>
                                             <div class="controls">
                                                 <div class="input-append">
                                                     <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                           ng-model="formData.logoimg" >
+                                                           ng-model="formData.productimg" >
                                                     <button class="btn" type="button" id="picklogimg">选择投头像</button>
                                                     <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
                                                 </div>
                                             </div>
                                         </div><!--control group-->
-
-
                                         <div class="control-group">
-                                            <label class="control-label" for="province">商家地址</label>
+                                            <label class="control-label" for="merchantid">所在商家</label>
                                             <div class="controls">
-                                                <input type="text" class="span2 disabled"  id="province"
-                                                       ng-model="formData.province"  disabled> 省
-                                                <input type="text" class="span2 disabled" id="city"
-                                                       ng-model="formData.city" disabled> 市
-                                                <br/>
-                                                <br/>
-                                                <input type="text" class="span6 disabled"  id="address" name="address"
-                                                       ng-model="formData.address"    placeholder="详细地址" required>
-                                                <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
-                                                <input type="hidden" id="latitude" ng-model="formData.latitude"  >
-                                                <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
-                                                     role="alert">地址必须</div>
+                                                <select class="span4" id="merchantid"
+                                                        ng-model="$scope.formData.merchantid" >
+                                                    <% extradata.forEach(function(r,index){ %>
+                                                    <option value="<%=r._id%>"><%=r.name%></option>
+                                                    <%})%>
+                                                </select>
                                             </div> <!-- /controls -->
-                                        </div>
-
-
-                                        <div class="control-group"  style="height: 250px;width: 600px">
-                                            <label class="control-label" >地址选择</label>
-                                            <div class="controls">
-                                                <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
-                                            </div>
-                                        </div>
+                                        </div> <!-- /control-group -->
 
                                         <div class="control-group">
-                                            <label class="control-label" for="linkman1">联系人</label>
+                                            <label class="control-label" for="productcount">商品数量</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="responsible"  ng-model="formData.responsible" >
+                                                <input type="text" class="span2" id="productcount"  ng-model="formData.productcount" >
                                                 电话： <input type="phone" class="span2" id="mobile"  ng-model="formData.mobile">
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
@@ -137,9 +127,24 @@
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group">
-                                            <label class="control-label" for="desc">商家简介</label>
+                                            <label class="control-label" for="productdesc">商品简介</label>
                                             <div class="controls">
-                                                <textarea   class="span4" id="desc" rows="3" ng-model="formData.desc" placeholder="商家简介"></textarea>
+                                                <textarea   class="span4" id="productdesc" rows="3"
+                                                            ng-model="formData.productdesc" placeholder="商品简介"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="buyprcoss">兑换流程</label>
+                                            <div class="controls">
+                                                <textarea   class="span4" id="buyprcoss" rows="3"
+                                                            ng-model="formData.buyprcoss" placeholder="兑换流程"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="buynotes">注意事项</label>
+                                            <div class="controls">
+                                                <textarea   class="span4" id="buynotes" rows="3"
+                                                            ng-model="formData.buynotes" placeholder="注意事项"></textarea>
                                             </div>
                                         </div>
                                         <br />
@@ -173,7 +178,7 @@
     ybxcApp.controller("productList",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getbusinesslist?bussinsee=mer");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getproductlist?bussinsee=mer");
 
         $scope.addmerchant=function(){
             $scope.formData = {};

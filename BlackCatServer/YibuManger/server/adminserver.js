@@ -14,6 +14,7 @@ var schoolModel=mongodb.DriveSchoolModel;
 var activtyModel= mongodb.ActivityModel;
 var industryNewsModel= mongodb.IndustryNewsModel;
 var  merchantmodel=mongodb.MerChantModel;
+var  mallProductsmodel =mongodb.MallProdcutsModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
@@ -994,7 +995,6 @@ exports.getbusinesslist=function(req,res){
         .sort({createtime:-1})
         .exec(function(err,data) {
             defaultFun.getModelCount(merchantmodel,{},function (err,merchantcount) {
-
                 returninfo = {
                     pageInfo:{
                         totalItems: merchantcount,
@@ -1038,7 +1038,27 @@ exports.updatebusiness=function(req,res){
     }
 };
 exports.getproductlist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
 
+    mallProductsmodel.find()
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(mallProductsmodel,{},function (err,merchantcount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: merchantcount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(merchantcount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
 }
 /// =====================================用户管理
 exports.getadminuserlist=function(req,res){

@@ -16,13 +16,13 @@ var MallProductSchema=new Schema({
     detailsimg:String, //产品详细描述图片
     productcount:{type:Number,default:10},  // 产品数量y
     buyprcoss:{type:String,default:''}, // 兑换流程
+    buynotes:{type:String,default:''}, // 注意事项
     is_top:{ type: Boolean, default: false}, // 是否置顶
     is_using:{ type: Boolean, default: true}, // 产品是否显示
     merchantid:{type: Schema.Types.ObjectId, ref: 'merchant'}, //商家信息
     is_scanconsumption:{ type: Boolean, default: false}, //是否进行扫码消费
     enddate:{type:Date,default:Date.now()},  // 商品兑换截止日期
+    createtime:{type:Date,default:Date.now()} // 商品添加时间
 });
-
-
 //UserSchema.index({mobile: 1}, {unique: true});
 module.exports = mongoose.model('mallproduct', MallProductSchema);

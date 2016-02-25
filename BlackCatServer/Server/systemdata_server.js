@@ -133,7 +133,7 @@ exports.getCourseWare=function( queryinfo,callback){
                 var mainlist=[];
                 productlist.forEach(function(r,index){
                     //console.log(r);
-                    //if(r.merchantid!=undefined)
+                    if(r.merchantid!=undefined)
                     {
                     var oneproduct={
                         productid: r._id,
