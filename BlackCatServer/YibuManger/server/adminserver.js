@@ -1042,6 +1042,7 @@ exports.getproductlist=function(req,res){
     var limit=req.query.limit?req.query.limit:10;
 
     mallProductsmodel.find()
+        .populate("merchantid")
         .skip((index-1)*limit)
         .limit(limit)
         .sort({createtime:-1})
@@ -1059,6 +1060,35 @@ exports.getproductlist=function(req,res){
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         });
+};
+exports.updateproduct=function(req,res){
+    var _id=req.body._id;
+    if (_id===undefined||_id==""){
+        var product= new  mallProductsmodel(req.body);
+        product.createtime=new  Date();
+        product.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+    else
+    {
+        var conditions = {_id :new mongodb.ObjectId( req.body._id)};
+        var updateinfo=req.body;
+        delete  updateinfo._id;
+        var update = {$set : updateinfo};
+
+        mallProductsmodel.update(conditions, update,{safe: true,upsert : true},function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
 }
 /// =====================================用户管理
 exports.getadminuserlist=function(req,res){

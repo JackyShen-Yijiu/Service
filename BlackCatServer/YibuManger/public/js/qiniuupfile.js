@@ -72,6 +72,9 @@ var  initqiniuupload=function(browsbutton,img,textid){
             }
         }
     });
+    uploader.bind('FileUploaded', function() {
+        console.log('hello man,a file is uploaded');
+    });
 }
 
 var uploader = Qiniu.uploader({

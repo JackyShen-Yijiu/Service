@@ -45,15 +45,25 @@
                                         <td >
                                             <span>{{content.buycount}}/{{content.productcount}}</span>
                                         </td>
-                                        <td >
-                                            <span>{{content.is_using}}</span>
+                                        <td  ng-switch="content.is_using">
+                                            <div ng-switch-when=true>
+                                                正常
+                                            </div>
+                                            <div ng-switch-when=false>
+                                                下架
+                                            </div>
                                         </td>
 
-                                        <td >
-                                            <span>{{content.is_scanconsumption}}</span>
+                                        <td ng-switch="content.is_scanconsumption">
+                                            <div ng-switch-when=true>
+                                                虚拟商品
+                                            </div>
+                                            <div ng-switch-when=false>
+                                                实体商品
+                                            </div>
                                         </td>
                                         <td >
-                                            <span>{{content.merchantid}}</span>
+                                            <span>{{content.merchantid.name}}</span>
                                         </td>
                                         <td >
                                             <span>{{content.enddate| date: "yyyy-MM-dd"}}</span>
@@ -95,7 +105,7 @@
                                                 <div class="input-append">
                                                     <input class="span4 m-wrap"   id="logimg" type="text"disabled
                                                            ng-model="formData.productimg" >
-                                                    <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                    <button class="btn" type="button" id="picklogimg">选择商品图片</button>
                                                     <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
                                                 </div>
                                             </div>
@@ -104,7 +114,7 @@
                                             <label class="control-label" for="merchantid">所在商家</label>
                                             <div class="controls">
                                                 <select class="span4" id="merchantid"
-                                                        ng-model="$scope.formData.merchantid" >
+                                                        required >
                                                     <% extradata.forEach(function(r,index){ %>
                                                     <option value="<%=r._id%>"><%=r.name%></option>
                                                     <%})%>
@@ -115,15 +125,42 @@
                                         <div class="control-group">
                                             <label class="control-label" for="productcount">商品数量</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="productcount"  ng-model="formData.productcount" >
-                                                电话： <input type="phone" class="span2" id="mobile"  ng-model="formData.mobile">
+                                                <input type="number" class="span2" id="productcount"  ng-model="formData.productcount" >
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group">
-                                            <label class="control-label" for="confirmmobilelist">验证手机号</label>
+                                            <label class="control-label" for="detailsimg">商品详情图</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="confirmmobilelist"
-                                                       placeholder="12345678901,12345678901" ng-model="formData.confirmmobilelist" >
+                                                <input class="span4 m-wrap"   id="detailsimgtxt" type="text"disabled
+                                                       ng-model="formData.detailsimg" >
+                                                <button class="btn" type="button" id="detailsimgbtn">选择详情图</button>
+                                                <img id="detailsimgsrc" style="width: 60px;height: 60px" ><!--更改place-->
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="enddate">结束时间</label>
+                                            <div class="controls">
+                                                <input type="datetime" class="span2" id="enddate"
+                                                       ng-model="formData.enddate " onclick="laydate()" >
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="is_scanconsumption">商品类型</label>
+                                            <div class="controls">
+                                                <select class="span4" id="is_scanconsumption" required>
+                                                    <option value="false">实体商品</option>
+                                                    <option value="true">虚拟商品</option>
+
+                                                </select>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="is_using">商品状态</label>
+                                            <div class="controls">
+                                                <select class="span4" id="is_using"  required>
+                                                    <option value="true">正常</option>
+                                                    <option value="false">下架</option>
+                                                </select>
                                             </div> <!-- /controls -->
                                         </div> <!-- /control-group -->
                                         <div class="control-group">
@@ -168,26 +205,31 @@
 <!-- /main-inner -->
 </div>
 
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
-<script  src="/js/baidumap.js"></script>
 <script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
 <script type="text/javascript" src="/js/qiniu.js"></script>
 <script type="text/javascript" src="/js/qiniuupfile.js"></script>
+<script type="text/javascript" src="/js/laydate.js"></script>
+<script>
+    initqiniuupload('detailsimgbtn','detailsimgsrc','detailsimgtxt');
+</script>
 <script>
     ybxcApp.controller("productList",function($scope,$http){
         $scope.formData = {};
+
         //获取文档列表信息
         initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getproductlist?bussinsee=mer");
-
         $scope.addmerchant=function(){
             $scope.formData = {};
+            $scope.formData.productcount=10;
+            $scope.formData.is_using=true;
+            $scope.formData.is_scanconsumption=false;
             layer.open({
                 type: 1,
-                title: '添加商家',
+                title: '添加商品',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '520px'],
+                area : ['850px' , '600px'],
                 content:$("#editpage")
             });
         };
@@ -200,19 +242,25 @@
                 }
             };
             if ($scope.formData._id===undefined){
-                layer.msg("没有查到商家", {
+                layer.msg("没有查到商品", {
                     icon: 2,
                     time: 5000 //2秒关闭（如果不配置，默认是3秒）
                 });
                 return;
             };
-            $("#logimgimg").attr("src",$scope.formData.logoimg)
+            $("#logimgimg").attr("src",$scope.formData.productimg);
+            $("#detailsimgsrc").attr("src",$scope.formData.productimg);
+            $("#is_using").val($scope.formData.is_using.toString());
+            $("#is_scanconsumption").val($scope.formData.is_scanconsumption.toString());
+            if($scope.formData.merchantid) {
+                $("#merchantid").val($scope.formData.merchantid._id);
+            }
             layer.open({
                 type: 1,
-                title: '编辑商家：'+name,
+                title: '编辑商品：'+name,
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '520px'],
+                area : ['850px' , '600px'],
                 content:$("#editpage")
             });
         }
@@ -224,8 +272,7 @@
             if(!savedata()){
                 return;
             }
-            console.log($scope.formData);
-            $http.post("/admin/manage/updatebusiness",$scope.formData)
+            $http.post("/admin/manage/updateproduct",$scope.formData)
                     .success(function(response){
                         if (response.type==0){
                             layer.msg(response.msg, {
@@ -237,15 +284,24 @@
                                 icon: 1,
                                 time: 5000 //2秒关闭（如果不配置，默认是3秒）
                             });
-                            window.location.href="/admin/manage/businessList";
+                            window.location.href="/admin/manage/productslist";
                         }
                     })
         };
         var savedata=function(){//写入数据
-            $scope.formData.logoimg=$("#logimg").val();
-            $scope.formData.province=$("#province").val();
-            $scope.formData.city=$("#city").val();
-            $scope.formData.address=$("#address").val();
+            $scope.formData.enddate= $("#enddate").val();
+            $scope.formData.productimg=$("#logimg").val();
+            $scope.formData.detailsimg=$("#detailsimgtxt").val();
+            $scope.formData.is_scanconsumption=$("#is_scanconsumption").val();
+            $scope.formData.is_using=$("#is_using").val();
+            $scope.formData.merchantid=$("#merchantid").val();
+            if ( $scope.formData.merchantid.indexOf(undefined)>=0){
+                layer.msg("商家必须选择", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             return true;
         }
     });

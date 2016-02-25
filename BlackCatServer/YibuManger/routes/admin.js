@@ -366,6 +366,7 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getbusinesslist",adminserver.getbusinesslist);
     router.post("/manage/updatebusiness",adminserver.updatebusiness);
     router.get("/manage/getproductlist",adminserver.getproductlist);
+    router.post("/manage/updateproduct",adminserver.updateproduct);
 
     // 用户管理
     router.get("/manage/getadminuserlist",adminserver.getadminuserlist);
