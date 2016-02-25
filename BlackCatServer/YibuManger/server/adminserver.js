@@ -19,6 +19,7 @@ var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
 var usermodel=mongodb.UserModel;
 var classtypemodel=mongodb.ClassTypeModel;
+var headMastermodel=mongodb.HeadMasterModel;
 //var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var headMasterOperation=require("../../Server/headmaster_operation_server");
@@ -30,6 +31,7 @@ var AdminUser = require("../../models/AdminUser");
 require('date-utils');
 var _ = require("underscore");
 var eventproxy   = require('eventproxy');
+var crypto = require('crypto');
 exports.getStatitic=function(req,res){
 
 }
@@ -1070,7 +1072,6 @@ exports.getadminuserlist=function(req,res){
 };
 exports.updateadminuser=function(req,res){
     var _id=req.body._id;
-    console.log(req.body);
     if (_id===undefined||_id==""){
         var adminuser= new  AdminUser(req.body);
         adminuser.password=DbOpt.encrypt(adminuser.password,settings.encrypt_key);
@@ -1120,6 +1121,77 @@ exports.deleteadminuser=function(req,res){
     })}
     catch (ex){
         return res.json(new BaseReturnInfo(0, "删除信息出错："+ex.message, "") );
+    }
+};
+//=========================================校长管理
+exports.getheadmasterlist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    var name=req.query.searchKey?req.query.searchKey:"";
+    var  schoolid=req.query.schoolid?req.query.schoolid:"";
+    var serchcondition= {"name":new RegExp(name)};
+    if (schoolid!=""){
+        serchcondition.driveschool=new mongodb.ObjectId(schoolid);
+    }
+    headMastermodel.find(serchcondition)
+        .populate('driveschool',"_id name")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({date:-1})
+        .exec(function(err,data) {
+            if (err){
+                console.log(err);
+            }
+            defaultFun.getModelCount(headMastermodel,serchcondition,function (err,headmastercount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: headmastercount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(headmastercount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+};
+exports.updateheadmaster=function(req,res){
+    var _id=req.body._id;
+
+    if (_id===undefined||_id==""){
+        var mobile=req.body.mobile;
+        headMastermodel.count({mobile:mobile},function(err,data){
+            if (data>0){
+                return res.json(new BaseReturnInfo(0, "用户已存在", "") );
+            }
+        var headmaster= new  headMastermodel(req.body);
+        //headmaster.password=DbOpt.encrypt(adminuser.password,settings.encrypt_key);
+        var shasum = crypto.createHash('md5');
+        shasum.update(headmaster.password);
+        headmaster.password = shasum.digest('hex');
+        headmaster.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+        })
+    }
+    else
+    {
+        var conditions = {_id :new mongodb.ObjectId( req.body._id)};
+        var updateinfo=req.body;
+        delete  updateinfo._id;
+        var update = {$set : updateinfo};
+        headMastermodel.update(conditions, update,{safe: true,upsert : true},function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
     }
 }
 ///=====================================驾校管理
@@ -1493,13 +1565,18 @@ exports.getApplySchoolinfo=function(req,res){
     var index=req.query.index?req.query.index:0;
     var limit=req.query.limit?req.query.limit:10;
     var name=req.query.searchKey?req.query.searchKey:"";
+    var schoolid=req.query.schoolid?req.query.schoolid:"";
     var searchinfo={applystate:1};
     if (name!=""){
         searchinfo={"name":new RegExp(name)};
     }
+    if (schoolid!=""){
+        searchinfo.applyschool=schoolid;
+    }
+    console.log(searchinfo);
     usermodel.find(searchinfo)
         .select("_id name address mobile carmodel  referrerfcode  applystate applyinfo  applyschoolinfo  " +
-            "applycoachinfo applyclasstypeinfo  createtime")
+            "applycoachinfo applyclasstypeinfo  createtime source paytype paytypestatus")
         .skip((index-1)*limit)
         .limit(limit)
         .sort({"applyinfo.applytime":-1})

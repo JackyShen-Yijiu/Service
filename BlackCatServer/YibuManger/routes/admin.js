@@ -248,7 +248,11 @@ var  returnAdminRouter=function(io) {
     });
     //报名记录
     router.get("/manage/recordlist" ,function(req, res, next) {
+        if (req.session.schooldata==""){
         res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist"));
+        }else{
+            res.render('apply-record/recordlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/recordlist"));
+        }
     });
     //教练审核记录
     router.get("/manage/coachCheckList" ,function(req, res, next) {
@@ -365,6 +369,9 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getadminuserlist",adminserver.getadminuserlist);
     router.post("/manage/updateadminuser",adminserver.updateadminuser);
     router.get("/manage/deleteadminuser",adminserver.deleteadminuser);
+    // 校长管理
+    router.get("/manage/getheadmasterlist",adminserver.getheadmasterlist);
+    router.post("/manage/updateheadmaster",adminserver.updateheadmaster);
 
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;

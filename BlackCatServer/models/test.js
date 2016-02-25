@@ -28,7 +28,8 @@ var async = require('async');
 var fs=require("fs");
 var cache=require('../Common/cache');
 
-
+var crypto = require('crypto');
+console.log(crypto.createHash('md5').update("123456").digest('hex'));
 //mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":false})
 //    .populate("merchantid","",{"city":new RegExp("北京")})
 //    .sort({"productprice" : 1})

@@ -33,6 +33,8 @@
                                         <th> Y码</th>
                                         <th>所属驾校</th>
                                         <th>时间</th>
+                                        <th>支付方式</th>
+                                        <th>支付状态</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
@@ -43,8 +45,10 @@
                                         <td >
                                             <span>{{content.mobile}}</span>
                                         </td>
-                                        <td >
-                                            <span>app</span>
+                                        <td  ng-switch="content.source">
+                                            <span  ng-switch-when="0">app</span>
+                                            <span  ng-switch-when="1">后台添加</span>
+                                            <span  ng-switch-when="2">微信报名 </span>
                                         </td>
                                         <td ng-switch="content.applystate">
                                             <span  ng-switch-when="0">未报名</span>
@@ -66,16 +70,26 @@
                                             <span>{{content.applyschoolinfo.name}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.applyinfo.applytime}} </span>
+                                            <span>{{content.applyinfo.applytime|date:'yyyy-MM-dd HH:mm:ss'}} </span>
+                                        </td>
+                                        <td ng-switch="content.paytype">
+
+                                            <span  ng-switch-when="1">线下支付</span>
+                                            <span  ng-switch-when="2">线上支付</span>
+                                        </td>
+                                        <td ng-switch="content.paytypestatus">
+                                            <span  ng-switch-when="0">未支付</span>
+                                            <span  ng-switch-when="20">支付成功</span>
+                                            <span  ng-switch-when="30">支付失败</span>
                                         </td>
 
 
                                         <td class="td-actions">
-                                            <a  id="editapplyinfo"
-                                                ng-click="editApplyinfo(content._id,content.name)"
+                                            <a  id="editapplyinfo" ng-disabled="content.applystate!=1"
+                                                ng-click="content.applystate!=1 ||editApplyinfo(content._id,content.name)"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a href="#"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                            <!--<a href="#"-->
+                                               <!--class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>-->
                                         </td>
 
 
@@ -150,7 +164,7 @@
     ybxcApp.controller("recordlist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?schoolid=<%=schoolid%>");
         $scope.editApplyinfo=function(userid,name){
             $scope.formData={};
             var   userdata;

@@ -1945,8 +1945,8 @@ exports.getMyWallet=function(queryinfo,callback){
 exports.getapplyschoolinfo=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
         .select("_id  name mobile applystate applyinfo   scanauditurl applyschool" +
-            " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo")
-        .populate("applyschool"," _id  applynotes")
+            " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo paytype  paytypestatus")
+        .populate("applyschool"," _id  applynotes logoimg")
         .exec(function(err,data){
             if(err){
                 return callback("查询用户出错");
@@ -1969,7 +1969,13 @@ exports.getapplyschoolinfo=function(userid,callback){
                 applycoachinfo:data.applycoachinfo,
                 carmodel:data.carmodel,
                 applyclasstypeinfo:data.applyclasstypeinfo,
+                paytype:data.paytype,
+                paytypestatus:data.paytypestatus,
+                schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
                 applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
+            };
+            if(userinfo.applyclasstypeinfo.onsaleprice===undefined){
+                userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
             }
             return callback(null,userinfo);
         })
@@ -2238,6 +2244,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.applyclasstypeinfo.id=applyinfo.classtypeid;
                   userdata.applyclasstypeinfo.name=classtypedata.classname;
                   userdata.applyclasstypeinfo.price=classtypedata.price;
+                          userdata.applyclasstypeinfo.onsaleprice=classtypedata.onsaleprice;
                   userdata.vipserverlist=classtypedata.vipserverlist;
                   userdata.applystate=appTypeEmun.ApplyState.Applying;
                   userdata.applyinfo.applytime=new Date();
