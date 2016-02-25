@@ -62,7 +62,7 @@
                                                        type="button"
                                                        ng-show="content.courseuser.indexOf(studentid)==-1&&
                                                      content.selectedstudentcount !=content.coursestudentcount
-                                                     &&  new Date( content.courseendtime)> new Date()"
+                                                     && content.classendtime> timespane"
                                                        ng-click="ChooseCoures(content._id)">
                                                         <h6 ng-show="courseischoose(content._id)">
                                                             取消选择
@@ -71,6 +71,9 @@
                                                             选择
                                                         </h6>
 
+                                                    </a>
+                                                    <a ng-show="content.classendtime<timespane">
+                                                        <h6> 已过期</h6>
                                                     </a>
                                                     <a
                                                        ng-show="content.courseuser.indexOf(studentid)>-1">
@@ -155,7 +158,7 @@
                 if(result.type==1){
                     $scope.data= result.data;
                     for(var  i=0 ;i<$scope.data.length;i++){
-
+                        $scope.data[i].classendtime=  new Date( $scope.data[i].courseendtime).getTime();
                     }
                 }
                 else if (result.type==0){

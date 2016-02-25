@@ -19,18 +19,20 @@
           text-align: center;
       }
     </style>
+    <script>
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+            window.location.href = "/ybxueche_coach.apk";
+        } else if (u.indexOf('iPhone') > -1){
+            window.location.href = "https://itunes.apple.com/cn/app/yi-bu-xue-che-jiao-lian-duan/id1060635200?l=en&mt=8";
+        }
+    </script>
 </head>
 <body>
+
 <div class="main">
 <p class="lond"><img src="img/tu.png" alt=""></p>
 </div>
-<script>
-    var u = navigator.userAgent;
-    if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
-        window.location.href = "/ybxueche_coach.apk";
-    } else if (u.indexOf('iPhone') > -1){
-        window.location.href = "https://itunes.apple.com/cn/app/yi-bu-xue-che-jiao-lian-duan/id1060635200?l=en&mt=8";
-    }
-</script>
+
 </body>
 </html>
