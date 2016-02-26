@@ -70,7 +70,9 @@ var DriveSchoolSchema=new Schema({
     applynotes:String,  // 报名须知
     confirmmobilelist:[String],// 驾校能进行驾校报名验证 的手机号列表
     // 确认学生验证码
-    confirmnum:String
+    confirmnum:String,
+    // 自主考试url
+    examurl:{type:String,default:""}
 });
 
 /**0

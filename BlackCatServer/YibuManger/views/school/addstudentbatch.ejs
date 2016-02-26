@@ -1,0 +1,122 @@
+
+<div class="main" ng-controller="addstudentbatch">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>批量导入学员列表 </h3>
+                        <div style="float: right ; padding-right: 10px" >
+                            <div style="float: left;  padding-right: 10px">
+                                <form id="edit-profile" class="form-horizontal" enctype="multipart/form-data"
+                                      name="myForm" method="post" ng-submit="processForm()">
+                                    <fieldset>
+                                        <div class="control-group">
+                                            <label class="control-label" for="name" ></label>
+                                            <div class="controls">
+                                                <input type="file" class="span6 " name="name"    id="name" ng-model="formData.file">
+                                                <button type="submit" class="btn btn-primary"  >提交</button>
+                                            </div> <!-- /controls -->
+                                        </div>
+                                        </fieldset>
+                                    </form>
+                            </div>
+
+                        </div>
+
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th> 姓名 </th>
+                                        <th> 联系电话</th>
+                                        <th> 科目</th>
+                                        <th>教练</th>
+                                        <th> 班型</th>
+                                        <th class="td-actions"> 操作</th>
+                                        <th class="td-actions">预约教练
+                                        </th>
+                                    </tr>
+                                    <tr class="datalist" ng-repeat="content in data">
+
+                                        <td >
+                                            <span>{{content.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.mobile}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.subject.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.applycoachinfo.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.applyclasstypeinfo.name}}</span>
+                                        </td>
+
+                                        <td class="td-actions">
+                                            <a href="/admin/manage/editstudentinfo?studentid={{content._id}}"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
+                                            <a href="#"
+                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                        </td>
+                                        <td class="td-actions">
+                                            <a ng-disabled="content.subject.subjectid!=2&&content.subject.subjectid!=3" href="/admin/manage/reserveCoach?studentid={{content._id}}"
+                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-phone-sign"> </i></a>
+                                        </td>
+
+
+                                    </tr>
+                                </table>
+                            </div><!-- /.box-body -->
+
+                        </div><!-- /.box -->
+                        <% include ../public/tableFooter %>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /main-inner -->
+</div>
+
+
+<script>
+    ybxcApp.controller("addstudentbatch",function($scope,$http){
+
+        //获取文档列表信息
+        //initPagination($scope,$http,"<%=searchKey%>","/manage/getstudentlist?schoolid=<%=schoolid%>");
+        $scope.processForm = function(){
+                $http.post("/admin/manage/updatestudentxls")
+                        .success(function(response){
+                            if (response.type==0){
+                                layer.msg(response.msg, {
+                                    icon: 2,
+                                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                            }else{
+                                layer.msg("修改成功", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                            }
+                        })
+
+
+
+
+        };
+    });
+
+
+
+</script>

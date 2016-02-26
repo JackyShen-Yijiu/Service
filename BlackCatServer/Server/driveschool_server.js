@@ -303,3 +303,18 @@ exports.getSchoolInfoserver=function(schoolid,userid,callback){
     });
 
 };
+//获取驾校自助预约地址
+exports.getschoolexamurl=function(schoolid,callback){
+    schoolModel.findById(new mongodb.ObjectId(schoolid))
+        .select(" examurl")
+        .exec(function(err,schooldata) {
+            if (err) {
+                return callback("查询驾校详情出错：" + err);
+            }
+            if (!schooldata){
+                return callback("没有查询到驾校：");
+            }
+            return callback(null,schooldata.examurl?schooldata.examurl:"");
+        });
+
+}

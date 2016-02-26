@@ -129,6 +129,8 @@ v1.put('/userinfo/favoriteschool/:id', ensureAuthorizedController.ensureAuthoriz
 v1.delete('/userinfo/favoriteschool/:id',ensureAuthorizedController.ensureAuthorized, userController.delFavorrSchool);
 
 
+// 获取教练自主约考网址
+v1.get("/driveschool/schoolexamurl",driveSchoolController.schoolexamurl);
 //获取附近的驾校
 v1.get('/driveschool/nearbydriveschool', driveSchoolController.getNearbydriveSchool);
 //获取驾校详情

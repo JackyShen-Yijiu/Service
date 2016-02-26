@@ -12,6 +12,7 @@ var basedatafun=require("../server/basedatafun");
 var validator = require('validator');
 var cache=require("../../Common/cache");
 var _ = require("underscore");
+var xlsx = require('node-xlsx');
 //站点配置
 var settings = require("../models/config/settings");
 //数据库操作对象
@@ -203,6 +204,24 @@ var  returnAdminRouter=function(io) {
                 return info;
             });
             res.render('school/editStudent', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editstudentinfo",filedlist));
+        });
+
+    });
+    // 批量添加学员
+    router.get("/manage/addstudentbatch" ,function(req, res, next) {
+        var schoolid=req.session.schoolid;
+        if(req.session.schoolid===undefined){
+            return   res.render(error);
+        }
+        basedatafun.getschoolclasstype(schoolid,function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.classname
+                };
+                return info;
+            });
+            res.render('school/addstudentbatch', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/addstudentbatch",filedlist));
         });
 
     });
@@ -462,6 +481,27 @@ var  returnAdminRouter=function(io) {
             })
         }
     });
+
+    router.post("/manage/updatestudentxls",function(req, res, next){
+        var data = req.files["name"];
+        console.log(data);
+        if (!data) {
+            return res.json(new BaseReturnInfo(0, "上传文件不能为空", "") );
+        }
+        else {
+            if (data.size<=0){
+                return res.json(new BaseReturnInfo(0, "上传文件大小错误", "") );
+            }
+            if(data.extension!="xls"&&data.extension!="xlsx"){
+                return res.json(new BaseReturnInfo(0, "上传文件格式错误", "") );
+            }
+            var obj = xlsx.parse(data.path);
+            console.log(JSON.stringify(obj));
+            return res.json(new BaseReturnInfo(1, "suceess", JSON.stringify(obj)) );
+        }
+
+
+    })
 
 return router;
 }

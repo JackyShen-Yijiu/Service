@@ -243,11 +243,11 @@ exports.getSchoolCoach=function(req,res){
 
 exports.postApplyExamination=function(req,res){
     var userid =req.userId;
-    var exambegintime=req.query.exambegintime;
-    var examendtime=req.query.examendtime;  // 期望时间
-    var exammobile=req.query.exammobile;  // 考试电话
-    var examname=req.query.examname;     // 考试姓名
-    var exampractice=req.query.exampractice?req.query.exampractice:0; // 0 不练车  1 提前练车
+    var exambegintime=req.body.exambegintime;
+    var examendtime=req.body.examendtime;  // 期望时间
+    var exammobile=req.body.exammobile;  // 考试电话
+    var examname=req.body.examname;     // 考试姓名
+    var exampractice=req.body.exampractice?req.query.exampractice:0; // 0 不练车  1 提前练车
     userserver.applyExamintion(userid,function(err,data){
         if (err)
         {
