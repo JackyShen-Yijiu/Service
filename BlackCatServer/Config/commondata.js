@@ -186,12 +186,15 @@ exports.worktimes=[
 exports.examquestioninfo={
     subjectone:{questionlisturl:"http://www.yibuxueche.com/question",
         questiontesturl:"http://www.yibuxueche.com/questiontest",
-        questionerrorurl:"http://www.yibuxueche.com/questionwronglist"
+        questionerrorurl:"http://www.yibuxueche.com/questionwronglist",
+        kemuyichengjidanurl:"http://www.yibuxueche.com/questionwronglist",
+
     },
 
 subjectfour:{questionlisturl:"http://www.yibuxueche.com/questionlist-kemusi.html",
     questiontesturl:"http://www.yibuxueche.com/questiontest-kemusi.html",
-    questionerrorurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html"
+    questionerrorurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html",
+    kemusichengjidanurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html",
 }
 }
 exports.integralrule={

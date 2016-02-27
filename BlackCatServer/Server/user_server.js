@@ -1454,7 +1454,7 @@ exports.FavoritSchoolList=function(userid,callback){
                             address: r.address,
                             passingrate: r.passingrate
                         }
-                        driveschoollist.push(oneschool)
+                        driveschoollist.push(oneschool);
                         //  r.restaurantId = r._id;
                         // delete(r._id);
                     });
