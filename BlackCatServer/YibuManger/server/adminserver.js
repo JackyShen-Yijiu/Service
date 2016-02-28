@@ -213,7 +213,7 @@ exports.getStatitic=function(req,res){
              platenumber:req.body.platenumber?req.body.platenumber:"",
              is_shuttle:true,
              shuttlemsg:req.body.shuttlemsg?req.body.shuttlemsg:"",
-             serverclasslist:req.body.serverclasslist,
+             serverclasslist:req.body.serverclasslist?req.body.serverclasslist:[],
              trainfield:req.body.trainfield,
              carmodel:req.body.carmodel,
              driveschoolinfo:{}

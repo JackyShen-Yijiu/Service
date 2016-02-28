@@ -441,12 +441,13 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.userid =newinstace._id;
                            returnmodel.idcardnumber=newinstace.idcardnumber;
                            returnmodel.usersetting=newinstace.usersetting;
-                           if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
-                               regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
-                                   usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
-                                       { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
-                               })
-                           }
+                           //if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                           //
+                           //}
+                           regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                               usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                   { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                           })
                            return callback(null,returnmodel);
 
                        });
@@ -490,12 +491,14 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
                             returnmodel.tagslist=userinstace.tagslist;
-                            if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
-                                regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
-                                    coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
-                                        { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
-                                })
-                            }
+                            //if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                            //
+                            //}
+
+                            regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            });
                             userfcode.findOne({"userid":newinstace._id})
                                 .select("userid fcode money")
                                 .exec(function(err, fcodedata){
