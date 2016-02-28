@@ -86,40 +86,45 @@ exports.searchDriverSchool=function(searchinfo,callback){
         })
 }
 exports.getNearDriverSchool=function(latitude, longitude, radius ,callback){
-    schoolModel.getNearDriverSchool(latitude, longitude, radius ,function(err ,driveschool){
-        if (err ) {
-            console.log(err);
-            callback("查找驾校出错："+err);
+    try {
+        schoolModel.getNearDriverSchool(latitude, longitude, radius, function (err, driveschool) {
+            if (err) {
+                console.log(err);
+                callback("查找驾校出错：" + err);
 
-        } else {
-            process.nextTick(function(){
-                driveschoollist=[];
-            driveschool.forEach(function(r, idx){
-                var oneschool= {
-                    distance : geolib.getDistance(
-                    {latitude: latitude, longitude: longitude},
-                    {latitude: r.latitude, longitude: r.longitude},
-                    10),
-                    id: r._id,
-                    schoolid: r._id,
-                    name:r.name,
-                    logoimg:r.logoimg,
-                    latitude: r.latitude,
-                    longitude: r.longitude,
-                    address: r.address,
-                    maxprice: r.maxprice,
-                    minprice: r.minprice,
-                    passingrate: r.passingrate
-                   }
-                driveschoollist.push(oneschool);
-              //  r.restaurantId = r._id;
-               // delete(r._id);
-            });
-           callback(null,driveschoollist);
-            });
-        }
+            } else {
+                process.nextTick(function () {
+                    driveschoollist = [];
+                    driveschool.forEach(function (r, idx) {
+                        var oneschool = {
+                            distance: geolib.getDistance(
+                                {latitude: latitude, longitude: longitude},
+                                {latitude: r.latitude, longitude: r.longitude},
+                                10),
+                            id: r._id,
+                            schoolid: r._id,
+                            name: r.name,
+                            logoimg: r.logoimg,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            address: r.address,
+                            maxprice: r.maxprice,
+                            minprice: r.minprice,
+                            passingrate: r.passingrate
+                        }
+                        driveschoollist.push(oneschool);
+                        //  r.restaurantId = r._id;
+                        // delete(r._id);
+                    });
+                    callback(null, driveschoollist);
+                });
+            }
 
-    })
+        })
+    }
+    catch (e){
+        callback("查询附近的驾校出错"+ e.message);
+    }
 
 };
 exports.getSchoolByName=function(schoolname,callback){

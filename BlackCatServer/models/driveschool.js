@@ -88,7 +88,7 @@ DriveSchoolSchema.statics.getNearDriverSchool = function(latitude, longitude, ra
 //    this.find({loc:{$geoWithin:{ $centerSphere:[[longitude, latitude], radius/6378100.0]}}}) //within cycle of radius
 
     this.find(
-
+        {latitude: {$exists: true},longitude: {$exists: true}}
         // {loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: 100000}}}
       ) //from near to far
 
