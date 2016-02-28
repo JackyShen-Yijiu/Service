@@ -6,6 +6,7 @@
 exports.appconfiginfo={
     appname:"一步学车",  // appname  一步学车  极致驾服
     companyname:"一步科技" ,  // 公司名称  一步科技 极致驾服
+    appport:8181,       //app  端口  一步 8181  极致 8183
 }
 // 支付宝配置信息
 exports.AlipayConfig = {
