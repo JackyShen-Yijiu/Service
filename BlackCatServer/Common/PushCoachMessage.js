@@ -6,7 +6,9 @@ var BasePushmessage=require("./PushMessage/JPushBase");
 var log=require("./systemlog");
 var mongodb = require('../models/mongodb');
 var SystemMessageModel=mongodb.SystemMessageModel;
-var title="一步学车—教练端";
+var config=require("../Config/sysconfig").appconfiginfo;
+
+var title=config.appname+"—教练端";
 var alterinfo={
     AuditSuccess:"您提交的验证申请已通过，可以接受预约订单啦",
     AuditFailed:"您提交的审核申请没有通过，请重新提交",
@@ -14,7 +16,7 @@ var alterinfo={
     ReservationCancel:"您的预约被学员取消，请查看详情",
     NewComment:"您有新的预约评论请查看",
     WalletUpdate:"您的积分有更新，进入我的钱包查看详情",
-    NewVersion:"一步学车教练端有版本更新啦！"
+    NewVersion:config.appname+"教练端有版本更新啦！"
 };
 var pushtype={
     AuditSuccess:"auditsuccess",

@@ -6,7 +6,7 @@ var mongodb = require('../models/mongodb.js');
 var request = require('superagent');
 
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
-
+var config=require("../Config/sysconfig").appconfiginfo;
 exports.addsmscode=function(mobile,callback){
     var smscodeInstace=new smsVerifyCodeModel();
     smscodeInstace.mobile=mobile;
@@ -36,7 +36,7 @@ exports.sendsmscode=function(mobile,callback) {
             }
         }
       //  var sms = '您的饭应验证码是' + smscode + '。请在五分钟之内完成验证。本条信息无需回复。如非本人操作，请忽略。【为爱吃狂】';
-        var sms ="【一步科技】"+smscode+", 您的一步学车注册／登陆验证码，三分钟内有效";
+        var sms ="【"+config.companyname+"】"+smscode+", 您的"+config.appname+"注册／登陆验证码，三分钟内有效";
         var options  = {
             "sn": "SDK-WSS-010-08341",
             "pwd": "DD6929B3420DA8E2785261FBF1074440",

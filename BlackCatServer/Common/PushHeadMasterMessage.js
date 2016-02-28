@@ -8,12 +8,12 @@
 //向校长端发送
 
 var BasePushmessage=require("./PushMessage/JPushBase");
-
-var title="一步学车--校长端";
+var config=require("../Config/sysconfig").appconfiginfo;
+var title=config.appname+"--校长端";
 var alterinfo={
     ApplySuccess:"有新的学员报名你的驾校,请查看",
     Complaint:"收到新的投诉消息，请查看",
-    NewVersion:"一步学车有版本更新啦！"
+    NewVersion:config.appname+"有版本更新啦！"
 };
 var pushtype={
     ApplySuccess:"userapplysuccess",
