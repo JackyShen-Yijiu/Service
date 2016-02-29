@@ -31,7 +31,7 @@
                                                 <label class="control-label" for="title" >标题</label>
                                                 <div class="controls">
                                                     <input type="text" class="span6 " name="title"    id="title"  placeholder="标题最多三十个字"
-                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.title" >
+                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.title"required >
                                                     <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
                                                          role="alert">2-30个非特殊字符</div>
                                                 </div> <!-- /controls -->
@@ -41,7 +41,7 @@
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                               ng-model="formData.logimg"	 required   >
+                                                               ng-model="formData.logimg"	    >
                                                         <button class="btn" type="button" id="picklogimg">选择投头像</button>
                                                         <img id="logimgimg" style="width: 60px;height: 60px">
                                                     </div>
