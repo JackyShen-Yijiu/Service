@@ -150,6 +150,7 @@ exports.getCourseWare=function( queryinfo,callback){
                         cityname: r.merchantid.city,
                         merchantid: r.merchantid._id,
                         address: r.merchantid.address,
+                        enddate: r.enddate,
                         county:r.merchantid.county,
                         distinct:0
                     };
