@@ -11,6 +11,14 @@ router.get('/', function(req, res, next) {
   res.render('questionlist-new');
 });
 
+router.get('/randomquestion', function(req, res, next) {
+  res.render("randomquestion");
+});
+
+router.get('/notquestion', function(req, res, next) {
+  res.render("notquestion");
+});
+
 router.get('/questionlist/', getQuestionList);
 router.get('/questionbyid/:id', getQuestionByID);
 
@@ -30,6 +38,8 @@ router.get('/getlastquestion/:userid', function(req,res){
     res.json({"question":-1});
   }
 });
+
+//
 router.get('/finishquesitonidlist/:userid', function(req,res){
   var userid=req.params.userid;
 

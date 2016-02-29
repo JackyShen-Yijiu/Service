@@ -1,37 +1,32 @@
 var ExaminIDs;
-
 //初始化
 function init() {
     console.log('init.');
 
-  CreateExam();
-  Allcount = 100;
-  QIndex = 0;
-  currentQuestion;
+    CreateExam();
 
-  rightCount=0, wrongCount=0;//初始化正确的题数，错误的题数
-  answered=false;
-  min = 45;
-  sec = 0;
+    Allcount = 100;
+    QIndex = 0;
+    currentQuestion;
+    rightCount=0, wrongCount=0;//初始化正确的题数，错误的题数
+    answered=false;
+    min = 45;
+    sec = 0;
 
-   startTime();
-   nextQestion();
-   previouslylist = [];
+    startTime();
+    nextQestion();
 
+    
 }
-
 
 //创建试题
 function CreateExam(){
-
   initilizeQuestion();
 
   ExaminIDs = new Array();
   var i = 0;
-  //
-  /*
   while(ExaminIDs.length < 35){
-    var qid = chap_1_ExamID[getQuestionID(chap_1_count)];//题id（章节）
+    var qid = chap_1_ExamID[getQuestionID(chap_1_count)];
     if(ExaminIDs.indexOf(qid) == -1){
       ExaminIDs.push(qid);
       console.log(i + ':' + qid);
@@ -61,8 +56,8 @@ function CreateExam(){
     }else{
 
     }
-  }*/
-//创建一份试题（100道）
+  }
+
   while(ExaminIDs.length < 100){
     var qid = chap_1_ExamID[getQuestionID(chap_1_count)];
     if(ExaminIDs.indexOf(qid) == -1){
@@ -74,12 +69,10 @@ function CreateExam(){
     }
   }
 
-  console.log(ExaminIDs);//每一份题里题id集合
+  console.log(ExaminIDs);
   console.log(ExaminIDs.length);
 }
 
-
-//随机生成题目id
 function getQuestionID(per){
   var r = Math.floor(Math.random() * (per)) ;
   //console.log(r);
@@ -91,8 +84,6 @@ var chap_2_ExamID = new Array(chap_2_count);
 var chap_3_ExamID = new Array(chap_3_count);
 var chap_4_ExamID = new Array(chap_4_count);
 
-
-//每一章节（按比例抽题）
 function initilizeQuestion(){
   var arri = 0;
 
@@ -101,8 +92,6 @@ function initilizeQuestion(){
   for (var i = 0, len = chap_1_examids.length; i < len; i++) {
     for (var minm = chap_1_examids[i][0], maxm = chap_1_examids[i][1]; minm <= maxm; minm++) {
       chap_1_ExamID[arri] = minm;
-      //console.log("chap_1_examids[i][0]:"+chap_1_examids[i][0])
-      //console.log("chap_1_examids[i][1]:"+chap_1_examids[i][1])
       arri++;
     }
   }
@@ -141,73 +130,52 @@ function initilizeQuestion(){
   }
 }
 
+// chapexamids = [[1,365],[2541,2640],[10923,10925],[10930,10931],[10938,10962],[10964,10971],[10978,10978],[10987,10995],[10998,11009],[11015,11015],[11022,11034],[11046,11046],[11049,11054],[11057,11078]];
+// myExamID = new Array(568);
+// myExamOrder = new Array(568);
+// var arri = 0;
+
+// var j = 0;
+
+// for (var i = 0, len = chapexamids.length; i < len; i++) {
+//   for (var minm = chapexamids[i][0], maxm = chapexamids[i][1]; minm <= maxm; minm++) {
+//     myExamID[arri] = minm;
+//     arri++;
+//   }
+// }
+
+// for ( myExamOrderid = 0; myExamOrderid < 568; myExamOrderid++) {
+//   myExamOrder[myExamOrderid] = myExamOrderid + 1
+// }
 
 var Allcount;
 var QIndex;//题号
 var currentQuestion;
-var rightCount, wrongCount;//设置正确的题数，错误的题数
+var rightCount=0, wrongCount=0;//设置正确的题数，错误的题数
 var answered=false;
-var previouslylist= [];//将做过的题id push到数组里，当返回上一道题时，判断ID，若数组里存在，wrongCount，rightCount都不加1
 
-
+  
 
 //下一题
 function nextQestion(){
   console.log(QIndex + ' ' + Allcount);
-
   if(QIndex < Allcount){
     console.log("next"); 
-    $("#number_title").text(++QIndex);//下一题题号
-    getQuestionByID(ExaminIDs[QIndex - 1], showQuestions);//参数
-    //console.log("ExaminIDs[QIndex - 1]"+ExaminIDs[QIndex - 1])
-    if(QIndex == 1){
-      $("#btnNext").text("下一题");
-      //获取做题开始时间
-      sTime=new Date().getTime();
-    }
+    $("#number_title").text(++QIndex);//当前题号
+    getQuestionByID(ExaminIDs[QIndex - 1], showQuestions);
 
     if(QIndex == 100){
       $("#btnNext").text("结束");
-      //获取做题结束时间
-      endTime=new Date().getTime();
-
     }
   }else{
     clearTimeout(t);
     $("body").addClass("loading");
-    $("#test_result").text(rightCount + "分");//本次模拟分数
-    backscore();
+    $("#test_result").text(rightCount + "分");
   }
 }
-//传回成绩
-function backscore(){
-  var u={
-    id: userID,
-    score:rightCount,
-    begintime:sTime,
-    endtime:endTime,
-    subjectid:1
-  }
-  //把成绩传到后台(insert功能)
-  $.post(apiHost + "sendtestsocre" , JSON.stringify(u),
-      function(data){
-
-        if(data.code > 0){
-          return "1";
-        }else if(data.code == -1){
-          return "0";
-        }
-
-      }).fail(function(a, b, c) {
-    console.log('failed.');
-    return "0";
-  })
-}
-
 
 //上一题
 function preQestion(){
-
   $("#btnNext").text("下一题");
   if(QIndex > 1){
     console.log("next");
@@ -215,102 +183,58 @@ function preQestion(){
     getQuestionByID(ExaminIDs[QIndex - 1], showQuestions);
     
   }
-
+  
+  
 }
-
 
 //检验答案是否正确
 function answerIsRight(){
-  /*
-  if ( previouslylist.indexOf(ExaminIDs[QIndex - 1])>-1){
-    return;
-  }*/
+  //$("#rightAnswer").show();
+  //$("#wrongAnswer").hide();
   if(answered == false){
     answered = true;
-
-    if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1){
-
-        rightCount++;
-        $("#rightCount").text(rightCount);
-        $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
-        console.log(" previouslylist"+ previouslylist.length)
-
-    }
-
-
+    rightCount++;
+    $("#rightCount").text(rightCount);
+    $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
   }
 }
+
 //检验答案是否错误
 function answerIsWrong(){
- /* if ( previouslylist.indexOf(ExaminIDs[QIndex - 1])>-1){
-    return;
-  }*/
+  //$("#rightAnswer").hide();
+  //$("#wrongAnswer").show();
     if(answered == false){
-       answered = true;
-
-        if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1) {//检测数组是否有某个特定的值,不存在时计数，若存在不计数
-
-          wrongCount++;
-          if(wrongCount == 10){
-              var r=confirm("成绩不合格!");
-              if (r==true){
-                 alert("继续");
-                 nextQestion();
-              }else{
-                 alert("取消");
-                 init();
-              }
-          }
-
-          $("#wrongCount").text(wrongCount);
-          $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)));
-          previouslylist.push(ExaminIDs[QIndex - 1]);
-
-        }
-
-
-      if ( kemuyi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1) {
-        kemuyi_wronglist.push(ExaminIDs[QIndex - 1]);
-      }
-
+      answered = true;
+      wrongCount++;
+      $("#wrongCount").text(wrongCount);
+      $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
+      kemuyi_wronglist.push(ExaminIDs[QIndex - 1]);
   }
 }
 
-
-
-
-var min;//分
-var sec;//秒
+var min;
+var sec;
 var t;
-var sTime;//开始的时间戳
-var endTime;//结束的时间戳
-
 
 
 //答题倒计时
 function startTime()
 {
   console.log("start timer");
+
   sec--;
-  if(sec < 0){//当秒数减少到小于0时，分钟减少
+  if(sec < 0){
     sec = 60;
     min --;
   }
 
-  if(min < 0){//倒计时小于0
+  if(min < 0){
     clearTimeout(t);
     $("body").addClass("loading");
-
-    $("#test_result").text(rightCount + "分");//本次模拟分数
-
-    backscore();
-
+    $("#test_result").text(rightCount + "分");
   }else{
     //document.getElementById('timer_txt').innerHTML=checkTime(min)+":"+checkTime(sec);
     $("#timer_txt").html(checkTime(min)+":"+checkTime(sec));
-
-
-
     t=setTimeout('startTime()',1000);
   }
 
@@ -323,7 +247,7 @@ function startTime()
 function checkTime(i)
 {
   if (i<10) 
-    {i="0" + i}//格式： 05
+    {i="0" + i}
     return i
 }
 
@@ -347,15 +271,15 @@ function clear(){
   $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)));
 }
 
-
-/*function save(){
+/*
+function save(){
   console.log('save wrong question.');
 
   var u = {
     id: userID,
     kemuyi_wronglist: kemuyi_wronglist
   }
-  console.log("userID"+userID)
+
   console.log('kemuyi_wronglist: ' + kemuyi_wronglist);
 
   $.post(apiHost + "questionwronglist/addWrongQuestion", 

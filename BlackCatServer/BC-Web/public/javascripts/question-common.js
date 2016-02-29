@@ -1,40 +1,51 @@
 var chapexamids;
 var myExamID;
+var notExamID;
 var myExamOrder;
 var Allcount;
 var userID = getUrlParam('userid');
+
 var kemuyi_wronglist = [];
 var kemusi_wronglist = [];
 var selectAns = 0;
 
+
+
+
+//获取试题，唯一的id
 function getQuestionByID(id, callback, enable){
     console.log("get question");
     $.get(apiHost + "question/questionbyid/" + id,
         function(data){
           callback(data, "OK", enable);
+          // console.log(data);//获取的数据
         }).fail(function(xHr, status, message){
         callback(message, "Fail", enable);
     });
 }
 
+//显示试题
 function showQuestions(questoinBody, status, enable) {
-  console.log("show questoin");
-  answered = false;
-  currentQuestion = questoinBody;
-  $("#question_title").text(QIndex + "、" + questoinBody.question);
-  $("#questionIndex").text(QIndex + "/" + Allcount);
-  $(".questionDiv *").prop('disabled',false);
-  $("#confirmBtn").css("background-color", "#efefef");
-  $("#confirmBtn").prop('disabled',true);
-  $("#li_answer2").css("border-bottom", "");
-  selectAns = 0;
+    save();//测试时实验，app上不需要
+    //console.log(questoinBody);  //当前题的所有字段详情
+    console.log("show questoin");
 
-  if(enable){
+    answered = false;
+    currentQuestion = questoinBody;
+    $("#question_title").text(QIndex + "、" + questoinBody.question);
+    $("#questionIndex").text(QIndex + "/" + Allcount);
+    $(".questionDiv *").prop('disabled',false);
+    $("#confirmBtn").css("background-color", "#efefef");
+    $("#confirmBtn").prop('disabled',true);
+    //$("#li_answer2").css("border-bottom", "");
+    selectAns = 0;
 
-  }else{
 
-  }
+   if(enable){
 
+   }else{
+
+   }
 
   $("#li_answer1").css("background-color", "#FFFFFF");
   $("#li_answer2").css("background-color", "#FFFFFF");
@@ -51,13 +62,13 @@ function showQuestions(questoinBody, status, enable) {
   $("#li_answer3").off();
   $("#li_answer4").off();
 
-/*
-  //uncheck all options
-  $("#answer1").prop("checked", false);
-  $("#answer2").prop("checked", false);
-  $("#answer3").prop("checked", false);
-  $("#answer4").prop("checked", false);
-*/
+  /*
+   //uncheck all options
+   $("#answer1").prop("checked", false);
+   $("#answer2").prop("checked", false);
+   $("#answer3").prop("checked", false);
+   $("#answer4").prop("checked", false);
+   */
   //set icon to null
   $("#img_ans_1").prop("src","../images/default-a.png");
   $("#img_ans_2").prop("src","../images/default-b.png");
@@ -66,9 +77,9 @@ function showQuestions(questoinBody, status, enable) {
 
 
   //show question img
-  if(questoinBody.sinaimg != ""){
+  if(questoinBody.sinaimg  != ""){
     $("#question_img").show();
-    $("#question_img").prop("src","../images/kemuyi/img-600/" + questoinBody.sinaimg);
+    $("#question_img").prop("src","../images/kemuyi/img-600/" + questoinBody.sinaimg );
   }else if(questoinBody.imageurl != ""){
     $("#question_vedio").show();
     $("#question_vedio").prop("src", "http://player.youku.com/embed/" + questoinBody.imageurl);
@@ -77,7 +88,7 @@ function showQuestions(questoinBody, status, enable) {
     $("#question_vedio").hide();
   }
 
-  if(questoinBody.Type == 2){
+  if(questoinBody.Type == 2){//单选类型
     $("#confirmBtn").hide();
     //bind click event on li, and enable questionDiv
     $("#li_answer1").on("click", function(){tjanswer(this, 1);} );
@@ -97,9 +108,9 @@ function showQuestions(questoinBody, status, enable) {
     //$("#answer3_txt").show();
     $("#li_answer4").show();
     //$("#answer4_txt").show();
-  }else if(questoinBody.Type == 1){
+  }else if(questoinBody.Type == 1){//判断类型
     $("#confirmBtn").hide();
-    $("#li_answer2").css("border-bottom", "1px solid #CCCCCC");
+    //$("#li_answer2").css("border-bottom", "1px solid #CCCCCC");
     //bind click event on li, and enable questionDiv
     $("#li_answer1").on("click", function(){tjanswer(this, 1);} );
     $("#li_answer2").on("click", function(){tjanswer(this, 2);} );
@@ -113,7 +124,7 @@ function showQuestions(questoinBody, status, enable) {
 
     $("#li_answer4").hide();
     //$("#answer4_txt").hide();
-  }else if(questoinBody.Type == 3){
+  }else if(questoinBody.Type == 3){//多选类型
     $("#confirmBtn").show();
     $("#question_title").text("[多选]" + QIndex + "、" + questoinBody.question);
 
@@ -136,11 +147,14 @@ function showQuestions(questoinBody, status, enable) {
   $("#rightAnswer_txt").text(questoinBody.bestanswer);
   $("#rightAnswer_txt").hide();
   $("#why_label_txt").hide();
+
 }
 
+//提交答案
 function tjanswer(li_, answer){
+
   $("#rightAnswer_txt").show();
-  $("#why_label_txt").show();
+  $("#why_label_txt").show();//答案详解
   $(li_).css("color", "#FF6633");
 
 /*
@@ -162,7 +176,7 @@ function tjanswer(li_, answer){
     case 1:
       $("#img_ans_1").prop("src","../images/wrong.png");
       $("#answer1_txt").css("color", "#FF6633");
-      
+
       // $("#img_ans_2").prop("src","../images/wrong-b.png");
       // $("#img_ans_3").prop("src","../images/wrong-c.png");
       // $("#img_ans_4").prop("src","../images/wrong-d.png");
@@ -228,11 +242,13 @@ function tjanswer(li_, answer){
       break;
   }
 
-
+  //提交答案时检查答案的正确性
   if(answer == currentQuestion.ta){
+
     $(li_).css("background-color", "#E9F3DE");
     answerIsRight();
   }else{
+
     $(li_).css("background-color", "#FDEDE4");
     answerIsWrong();
   }
@@ -246,45 +262,78 @@ function tjanswer(li_, answer){
 
 }
 
+//保存错误的题目
 function save(){
   console.log('save wrong question.');
 
   var u = {
     id: userID,
     kemuyi_wronglist: kemuyi_wronglist,
-    kemusi_wronglist: kemusi_wronglist
+    kemusi_wronglist: kemusi_wronglist,
+
   }
-
-  console.log('kemuyi_wronglist: ' + kemuyi_wronglist);
-
-  $.post(apiHost + "questionwronglist/addWrongQuestion", 
-      JSON.stringify(u), 
+  //$.post(url,[data],[callback],[type])
+  $.post(apiHost + "questionwronglist/addWrongQuestion",
+      JSON.stringify(u),
       //res,
       function(data){
-          
-          console.log(data);
+
+          console.log("data:"+data.kemuyi_wronglist);
           if(data.code > 0){
-              //alert("新增驾校成功！");
               return "1";
           }else if(data.code == -1){
               return "0";
           }
+
       }).fail(function(a, b, c) {
           console.log('failed.');
           return "0";
       });
+
 }
+//在错题库中delete 做对的题
+ function deleteWrongQuestion(wrongid){
+         console.log('delete wrong question.');
+         var u = {
+         id: userID,
+         wrongid:wrongid
+         }
+         //console.log("wrongid_id:"+ JSON.stringify(u) );
+         $.post(apiHost + "questionwronglist/deleteWrongQuestion",
+         JSON.stringify(u),
+         function(data){
 
+         if(data.code > 0){
+         return "1";
+         }else if(data.code == -1){
+         return "0";
+         }
+
+         }).fail(function(a, b, c) {
+         console.log('failed.');
+         return "0";
+         });
+
+ }
+//科目一章节题
 var chap_1_examids = [[1,365],[2541,2640],[10923,10925],[10930,10931],[10938,10962],[10964,10971],[10978,10978],[10987,10995],[10998,11009],[11015,11015],[11022,11034],[11046,11046],[11049,11054],[11057,11078]];
-var chap_1_count = 568;
+var chap_1_count = 568;//第一章的题目数目
 var chap_2_examids = [[366,677]];
-var chap_2_count = 312;
+var chap_2_count = 312;//第二章的题目数目
 var chap_3_examids = [[678,864],[10926,10929],[10932,10937],[10963,10963],[10972,10977],[10979,10986],[10996,10997],[11010,11014],[11016,11021],[11035,11045],[11047,11048],[11055,11056]];
-var chap_3_count = 240;
+var chap_3_count = 240;//第三章的题目数目
 var chap_4_examids = [[865,973]];
-var chap_4_count = 109;
+var chap_4_count = 109;//第四章的题目数目
+
+var chap_1_all =[chap_1_examids, chap_2_examids, chap_3_examids, chap_4_examids];
+var course_1_count=1129;
+//console.log("chap_1_examids:"+chap_1_examids);
+//console.log("chap_1_all:"+chap_1_all);
 
 
+
+
+//科目四章节题
 var chap_4_1_examids = [[1537,1573],[11157,11157],[11262,11262]];
 var chap_4_1_count = 39;
 var chap_4_2_examids = [[1574,1765],[2641,2716],[11085,11085],[11108,11113],[11148,11148],[11150,11152],[11158,11164],[11177,11182],[11189,11202],[11228,11233],[11241,11241],[11263,11272]];
@@ -301,8 +350,8 @@ var chap_4_7_examids = [[2302,2336],[11104,11106],[11176,11176],[11225,11226]];
 var chap_4_7_count = 41;
 
 var chap_4_all =[chap_4_1_examids, chap_4_2_examids, chap_4_3_examids, chap_4_4_examids, chap_4_5_examids, chap_4_6_examids, chap_4_7_examids];
-
-
+var course_4_count=1094;
+//
 function hexc(colorval) {
     var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
     delete(parts[0]);

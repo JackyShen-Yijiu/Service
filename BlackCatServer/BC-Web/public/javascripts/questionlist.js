@@ -1,14 +1,15 @@
+//顺序练习
 var chapter = 1;
 
 function go(_chapter){
   chapter = _chapter;
   $("body").removeClass("loading");
-  init()
+  init();
 }
-
+//选择章节
 function init() {
     console.log('init. user id is: ' + userID);
-    //chapter = 1;//getUrlParam('chapter');
+   //chapter = 1;//getUrlParam('chapter');
 
     previouslylist= [];
 
@@ -47,6 +48,7 @@ function init() {
       for (var minm = chapexamids[i][0], maxm = chapexamids[i][1]; minm <= maxm; minm++) {
         myExamID[arri] = minm;
         arri++;
+         // console.log("  myExamID[arri] :"+ myExamID[arri]);
       }
     }
 
@@ -107,12 +109,8 @@ function answerIsRight(){
 
 
       }
+
   }
-
-
-
-
-
 }
 function answerIsWrong(){
   //$("#rightAnswer").hide();
@@ -145,11 +143,11 @@ function save(){
 
   console.log('kemuyi_wronglist: ' + kemuyi_wronglist);
 
-  $.post(apiHost + "questionwronglist/addWrongQuestion", 
-      JSON.stringify(u), 
+  $.post(apiHost + "questionwronglist/addWrongQuestion",
+      JSON.stringify(u),
       //res,
       function(data){
-          
+
           console.log(data);
           if(data.code > 0){
               //alert("新增驾校成功！");
@@ -162,3 +160,33 @@ function save(){
           return "0";
       });
 }*/
+
+
+//继续上一次的题
+function continueQuestion(){
+   console.log("Continue to the last of the last question");
+    $.get(apiHost + "questionlist/userinfo/" + userID,
+        function(data){
+            userInfo = data;
+
+            if(userInfo == null){
+                $("body").addClass("loading");
+            }else{
+                myExamID = userInfo.kemuyi_wronglist;
+                //console.log("userInfo.kemuyi_wronglist:"+ userInfo.kemuyi_wronglist);
+                Allcount = myExamID.length;
+                previouslylist = [];//清空上一份试题
+
+                console.log("Allcount: " + Allcount);
+                if(Allcount > 0){
+                    $("body").removeClass("loading");
+                    callback(data, "OK");
+                }else{
+                    $("body").addClass("loading");
+                }
+            }
+        }).fail(function(xHr, status, message){
+        callback(message, "Fail");
+    });
+
+}
