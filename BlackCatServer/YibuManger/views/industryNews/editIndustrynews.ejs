@@ -41,7 +41,7 @@
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                               ng-model="formData.logimg"	   >
+                                                               ng-model="formData.logimg"	 required   >
                                                         <button class="btn" type="button" id="picklogimg">选择投头像</button>
                                                         <img id="logimgimg" style="width: 60px;height: 60px">
                                                     </div>
@@ -168,9 +168,16 @@
 
         var savedata=function(){//写入数据
             $scope.formData.logimg=$("#logimg").val();
+            if ($scope.formData.logimg===undefined||$scope.formData.logimg==''){
+                layer.msg("文章图必须填", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             $scope.formData.newstype=$("#newstype").val();
             $scope.formData.content=UE.getEditor('editor').getContent();
-            console.log( $scope.formData);
+            //console.log( $scope.formData);
             return true;
         }
     });
