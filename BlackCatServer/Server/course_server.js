@@ -33,6 +33,7 @@ exports.GetCoachCourse=function(coachid,date ,callback){
             return callback("该教练没有设置工作时间，无法获取训练信息");
         }
         // 判断星期
+        date=new Date(date).toFormat("YYYY-MM-DD").toString();
         var temptime=new Date(date);
         var i=temptime.getDay();
 
