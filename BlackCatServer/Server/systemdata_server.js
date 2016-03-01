@@ -40,7 +40,7 @@ exports.saveUserConsult=function(userinfo,callback){
     userconsult.licensetype=userinfo.licensetype;
     userconsult.content=userinfo.content;
     userconsult.name=userinfo.name;
-    userconsult.createtime=new Date.now();
+    userconsult.createtime=new Date();
     userconsult.save(function(err){
         if(err){
             return callback("保存反馈信息出错："+err);
