@@ -1004,6 +1004,32 @@ exports.GetComment=function(queryinfo,callback){
             })
     }
 };
+//获取我的投诉列表
+exports.getcomplaintlist=function(queryinfo,callback){
+    reservationmodel.find({"userid":new mongodb.ObjectId(queryinfo.userid),"is_complaint":"true"})
+        .select("coachid complaint complainthandinfo")
+        .populate("coachid","_id  name headportrait gender ")
+        .sort({"complaint.complainttime":-1})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询评论出错："+err);
+            }
+            process.nextTick(function(){
+                var complaintlist=[];
+                data.forEach(function(r,index){
+                    var onecomplaint={
+                        _id: r._id,
+                        coachid : r.coachid,
+                        complaint: r.complaint,
+                        complainthandinfo: r.complainthandinfo
+                    }
+                    complaintlist.push(onecomplaint);
+                })
+                return callback(null,complaintlist);
+            });
+
+        })
+}
 // 获取教练某一课程的预约新信息
 exports.getCoursereservationlist=function(coachid,courseid,callback){
     coursemode.findById(new mongodb.ObjectId(courseid),function(err,coursedata){

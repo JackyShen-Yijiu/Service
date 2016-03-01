@@ -200,6 +200,8 @@ v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",
 // 用户报考
 v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized,userController.postApplyExamination);
 
+// 获取我的投诉
+v1.get("/courseinfo/getmycomplaint",ensureAuthorizedController.ensureAuthorized,courseController.getmycomplaint);
 
 //获取同时段学员
 v1.get("/courseinfo/sametimestudentsv2",courseController.sameTimeStudentsv2);

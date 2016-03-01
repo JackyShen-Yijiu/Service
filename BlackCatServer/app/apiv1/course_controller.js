@@ -285,6 +285,25 @@ exports.getUserComment=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+exports.getmycomplaint=function(req,res){
+    var queryinfo= {
+        userid:req.query.userid,
+    };
+    if (queryinfo.userid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",[]));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserver.getcomplaintlist(queryinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 //获取用户同时段学员
 exports.sameTimeStudents=function(req,res){
     var reservationid = req.params.reservationid;
