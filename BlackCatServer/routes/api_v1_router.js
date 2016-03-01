@@ -44,10 +44,13 @@ v1.get("/getmailproduct",appsystemController.getMallProductList);
 v1.get("/getproductdetail",appsystemController.getProductDetail);
 //  保存咨询信息
 v1.post("/saveuserconsult",appsystemController.postUserConsult);
+// 获取用户咨询
+v1.get("/getuserconsult",appsystemController.getUserConsult);
 // 获取活动信息
 v1.get("/getactivity",appsystemController.getActivity);
 // 获取地区的报名类型
 v1.get("/getlocationShowType",appsystemController.getlocationShowType);
+
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 
