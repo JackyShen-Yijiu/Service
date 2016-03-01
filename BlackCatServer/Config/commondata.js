@@ -181,6 +181,18 @@ exports.worktimes=[
         timespace:"19:00 - 20:00",
         begintime:"19:00:00",
         endtime:"20:00:00"
+    },
+    {
+        timeid:16,
+        timespace:"20:00 - 21:00",
+        begintime:"20:00:00",
+        endtime:"21:00:00"
+    },
+    {
+        timeid:17,
+        timespace:"21:00 - 22:00",
+        begintime:"21:00:00",
+        endtime:"22:00:00"
     }
 ]
 exports.examquestioninfo={
@@ -188,7 +200,6 @@ exports.examquestioninfo={
         questiontesturl:"http://www.yibuxueche.com/questiontest",
         questionerrorurl:"http://www.yibuxueche.com/questionwronglist",
         kemuyichengjidanurl:"http://www.yibuxueche.com/questionwronglist",
-
     },
 
 subjectfour:{questionlisturl:"http://www.yibuxueche.com/questionlist-kemusi.html",

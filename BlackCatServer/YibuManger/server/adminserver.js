@@ -1571,6 +1571,28 @@ exports.postReservation=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+// 取消课程
+exports.cancelReservation=function(req,res){
+    var cancelinfo= {
+        userid:req.body.userid,
+        reservationid:req.body.reservationid,
+        cancelreason:"后台取消",
+        cancelcontent:"后台取消",
+        reservationstate: 8
+    };
+    if (cancelinfo.userid === undefined
+        ||cancelinfo.reservationid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+
+    courseserver.userCancelReservation(cancelinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
 }
 // 提交用户申请信息
 exports.auditstudentapplyinfo=function(req,res){

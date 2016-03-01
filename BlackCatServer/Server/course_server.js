@@ -499,7 +499,7 @@ exports.userCancelReservation=function(reservation,callback){
         if (now.getHoursBetween(resdata.begintime)<24){
           return   callback("该时间段不能取消");
         }
-        resdata.reservationstate=appTypeEmun.ReservationState.applycancel;
+        resdata.reservationstate=reservation.reservationstate?reservation.reservationstate:appTypeEmun.ReservationState.applycancel;
         resdata.cancelreason.reason=reservation.cancelreason;
         resdata.cancelreason.cancelcontent=reservation.cancelcontent;
 

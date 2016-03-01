@@ -367,6 +367,8 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getcoursebycoach",adminserver.getcoursebycoach);
     // 提交预约数据
     router.post("/manage/postReservation",adminserver.postReservation);
+    // 系统取消订单
+    router.post("/manage/cancelReservation",adminserver.cancelReservation);
     // 学员审核成功
     router.post("/manage/auditstudentapplyinfo",adminserver.auditstudentapplyinfo);
 
