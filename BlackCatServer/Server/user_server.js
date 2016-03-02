@@ -1947,7 +1947,7 @@ exports.getMyWallet=function(queryinfo,callback){
 }
 exports.getapplyschoolinfo=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
-        .select("_id  name mobile applystate applyinfo   scanauditurl applyschool" +
+        .select("_id  name mobile applystate applyinfo   scanauditurl applyschool displayuserid" +
             " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo paytype  paytypestatus")
         .populate("applyschool"," _id  applynotes logoimg")
         .exec(function(err,data){
@@ -1974,6 +1974,7 @@ exports.getapplyschoolinfo=function(userid,callback){
                 applyclasstypeinfo:data.applyclasstypeinfo,
                 paytype:data.paytype,
                 paytypestatus:data.paytypestatus,
+                applyorderid:data.displayuserid,
                 schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
                 applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
             };
