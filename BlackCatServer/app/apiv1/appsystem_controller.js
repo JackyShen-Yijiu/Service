@@ -269,7 +269,7 @@ exports.postUserFeedBack=function(req,res){
 exports.getmessagecount=function(req,res){
     var searchinfo={
         coachid:req.query.coachid,
-        lastmessage:req.query.lastmessage?req.query.lastnews:0,
+        lastmessage:req.query.lastmessage?req.query.lastmessage:0,
         lastnews:req.query.lastnews?req.query.lastnews:0
     }
     sysstemserver.getmessagecount(searchinfo,function(err,data){

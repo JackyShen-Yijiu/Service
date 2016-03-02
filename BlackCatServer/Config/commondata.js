@@ -200,6 +200,8 @@ exports.examquestioninfo={
         questiontesturl:"http://www.yibuxueche.com/questiontest",
         questionerrorurl:"http://www.yibuxueche.com/questionwronglist",
         kemuyichengjidanurl:"http://www.yibuxueche.com/questionwronglist",
+        kemusichengjidanurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html",
+
     },
 
 subjectfour:{questionlisturl:"http://www.yibuxueche.com/questionlist-kemusi.html",
