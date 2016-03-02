@@ -112,7 +112,8 @@ exports.getStatitic=function(req,res){
             schoolalbum:req.body.schoolalbum,
             workbegintime:req.body.workbegintime,
             workendtime:req.body.workendtime,
-            phonelist:req.body.phonelist
+            phonelist:req.body.phonelist,
+            pictures_path:req.body.pictures_path
         };
         schoolinfo.loc={type:"Point",coordinates:[schoolinfo.longitude,schoolinfo.latitude]};
         schoolinfo.logoimg.originalpic=req.body.logoimg;
@@ -1398,7 +1399,8 @@ exports.getSchoolInfoById=function(req,res){
             schoolalbum:schooldata.schoolalbum,
             workbegintime:schooldata.workbegintime,
             workendtime:schooldata.workendtime,
-            phonelist:schooldata.phonelist
+            phonelist:schooldata.phonelist,
+            pictures_path:schooldata.pictures_path
         }
         res.json(new BaseReturnInfo(1, "", schoolinfo));
     })
