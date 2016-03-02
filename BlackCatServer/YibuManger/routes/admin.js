@@ -69,7 +69,7 @@ var  returnAdminRouter=function(io) {
                         res.json(err);
                     }
                     if(user) {
-                        req.session.adminPower = user.group.power;
+                        ///req.session.adminPower = user.group.power;
                         req.session.adminlogined = true;
                         req.session.adminUserInfo = user;
 //                    存入操作日志
