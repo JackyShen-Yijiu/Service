@@ -71,8 +71,14 @@ exports.searchDriverSchool=function(searchinfo,callback){
                             coachcount: r.coachcount? r.coachcount:0,
                             commentcount: r.commentcount? r.commentcount:0,
                             passingrate: r.passingrate
+                        };
+                        if(oneschool.name.indexOf("一步")>-1){
+                            driveschoollist.unshift(oneschool);
                         }
-                        driveschoollist.push(oneschool);
+                        else {
+                            driveschoollist.push(oneschool);
+                        }
+
                         //  r.restaurantId = r._id;
                         // delete(r._id);
                     });
