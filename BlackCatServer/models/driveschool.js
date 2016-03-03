@@ -72,7 +72,8 @@ var DriveSchoolSchema=new Schema({
     // 确认学生验证码
     confirmnum:String,
     // 自主考试url
-    examurl:{type:String,default:""}
+    examurl:{type:String,default:""},
+    querycoursehoururl:{type:String,default:""}  //学时查询url
 });
 
 /**0

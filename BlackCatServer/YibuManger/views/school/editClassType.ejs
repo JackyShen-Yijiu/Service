@@ -96,7 +96,9 @@
                                                 <div class="controls">
                                                     预留利润：
                                                     <input name="systemretains"  type="number" ng-model="formData.systemretains"
-                                                           class="span2" id="systemretains" value="100"  required>
+                                                           class="span2" id="systemretains" value="100"
+                                                           placeholder="系统保留利润"
+                                                           required>
                                                     <span class="errtext">*</span>
                                                 </div>
                                                 <br>
@@ -110,7 +112,9 @@
                                                 <div class="controls">
                                                     渠道佣金：
                                                     <input name="rewardmoney"  type="number" ng-model="formData.rewardmoney" class="span2"
-                                                           id="rewardmoney" value="100"  required>
+                                                           id="rewardmoney" value="100"
+                                                           placeholder="奖励各种代理"
+                                                           required>
                                                     <span class="errtext">*</span>
                                                 </div>
                                             </div> <!-- /control-group -->
@@ -268,7 +272,7 @@
                                                }
                                        );
                                         $("input[name='classType']:checkbox").each(function(){
-                                            var index=$scope.formData.classchedule.indexOf(parseInt($(this).val()));
+                                            var index=$scope.formData.classchedule.indexOf($(this).val());
                                             if (index>-1){
                                                 $(this).attr("checked","true");
                                             }

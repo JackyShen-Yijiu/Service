@@ -26,10 +26,16 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="name" >驾校名称</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6 " name="name"    id="name"  placeholder="驾校名称最多三十个字"
+                                                    <input type="text" class="span6 " name="shortname"    id="name"  placeholder="驾校名称最多三十个字"
                                                            ng-minlength="3" ng-maxlength="30" ng-model="formData.name" required>
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                         role="alert">3-30个非特殊字符</div>
+                                                    <span class="errtext">*</span>
+                                                </div> <!-- /controls -->
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="shortname" >驾校简称</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6 " name="shortname"    id="shortname"  placeholder="驾校简称"
+                                                            ng-model="formData.shortname" required>
                                                 </div> <!-- /controls -->
                                             </div>
                                             <div class="control-group">
@@ -38,7 +44,7 @@
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
                                                                ng-model="formData.logoimg"	   >
-                                                        <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                        <button class="btn" type="button" id="picklogimg">选择头像</button>
                                                         <img id="logimgimg" style="width: 60px;height: 60px">
                                                     </div>
                                                 </div>
@@ -58,8 +64,7 @@
                                                            ng-model="formData.address"    placeholder="详细地址--可以通过地图选择" required>
                                                     <input type="hidden" id="longitude"  ng-model="formData.longitude"  >
                                                     <input type="hidden" id="latitude" ng-model="formData.latitude"  >
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
-                                                         role="alert">地址必须</div>
+                                                    <span class="errtext">* 请在地图上标注地址</span>
                                                 </div> <!-- /controls -->
                                             </div>
 
@@ -73,12 +78,35 @@
 
 
                                             <div class="control-group">
-                                                <label class="control-label" for="website">网址</label>
+                                                <label class="control-label" for="website">驾校网址</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6" id="website" ng-model="formData.website">
+                                                    <input type="text" class="span6" id="website" ng-model="formData.website"
+                                                    placeholder="驾校官网地址">
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
 
+                                            <div class="control-group">
+                                                <label class="control-label" for="examurl">报考网址</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="examurl" ng-model="formData.examurl"
+                                                           placeholder="学员自助报考网址">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="phone">客服电话</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="phone" ng-model="formData.phone"
+                                                           placeholder="学员自助报考网址">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="querycoursehoururl">学时查询网址</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span6" id="querycoursehoururl"
+                                                           ng-model="formData.querycoursehoururl"
+                                                           placeholder="学员学时查询网址">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
 
                                             <div class="control-group">
                                                 <label class="control-label" for="email">邮件地址</label>
@@ -86,9 +114,7 @@
                                                     <input type="email" name="email" class="span4" id="email" placeholder="john.donga@egrappler.com"
                                                            type="email" ng-model="formData.email" >
                                                     <br/>
-                                                    <div class="alert alert-danger span2"  ng-show="myForm.email.$dirty && myForm.email.$invalid
-											&& !myForm.email.$pristine"
-                                                         role="alert">邮箱格式不对</div>
+
                                                 </div> <!-- /controls -->
 
                                             </div> <!-- /control-group -->
@@ -149,18 +175,23 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="studentcount">学员数</label>
                                                 <div class="controls">
-                                                    <input  type="number" ng-model="formData.studentcount"  class="span1" id="studentcount" value="0" >
+                                                    <input  type="number" ng-model="formData.studentcount"  class="span1" id="studentcount" value="0" required>
+                                                    <span class="errtext">*</span>
                                                     &nbsp;&nbsp;通过率&nbsp;
-                                                    <input  type="number" ng-model="formData.passingrate"   class="span1" id="passingrate" value="90" >%
+                                                    <input  type="number" ng-model="formData.passingrate"   class="span1" id="passingrate" value="90"  required>%
+                                                    <span class="errtext">*</span>
                                                     &nbsp;&nbsp;考场个数&nbsp;
-                                                    <input  type="number" ng-model="formData.examhallcount"   class="span1" id="examhallcount" value="0" >
+                                                    <input  type="number" ng-model="formData.examhallcount"   class="span1" id="examhallcount" value="0"  required>
+                                                    <span class="errtext">*</span>
                                                 </div>
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
                                                 <label class="control-label" for="coachcount">教练数</label>
                                                 <div class="controls">
-                                                    <input  type="number" ng-model="formData.coachcount" class="span2" id="coachcount" value="0" >
-                                                    &nbsp;&nbsp;车辆数&nbsp;<input  type="number"ng-model="formData.carcount"  class="span2" id="carcount" value="0" >
+                                                    <input  type="number" ng-model="formData.coachcount" class="span2" id="coachcount" value="0" required >
+                                                    <span class="errtext">*</span>
+                                                    &nbsp;&nbsp;车辆数&nbsp;<input  type="number"ng-model="formData.carcount"  class="span2" id="carcount" value="0" required >
+                                                    <span class="errtext">*</span>
                                                 </div>
                                             </div> <!-- /control-group -->
 
@@ -213,25 +244,26 @@
                                                 </div>
                                             </div>
 
+                                            <!--<div class="control-group">-->
+                                                <!--<label class="control-label" for="valueaddedservice">增值服务</label>-->
+                                                <!--<div class="controls">-->
+                                                    <!--<textarea   class="span4" id="valueaddedservice" rows="3"  ng-model="formData.valueaddedservice" placeholder="增值服务"></textarea>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                             <div class="control-group">
-                                                <label class="control-label" for="valueaddedservice">增值服务</label>
+                                                <label class="control-label" for="superiorservice">竞争优势</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="valueaddedservice" rows="3"  ng-model="formData.valueaddedservice" placeholder="增值服务"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="control-label" for="superiorservice">优势服务</label>
-                                                <div class="controls">
-                                                    <textarea   class="span4" id="superiorservice" rows="3" ng-model="formData.superiorservice" placeholder="优势服务"></textarea>
+                                                    <textarea   class="span4" id="superiorservice" rows="3" ng-model="formData.superiorservice"
+                                                                placeholder="驾校竞争优势"></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="control-group">
-                                                <label class="control-label" for="shuttleroute">班车路线</label>
-                                                <div class="controls">
-                                                    <textarea   class="span4" id="shuttleroute" rows="3"  ng-model="formData.shuttleroute" placeholder="班车路线"></textarea>
-                                                </div>
-                                            </div>
+                                            <!--<div class="control-group">-->
+                                                <!--<label class="control-label" for="shuttleroute">班车路线</label>-->
+                                                <!--<div class="controls">-->
+                                                    <!--<textarea   class="span4" id="shuttleroute" rows="3"  ng-model="formData.shuttleroute" placeholder="班车路线"></textarea>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                             <div class="control-group">
                                                 <label class="control-label" for="introduction">驾校简介</label>
                                                 <div class="controls">
@@ -262,25 +294,26 @@
                                                 </div>
                                             </div>
                                             <div class="control-group">
-                                                <label class="control-label" for="linkman1">联系人1</label>
+                                                <label class="control-label" for="linkman1">校长</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman1" >   电话： <input type="text" class="span2" id="linktele1" >
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
-                                                <label class="control-label" for="linkman2">联系人2</label>
+                                                <label class="control-label" for="linkman2">招生负责人1</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman2" >   电话： <input type="text" class="span2" id="linktele2" >
+                                                    <span class="errtext">用户报名验证</span>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
-                                                <label class="control-label" for="linkman3">联系人3</label>
+                                                <label class="control-label" for="linkman3">招生负责人2</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman3" >   电话： <input type="text" class="span2" id="linktele3" >
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
-                                                <label class="control-label" for="linkman4">联系人4</label>
+                                                <label class="control-label" for="linkman4">招生负责人3</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman4" >   电话： <input type="text" class="span2" id="linktele4" >
                                                 </div> <!-- /controls -->
@@ -288,7 +321,7 @@
                                             <br />
                                             <div class="form-actions">
                                                 <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
-                                                <button class="btn">取消</button>
+                                                <!--<button class="btn">取消</button>-->
                                             </div> <!-- /form-actions -->
                                         </fieldset>
                                     </form>
@@ -395,7 +428,7 @@
                             $("#latitude").val($scope.formData.latitude);
                             $("#longitude").val($scope.formData.longitude);
                             $("#licensetype").val($scope.formData.licensetype.join(","));
-                            $("#registertime").val($scope.formData.registertime);
+                            $("#registertime").val(new Date($scope.formData.registertime).Format("yyyy-MM-dd"));
                             $("#privilegelevel").val($scope.formData.privilegelevel);
                             $("#is_validation").val($scope.formData.is_validation);
                             $("#linkman1").val($scope.formData.responsiblelist[0]);
@@ -426,7 +459,7 @@
 
                     })
         }else{
-            $scope.formData.registertime=new Date();
+            $scope.formData.registertime=new Date().Format("yyyy-MM-dd");
             $scope.formData.schoollevel="5";
             $scope.formData.is_validation=1;
             $scope.formData.privilegelevel=3;
