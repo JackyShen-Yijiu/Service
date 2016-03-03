@@ -45,7 +45,7 @@
                                         <th> 学员手机号</th>
                                         <th> 教练 </th>
                                         <th> 科目</th>
-                                        <th> 预约时间</th>
+                                        <th> 创建时间</th>
                                         <th> 上课日期</th>
                                         <th> 上课时间</th>
                                         <th> 状态</th>
@@ -115,6 +115,8 @@
 
                                         <td class="td-actions">
                                             <a href="#" ng-disabled="content.reservationstate>3"
+                                               ng-click="content.reservationstate>3 ||
+                                               cancelreservation(content._id , content.userid.name)"
                                                class="btn btn-small btn-success"  >取消 </a>
                                         </td>
 
@@ -141,6 +143,46 @@
 <script type="text/javascript" src="/js/laydate.js"></script>
 <script>
     ybxcApp.controller("orderlist",function($scope,$http){
+        $scope.cancelreservation=function(reservationid,name){
+            $scope.reservationdata={};
+            for (i=0;i<$scope.data.length;i++){
+                if ($scope.data[i]._id==reservationid){
+                    $scope.reservationdata=$scope.data[i];
+                    break;
+                }
+            };
+            if ($scope.reservationdata._id===undefined){
+                layer.msg("没有查到此订单", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return;
+            };
+            layer.confirm('你确定要取消 '+reservationid+' 订单吗？', {
+                btn: ['确认','返回'] //按钮
+            }, function(){
+                $http.post("/admin/manage/cancelReservation",{
+                    userid:$scope.reservationdata.userid._id,
+                    reservationid:$scope.reservationdata._id,
+                }) .success(function(response){
+                    if (response.type==0){
+                        layer.msg(response.msg, {
+                            icon: 2,
+                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                        });
+                    }else{
+                        layer.msg("取消预约成功", {
+                            icon: 1,
+                            time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                        });
+                        $scope.searchinfo();
+                    }
+                })
+            }, function(){
+                return;
+            });
+
+        }
         getsearchinfo=function(){
             var searchinfo="";
             for (var o in $scope.formData){
@@ -163,7 +205,7 @@
             $scope.formData.begindate=new Date( $("#begindate").val());
             $scope.formData.enddate=new Date($("#enddate").val());
             searchinfo=getsearchinfo();
-            console.log(searchinfo);
+            //console.log(searchinfo);
             initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getorderlist?"+searchinfo+"schoolid=<%=schoolid%>");
         }
     });

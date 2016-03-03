@@ -239,6 +239,29 @@
                                                 </div>
                                             </div>
                                             <div class="control-group">
+                                                <label class="control-label" for="trainimg">驾校展示</label>
+                                                <div class="controls">
+                                                    <div class="widget">
+                                                        <div class="widget-content">
+                                                            <div style="float:left;margin: 0 6px;">
+                                                                <img id="trainimgimg1" style="width: 200px;height: 160px;" >
+                                                                <div class="icon-remove" id="train-icon1"></div>
+                                                            </div>
+                                                            <div style="float:left; margin: 0 6px;">
+                                                                <img id="trainimgimg2" style="width: 200px;height: 160px">
+                                                                <div class="icon-remove" id="train-icon2"></div>
+                                                            </div>
+                                                            <div style="float:left; margin: 0 6px;">
+                                                                <img id="trainimgimg3" style="width: 200px;height: 160px">
+                                                                <div class="icon-remove" id="train-icon3"></div>
+                                                            </div>
+                                                            <button class="btn" type="button" id="picktrainimg">选择图片</button></div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
                                                 <label class="control-label" for="linkman1">联系人1</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman1" >   电话： <input type="text" class="span2" id="linktele1" >
@@ -383,6 +406,9 @@
                             $("#linktele2").val($scope.formData.phonelist[1]);
                             $("#linktele3").val($scope.formData.phonelist[3]);
                             $("#linktele4").val($scope.formData.phonelist[4]);
+                            $("#trainimgimg1").attr("src",$scope.formData.pictures_path[0]);
+                            $("#trainimgimg2").attr("src",$scope.formData.pictures_path[1]);
+                            $("#trainimgimg3").attr("src",$scope.formData.pictures_path[2]);
                            var  licensetype="";
                             console.log($scope.formData.licensetype);
                             for(i=0;i<$scope.formData.licensetype.length;i++){
@@ -489,11 +515,33 @@
             linktele.push($("#linktele2").val())
             linktele.push($("#linktele3").val())
             linktele.push($("#linktele4").val())
+            var  pictureslsit=[];
+            if($("#trainimgimg1").attr("src")!=undefined&&$("#trainimgimg1").attr("src")!=""){
+                pictureslsit.push($("#trainimgimg1").attr("src"));
+            };
+            if($("#trainimgimg2").attr("src")!=undefined&&$("#trainimgimg2").attr("src")!=""){
+                pictureslsit.push($("#trainimgimg2").attr("src"));
+            }
+            if($("#trainimgimg3").attr("src")!=undefined&&$("#trainimgimg3").attr("src")!=""){
+                pictureslsit.push($("#trainimgimg3").attr("src"));
+            }
+            $scope.formData.pictures_path=pictureslsit;
             $scope.formData.responsiblelist=linkman;
             $scope.formData.phonelist=linktele;
             //console.log(linkman);
             return true;
-        }
+        };
+
+        //删除训练场图片
+        $("#train-icon1").click(function(){
+            $("#trainimgimg1").removeAttr("src");
+        });
+        $("#train-icon2").click(function(){
+            $("#trainimgimg2").removeAttr("src");
+        });
+        $("#train-icon3").click(function(){
+            $("#trainimgimg3").removeAttr("src");
+        });
     });
 
 

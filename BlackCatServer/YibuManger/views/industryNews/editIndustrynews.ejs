@@ -31,7 +31,7 @@
                                                 <label class="control-label" for="title" >标题</label>
                                                 <div class="controls">
                                                     <input type="text" class="span6 " name="title"    id="title"  placeholder="标题最多三十个字"
-                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.title" required>
+                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.title"required >
                                                     <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
                                                          role="alert">2-30个非特殊字符</div>
                                                 </div> <!-- /controls -->
@@ -41,7 +41,7 @@
                                                 <div class="controls">
                                                     <div class="input-append">
                                                         <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                               ng-model="formData.logimg"	   >
+                                                               ng-model="formData.logimg"	    >
                                                         <button class="btn" type="button" id="picklogimg">选择投头像</button>
                                                         <img id="logimgimg" style="width: 60px;height: 60px">
                                                     </div>
@@ -70,7 +70,7 @@
                                                 <div class="controls">
                                                     <!--<textarea   class="span4" id="content" rows="3" ng-model="formData.content"-->
                                                                 <!--placeholder="文章内容"></textarea>-->
-                                                    <script id="editor" type="text/plain" style="width:500px;height:600px;"></script>
+                                                    <script id="editor" type="text/plain" style="width:400px;height:600px;"></script>
                                                 </div>
                                             </div><!-- /one end -->
                                             <br />
@@ -168,9 +168,16 @@
 
         var savedata=function(){//写入数据
             $scope.formData.logimg=$("#logimg").val();
+            if ($scope.formData.logimg===undefined||$scope.formData.logimg==''){
+                layer.msg("文章图必须填", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             $scope.formData.newstype=$("#newstype").val();
             $scope.formData.content=UE.getEditor('editor').getContent();
-            console.log( $scope.formData);
+            //console.log( $scope.formData);
             return true;
         }
     });

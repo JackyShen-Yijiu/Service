@@ -11,10 +11,26 @@ var trainingfiledModel=mongodb.TrainingFieldModel;
 var classtype=mongodb.ClassTypeModel;
 var vipserver=mongodb.VipServerModel;
  var userCountModel=mongodb.UserCountModel;
+var  merchantmodel=mongodb.MerChantModel;
 var cache=require("../../Common/cache");
 
 
 var basedataFunc = {
+    getallMerchant:function(callback){
+        cache.get("getallMerchant",function(err,data){
+            if(!data){
+                merchantmodel.find()
+                   // .select("_id name")
+                    .exec(function(err,merchantmodel){
+                        cache.set("getallMerchant",merchantmodel,60,function(err){});
+                        return callback(null,merchantmodel);
+                    })
+            }
+            if(data){
+                return callback(null,data);
+            }
+        })
+    },
     getAllSchoolList:function(callback){
         cache.get("allschoolinfolist",function(err,data){
             if(!data){

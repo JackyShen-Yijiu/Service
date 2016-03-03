@@ -200,6 +200,16 @@ exports.getHeadLineNews=function (req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     })
 }
+exports.getUserConsult=function(req,res){
+    var index=req.query.index?req.query.index:1;
+    console.log(index);
+    sysstemserver.getUserConsult(index,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
 // 保存用户咨询信息
 exports.postUserConsult=function(req,res){
     var   userinfo={
@@ -211,6 +221,19 @@ exports.postUserConsult=function(req,res){
     };
     //console.log(userinfo);
     sysstemserver.saveUserConsult(userinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
+// 保存用户咨询
+exports.postuserconsult=function(req,res){
+    consultinfo={
+        userid:req.body.userid,
+        content:req.body.content
+    }
+    sysstemserver.postuserconsult(consultinfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }
@@ -246,7 +269,7 @@ exports.postUserFeedBack=function(req,res){
 exports.getmessagecount=function(req,res){
     var searchinfo={
         coachid:req.query.coachid,
-        lastmessage:req.query.lastmessage?req.query.lastnews:0,
+        lastmessage:req.query.lastmessage?req.query.lastmessage:0,
         lastnews:req.query.lastnews?req.query.lastnews:0
     }
     sysstemserver.getmessagecount(searchinfo,function(err,data){

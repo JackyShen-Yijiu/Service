@@ -441,12 +441,13 @@ exports.userlogin= function(usertype,userinfo,callback){
                            returnmodel.userid =newinstace._id;
                            returnmodel.idcardnumber=newinstace.idcardnumber;
                            returnmodel.usersetting=newinstace.usersetting;
-                           if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
-                               regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
-                                   usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
-                                       { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
-                               })
-                           }
+                           //if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                           //
+                           //}
+                           regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                               usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                   { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                           })
                            return callback(null,returnmodel);
 
                        });
@@ -490,12 +491,14 @@ exports.userlogin= function(usertype,userinfo,callback){
                             returnmodel.idcardnumber=idCardNumberObfuscator(newinstace.idcardnumber);
                             returnmodel.coachid =newinstace._id;
                             returnmodel.tagslist=userinstace.tagslist;
-                            if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
-                                regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
-                                    coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
-                                        { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
-                                })
-                            }
+                            //if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
+                            //
+                            //}
+
+                            regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            });
                             userfcode.findOne({"userid":newinstace._id})
                                 .select("userid fcode money")
                                 .exec(function(err, fcodedata){
@@ -1454,7 +1457,7 @@ exports.FavoritSchoolList=function(userid,callback){
                             address: r.address,
                             passingrate: r.passingrate
                         }
-                        driveschoollist.push(oneschool)
+                        driveschoollist.push(oneschool);
                         //  r.restaurantId = r._id;
                         // delete(r._id);
                     });
@@ -1944,7 +1947,7 @@ exports.getMyWallet=function(queryinfo,callback){
 }
 exports.getapplyschoolinfo=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
-        .select("_id  name mobile applystate applyinfo   scanauditurl applyschool" +
+        .select("_id  name mobile applystate applyinfo   scanauditurl applyschool displayuserid" +
             " applyschoolinfo  applycoachinfo carmodel applyclasstypeinfo paytype  paytypestatus")
         .populate("applyschool"," _id  applynotes logoimg")
         .exec(function(err,data){
@@ -1971,6 +1974,7 @@ exports.getapplyschoolinfo=function(userid,callback){
                 applyclasstypeinfo:data.applyclasstypeinfo,
                 paytype:data.paytype,
                 paytypestatus:data.paytypestatus,
+                applyorderid:data.displayuserid,
                 schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
                 applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
             };

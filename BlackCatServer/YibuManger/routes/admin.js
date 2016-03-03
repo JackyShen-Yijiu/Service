@@ -12,6 +12,7 @@ var basedatafun=require("../server/basedatafun");
 var validator = require('validator');
 var cache=require("../../Common/cache");
 var _ = require("underscore");
+var xlsx = require('node-xlsx');
 //站点配置
 var settings = require("../models/config/settings");
 //数据库操作对象
@@ -68,7 +69,7 @@ var  returnAdminRouter=function(io) {
                         res.json(err);
                     }
                     if(user) {
-                        req.session.adminPower = user.group.power;
+                        ///req.session.adminPower = user.group.power;
                         req.session.adminlogined = true;
                         req.session.adminUserInfo = user;
 //                    存入操作日志
@@ -250,6 +251,24 @@ var  returnAdminRouter=function(io) {
         });
 
     });
+    // 批量添加学员
+    router.get("/manage/addstudentbatch" ,function(req, res, next) {
+        var schoolid=req.session.schoolid;
+        if(req.session.schoolid===undefined){
+            return   res.render(error);
+        }
+        basedatafun.getschoolclasstype(schoolid,function(err,data){
+            filedlist=  _.map(data,function(item,i) {
+                var info = {
+                    id: item._id,
+                    name: item.classname
+                };
+                return info;
+            });
+            res.render('school/addstudentbatch', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/addstudentbatch",filedlist));
+        });
+
+    });
     // app 设置
     router.get("/manage/appsetting" ,function(req, res, next) {
         res.render('school/appsetting',adminFunc.setSchoolPageInfo(req,res,"/admin/manage/appsetting"));
@@ -341,7 +360,9 @@ var  returnAdminRouter=function(io) {
     });
     //商品管理
     router.get("/manage/productslist" ,function(req, res, next) {
-        res.render('business/mallproductlist', adminFunc.setPageInfo(req,res,"/admin/manage/productslist"));
+        basedatafun.getallMerchant(function(err,data) {
+            res.render('business/mallproductlist', adminFunc.setPageInfo(req, res, "/admin/manage/productslist",data));
+        })
     });
     //router.get("/manage/editBusiness" ,function(req, res, next) {
     //    res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
@@ -435,6 +456,8 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getcoursebycoach",adminserver.getcoursebycoach);
     // 提交预约数据
     router.post("/manage/postReservation",adminserver.postReservation);
+    // 系统取消订单
+    router.post("/manage/cancelReservation",adminserver.cancelReservation);
     // 学员审核成功
     router.post("/manage/auditstudentapplyinfo",adminserver.auditstudentapplyinfo);
 
@@ -453,6 +476,7 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getbusinesslist",adminserver.getbusinesslist);
     router.post("/manage/updatebusiness",adminserver.updatebusiness);
     router.get("/manage/getproductlist",adminserver.getproductlist);
+    router.post("/manage/updateproduct",adminserver.updateproduct);
 
     // 用户管理
     router.get("/manage/getadminuserlist",adminserver.getadminuserlist);
@@ -548,6 +572,27 @@ var  returnAdminRouter=function(io) {
             })
         }
     });
+
+    router.post("/manage/updatestudentxls",function(req, res, next){
+        var data = req.files["name"];
+        console.log(data);
+        if (!data) {
+            return res.json(new BaseReturnInfo(0, "上传文件不能为空", "") );
+        }
+        else {
+            if (data.size<=0){
+                return res.json(new BaseReturnInfo(0, "上传文件大小错误", "") );
+            }
+            if(data.extension!="xls"&&data.extension!="xlsx"){
+                return res.json(new BaseReturnInfo(0, "上传文件格式错误", "") );
+            }
+            var obj = xlsx.parse(data.path);
+            console.log(JSON.stringify(obj));
+            return res.json(new BaseReturnInfo(1, "suceess", JSON.stringify(obj)) );
+        }
+
+
+    })
 
 return router;
 }

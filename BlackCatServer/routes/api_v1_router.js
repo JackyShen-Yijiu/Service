@@ -44,10 +44,13 @@ v1.get("/getmailproduct",appsystemController.getMallProductList);
 v1.get("/getproductdetail",appsystemController.getProductDetail);
 //  保存咨询信息
 v1.post("/saveuserconsult",appsystemController.postUserConsult);
+// 获取用户咨询
+v1.get("/getuserconsult",appsystemController.getUserConsult);
 // 获取活动信息
 v1.get("/getactivity",appsystemController.getActivity);
 // 获取地区的报名类型
 v1.get("/getlocationShowType",appsystemController.getlocationShowType);
+
 // 获取地址信息
 //v1.get("/location",appsystemController.getLocation);
 
@@ -129,6 +132,8 @@ v1.put('/userinfo/favoriteschool/:id', ensureAuthorizedController.ensureAuthoriz
 v1.delete('/userinfo/favoriteschool/:id',ensureAuthorizedController.ensureAuthorized, userController.delFavorrSchool);
 
 
+// 获取教练自主约考网址
+v1.get("/driveschool/schoolexamurl",driveSchoolController.schoolexamurl);
 //获取附近的驾校
 v1.get('/driveschool/nearbydriveschool', driveSchoolController.getNearbydriveSchool);
 //获取驾校详情
@@ -198,6 +203,8 @@ v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",
 // 用户报考
 v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized,userController.postApplyExamination);
 
+// 获取我的投诉
+v1.get("/courseinfo/getmycomplaint",ensureAuthorizedController.ensureAuthorized,courseController.getmycomplaint);
 
 //获取同时段学员
 v1.get("/courseinfo/sametimestudentsv2",courseController.sameTimeStudentsv2);

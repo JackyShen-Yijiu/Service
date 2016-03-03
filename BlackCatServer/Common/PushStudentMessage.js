@@ -5,15 +5,15 @@
 //向学生端发送
 
 var BasePushmessage=require("./PushMessage/JPushBase");
-
-var title="一步学车";
+var config=require("../Config/sysconfig").appconfiginfo;
+var title=config.appname;
 var alterinfo={
     ApplySuccess:"您已成功报名驾校，赶快开启学车之旅吧",
     ReservationSuccess:"您预约的课程已被接受，请到预约详情里查看",
     ReservationCancel:"您预约的课程被教练取消，请到预约详情里查看",
     CoachComment:"您预约的课程已经被教练评价，请到预约详情里查看评价内容",
     WalletUpdate:"您的积分有更新，进入我的钱包查看详情",
-    NewVersion:"一步学车有版本更新啦！"
+    NewVersion:config.appname+"有版本更新啦！"
 };
 var pushtype={
     ApplySuccess:"userapplysuccess",

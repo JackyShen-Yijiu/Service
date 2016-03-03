@@ -107,3 +107,17 @@ exports.getSchoolInfo=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 };
+// 获取驾校自主约考网址
+exports.schoolexamurl=function(req,res){
+    var  schoolid=req.query.schoolid;
+    if (schoolid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",""));
+    }
+    driverSchool.getschoolexamurl(schoolid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+

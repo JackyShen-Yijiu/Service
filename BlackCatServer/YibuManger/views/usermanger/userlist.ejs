@@ -319,7 +319,7 @@
             $scope.formData.userstate=$("#usertype").val();
             if($scope.formData.usertype==1){
                 $scope.formData.schoolid= $("#schoolid").val();
-                console.log($scope.formData.schoolid);
+
                 if ( $scope.formData.schoolid.indexOf(undefined)>=0){
                     layer.msg("必须选择驾校", {
                         icon: 2,

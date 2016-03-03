@@ -14,6 +14,7 @@ var schoolModel=mongodb.DriveSchoolModel;
 var activtyModel= mongodb.ActivityModel;
 var industryNewsModel= mongodb.IndustryNewsModel;
 var  merchantmodel=mongodb.MerChantModel;
+var  mallProductsmodel =mongodb.MallProdcutsModel;
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var trainingfiledModel=mongodb.TrainingFieldModel;
 var  coachmodel=mongodb.CoachModel;
@@ -88,16 +89,16 @@ exports.getStatitic=function(req,res){
             responsiblelist:req.body.responsiblelist,
             latitude:req.body.latitude,
             longitude:req.body.longitude,
-            website:req.body.website,
-            email:req.body.email,
-            businesslicensenumber:req.body.businesslicensenumber,
-            organizationcode:req.body.organizationcode,
+            website:req.body.website?req.body.website:"",
+            email:req.body.email?req.body.email:"",
+            businesslicensenumber:req.body.businesslicensenumber?req.body.businesslicensenumber:"",
+            organizationcode:req.body.organizationcode?req.body.organizationcode:"",
             registertime:req.body.registertime,
             schoollevel:req.body.schoollevel,
             is_validation:req.body.is_validation,
             privilegelevel:req.body.privilegelevel,
             studentcount:req.body.studentcount,
-            passingrate:req.body.passingrate,
+            passingrate:req.body.passingrate?req.body.passingrate:90,
             examhallcount:req.body.examhallcount,
             coachcount:req.body.coachcount,
             carcount:req.body.carcount,
@@ -111,7 +112,8 @@ exports.getStatitic=function(req,res){
             schoolalbum:req.body.schoolalbum,
             workbegintime:req.body.workbegintime,
             workendtime:req.body.workendtime,
-            phonelist:req.body.phonelist
+            phonelist:req.body.phonelist,
+            pictures_path:req.body.pictures_path
         };
         schoolinfo.loc={type:"Point",coordinates:[schoolinfo.longitude,schoolinfo.latitude]};
         schoolinfo.logoimg.originalpic=req.body.logoimg;
@@ -153,11 +155,11 @@ exports.getStatitic=function(req,res){
           studentinfo={
               name:req.body.name,
               headportrait :req.body.headportrait,
-              gender :req.body.gender,
-              signature :req.body.signature,
+              gender :req.body.gender?req.body.gender:"",
+              signature :req.body.signature?req.body.signature:"",
               mobile :req.body.mobile,
-              address :req.body.address,
-              idcardnumber :req.body.idcardnumber,
+              address :req.body.address?req.body.address:"",
+              idcardnumber :req.body.idcardnumber?req.body.idcardnumber:"",
               applyclasstype :req.body.applyclasstype,
               carmodel :req.body.carmodel,
               subject :req.body.subject,
@@ -193,7 +195,7 @@ exports.getStatitic=function(req,res){
              mobile:req.body.mobile,
              headportrait:{},
              address:req.body.address,
-             introduction:req.body.introduction,
+             introduction:req.body.introduction?req.body.introduction:"",
              subject:req.body.subject,
              is_lock:false,
              validationstate:req.body.validationstate,
@@ -205,14 +207,14 @@ exports.getStatitic=function(req,res){
              begintimeint:req.body.begintimeint,
              endtimeint:req.body.endtimeint,
              coursestudentcount:req.body.coursestudentcount?req.body.coursestudentcount:1,
-             idcardnumber:req.body.idcardnumber,
-             drivinglicensenumber:req.body.drivinglicensenumber,
-             coachnumber:req.body.coachnumber,
+             idcardnumber:req.body.idcardnumber?req.body.idcardnumber:"",
+             drivinglicensenumber:req.body.drivinglicensenumber?req.body.drivinglicensenumber:"",
+             coachnumber:req.body.coachnumber?req.body.coachnumber:"",
              starlevel:parseInt(req.body.starlevel)?parseInt(req.body.starlevel):2,
-             platenumber:req.body.platenumber,
+             platenumber:req.body.platenumber?req.body.platenumber:"",
              is_shuttle:true,
-             shuttlemsg:req.body.shuttlemsg,
-             serverclasslist:req.body.serverclasslist,
+             shuttlemsg:req.body.shuttlemsg?req.body.shuttlemsg:"",
+             serverclasslist:req.body.serverclasslist?req.body.serverclasslist:[],
              trainfield:req.body.trainfield,
              carmodel:req.body.carmodel,
              driveschoolinfo:{}
@@ -994,7 +996,6 @@ exports.getbusinesslist=function(req,res){
         .sort({createtime:-1})
         .exec(function(err,data) {
             defaultFun.getModelCount(merchantmodel,{},function (err,merchantcount) {
-
                 returninfo = {
                     pageInfo:{
                         totalItems: merchantcount,
@@ -1038,7 +1039,57 @@ exports.updatebusiness=function(req,res){
     }
 };
 exports.getproductlist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
 
+    mallProductsmodel.find()
+        .populate("merchantid")
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            defaultFun.getModelCount(mallProductsmodel,{},function (err,merchantcount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: merchantcount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(merchantcount/limit )+1
+                    },
+                    datalist: data
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+};
+exports.updateproduct=function(req,res){
+    var _id=req.body._id;
+    if (_id===undefined||_id==""){
+        var product= new  mallProductsmodel(req.body);
+        product.createtime=new  Date();
+        product.save(function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "保存信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
+    else
+    {
+        var conditions = {_id :new mongodb.ObjectId( req.body._id)};
+        var updateinfo=req.body;
+        delete  updateinfo._id;
+        var update = {$set : updateinfo};
+
+        mallProductsmodel.update(conditions, update,{safe: true,upsert : true},function(err,data){
+            if(err){
+                return res.json(new BaseReturnInfo(0, "修改信息出错："+err, "") );
+            }else{
+                return res.json(new BaseReturnInfo(1, "", "sucess") );
+            }
+        })
+    }
 }
 /// =====================================用户管理
 exports.getadminuserlist=function(req,res){
@@ -1348,7 +1399,8 @@ exports.getSchoolInfoById=function(req,res){
             schoolalbum:schooldata.schoolalbum,
             workbegintime:schooldata.workbegintime,
             workendtime:schooldata.workendtime,
-            phonelist:schooldata.phonelist
+            phonelist:schooldata.phonelist,
+            pictures_path:schooldata.pictures_path
         }
         res.json(new BaseReturnInfo(1, "", schoolinfo));
     })
@@ -1516,6 +1568,28 @@ exports.postReservation=function(req,res){
             new BaseReturnInfo(0,"课程不能为空",""));
     }
     courseserver.postReservation(reservationinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+// 取消课程
+exports.cancelReservation=function(req,res){
+    var cancelinfo= {
+        userid:req.body.userid,
+        reservationid:req.body.reservationid,
+        cancelreason:"后台取消",
+        cancelcontent:"后台取消",
+        reservationstate: 8
+    };
+    if (cancelinfo.userid === undefined
+        ||cancelinfo.reservationid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+
+    courseserver.userCancelReservation(cancelinfo,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,""));
         }

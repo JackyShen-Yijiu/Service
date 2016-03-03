@@ -70,7 +70,9 @@ var DriveSchoolSchema=new Schema({
     applynotes:String,  // 报名须知
     confirmmobilelist:[String],// 驾校能进行驾校报名验证 的手机号列表
     // 确认学生验证码
-    confirmnum:String
+    confirmnum:String,
+    // 自主考试url
+    examurl:{type:String,default:""}
 });
 
 /**0
@@ -86,7 +88,7 @@ DriveSchoolSchema.statics.getNearDriverSchool = function(latitude, longitude, ra
 //    this.find({loc:{$geoWithin:{ $centerSphere:[[longitude, latitude], radius/6378100.0]}}}) //within cycle of radius
 
     this.find(
-
+        {latitude: {$exists: true},longitude: {$exists: true}}
         // {loc:{$nearSphere:{$geometry:{type:'Point', coordinates:[longitude, latitude]}, $maxDistance: 100000}}}
       ) //from near to far
 

@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('BlackCatServer:server');
 var http = require('http');
+var appconfig=require("../Config/sysconfig").appconfiginfo;
 /*var https = require('https')
     ,fs = require("fs");
 
@@ -19,7 +20,7 @@ var options = {
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8181');
+var port =appconfig.appport; //normalizePort(process.env.PORT || '8181');
 app.set('port', port);
 
 /**

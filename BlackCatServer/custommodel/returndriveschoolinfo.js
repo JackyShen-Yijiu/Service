@@ -1,7 +1,7 @@
-/**
+33/**
  * Created by v-lyf on 2015/9/8.
  */
-//·µ»Ø¼ÝÐ£ÐÅÏ¢
+//ï¿½ï¿½ï¿½Ø¼ï¿½Ð£ï¿½ï¿½Ï¢
 exports.resBaseSchoolInfo=function(school){
     this.schoolid=school._id;
     this.name=school.name;

@@ -33,6 +33,7 @@ exports.GetCoachCourse=function(coachid,date ,callback){
             return callback("该教练没有设置工作时间，无法获取训练信息");
         }
         // 判断星期
+        date=new Date(date).toFormat("YYYY-MM-DD").toString();
         var temptime=new Date(date);
         var i=temptime.getDay();
 
@@ -425,7 +426,7 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
     }
     reservationmodel.find(searhinfo)
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
-        "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime ")
+        "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime  cancelreason")
         .populate("coachid","_id name driveschoolinfo headportrait  Gender")
        .sort({begintime:-1})
         .exec(function(err,reservationlist){
@@ -454,6 +455,7 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
                         courseprocessdesc: r.courseprocessdesc,
                         classdatetimedesc: r.classdatetimedesc,
                         trainfieldlinfo: r.trainfieldlinfo,
+                        cancelreason: r.cancelreason,
                         begintime: r.begintime,
                         endtime: r.endtime
                     }
@@ -497,7 +499,7 @@ exports.userCancelReservation=function(reservation,callback){
         if (now.getHoursBetween(resdata.begintime)<24){
           return   callback("该时间段不能取消");
         }
-        resdata.reservationstate=appTypeEmun.ReservationState.applycancel;
+        resdata.reservationstate=reservation.reservationstate?reservation.reservationstate:appTypeEmun.ReservationState.applycancel;
         resdata.cancelreason.reason=reservation.cancelreason;
         resdata.cancelreason.cancelcontent=reservation.cancelcontent;
 
@@ -1002,6 +1004,32 @@ exports.GetComment=function(queryinfo,callback){
             })
     }
 };
+//获取我的投诉列表
+exports.getcomplaintlist=function(queryinfo,callback){
+    reservationmodel.find({"userid":new mongodb.ObjectId(queryinfo.userid),"is_complaint":"true"})
+        .select("coachid complaint complainthandinfo")
+        .populate("coachid","_id  name headportrait gender ")
+        .sort({"complaint.complainttime":-1})
+        .exec(function(err,data){
+            if(err){
+                return callback("查询评论出错："+err);
+            }
+            process.nextTick(function(){
+                var complaintlist=[];
+                data.forEach(function(r,index){
+                    var onecomplaint={
+                        _id: r._id,
+                        coachid : r.coachid,
+                        complaint: r.complaint,
+                        complainthandinfo: r.complainthandinfo
+                    }
+                    complaintlist.push(onecomplaint);
+                })
+                return callback(null,complaintlist);
+            });
+
+        })
+}
 // 获取教练某一课程的预约新信息
 exports.getCoursereservationlist=function(coachid,courseid,callback){
     coursemode.findById(new mongodb.ObjectId(courseid),function(err,coursedata){

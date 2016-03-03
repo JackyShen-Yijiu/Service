@@ -9,7 +9,7 @@ body{
   float: left;
   text-align: left;
   background-color: #F5F5F5;
-  margin-top: 80px;
+  margin-top: 54px;
   width: 100%;
   margin-bottom: 90px;
 }
@@ -28,7 +28,7 @@ body{
 }
 .title img{
   max-width: 100%;
- /* margin-left: 2.5%;*/
+  /* margin-left: 2.5%;*/
   margin-top: 14px;
 }
 .options{
@@ -49,35 +49,36 @@ body{
 }
 .options li:hover
 {
-    background-color:#EDFFED;
-    cursor: pointer;
+  background-color:#EDFFED;
+  cursor: pointer;
 }
 .options input{
   vertical-align: middle;
-} 
+}
 .option_label{
   vertical-align: middle;
   /*line-height: 40px;*/
   font-size: 14px;
   display: inline-block;
   width: 90%;
-} 
+}
 .option_label_4{
   vertical-align: middle;
   /*line-height: 40px;*/
   font-size: 14px;
   display: inline-block;
   width: 90%;
-} 
+}
 
 .topDiv{
-  padding-top:24px;
+  padding-top:17px;
+  line-height: 64px;
   text-align: center;
   width: 100%;
-  height: 50px;
+  height: 48px;
   position:fixed;
   top:0px;
-  background-color: #393C45;
+  background-color: #db4437;
 }
 .topDiv span{
   color: #FFFFFF;
@@ -92,9 +93,9 @@ body{
 }
 
 .Answer_div{
-  width:120px; 
-  display:block; 
-  text-align:left; 
+  width:120px;
+  display:block;
+  text-align:left;
   background:#CDE375;
   margin: 5px;
   font-size: 15px;
@@ -145,7 +146,8 @@ body{
 }
 
 .actionDiv{
-  background-color: #FF6633;
+  /*background-color: #FF6633;*/
+  background-color: #db4437;
   height: 55px;
   vertical-align: middle;
   line-height: 55px;
@@ -163,7 +165,7 @@ button{
   display:inline-block;
   line-height: 16px;
 
-  background-color: #FF6633;
+  background-color: #db4437;
   color:#FFFFFF;
 
   box-shadow: none !important;

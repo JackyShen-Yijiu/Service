@@ -15,7 +15,7 @@ var  UserSchema=new Schema({
     token:{type:String,default:''}, // d登录验证token
     password:String, // 密码 MD5 加密的
     gender:String, //性别
-    signature:String,// 个性签名
+    signature:{type:String,default:""},// 个性签名
     headportrait: { originalpic:{type:String,default:""},
         thumbnailpic:{type:String,default:""},
         width:{type:String,default:""},

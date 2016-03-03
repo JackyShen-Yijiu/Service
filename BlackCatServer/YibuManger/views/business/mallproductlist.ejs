@@ -24,9 +24,8 @@
                                         <th>图片</th>
                                         <th> 商品名称 </th>
                                         <th> 价格</th>
-                                        <th> 购买数量</th>
-                                        <th> 剩余数量</th>
-                                        <th> 是否下架</th>
+                                        <th> 购买/总数量</th>
+                                        <th> 状态</th>
                                         <th> 商品类型</th>
                                         <th> 商家</th>
                                         <th> 截止日期</th>
@@ -34,23 +33,40 @@
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
                                         <td >
-                                            <span>{{content.productimg}}</span>
+                                            <img src="{{content.productimg}}" style=" width: 60px;height: 60px"/>
+                                            <span>{{}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.name}}</span>
+                                            <span>{{content.productname}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.mobile}}</span>
+                                            <span>{{content.productprice}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.province}}/{{content.city}}</span>
+                                            <span>{{content.buycount}}/{{content.productcount}}</span>
                                         </td>
-                                        <td >
-                                            <span>{{content.responsible}}</span>
+                                        <td  ng-switch="content.is_using">
+                                            <div ng-switch-when=true>
+                                                正常
+                                            </div>
+                                            <div ng-switch-when=false>
+                                                下架
+                                            </div>
                                         </td>
 
+                                        <td ng-switch="content.is_scanconsumption">
+                                            <div ng-switch-when=true>
+                                                虚拟商品
+                                            </div>
+                                            <div ng-switch-when=false>
+                                                实体商品
+                                            </div>
+                                        </td>
                                         <td >
-                                            <span>{{content.address}}</span>
+                                            <span>{{content.merchantid.name}}</span>
+                                        </td>
+                                        <td >
+                                            <span>{{content.enddate| date: "yyyy-MM-dd"}}</span>
                                         </td>
                                         <td class="td-actions">
                                             <a ng-click="editmerchant(content._id,content.name)"
@@ -74,72 +90,98 @@
                                 <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
                                     <fieldset>
                                         <div class="control-group">
-                                            <label class="control-label" for="name" >商家名称</label>
+                                            <label class="control-label" for="productname" >商品名称</label>
                                             <div class="controls">
-                                                <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多三十个字"
-                                                       ng-minlength="5" ng-maxlength="30" ng-model="formData.name" required>
+                                                <input type="text" class="span6 " name="productname"    id="productname"  placeholder="名称最多三十个字"
+                                                       ng-minlength="2" ng-maxlength="30" ng-model="formData.productname" required>
                                                 <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                     role="alert">5-30个非特殊字符</div>
+                                                     role="alert">2-30个非特殊字符</div>
                                             </div> <!-- /controls -->
                                         </div>
 
                                         <div class="control-group">
-                                            <label class="control-label" for="logimg">商家头像</label>
+                                            <label class="control-label" for="logimg">商品头像</label>
                                             <div class="controls">
                                                 <div class="input-append">
                                                     <input class="span4 m-wrap"   id="logimg" type="text"disabled
-                                                           ng-model="formData.logoimg" >
-                                                    <button class="btn" type="button" id="picklogimg">选择投头像</button>
+                                                           ng-model="formData.productimg" >
+                                                    <button class="btn" type="button" id="picklogimg">选择商品图片</button>
                                                     <img id="logimgimg" style="width: 60px;height: 60px" ><!--更改place-->
                                                 </div>
                                             </div>
                                         </div><!--control group-->
-
+                                        <div class="control-group">
+                                            <label class="control-label" for="merchantid">所在商家</label>
+                                            <div class="controls">
+                                                <select class="span4" id="merchantid"
+                                                        required >
+                                                    <% extradata.forEach(function(r,index){ %>
+                                                    <option value="<%=r._id%>"><%=r.name%></option>
+                                                    <%})%>
+                                                </select>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
 
                                         <div class="control-group">
-                                            <label class="control-label" for="province">商家地址</label>
+                                            <label class="control-label" for="productcount">商品数量</label>
                                             <div class="controls">
-                                                <input type="text" class="span2 disabled"  id="province"
-                                                       ng-model="formData.province"  disabled> 省
-                                                <input type="text" class="span2 disabled" id="city"
-                                                       ng-model="formData.city" disabled> 市
-                                                <br/>
-                                                <br/>
-                                                <input type="text" class="span6 disabled"  id="address" name="address"
-                                                       ng-model="formData.address"    placeholder="详细地址" required>
-                                                <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
-                                                <input type="hidden" id="latitude" ng-model="formData.latitude"  >
-                                                <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
-                                                     role="alert">地址必须</div>
+                                                <input type="number" class="span2" id="productcount"  ng-model="formData.productcount" >
                                             </div> <!-- /controls -->
-                                        </div>
-
-
-                                        <div class="control-group"  style="height: 250px;width: 600px">
-                                            <label class="control-label" >地址选择</label>
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="detailsimg">商品详情图</label>
                                             <div class="controls">
-                                                <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
+                                                <input class="span4 m-wrap"   id="detailsimgtxt" type="text"disabled
+                                                       ng-model="formData.detailsimg" >
+                                                <button class="btn" type="button" id="detailsimgbtn">选择详情图</button>
+                                                <img id="detailsimgsrc" style="width: 60px;height: 60px" ><!--更改place-->
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="enddate">结束时间</label>
+                                            <div class="controls">
+                                                <input type="datetime" class="span2" id="enddate"
+                                                       ng-model="formData.enddate " onclick="laydate()" >
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="is_scanconsumption">商品类型</label>
+                                            <div class="controls">
+                                                <select class="span4" id="is_scanconsumption" required>
+                                                    <option value="false">实体商品</option>
+                                                    <option value="true">虚拟商品</option>
+
+                                                </select>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="is_using">商品状态</label>
+                                            <div class="controls">
+                                                <select class="span4" id="is_using"  required>
+                                                    <option value="true">正常</option>
+                                                    <option value="false">下架</option>
+                                                </select>
+                                            </div> <!-- /controls -->
+                                        </div> <!-- /control-group -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="productdesc">商品简介</label>
+                                            <div class="controls">
+                                                <textarea   class="span4" id="productdesc" rows="3"
+                                                            ng-model="formData.productdesc" placeholder="商品简介"></textarea>
                                             </div>
                                         </div>
-
                                         <div class="control-group">
-                                            <label class="control-label" for="linkman1">联系人</label>
+                                            <label class="control-label" for="buyprcoss">兑换流程</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="responsible"  ng-model="formData.responsible" >
-                                                电话： <input type="phone" class="span2" id="mobile"  ng-model="formData.mobile">
-                                            </div> <!-- /controls -->
-                                        </div> <!-- /control-group -->
+                                                <textarea   class="span4" id="buyprcoss" rows="3"
+                                                            ng-model="formData.buyprcoss" placeholder="兑换流程"></textarea>
+                                            </div>
+                                        </div>
                                         <div class="control-group">
-                                            <label class="control-label" for="confirmmobilelist">验证手机号</label>
+                                            <label class="control-label" for="buynotes">注意事项</label>
                                             <div class="controls">
-                                                <input type="text" class="span2" id="confirmmobilelist"
-                                                       placeholder="12345678901,12345678901" ng-model="formData.confirmmobilelist" >
-                                            </div> <!-- /controls -->
-                                        </div> <!-- /control-group -->
-                                        <div class="control-group">
-                                            <label class="control-label" for="desc">商家简介</label>
-                                            <div class="controls">
-                                                <textarea   class="span4" id="desc" rows="3" ng-model="formData.desc" placeholder="商家简介"></textarea>
+                                                <textarea   class="span4" id="buynotes" rows="3"
+                                                            ng-model="formData.buynotes" placeholder="注意事项"></textarea>
                                             </div>
                                         </div>
                                         <br />
@@ -163,26 +205,31 @@
 <!-- /main-inner -->
 </div>
 
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
-<script  src="/js/baidumap.js"></script>
 <script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
 <script type="text/javascript" src="/js/qiniu.js"></script>
 <script type="text/javascript" src="/js/qiniuupfile.js"></script>
+<script type="text/javascript" src="/js/laydate.js"></script>
+<script>
+    initqiniuupload('detailsimgbtn','detailsimgsrc','detailsimgtxt');
+</script>
 <script>
     ybxcApp.controller("productList",function($scope,$http){
         $scope.formData = {};
-        //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getbusinesslist?bussinsee=mer");
 
+        //获取文档列表信息
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getproductlist?bussinsee=mer");
         $scope.addmerchant=function(){
             $scope.formData = {};
+            $scope.formData.productcount=10;
+            $scope.formData.is_using=true;
+            $scope.formData.is_scanconsumption=false;
             layer.open({
                 type: 1,
-                title: '添加商家',
+                title: '添加商品',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '520px'],
+                area : ['850px' , '600px'],
                 content:$("#editpage")
             });
         };
@@ -195,19 +242,25 @@
                 }
             };
             if ($scope.formData._id===undefined){
-                layer.msg("没有查到商家", {
+                layer.msg("没有查到商品", {
                     icon: 2,
                     time: 5000 //2秒关闭（如果不配置，默认是3秒）
                 });
                 return;
             };
-            $("#logimgimg").attr("src",$scope.formData.logoimg)
+            $("#logimgimg").attr("src",$scope.formData.productimg);
+            $("#detailsimgsrc").attr("src",$scope.formData.productimg);
+            $("#is_using").val($scope.formData.is_using.toString());
+            $("#is_scanconsumption").val($scope.formData.is_scanconsumption.toString());
+            if($scope.formData.merchantid) {
+                $("#merchantid").val($scope.formData.merchantid._id);
+            }
             layer.open({
                 type: 1,
-                title: '编辑商家：'+name,
+                title: '编辑商品：'+name,
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['850px' , '520px'],
+                area : ['850px' , '600px'],
                 content:$("#editpage")
             });
         }
@@ -219,8 +272,7 @@
             if(!savedata()){
                 return;
             }
-            console.log($scope.formData);
-            $http.post("/admin/manage/updatebusiness",$scope.formData)
+            $http.post("/admin/manage/updateproduct",$scope.formData)
                     .success(function(response){
                         if (response.type==0){
                             layer.msg(response.msg, {
@@ -232,15 +284,24 @@
                                 icon: 1,
                                 time: 5000 //2秒关闭（如果不配置，默认是3秒）
                             });
-                            window.location.href="/admin/manage/businessList";
+                            window.location.href="/admin/manage/productslist";
                         }
                     })
         };
         var savedata=function(){//写入数据
-            $scope.formData.logoimg=$("#logimg").val();
-            $scope.formData.province=$("#province").val();
-            $scope.formData.city=$("#city").val();
-            $scope.formData.address=$("#address").val();
+            $scope.formData.enddate= $("#enddate").val();
+            $scope.formData.productimg=$("#logimg").val();
+            $scope.formData.detailsimg=$("#detailsimgtxt").val();
+            $scope.formData.is_scanconsumption=$("#is_scanconsumption").val();
+            $scope.formData.is_using=$("#is_using").val();
+            $scope.formData.merchantid=$("#merchantid").val();
+            if ( $scope.formData.merchantid.indexOf(undefined)>=0){
+                layer.msg("商家必须选择", {
+                    icon: 2,
+                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
             return true;
         }
     });

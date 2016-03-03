@@ -110,9 +110,33 @@ function nextQestion(){
     $("#test_result").text(rightCount + "分");
 
     //把成绩传到后台(insert功能)
-    $.get(apiHost + "questiontest",{grade:rightCount, sTime:sTime,endTime:endTime})
+    backscore();
 
   }
+}
+//传回成绩
+function backscore(){
+  var u={
+    id: userID,
+    score:rightCount,
+    begintime:sTime,
+    endtime:endTime,
+    subjectid:4
+  }
+  //把成绩传到后台(insert功能)
+  $.post(apiHost + "sendtestsocre" , JSON.stringify(u),
+      function(data){
+
+        if(data.code > 0){
+          return "1";
+        }else if(data.code == -1){
+          return "0";
+        }
+
+      }).fail(function(a, b, c) {
+    console.log('failed.');
+    return "0";
+  })
 }
 function preQestion(){
   $("#btnNext").text("下一题");
@@ -132,6 +156,7 @@ function answerIsRight(){
      $("#rightCount").text(rightCount);
      $("#rightRate").text(Math.ceil(rightCount * 100 / (rightCount + wrongCount)) + "%");
       previouslylist.push(ExaminIDs[QIndex - 1]);
+
     }
 }
 
@@ -142,10 +167,21 @@ function answerIsWrong(){
      answered = true;
     if(previouslylist.indexOf(ExaminIDs[QIndex - 1])==-1){
       wrongCount++;
+      if(wrongCount == 5){
+        var r=confirm("成绩不合格!");
+        if (r==true){
+          alert("继续");
+          nextQestion();
+        }else{
+          alert("取消");
+          init();
+        }
+      }
       $("#wrongCount").text(wrongCount);
       $("#rightRate").text(Math.ceil(rightCount*100/(rightCount+wrongCount)) + "%");
       previouslylist.push(ExaminIDs[QIndex - 1]);
     }
+
     if(kemusi_wronglist.indexOf(ExaminIDs[QIndex - 1])==-1){
       kemusi_wronglist.push(ExaminIDs[QIndex - 1]);
     }
@@ -175,7 +211,7 @@ function startTime()
     $("body").addClass("loading");
     $("#test_result").text(rightCount + "分");
 
-    $.get(apiHost + "questiontest",{grade:rightCount,sTime:sTime,endTime:endTime})
+    backscore();
 
   }else{
     //document.getElementById('timer_txt').innerHTML=checkTime(min)+":"+checkTime(sec);

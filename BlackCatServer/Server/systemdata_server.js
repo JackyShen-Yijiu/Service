@@ -18,7 +18,20 @@ var activityCouponModel= mongodb.ActivityCouponModel;
 var prodcutdetail=require("../Config/sysconfig").validationurl.prodcutdetail;
 require('date-utils');
 
-
+exports.getUserConsult=function(index,callback){
+    userconsultModel.find({})
+        .select(" userid content  createtime replycontent replytime replyuser")
+        .populate("userid","name headportrait")
+        .sort({"createtime" : 1})
+        .skip((index-1)*10)
+        .limit(10)
+        .exec(function(err,data){
+            if(err){
+                return callback("查询数据出错："+err);
+            }
+            return callback(null,data);
+        })
+}
 // 保存用户咨询信息
 exports.saveUserConsult=function(userinfo,callback){
     var userconsult=new userconsultModel();
@@ -27,6 +40,7 @@ exports.saveUserConsult=function(userinfo,callback){
     userconsult.licensetype=userinfo.licensetype;
     userconsult.content=userinfo.content;
     userconsult.name=userinfo.name;
+    userconsult.createtime=new Date();
     userconsult.save(function(err){
         if(err){
             return callback("保存反馈信息出错："+err);
@@ -65,6 +79,9 @@ exports.getmessagecount=function(searchinfo,callback){
     })
 
     };
+exports.consultinfo=function(consultinfo,callback){
+
+}
 exports.saveFeedback=function(feedbackinfo,callback){
   var feedback=new feedbackModel();
     feedback.feedbackmessage=feedbackinfo.feedbackmessage;
@@ -133,7 +150,7 @@ exports.getCourseWare=function( queryinfo,callback){
                 var mainlist=[];
                 productlist.forEach(function(r,index){
                     //console.log(r);
-                    //if(r.merchantid!=undefined)
+                    if(r.merchantid!=undefined)
                     {
                     var oneproduct={
                         productid: r._id,
@@ -150,6 +167,7 @@ exports.getCourseWare=function( queryinfo,callback){
                         cityname: r.merchantid.city,
                         merchantid: r.merchantid._id,
                         address: r.merchantid.address,
+                        enddate: r.enddate,
                         county:r.merchantid.county,
                         distinct:0
                     };

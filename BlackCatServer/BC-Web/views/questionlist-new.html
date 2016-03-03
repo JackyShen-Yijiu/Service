@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html>
   <head>
     <meta charset="utf-8">
@@ -154,7 +154,7 @@
         <style type="text/css">
           #res_title{
             font-size: 18px;
-            background: #FF6633;
+            background: #db4437;
             border-top-left-radius:5px;
             border-top-right-radius:5px;
             height: 44px;
@@ -168,13 +168,16 @@
             background-color: #FFFFFF;
             color: #666666;
             font-size: 12px;
-            height: 44px;
+            /*height: 44px;*/
             line-height: 44px;
             text-align: left;
             padding-left: 10px;
             border-top: 1px solid #666666;
             display: block;
           }
+            .continue{
+                text-align:center;line-height: 35px;
+            }
         </style>
         <!-- Place at bottom of page -->
           <span id="res_title">选择章节</span>
@@ -182,6 +185,10 @@
           <span class="test_act" name="nexQ" onclick="go(2)"  >2 道路交通信号（312题）</span>
           <span class="test_act" name="nexQ" onclick="go(3)"  >3 安全行车、文明驾驶基础知识（240题）</span>
           <span class="test_act" name="nexQ" onclick="go(4)"  style="border-bottom-left-radius:5px;border-bottom-right-radius:5px;">4 机动车驾驶操作相关基础知识（109题）</span>
+         <!-- <span class="test_act continue" name="nexQ" onclick="continueQuestion()" style="">
+                  是否继续上次？<br/>
+               <button type="button" name="nexQ" >确认</button>
+          </span>-->
       </div>
       <div class="cover"><!-- Place at bottom of page --></div>
 <!--

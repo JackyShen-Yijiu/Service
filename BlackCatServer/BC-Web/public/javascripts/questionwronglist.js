@@ -2,8 +2,8 @@ var userInfo;
 
 function init() {
     console.log('init.');
-
    getUserInfo(userID, nextQestion);
+
 }
 
 function getUserInfo(userID,callback){
