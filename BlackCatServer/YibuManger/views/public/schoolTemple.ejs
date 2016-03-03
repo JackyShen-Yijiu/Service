@@ -68,15 +68,14 @@
     <div class="subnavbar-inner">
         <div class="container">
             <ul class="mainnav" id="menu">
-                <li ><a href="/admin/manage/schoolmain?schoolid=<%=schoolid%>"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
-                <li><a href="/admin/manage/recordlist"><i class="icon-list"></i><span>报名审核</span></a> </li>
-                <li><a href="/admin/manage/coachlist"><i class="icon-group"></i><span>教练</span> </a> </li>
-                <li><a href="/admin/manage/studentlist"><i class=" icon-user"></i><span>学员</span> </a> </li>
-                <li><a href="/admin/manage/orderlist"><i class="icon-reorder"></i><span>订单管理</span> </a> </li>
-                <li><a href="/admin/manage/trainingfieldlist"><i class="icon-list-alt"></i><span>训练场 </span> </a> </li>
-                <li><a href="/admin/manage/classtypelist"><i class="icon-th-large"></i><span>班级</span> </a></li>
-
-                <!--<li><a href="/admin/manage/carRoutelist"><i class=" icon-move"></i><span>班车管理</span> </a> </li>-->
+                <li class="<% if (textindex && textindex.isSchoolMain){%> active<%} %>"><a href="/admin/manage/schoolmain?schoolid=<%=schoolid%>"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
+                <li class="<% if (textindex && textindex.isRecordList){%> active<%} %>"><a href="/admin/manage/recordlist"><i class="icon-list"></i><span>报名审核</span></a> </li>
+                <li class="<% if (textindex && textindex.isCoachList){%> active<%} %>"><a href="/admin/manage/coachlist"><i class="icon-group"></i><span>教练</span> </a> </li>
+                <li class="<% if (textindex && textindex.isStudentList){%> active<%} %>"><a href="/admin/manage/studentlist"><i class=" icon-user"></i><span>学员</span> </a> </li>
+                <li class="<% if (textindex && textindex.isOrderList){%> active<%} %>"><a href="/admin/manage/orderlist"><i class="icon-reorder"></i><span>订单管理</span> </a> </li>
+                <li class="<% if (textindex && textindex.isTrainingfieldList){%> active<%} %>"><a href="/admin/manage/trainingfieldlist"><i class="icon-list-alt"></i><span>训练场 </span> </a> </li>
+                <li class="<% if (textindex && textindex.isClasstypeList){%> active<%} %>"><a href="/admin/manage/classtypelist"><i class="icon-th-large"></i><span>班级</span> </a></li>
+                <li class="<% if (textindex && textindex.isCarrouteList){%> active<%} %>"><a href="/admin/manage/carRoutelist"><i class=" icon-move"></i><span>班车管理</span> </a> </li>
 
                 <!--<li><a href="/admin/manage/appsetting"><i class="icon-wrench"></i><span>APP 设置</span> </a> </li>-->
                 <!--<li class="dropdown"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-long-arrow-down"></i><span>Drops</span> <b class="caret"></b></a>-->
@@ -115,29 +114,49 @@
 </div>
 
 <script type="text/javascript">
-    $("document").ready(function(){
-        $("#menu li").click(function(){
-            $("#menu li").removeClass("active");//首先移除全部的active
-            $(this).addClass("active");//选中的添加acrive
-        });
+   /* $("document").ready(function(){
+//        $("#menu li").click(function(){
+//            $("#menu li").removeClass("active");//首先移除全部的active
+//            $(this).addClass("active");//选中的添加acrive
+//        });
         var urlstr = location.href;
         //alert((urlstr + '/').indexOf($(this).attr('href')));
-        var urlstatus=false;
+        var urlstatus=false;//
+        var coachListIndex = 0;
         $("#menu a").each(function (index) {
-            if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
+            if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') { // 点击的链接和当前页面的 URL 匹配
                // $(this).addClass('active');
                 if (!urlstatus){
-                $("#menu li").eq(index).addClass('active');
-                urlstatus = true;}
-            } else {
+                    $("#menu li").eq(index).addClass('active');
+                    urlstatus = true;
+                }
+            }
+            else  {
                 if (!urlstatus){
                     $("#menu li").eq(index).removeClass('active');
                  }
-              //  $(this).removeClass('active');
+               //$(this).removeClass('active');
             }
+
+            if($(this).attr('href').indexOf('/admin/manage/coachlist') > -1) {
+                coachListIndex = index;
+            }
+
         });
-        if (!urlstatus) {$("#menu li").eq(0).addClass('active'); }
-    });
+        if (!urlstatus) {
+
+//            if(urlstr.indexOf('/admin/manage/editcoachinfo') > -1) {
+//
+//
+//                $("#menu li").eq(coachListIndex).addClass('active');
+//
+//            } else {
+//                $("#menu li").eq(0).addClass('active'); }
+//            }
+
+
+    });*/
+
 
 </script>
 

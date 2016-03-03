@@ -44,34 +44,7 @@
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
                                         </td>
                                     </tr>
-                                    <!--
-                                    <tr class="datalist" ng-repeat="content in data">
 
-                                        <td >
-                                            <span>上地线</span>
-                                        </td>
-                                        <td >
-                                            <span>6：00--18：00</span>
-                                        </td>
-                                        <td >
-                                            <span><a href="#"
-                                                     class="btn btn-small btn-danger" ><i class="btn-icon-only icon-edit "> </i></a></span>
-                                        </td>
-                                        <td >
-                                            <span></span>
-                                        </td>
-
-
-                                        <td class="td-actions">
-                                            <a href="/admin/manage/edittrainingfield?trainingfiledid={{content.trainingfiledid}}"
-                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a href="#"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
-                                        </td>
-
-
-                                    </tr>
-                                    -->
 
                                 </table>
                             </div><!-- /.box-body -->
@@ -82,16 +55,6 @@
                     <!--start-->
                     <div id="editpage" style="display: none;">
                         <!--弹出层部分-->
-
-                        <div class="widget-header" style="border-bottom: 1px solid #000;">
-                            <i class="icon-th-large"></i>
-                            <h3>上地线</h3>
-                        </div> <!-- /widget-header -->
-                        <div class="widget-content">
-                            路线内容
-                        </div>
-
-
 
 
                     </div>
@@ -117,12 +80,12 @@
         $scope.editApplyinfo=function(){
             $scope.formData={};
             layer.open({
-                type: 1,
+                type: 1,/*2*/
                 title: '具体路线--'+name,
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['600px' , '520px'],
-                content:$("#editpage")
+                content:$("#editpage")/*index.html*/
             });
         }
     });

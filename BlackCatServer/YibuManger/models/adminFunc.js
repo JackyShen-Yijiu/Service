@@ -4,7 +4,7 @@
 var url = require('url');
 
 var adminFunc = {
-    setPageInfo : function(req,res,currentLink,extradata){
+    setPageInfo : function(req,res,currentLink,extradata,textindex){
 
         var searchKey = '';
         if(req.url){
@@ -14,6 +14,7 @@ var adminFunc = {
         console.log(searchKey);
         return {
             extradata:extradata,
+            textindex:textindex,
             searchKey : searchKey,
             schoolid:"",
             currentLink : currentLink,
@@ -21,7 +22,7 @@ var adminFunc = {
         }
 
     },
- setSchoolPageInfo : function(req,res,currentLink,extradata){
+ setSchoolPageInfo : function(req,res,currentLink,extradata,textindex){
 
     var searchKey = '';
     if(req.url){
@@ -32,6 +33,7 @@ var adminFunc = {
     return {
         extradata:extradata,
         schoolid:schoolid,
+        textindex:textindex,
         searchKey : searchKey,
         currentLink : currentLink+"?schoolid="+schoolid,
         layout : 'public/schoolTemple'
