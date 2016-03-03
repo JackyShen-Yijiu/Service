@@ -25,19 +25,22 @@
                                                 <label class="control-label" for="name" >班级名称</label>
                                                 <div class="controls">
                                                     <input type="text" class="span6 " name="classname"    id="classname"  placeholder="名称最多三十个字"
-                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.classname" required>
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                         role="alert">2-30个非特殊字符</div>
+                                                           ng-minlength="2" ng-maxlength="30" ng-model="formData.classname" required>  <span class="errtext">*</span>
+                                                    <!--<div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"-->
+                                                         <!--role="alert">2-30个非特殊字符</div>-->
                                                 </div> <!-- /controls -->
                                             </div>
                                             <div class="control-group">
-                                                <label class="control-label" >开课时间</label>
+                                                <label class="control-label" >开课日期</label>
+
+                                                </div>
+                                            <div class="control-group">
                                                 <div class="controls">
-                                                    <label class="control-label" for="starttime">开始时间:</label>
+                                                    开始日期:
                                                     <input type="text" class="span4  laydate-icon" id="begindate" onclick="laydate()">
                                                     <br>
                                                     <br>
-                                                    <label class="control-label" for="endtime">结束时间:</label>
+                                                    结束日期:
                                                     <input type="text" class="span4  laydate-icon" id="enddate" onclick="laydate()">
                                                 </div>
                                             </div> <!-- /three end -->
@@ -53,103 +56,120 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="carmodel">驾照类型</label>
                                                 <div class="controls">
-                                                    <select class="span4" id="carmodel"    >
+                                                    <select class="span4" id="carmodel"     >
                                                         <option value="1">C1</option>
                                                         <option value="2">C2</option>
                                                         <option value="3">O</option>
                                                     </select>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
-
                                             <div class="control-group">
-                                                <label class="control-label" for="price">市场价格</label>
+                                                <label class="control-label" for="price">价格信息</label>
                                                 <div class="controls">
+                                                <span class="errtext">预留利润+用户直返+渠道佣金=优惠价格-成本价格</span>
+                                                    </div>
+                                                </div>
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    市场价格：
                                                     <input name="price"  type="number" ng-model="formData.price"
                                                            class="span2" id="price" value="100"  required  placeholder="仅供展示">
-
+                                                    <span class="errtext">*</span>
                                                 </div>
-                                                <div class="alert alert-danger span2"  ng-show="myForm.price.$error.required"
-                                                     role="alert">市场价格必须</div>
-                                            </div> <!-- /control-group -->
-                                            <div class="control-group">
-                                                <label class="control-label" for="onsaleprice">优惠价格</label>
+                                                <br>
                                                 <div class="controls">
+                                                    优惠价格：
                                                     <input   name="onsaleprice"  type="number" ng-model="formData.onsaleprice"
                                                              class="span2" id="onsaleprice" placeholder="用户实际支付" value="100"  required>
+                                                    <span class="errtext">*</span>
                                                 </div>
-                                                <div class="alert alert-danger span2"  ng-show="myForm.onsaleprice.$error.required"
-                                                     role="alert">优惠价格必须</div>
-                                            </div> <!-- /control-group -->
-                                            <div class="control-group">
-                                                <label class="control-label" for="originalprice">成本价格</label>
+                                                <br>
                                                 <div class="controls">
+                                                    成本价格：
                                                     <input   name="originalprice" type="number" ng-model="formData.originalprice"
                                                              class="span2" id="originalprice" value="100"
                                                              placeholder="支付给驾校"
                                                              required>
-
-                                                </div>
-                                                <div class="alert alert-danger span2"  ng-show="myForm.originalprice.$error.required"
-                                                     role="alert">成本价格必须</div>
-                                            </div> <!-- /control-group -->
-                                            <div class="control-group">
-                                                <label class="control-label" for="systemretains">预留利润</label>
+                                                    <span class="errtext">*</span>
+                                                    </div>
+                                                <br>
                                                 <div class="controls">
+                                                    预留利润：
                                                     <input name="systemretains"  type="number" ng-model="formData.systemretains"
                                                            class="span2" id="systemretains" value="100"  required>
-
+                                                    <span class="errtext">*</span>
                                                 </div>
-                                                <div class="alert alert-danger span2"  ng-show="myForm.systemretains.$error.required"
-                                                     role="alert">预留利润必须</div>
-                                            </div> <!-- /control-group -->
-
-                                            <div class="control-group">
-                                                <label class="control-label" for="feedbackuser">用户直返</label>
+                                                <br>
                                                 <div class="controls">
+                                                    用户直返：
                                                     <input name="feedbackuser"  type="number" ng-model="formData.feedbackuser"
                                                            placeholder="通过app报名返给用户" class="span2" id="feedbackuser" value="100"  required>
-
+                                                    <span class="errtext">*</span>
                                                 </div>
-                                                <div class="alert alert-danger span2"  ng-show="myForm.feedbackuser.$error.required"
-                                                     role="alert">用户直返</div>
-                                            </div> <!-- /control-group -->
-                                            <div class="control-group">
-                                                <label class="control-label" for="rewardmoney">渠道佣金</label>
+                                                <br>
                                                 <div class="controls">
+                                                    渠道佣金：
                                                     <input name="rewardmoney"  type="number" ng-model="formData.rewardmoney" class="span2"
                                                            id="rewardmoney" value="100"  required>
-                                                    （预留利润+用户直返+渠道佣金=优惠价格-成本价格）
+                                                    <span class="errtext">*</span>
                                                 </div>
-                                                <div class="alert alert-danger span2"  ng-show="myForm.rewardmoney.$error.required"
-                                                     role="alert">价格必须</div>
-                                                <br>
-
                                             </div> <!-- /control-group -->
+
+
+
+
 
 
                                             <div class="control-group">
                                                 <label class="control-label" for="valueaddedservice">车型</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="cartype" rows="3"  ng-model="formData.cartype" placeholder="车型信息"></textarea>
+                                                    <textarea   class="span4" id="cartype" rows="3"  ng-model="formData.cartype"
+                                                                placeholder="车型信息(桑塔纳,富康)"></textarea>
                                                 </div>
                                             </div>
                                             <div class="control-group">
                                                 <label class="control-label" for="classdesc">授课日程</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="classchedule" rows="3" ng-model="formData.classchedule"
+                                                    <textarea   class="span4" id="classchedule" rows="1" ng-model="formData.classchedule"
                                                                 placeholder="授课日程 平日/周末"></textarea>
                                                 </div>
+                                                <div class="controls" ng-click="getclassType()">
+                                                    <label class="checkbox inline">
+                                                        <input  name="classType" type="checkbox" value="平日（周一至周五）"> 平日（周一至周五）
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input name="classType" type="checkbox" value="全日（周一至周日）">全日（周一至周日）
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input  name="classType" type="checkbox" value="周末班">周末班
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input  name="classType" type="checkbox" value="上午班"> 上午班
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input name="classType" type="checkbox" value="下午班"> 下午班
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input name="classType" type="checkbox" value="也晚班">也晚班
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input  name="classType" type="checkbox" value="预约班">预约班
+                                                    </label>
+                                                    <label class="checkbox inline">
+                                                        <input  name="classType" type="checkbox" value="随到随学班">随到随学班
+                                                    </label>
+                                                </div>		<!-- /controls -->
                                             </div>
 
                                             <div class="control-group">
                                                 <label class="control-label" for="classdesc">简介</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="classdesc" rows="3" ng-model="formData.classdesc" placeholder="驾校简介"></textarea>
+                                                    <textarea   class="span4" id="classdesc" rows="3" ng-model="formData.classdesc" placeholder="班型简介"></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label" for="vipserverlist">驾照类型</label>
+                                                <label class="control-label" for="vipserverlist">特色服务</label>
                                                 <div class="controls">
                                                     <input type="hidden" value="" id="vipserverlist"   />
                                                     <div class="topnav">
@@ -237,7 +257,7 @@
                                     }
                                     else{
                                         $scope.formData = response.data;
-                                        console.log($scope.formData);
+                                        //console.log($scope.formData);
                                        $("#licensetypelist li").each(
                                                function(){
                                                    var  vipserverid=$(this).attr("rel");
@@ -247,6 +267,12 @@
                                                    }
                                                }
                                        );
+                                        $("input[name='classType']:checkbox").each(function(){
+                                            var index=$scope.formData.classchedule.indexOf(parseInt($(this).val()));
+                                            if (index>-1){
+                                                $(this).attr("checked","true");
+                                            }
+                                        });
                                       $("#begindate").val($scope.formData.begindate);
                                         $("#enddate").val($scope.formData.enddate);
                                         $("#carmodel").val($scope.formData.carmodel);
@@ -297,7 +323,16 @@
             }
 
         };
+        $scope.getclassType =function(){
+            var classType=[];
 
+            $("input[name='classType']:checkbox").each(function(){
+                if ($(this).attr("checked")!=undefined) {
+                    classType.push($(this).attr('value'));
+                }
+            });
+            $scope.formData.classchedule=classType.join(",");
+        }
         var savedata=function(){
             $scope.formData.schoolid="<%=schoolid%>";
             $scope.formData.begindate=$("#begindate").val();

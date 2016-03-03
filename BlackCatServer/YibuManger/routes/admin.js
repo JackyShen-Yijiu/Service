@@ -147,6 +147,7 @@ var  returnAdminRouter=function(io) {
         adminserver.getmainPagedata(req.session.schoolid,function(err,data){
             //console.log(data);
             req.session.schooldata=data.schooldata;
+            res.locals.schooldata=req.session.schooldata;
             res.render('school/schoolmain', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/schoolmain",data));
         })
 
