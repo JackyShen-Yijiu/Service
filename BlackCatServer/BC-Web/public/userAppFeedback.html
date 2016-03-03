@@ -1,319 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport" />
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-	<title>极致驾服APP使用反馈收集</title>
-	
+    <meta charset="UTF-8">
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>极致驾服APP使用反馈收集</title>
+
     <style>
-      html,body{width: 100%;} 
-      body{
-          font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
-      }
-      label{margin: 5px;}
-      legend{
-          font-size: 18px;
-          color: maroon;
-      }
-      textarea{
-          text-align: left;
-          margin: 10px;
-      }
-      #container{
-          background: lightblue;
-          margin: 0 auto;
-          border:1px solid #ccc;
-      }
-      #header{
-          width: 100%;
-          height: 80px;
-          border-bottom: 1px  solid #fff;
-          text-align: center;
-          line-height: 80px;
-      }
-      #ownInfo,#score,#suggest{
-          width: 80%;
-          height: 300px;
-          border-bottom: 1px solid #fff;
-      }
+        *{margin: 0;padding: 0;}
+        body{  font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;  font-size: 14px;  color: #000;  min-height: 1136px;  }
+        /*label{margin: 5px;}*/
+        textarea{  text-align: left;  margin: 10px;  }
+        #header{  width: 100%;  height: 80px;  border-bottom: 2px  solid #fff;  text-align: center;  line-height: 80px;  color: maroon;  background: lightblue;  }
+        #ownInfo,#score,#suggest{  width: 80%;  height: 300px;  border-bottom: 1px solid #fff;  }
+        #submit,#reset {  width: 60px;  height: 30px;  background: lightblue;  cursor: pointer;  border: 0;  color:maroon;  font-size: 16px;  font-weight: bold;  margin-left: 3px;  }
 
-      .title{
-          display: block;
-          font-size: 20px;
-          color:maroon;
-          margin: 10px 0 20px 40px;
-      }
-      #submit,#reset { 
-          width: 200px;
-          height: 40px;
-          background: lightblue;
-          margin: 20px 0;
-          border-right: #7b9ebd 1px solid;  
-          border-top: #7b9ebd 1px solid;  
-          border-left: #7b9ebd 1px solid; 
-          cursor: pointer;   
-          padding: 2px;
-          border-bottom: #7b9ebd 1px solid; 
-          color:maroon;
-          font-size: 16px;
-          font-weight: bold;
-      }
+        /* 验证样式 */
+        .formtips{width: 200px;margin:2px;padding:2px;}
 
-      /* 验证样式 */
-      .formtips{width: 200px;margin:2px;padding:2px;}  
-
-      .onError{  
-         background:#FFE0E9;  
-         padding:0 25px; 
-         margin-left: 70px; 
-      }  
-      .onSuccess{  
-         background:#E9FBEB ;  
-         padding:0 25px; 
-         margin-left: 70px; 
-      }  
-      .high{
-          color: maroon;
-      }
+        .onError{  background:lightblue;  padding:5px 25px;  margin-left: 70px;  }
+        .onSuccess{  background:#E9FBEB ;  padding:0 25px;  margin-left: 70px;  }
+        .high{  color: maroon;  }
+        /* 样式 */
+        #username,#department,#mobile,#phoneType, #testPlace{  width:170px;  height:30px;  border:1px solid #ccc;  }
+        .button{  display: block;  margin-top: 30px;  margin-left: 20px;  }
+        p.score{  margin-top: 30px;  margin-bottom: 30px;  }
+        p.score span{  width: 80%;  height: 30px;  line-height: 30px;  font-size: 16px;  color: maroon;  }
+        p.score select{  padding: 5px;  margin-top:8px;  }
+        p.score select option{  width: 20px;  height: 20px;  }
+        p.input{  margin:8px 0;  }
+        p.shareFriend{  width: 100%;  height: 70px;  }
+        p.shareFriend .share{  font-size: 16px;  color: maroon;  }
+        p.question{  margin-bottom: 20px;  }
+        p.question .find{  font-size: 16px;  color: maroon;  }
+        .importent{  padding: 4px;  }
+        p.suggest .yoursuggest{  font-size: 16px;  color: maroon;  }
+        span.placeholder{  display: inline-block;  width:20px;  height:5px;  }
+        div.backform{  margin-left:25px;  }
+        /*个人信息*/
+        div.input{width:350px;margin:10px;}
+        div.input label.input_1{width:100px;display: inline-block;text-align: left;}
+        p.whouseapp{display: inline-block;margin-top:10px; }
     </style>
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1>反馈信息</h1>
-		</div>
-		<form action="#" id="myForm">
-			<span class="title">极致驾服APP使用反馈收集</span>
-			<fieldset>
-				<legend>你的信息</legend>
-				<p>
-					<label for="username">姓名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                	<input type="text" id="username" class="required" name="username" value="" />
-				</p>
+<div id="container">
+    <div id="header">
+        <h2>App反馈信息</h2>
+    </div>
+    <div class="backform">
+        <form action="#" id="myForm">
 
-				<p>	
-                	<label for="department">所属部门：</label>
-                	<input type="text" id="department" class="required" name="department" value=""/>
-				</p>
+                <div class="input">
+                    <label for="username" class="input_1">姓名：</label>
+                    <input type="text" id="username" class="required" name="username" value="" />
+                </div>
 
-           		<p>
-           			<label for="mobile">手机号:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	                <input type="text" id="mobile" name="mobile" class="required"/>
-				<p>
-	                <label for="phoneType">手机型号：</label>
-	                <input type="text" id="phoneType" class="required" name="phoneType" value=""/>
-           		</p>
+                <div class="input">
+                    <label for="department" class="input_1">所属部门：</label>
+                    <input type="text" id="department" class="required" name="department" value=""/>
+                </div>
 
-           		<p>
-           			<label for="testPlace">测试地点：</label>
-           			<input type="text" id="testPlace" name="testPlace" value="" size="50"/>
-           		</p>
-                
-                <p> 
-                	<label >APP终端：</label>
-	                <label for="student">学员</label>
-	                <input type="radio" value="1" id="student" name="whoUse" />
+                <div class="input">
+                    <label for="mobile" class="input_1">手机号:</label>
+                    <input type="text" id="mobile" name="mobile" class="required"/>
+                </div >
+                <div class="input">
+                    <label for="phoneType" class="input_1">手机型号：</label>
+                    <input type="text" id="phoneType" class="required" name="phoneType" value=""/>
+                </div>
 
-	                <label for="coach">教练</label>
-	                <input type="radio" value="2" id="coach" name="whoUse" />
+                <div class="input">
+                    <label for="testPlace" class="input_1">测试地点：</label>
+                    <input type="text" id="testPlace" name="testPlace" value="" size="50"/>
+                </div>
 
-	                <label for="schoolLeader">校长</label>
-	                <input type="radio" value="3" id="schoolLeader" name="whoUse" />
-                </p>
-                
-			</fieldset>
 
-			<fieldset>
-				<legend>你的评价</legend>
-				<p>
-					<span>给它打一下分数吧：</span>
-					<br>
-					<br>
 
-					<label for="outward">美观度</label>
-					<select size="1" id="outward" name="outward">
-                        <option>1分</option>
-                        <option>2分</option>
-                        <option>3分</option>
-                        <option>4分</option>
-                        <option>5分</option>
-                        <option>6分</option>
-                        <option>7分</option>
-                        <option>8分</option>
-                        <option>9分</option>
-                        <option>10分</option>
-                	</select>
+            <p class="whouseapp">
+                <span>APP终端：</span>
+                <label >学员</label>
+                <input type="radio" value="1"  name="whoUse" />
 
-                	<label for="outward">易用性</label>
-					<select size="1" id="easy" name="easy">
-                        <option>1分</option>
-                        <option>2分</option>
-                        <option>3分</option>
-                        <option>4分</option>
-                        <option>5分</option>
-                        <option>6分</option>
-                        <option>7分</option>
-                        <option>8分</option>
-                        <option>9分</option>
-                        <option>10分</option>
-                	</select>
-					
-					<label for="affluent">流畅度</label>
-					<select size="1" id="affluent" name="affluent">
-                        <option>1分</option>
-                        <option>2分</option>
-                        <option>3分</option>
-                        <option>4分</option>
-                        <option>5分</option>
-                        <option>6分</option>
-                        <option>7分</option>
-                        <option>8分</option>
-                        <option>9分</option>
-                        <option>10分</option>
-                	</select>
-					
-					<label for="function">功能完备度</label>
-					<select size="1" id="function" name="function">
-                        <option>1分</option>
-                        <option>2分</option>
-                        <option>3分</option>
-                        <option>4分</option>
-                        <option>5分</option>
-                        <option>6分</option>
-                        <option>7分</option>
-                        <option>8分</option>
-                        <option>9分</option>
-                        <option>10分</option>
-                	</select>
-                	<br>
-                	<br>
+                <label >教练</label>
+                <input type="radio" value="2"  name="whoUse" />
 
-                	<label for="timeUse">时间消耗</label>
-                	<select size="1" name="timeUse" id="timeUse">
-                		<option>短</option>
-                		<option>中等</option>
-                		<option>长</option>
-                		<option>过长</option>
-                	</select>
+                <label >校长</label>
+                <input type="radio" value="3" name="whoUse" />
+            </p>
 
-                	<label for="flowUse">时间消耗</label>
-                	<select size="1" name="flowUse" id="flowUse">
-                		<option>少</option>
-                		<option>中等</option>
-                		<option>多</option>
-                		<option>过多</option>
-                	</select>
-				</p>
-				<p>
-					<label >你愿意把我分享给你的朋友使用吗？</label>
-					<label for="yesshare">愿意</label>
-	                <input type="radio" value="1" id="yesshare" name="share" />
-	                <label for="noshare">不愿意</label>
-	                <input type="radio" value="2" id="noshare" name="share" />
-				</p>
-			</fieldset>
-			<fieldset>
-				<legend>你的意见和建议</legend>
-				<p>
-					<label>你发现的问题</label>
-					<br>
-					<textarea cols="40" rows="10" id="contactus1" name="contactus">
+            <p class="score">
+                <span>给它打一下分数吧：</span>
+                <br>
+                <br>
+
+                <label for="outward">美观度</label>
+                <select size="1" id="outward" name="outward">
+                    <option>1分</option>
+                    <option>2分</option>
+                    <option>3分</option>
+                    <option>4分</option>
+                    <option>5分</option>
+                    <option>6分</option>
+                    <option>7分</option>
+                    <option>8分</option>
+                    <option>9分</option>
+                    <option>10分</option>
+                </select>
+
+                <label for="outward">易用性</label>
+                <select size="1" id="easy" name="easy">
+                    <option>1分</option>
+                    <option>2分</option>
+                    <option>3分</option>
+                    <option>4分</option>
+                    <option>5分</option>
+                    <option>6分</option>
+                    <option>7分</option>
+                    <option>8分</option>
+                    <option>9分</option>
+                    <option>10分</option>
+                </select>
+                <br>
+                <label for="affluent">流畅度</label>
+                <select size="1" id="affluent" name="affluent">
+                    <option>1分</option>
+                    <option>2分</option>
+                    <option>3分</option>
+                    <option>4分</option>
+                    <option>5分</option>
+                    <option>6分</option>
+                    <option>7分</option>
+                    <option>8分</option>
+                    <option>9分</option>
+                    <option>10分</option>
+                </select>
+
+                <label for="function">功能完备度</label>
+                <select size="1" id="function" name="function">
+                    <option>1分</option>
+                    <option>2分</option>
+                    <option>3分</option>
+                    <option>4分</option>
+                    <option>5分</option>
+                    <option>6分</option>
+                    <option>7分</option>
+                    <option>8分</option>
+                    <option>9分</option>
+                    <option>10分</option>
+                </select>
+                <br>
+                <label for="timeUse">时间消耗</label>
+                <select size="1" name="timeUse" id="timeUse">
+                    <option>短</option>
+                    <option>中等</option>
+                    <option>长</option>
+                    <option>过长</option>
+                </select>
+
+                <label for="flowUse">流量消耗</label>
+                <select size="1" name="flowUse" id="flowUse">
+                    <option>少</option>
+                    <option>中等</option>
+                    <option>多</option>
+                    <option>过多</option>
+                </select>
+            </p>
+            <p class="shareFriend">
+                <span class="share">你愿意把我分享给你的朋友使用吗？</span>
+                <br>
+                <br>
+                <label >愿意</label>
+                <input type="radio" value="1"  name="share" />
+                <label >不愿意</label>
+                <input type="radio" value="2"  name="share" />
+            </p>
+            <p class="question">
+                <span class="find">你发现的问题</span>
+                <br>
+					<!--<textarea cols="40" rows="7" id="contactus" name="contactus">
                         你的问题对我们很重要
-                	</textarea>
-                	<label>给问题选个重要程度吧：</label>
-                	<select id="importent1" size='1'>
-                		<option>必须有</option>
-                		<option>应该有</option>
-                		<option>最好有</option>
-                		<option>可以有</option>
-                	</select>
-				</p>
-				<p>
-					<label>你的建议</label>
-					<br>
-					<textarea cols="40" rows="10" id="contactus" name="contactus">
+                	</textarea>-->
+                    <textarea  name="contactus" cols="40" rows="7"
+                               onblur="if(this.value == ''){this.style.color = '#ACA899'; this.value = '在此处填写备注'; }"
+                               onfocus="if(this.value == '在此处填写备注'){this.value =''; this.style.color = '#000000'; }"
+                               style="color:#ACA899;">你的建议对我们同样很重要:</textarea>
+                <br>
+                <label class="quesimportant">给问题选个重要程度吧：</label>
+                <select class="importent" size='1'>
+                    <option>必须有</option>
+                    <option>应该有</option>
+                    <option>最好有</option>
+                    <option>可以有</option>
+                </select>
+            </p>
+            <p class="suggest">
+                <span class="yoursuggest">你的建议</span>
+                <br>
+					<!--<textarea cols="40" rows="7" id="contactus" name="contactus">
                         你的建议对我们同样很重要
-                	</textarea>
-                	<label>给建议选个重要程度吧：</label>
-                	<select id="importent" size='1'>
-                		<option>必须有</option>
-                		<option>应该有</option>
-                		<option>最好有</option>
-                		<option>可以有</option>
-                	</select>
-				</p>
-			</fieldset>
-			<input type="submit" value="提交" id="submit" name="submit" />
-      <input type="reset" value="重置" id="reset" name="reset" />
-			<!-- <fieldset>
-			                <legend>提交:</legend>
-			                <input type="submit" value="提交" id="submit" name="submit" />
-			                <input type="reset" value="重置" id="reset" name="reset" />
-			        	</fieldset> -->
+                	</textarea>-->
+                    <textarea  name="contactus" cols="40" rows="7"
+                              onblur="if(this.value == ''){this.style.color = '#ACA899'; this.value = '在此处填写备注'; }"
+                              onfocus="if(this.value == '在此处填写备注'){this.value =''; this.style.color = '#000000'; }"
+                              style="color:#ACA899;">你的建议对我们同样很重要:</textarea>
+                <br>
+                <label>给建议选个重要程度吧：</label>
+                <select class="importent" size='1'>
+                    <option>必须有</option>
+                    <option>应该有</option>
+                    <option>最好有</option>
+                    <option>可以有</option>
+                </select>
+            </p>
+            <p class="button">
+                <input type="submit" value="提交" id="submit" name="submit" />
+                <input type="reset" value="重置" id="reset" name="reset" />
+            </p>
+        </form>
+    </div>
 
-		</form>
-	</div>
-    
-<script src="./js/jquery.min.js"></script>
-<script type="text/javascript">  
-//<![CDATA[ 
-$(function(){ 
-       //如果是必填的，则加红星标识. 
-       $("form :input.required").each(function(){ 
-           var $required = $("<strong class='high'> *</strong>"); //创建元素 
-           $(this).parent().append($required); //然后将它追加到文档中 
-       }); 
-        //文本框失去焦点后 
-       $('form :input').blur(function(){ 
-            var $parent = $(this).parent(); 
-            $parent.find(".formtips").remove(); 
-            //验证用户名 
-            if( $(this).is('#username') ){ 
-                   if( this.value=="" ){ 
-                       var errorMsg = '请输入姓名.'; 
-                       $parent.append('<span class="formtips onError">'+errorMsg+'</span>'); 
-                   }else{ 
-                       var okMsg = '输入正确.'; 
-                       $parent.append('<span class="formtips onSuccess">'+okMsg+'</span>'); 
-                   } 
-            } 
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script type="text/javascript">
+    //<![CDATA[
+    $(function(){
+        //如果是必填的，则加红星标识.
+        /* $("form :input.required").each(function(){
+         var $required = $("<strong class='high'> *</strong>"); //创建元素
+         $(this).parent().append($required); //然后将它追加到文档中
+         }); */
+        //文本框失去焦点后
+        /*$('form :input').blur(function(){
+            var $parent = $(this).parent();
+            $parent.find(".formtips").remove();
+            //验证用户名
+            if( $(this).is('#username') ){
+                if( this.value=="" ){
+                    var errorMsg = '请输入姓名.';
+                    $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+                }
+
+            }
             //验证电话号码
-            if( $(this).is('#mobile') ){ 
+            if( $(this).is('#mobile') ){
                 var myreg = /^(1[0-9]{10})$/;
-               if( this.value=="" ||this.value.length!=11 || (!myreg.test(this.value)) ){ 
-                     var errorMsg = '请输入正确的手机号.'; 
-                     $parent.append('<span class="formtips onError">'+errorMsg+'</span>'); 
-               }else{ 
-                     var okMsg = '输入正确.'; 
-                     $parent.append('<span class="formtips onSuccess">'+okMsg+'</span>'); 
-               } 
-            } 
-       }).keyup(function(){ 
-          $(this).triggerHandler("blur"); 
-       }).focus(function(){ 
-            $(this).triggerHandler("blur"); 
-       });//end blur 
- 
-        
-       //提交，最终验证。 
-        $('#submit').click(function(){ 
-               $("form :input.required").trigger('blur'); 
-               var numError = $('form .onError').length; 
-               if(numError){ 
-                alert("请检查填写内容是否有误");
-                   return false; 
+                if( this.value=="" ||this.value.length!=11 || (!myreg.test(this.value)) ){
+                    var errorMsg = '请输入正确的手机号.';
+                    $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+                }
 
-               } 
-               alert("提交成功我们已经收到你的反馈."); 
-        }); 
- 
-       //重置 
-        $('#reset').click(function(){ 
-               $(".formtips").remove(); 
-        }); 
-}) 
-//]]>  
+            }
+            //验证手机型号
+            if( $(this).is('#phoneType') ){
+                if( this.value=="" ){
+                    var errorMsg = '请输入手机型号.';
+                    $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+                }
+
+            }
+        }).keyup(function(){
+            $(this).triggerHandler("blur");
+        }).focus(function(){
+            $(this).triggerHandler("blur");
+        });//end blur*/
+
+
+        //提交，最终验证。
+        $('#submit').click(function(){
+            $("form :input.required").trigger('blur');
+            var numError = $('form .onError').length;
+            if(numError){
+                alert("请检查填写内容是否有误");
+                return false;
+
+            }
+            alert("提交成功我们已经收到你的反馈.");
+        });
+
+        //重置
+        $('#reset').click(function(){
+            $(".formtips").remove();
+        });
+    })
+    //]]>
 </script>
 </body>
 </html>
