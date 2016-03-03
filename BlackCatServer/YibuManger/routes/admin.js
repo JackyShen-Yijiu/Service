@@ -120,47 +120,81 @@ var  returnAdminRouter=function(io) {
             res.redirect("schoolmain");
         }
         else{
+
             req.session.schooldata="";
-            res.render('manger/index', adminFunc.setPageInfo(req, res, "/admin/manage/main"));
+            var tagindex={
+                isMain:true
+            };
+            res.render('manger/index', adminFunc.setPageInfo(req, res, "/admin/manage/main",null,tagindex));
         }
     });
     router.get('/manage/schoollsit', function(req, res, next) {
-        res.render('manger/schooollist2',adminFunc.setPageInfo(req,res,"/admin/manage/schoollsit"));
+        var tagindex={
+            isSchoolMain:true
+        };
+        res.render('manger/schooollist2',adminFunc.setPageInfo(req,res,"/admin/manage/schoollsit",null,tagindex));
     });
+    /*router.get('/manage/editschool', function(req, res, next) {
+        res.render('manger/editSchool', {layout:"public/adminTemple"},adminFunc.setPageInfo(req,res,"/admin/manage/editschool"));
+    });*/
+
     router.get('/manage/editschool', function(req, res, next) {
-        res.render('manger/editSchool', {layout:"public/adminTemple"});
+        var tagindex={
+            isSchoolMain:true
+        };
+        res.render('manger/editSchool',adminFunc.setPageInfo(req,res,"/admin/manage/editschool",null,tagindex));
     });
     //  ==========================活动管理========================================
     router.get('/manage/activtylist', function(req, res, next) {
-        res.render('manger/Activtylist' , adminFunc.setPageInfo(req,res,"/admin/manage/activtylist"));
+        var tagindex={
+            isActivtyList:true
+        };
+        res.render('manger/Activtylist' , adminFunc.setPageInfo(req,res,"/admin/manage/activtylist",null,tagindex));
     });
     //app首页活动页
     router.get("/manage/editActivty",function(req, res, next) {
-        res.render('manger/editActivty', adminFunc.setPageInfo(req,res,"/admin/manage/editActivty"));
+        var tagindex={
+            isActivtyList:true
+        };
+        res.render('manger/editActivty', adminFunc.setPageInfo(req,res,"/admin/manage/editActivty",null,tagindex));
     });
     //========================================== 驾校信息主页====================================
     router.get('/manage/schoolmain', function(req, res, next) {
         req.session.schoolid=req.query.schoolid;
         if( req.session.adminUserInfo.usertype&& req.session.adminUserInfo.usertype==1) {
             req.session.schoolid=req.session.adminUserInfo.schoolid;
-        };
+        }
         adminserver.getmainPagedata(req.session.schoolid,function(err,data){
             //console.log(data);
             req.session.schooldata=data.schooldata;
+
+            //data.isSchoolMain = true;
+            var tagindex={
+                isSchoolMain:true
+            };
             res.locals.schooldata=req.session.schooldata;
-            res.render('school/schoolmain', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/schoolmain",data));
+            res.render('school/schoolmain', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/schoolmain",data,tagindex));
         })
 
     });
     router.get("/manage/trainingfieldlist" ,function(req, res, next) {
-        res.render('school/trainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
+        var tagindex={
+            isTrainingfieldList:true
+        };
+        res.render('school/trainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist",null,tagindex));
     });
     router.get("/manage/edittrainingfield" ,function(req, res, next) {
-        res.render('school/editTrainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist"));
+        var tagindex={
+            isTrainingfieldList:true
+        };
+        res.render('school/editTrainingField', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/trainingfieldlist",null,tagindex));
     });
     // 获取教练列表
     router.get("/manage/coachlist" ,function(req, res, next) {
-        res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist"));
+        var tagindex = {
+            isCoachList: true
+        };
+        res.render('school/coachlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/coachlist",null,tagindex));
     });
     // 获取预约教练列表
     router.get("/manage/reserveCoach" ,function(req, res, next) {
@@ -182,13 +216,20 @@ var  returnAdminRouter=function(io) {
                 return info;
             });
             console.log(filedlist);
-            res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo",filedlist));
+            //filedlist.isCoachList = true;
+            var tagindex={
+                isCoachList:true
+            };
+            res.render('school/editCoach', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editcoachinfo",filedlist,tagindex));
         });
 
     });
     // 学员列表
     router.get("/manage/studentlist" ,function(req, res, next) {
-        res.render('school/studentlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/studentlist"));
+        var tagindex = {
+            isStudentList: true
+        };
+        res.render('school/studentlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/studentlist",null,tagindex));
     });
     //编辑学员信息
     router.get("/manage/editstudentinfo" ,function(req, res, next) {
@@ -204,7 +245,11 @@ var  returnAdminRouter=function(io) {
                 };
                 return info;
             });
-            res.render('school/editStudent', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editstudentinfo",filedlist));
+            var tagindex={
+                isStudentList:true
+            }
+           // filedlist.isStudentList = true;
+            res.render('school/editStudent', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editstudentinfo",filedlist,tagindex));
         });
 
     });
@@ -232,11 +277,17 @@ var  returnAdminRouter=function(io) {
     });
     //获取班型列表
     router.get("/manage/classtypelist" ,function(req, res, next) {
-        res.render('school/classtypelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/classtypelist"));
+        var tagindex={
+            isClasstypeList:true
+        };
+        res.render('school/classtypelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/classtypelist",null,tagindex));
     });
     // 获取订单列表
     router.get("/manage/orderlist" ,function(req, res, next) {
-        res.render('school/orderlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/orderlist"));
+        var tagindex={
+            isOrderList:true
+        };
+        res.render('school/orderlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/orderlist",null,tagindex));
     });
     // 教练课程安排
     router.get("/manage/coachcourse" ,function(req, res, next) {
@@ -256,22 +307,45 @@ var  returnAdminRouter=function(io) {
                 };
                 return info;
             });
-
-            res.render('school/editClassType', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editclasstype",filedlist));
+            //filedlist.isClasstypeList=true;
+            var tagindex={
+                isClasstypeList:true
+            };
+            res.render('school/editClassType', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editclasstype",filedlist,tagindex));
         });
 
+    });
+    //班车列表
+    router.get("/manage/carRoutelist" ,function(req, res, next) {
+        var tagindex={
+            isCarrouteList:true
+        };
+        res.render('school/carRoutelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/carRoutelist",null,tagindex));
+    });
+    //编辑班车信息
+    router.get("/manage/editCarRoute" ,function(req, res, next) {
+        var tagindex={
+            isCarrouteList:true
+        };
+        res.render('school/editCarRoute', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editCarRoute",null,tagindex));
     });
 //======================================================================================================================
     //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
-        res.render('Ycode/Ycodelist', adminFunc.setPageInfo(req,res,"/admin/manage/Ycodelist"));
+        var tagindex={
+            isYcodeList:true
+        };
+        res.render('Ycode/Ycodelist', adminFunc.setPageInfo(req,res,"/admin/manage/Ycodelist",null,tagindex));
     });
     //报名记录
     router.get("/manage/recordlist" ,function(req, res, next) {
+        var tagindex = {
+          isRecordList: true
+        };
         if (req.session.schooldata==""){
-        res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist"));
+        res.render('apply-record/recordlist', adminFunc.setPageInfo(req,res,"/admin/manage/recordlist",null,tagindex));
         }else{
-            res.render('apply-record/recordlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/recordlist"));
+            res.render('apply-record/recordlist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/recordlist",null, tagindex));
         }
     });
     //教练审核记录
@@ -281,7 +355,10 @@ var  returnAdminRouter=function(io) {
 
     //商家管理
     router.get("/manage/businessList" ,function(req, res, next) {
-        res.render('business/businessList', adminFunc.setPageInfo(req,res,"/admin/manage/businessList"));
+        var tagindex={
+            isbusinessList:true
+        };
+        res.render('business/businessList', adminFunc.setPageInfo(req,res,"/admin/manage/businessList",null,tagindex));
     });
     //商品管理
     router.get("/manage/productslist" ,function(req, res, next) {
@@ -295,11 +372,17 @@ var  returnAdminRouter=function(io) {
 
     //行业信息
     router.get("/manage/industrynewsList" ,function(req, res, next) {
-        res.render('industryNews/industrynewsList', adminFunc.setPageInfo(req,res,"/admin/manage/industrynewsList"));
+        var tagindex={
+            isIndustrynewsList:true
+        };
+        res.render('industryNews/industrynewsList', adminFunc.setPageInfo(req,res,"/admin/manage/industrynewsList",null,tagindex));
     });
     //获取咨询内容
     router.get("/manage/editIndustrynews" ,function(req, res, next) {
-        res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews"));
+        var tagindex={
+            isIndustrynewsList:true
+        };
+        res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews",null,tagindex));
     });
     router.get("/news" ,function(req, res, next) {
         var newsid=req.query.newsid;
@@ -313,14 +396,21 @@ var  returnAdminRouter=function(io) {
     // 用户管理
     router.get("/manage/adminusermanger" ,function(req, res, next) {
         basedatafun.getAllSchoolList(function(err,data){
-            res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger",data));
+            var tagindex={
+                isAdminuserManger:true
+            };
+            res.render('usermanger/userlist', adminFunc.setPageInfo(req,res,"/admin/manage/adminusermanger",data,tagindex));
         })
 
     });
     // 校长管理
     router.get("/manage/headmastermanger" ,function(req, res, next) {
+
         basedatafun.getAllSchoolList(function(err,data){
-            res.render('usermanger/headMasterlist', adminFunc.setPageInfo(req,res,"/admin/manage/headmastermanger",data));
+            var tagindex={
+                isHeadmastermanger:true
+            };
+            res.render('usermanger/headMasterlist', adminFunc.setPageInfo(req,res,"/admin/manage/headmastermanger",data,tagindex));
         })
 
     });

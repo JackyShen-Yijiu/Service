@@ -68,17 +68,17 @@
     <div class="subnavbar-inner">
         <div class="container">
             <ul class="mainnav" id="menu">
-                <li><a href="/admin/manage/main"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
-                <li><a href="/admin/manage/schoollsit"><i class="icon-list-alt"></i><span>驾校管理 </span> </a> </li>
-                <li><a href="/admin/manage/recordlist"><i class="icon-list"></i><span>报名审核</span></a> </li>
+                <li class="<% if (textindex && textindex.isMain){%> active<%} %>"><a href="/admin/manage/main"><i class="icon-dashboard"></i><span>主页</span> </a> </li>
+                <li class="<% if (textindex && textindex.isSchoolMain){%> active<%} %>"><a href="/admin/manage/schoollsit"><i class="icon-list-alt"></i><span>驾校管理 </span> </a> </li>
+                <li class="<% if (textindex && textindex.isRecordList){%> active<%} %>"><a href="/admin/manage/recordlist"><i class="icon-list"></i><span>报名审核</span></a> </li>
                 <!--<li><a href="/admin/manage/coachCheckList"><i class="icon-reorder"></i><span>教练审核</span></a> </li>-->
 
-                <li><a href="/admin/manage/activtylist"><i class="icon-pinterest"></i><span>活动管理</span> </a> </li>
-                <li><a href="/admin/manage/Ycodelist"><i class="icon-money"></i><span>Y码返利</span> </a> </li>
-                <li><a href="/admin/manage/industrynewsList"><i class=" icon-comments-alt"></i><span>行业信息</span> </a> </li>
-                <li><a href="/admin/manage/adminusermanger"><i class="icon-user"></i><span>用户管理</span> </a> </li>
-                <li><a href="/admin/manage/headmastermanger"><i class="icon-user"></i><span>校长管理</span> </a> </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <li class="<% if (textindex && textindex.isActivtyList){%> active<%} %>"><a href="/admin/manage/activtylist"><i class="icon-pinterest"></i><span>活动管理</span> </a> </li>
+                <li class="<% if (textindex && textindex.isYcodeList){%> active<%} %>"><a href="/admin/manage/Ycodelist"><i class="icon-money"></i><span>Y码返利</span> </a> </li>
+                <li class="<% if (textindex && textindex.isIndustrynewsList){%> active<%} %>"><a href="/admin/manage/industrynewsList"><i class=" icon-comments-alt"></i><span>行业信息</span> </a> </li>
+                <li class="<% if (textindex && textindex.isAdminuserManger){%> active<%} %>"><a href="/admin/manage/adminusermanger"><i class="icon-user"></i><span>用户管理</span> </a> </li>
+                <li class="<% if (textindex && textindex.isHeadmastermanger){%> active<%} %>"><a href="/admin/manage/headmastermanger"><i class="icon-user"></i><span>校长管理</span> </a> </li>
+                <li class="dropdown" class="<% if (textindex && textindex.isbusinessList){%> active<%} %>"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="icon-shopping-cart"></i><span>商城</span> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="/admin/manage/businessList">商家管理 </a> </li>
@@ -124,7 +124,7 @@
 </div>
 
 <script type="text/javascript">
-    $("document").ready(function(){
+    /*$("document").ready(function(){
         $("#menu li").click(function(){
             $("#menu li").removeClass("active");//首先移除全部的active
             $(this).addClass("active");//选中的添加acrive
@@ -146,7 +146,7 @@
             }
         });
         if (!urlstatus) {$("#menu li").eq(0).addClass('active'); }
-    });
+    });*/
 
 </script>
 
