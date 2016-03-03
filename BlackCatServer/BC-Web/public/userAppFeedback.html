@@ -29,7 +29,7 @@
         p.score select{  padding: 5px;  margin-top:8px;  }
         p.score select option{  width: 20px;  height: 20px;  }
         p.input{  margin:8px 0;  }
-        p.shareFriend{  width: 100%;  height: 70px;  }
+        p.shareFriend{  width: 100%;  height: 140px;  }
         p.shareFriend .share{  font-size: 16px;  color: maroon;  }
         p.question{  margin-bottom: 20px;  }
         p.question .find{  font-size: 16px;  color: maroon;  }
@@ -49,7 +49,7 @@
         <h2>App反馈信息</h2>
     </div>
     <div class="backform">
-        <form action="#" id="myForm">
+        <form action="feedback/userfeedback" id="myForm" method="post">
 
                 <div class="input">
                     <label for="username" class="input_1">姓名：</label>
@@ -96,74 +96,74 @@
 
                 <label for="outward">美观度</label>
                 <select size="1" id="outward" name="outward">
-                    <option>1分</option>
-                    <option>2分</option>
-                    <option>3分</option>
-                    <option>4分</option>
-                    <option>5分</option>
-                    <option>6分</option>
-                    <option>7分</option>
-                    <option>8分</option>
-                    <option>9分</option>
-                    <option>10分</option>
+                    <option value="1">1分</option>
+                    <option value="2">2分</option>
+                    <option value="3">3分</option>
+                    <option value="4">4分</option>
+                    <option value="5">5分</option>
+                    <option value="6">6分</option>
+                    <option  value="7">7分</option>
+                    <option value="8">8分</option>
+                    <option value="9">9分</option>
+                    <option value="10">10分</option>
                 </select>
 
                 <label for="outward">易用性</label>
                 <select size="1" id="easy" name="easy">
-                    <option>1分</option>
-                    <option>2分</option>
-                    <option>3分</option>
-                    <option>4分</option>
-                    <option>5分</option>
-                    <option>6分</option>
-                    <option>7分</option>
-                    <option>8分</option>
-                    <option>9分</option>
-                    <option>10分</option>
+                    <option value="1">1分</option>
+                    <option value="2">2分</option>
+                    <option value="3">3分</option>
+                    <option value="4">4分</option>
+                    <option value="5">5分</option>
+                    <option value="6">6分</option>
+                    <option  value="7">7分</option>
+                    <option value="8">8分</option>
+                    <option value="9">9分</option>
+                    <option value="10">10分</option>
                 </select>
                 <br>
                 <label for="affluent">流畅度</label>
                 <select size="1" id="affluent" name="affluent">
-                    <option>1分</option>
-                    <option>2分</option>
-                    <option>3分</option>
-                    <option>4分</option>
-                    <option>5分</option>
-                    <option>6分</option>
-                    <option>7分</option>
-                    <option>8分</option>
-                    <option>9分</option>
-                    <option>10分</option>
+                    <option value="1">1分</option>
+                    <option value="2">2分</option>
+                    <option value="3">3分</option>
+                    <option value="4">4分</option>
+                    <option value="5">5分</option>
+                    <option value="6">6分</option>
+                    <option  value="7">7分</option>
+                    <option value="8">8分</option>
+                    <option value="9">9分</option>
+                    <option value="10">10分</option>
                 </select>
 
                 <label for="function">功能完备度</label>
                 <select size="1" id="function" name="function">
-                    <option>1分</option>
-                    <option>2分</option>
-                    <option>3分</option>
-                    <option>4分</option>
-                    <option>5分</option>
-                    <option>6分</option>
-                    <option>7分</option>
-                    <option>8分</option>
-                    <option>9分</option>
-                    <option>10分</option>
+                    <option value="1">1分</option>
+                    <option value="2">2分</option>
+                    <option value="3">3分</option>
+                    <option value="4">4分</option>
+                    <option value="5">5分</option>
+                    <option value="6">6分</option>
+                    <option  value="7">7分</option>
+                    <option value="8">8分</option>
+                    <option value="9">9分</option>
+                    <option value="10">10分</option>
                 </select>
                 <br>
                 <label for="timeUse">时间消耗</label>
                 <select size="1" name="timeUse" id="timeUse">
-                    <option>短</option>
-                    <option>中等</option>
-                    <option>长</option>
-                    <option>过长</option>
+                    <option value="1">短</option>
+                    <option value="2">中等</option>
+                    <option value="3">长</option>
+                    <option value="4">过长</option>
                 </select>
 
                 <label for="flowUse">流量消耗</label>
                 <select size="1" name="flowUse" id="flowUse">
-                    <option>少</option>
-                    <option>中等</option>
-                    <option>多</option>
-                    <option>过多</option>
+                    <option value="1">少</option>
+                    <option value="2">中等</option>
+                    <option value="3">多</option>
+                    <option value="4">过多</option>
                 </select>
             </p>
             <p class="shareFriend">
@@ -171,46 +171,54 @@
                 <br>
                 <br>
                 <label >愿意</label>
-                <input type="radio" value="1"  name="share" />
+                <input type="radio" value="1"  checked id="share" name="share" />
                 <label >不愿意</label>
-                <input type="radio" value="2"  name="share" />
+                <input type="radio" value="2"   name="share" />
+                <br>
+                 <textarea  name="sharereason" cols="40" rows="3"
+                            placeholder="推荐/不推荐原因"
+                            id ="sharereason"
+                            style="color:#ACA899;"></textarea>
             </p>
-            <p class="question">
+            <p >
                 <span class="find">你发现的问题</span>
                 <br>
 					<!--<textarea cols="40" rows="7" id="contactus" name="contactus">
                         你的问题对我们很重要
                 	</textarea>-->
-                    <textarea  name="contactus" cols="40" rows="7"
-                               onblur="if(this.value == ''){this.style.color = '#ACA899'; this.value = '在此处填写备注'; }"
-                               onfocus="if(this.value == '在此处填写备注'){this.value =''; this.style.color = '#000000'; }"
-                               style="color:#ACA899;">你的建议对我们同样很重要:</textarea>
+                    <textarea  name="problem" cols="40" rows="7"
+                               placeholder="你的建议对我们同样很重要"
+                               id ="problem"
+                               style="color:#ACA899;"></textarea>
                 <br>
                 <label class="quesimportant">给问题选个重要程度吧：</label>
-                <select class="importent" size='1'>
-                    <option>必须有</option>
-                    <option>应该有</option>
-                    <option>最好有</option>
-                    <option>可以有</option>
+                <select class="importent" size='1' name="problemimportent"
+                id="problemimportent">
+                    <option  value="1">必须有</option>
+                    <option value="2">应该有</option>
+                    <option value="3">最好有</option>
+                    <option value="4">可以有</option>
                 </select>
             </p>
-            <p class="suggest">
+            <p >
                 <span class="yoursuggest">你的建议</span>
                 <br>
 					<!--<textarea cols="40" rows="7" id="contactus" name="contactus">
                         你的建议对我们同样很重要
                 	</textarea>-->
-                    <textarea  name="contactus" cols="40" rows="7"
-                              onblur="if(this.value == ''){this.style.color = '#ACA899'; this.value = '在此处填写备注'; }"
-                              onfocus="if(this.value == '在此处填写备注'){this.value =''; this.style.color = '#000000'; }"
-                              style="color:#ACA899;">你的建议对我们同样很重要:</textarea>
+                    <textarea  name="suggest" cols="40" rows="7"
+
+                            placeholder="你的建议对我们同样很重要"
+                              style="color:#ACA899;">
+
+                    </textarea>
                 <br>
                 <label>给建议选个重要程度吧：</label>
-                <select class="importent" size='1'>
-                    <option>必须有</option>
-                    <option>应该有</option>
-                    <option>最好有</option>
-                    <option>可以有</option>
+                <select class="importent" size='1' name="suggestimportent">
+                    <option  value="1">必须有</option>
+                    <option value="2">应该有</option>
+                    <option value="3">最好有</option>
+                    <option value="4">可以有</option>
                 </select>
             </p>
             <p class="button">

@@ -16,6 +16,7 @@ var ImgInfo= new Schema({
 // 椹炬牎淇℃伅
 var DriveSchoolSchema=new Schema({
     name :{type:String,default:''},  //鍚嶇О
+    shortname:{type:String,default:''},// 驾校简称
     latitude: {type:Number,default:0},  //鍧愭爣缁忕含搴�
     longitude: {type:Number,default:0},
     loc:{type:{type:String, default:'Point'}, coordinates:[Number]},
@@ -73,7 +74,8 @@ var DriveSchoolSchema=new Schema({
     confirmnum:String,
     // 自主考试url
     examurl:{type:String,default:""},
-    querycoursehoururl:{type:String,default:""}  //学时查询url
+    querycoursehoururl:{type:String,default:""} , //学时查询url
+    examroomname:{type:String,default:""}  // 考场名称
 });
 
 /**0

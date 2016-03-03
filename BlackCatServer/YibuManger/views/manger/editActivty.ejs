@@ -28,8 +28,7 @@
                                                 <div class="controls">
                                                     <input type="text" class="span6 " name="name"    id="name"  placeholder="请输入商品名称，最多30个字"
                                                            ng-minlength="2" ng-maxlength="30" ng-model="formData.name" required>
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                         role="alert">5-30个非特殊字符</div>
+                                                    <span class="errtext">*</span>
                                                 </div>
                                             </div><!-- /one end -->
                                             <!--two-->
@@ -47,12 +46,14 @@
                                             <!--three-->
                                             <div class="control-group">
                                                 <label class="control-label" >活动时间</label>
+                                                </div>
+                                            <div class="control-group">
                                                 <div class="controls">
-                                                    <label class="control-label" for="starttime">开始时间:</label>
+                                                    开始时间:
                                                     <input type="text" class="span4  laydate-icon" id="starttime" onclick="laydate()">
                                                     <br>
                                                     <br>
-                                                    <label class="control-label" for="endtime">结束时间:</label>
+                                                    结束时间:
                                                     <input type="text" class="span4  laydate-icon" id="endtime" onclick="laydate()">
                                                 </div>
                                             </div> <!-- /three end -->
@@ -64,20 +65,37 @@
                                                 <label class="control-label">上线方式</label>
                                                 <div class="controls">
                                                     <label class="checkbox inline">
-                                                        <input name="subject" type="checkbox" value="1" checked> 立即上线
+                                                        <input name="subject" type="radio" value="1" checked> 立即上线
                                                     </label>
 
                                                     <label class="checkbox inline">
-                                                        <input name="subject" type="checkbox" value="2"> 定时上线
+                                                        <input name="subject" type="radio" value="2"> 定时上线
                                                     </label>
+
+
                                                 </div>
                                             </div> <!-- /four end -->
-
+                                            <div class="control-group">
+                                                <label class="control-label" for="ativitypublishtime">  上线时间</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span2  laydate-icon" id="ativitypublishtime" onclick="laydate()">
+                                                </div>
+                                            </div> <!-- five end -->
                                             <!--five-->
                                             <div class="control-group">
                                                 <label class="control-label" for="activityLink">活动链接</label>
                                                 <div class="controls">
-                                                    <input type="text" class="span6" id="activityLink" ng-model="formData.contenturl">
+                                                    <input type="text" class="span6" id="activityLink" ng-model="formData.contenturl"
+                                                    placeholder="活动详情的介绍网页">
+                                                </div>
+                                            </div> <!-- five end -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="ativityregion">活动区域</label>
+                                                <div class="controls">
+                                                    <select class="span4" id="ativityregion" >
+                                                        <option value="0">全国</option>
+                                                        <option value="1">当前区域</option>
+                                                    </select>
                                                 </div>
                                             </div> <!-- five end -->
                                             <!--six-->
@@ -94,8 +112,7 @@
                                                            ng-model="formData.address"    placeholder="详细地址" required>
                                                     <input type="hidden" id="longitude"  ng-model="formData.longitude"   >
                                                     <input type="hidden" id="latitude" ng-model="formData.latitude"  >
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.address.$error.required"
-                                                         role="alert">地址必须</div>
+                                                    <span class="errtext">*</span>
                                                 </div> <!-- /controls -->
                                             </div>
                                             <div class="control-group"  style="height: 250px;width: 600px">
@@ -156,10 +173,12 @@
                         }
                     })
         }else{
-            $scope.formData.begindate=new Date();
-            $scope.formData.enddate=new Date();
+            $scope.formData.begindate=new Date().Format("yyyy-MM-dd");
+            $scope.formData.enddate=new Date().Format("yyyy-MM-dd");
+            $scope.formData.ativitypublishtime=((new  Date())).Format("yyyy-MM-dd");
             $("#starttime").val($scope.formData.begindate);
             $("#endtime").val($scope.formData.enddate);
+            $("#ativitypublishtime").val($scope.formData.ativitypublishtime);
         }
 
         $scope.processForm = function(isValid){

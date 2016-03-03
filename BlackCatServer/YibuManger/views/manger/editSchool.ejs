@@ -35,7 +35,7 @@
                                                 <label class="control-label" for="shortname" >驾校简称</label>
                                                 <div class="controls">
                                                     <input type="text" class="span6 " name="shortname"    id="shortname"  placeholder="驾校简称"
-                                                            ng-model="formData.shortname" required>
+                                                            ng-model="formData.shortname" required>  <span class="errtext">*</span>
                                                 </div> <!-- /controls -->
                                             </div>
                                             <div class="control-group">
@@ -92,13 +92,7 @@
                                                            placeholder="学员自助报考网址">
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
-                                            <div class="control-group">
-                                                <label class="control-label" for="phone">客服电话</label>
-                                                <div class="controls">
-                                                    <input type="text" class="span6" id="phone" ng-model="formData.phone"
-                                                           placeholder="学员自助报考网址">
-                                                </div> <!-- /controls -->
-                                            </div> <!-- /control-group -->
+
                                             <div class="control-group">
                                                 <label class="control-label" for="querycoursehoururl">学时查询网址</label>
                                                 <div class="controls">
@@ -180,9 +174,19 @@
                                                     &nbsp;&nbsp;通过率&nbsp;
                                                     <input  type="number" ng-model="formData.passingrate"   class="span1" id="passingrate" value="90"  required>%
                                                     <span class="errtext">*</span>
-                                                    &nbsp;&nbsp;考场个数&nbsp;
+
+
+                                                </div>
+                                            </div> <!-- /control-group -->
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="coachcount">考场个数</label>
+                                                <div class="controls">
                                                     <input  type="number" ng-model="formData.examhallcount"   class="span1" id="examhallcount" value="0"  required>
                                                     <span class="errtext">*</span>
+                                                    &nbsp;&nbsp;考场名称&nbsp;
+                                                    <input type="text" class="span3" id="examroomname" ng-model="formData.examroomname"
+                                                    placeholder="如有考场请填写">
                                                 </div>
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
@@ -232,15 +236,16 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="cartype">训练车型</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="cartype" rows="3" ng-model="formData.cartype" placeholder="训练车型"></textarea>
-
+                                                    <!--<textarea   class="span4" id="cartype" rows="3" ng-model="formData.cartype" placeholder="训练车型"></textarea>-->
+                                                    <div id="tagstest"  class="span6"></div>
                                                 </div>
                                             </div>
 
                                             <div class="control-group">
                                                 <label class="control-label" for="vipserver">驾校特色</label>
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="vipserver" rows="3" ng-model="formData.vipserver"  placeholder="驾校特色"></textarea>
+                                                    <textarea   class="span4" id="vipserver" rows="3" ng-model="formData.vipserver"
+                                                                placeholder="驾校特色(硬件方面)"></textarea>
                                                 </div>
                                             </div>
 
@@ -254,16 +259,10 @@
                                                 <label class="control-label" for="superiorservice">竞争优势</label>
                                                 <div class="controls">
                                                     <textarea   class="span4" id="superiorservice" rows="3" ng-model="formData.superiorservice"
-                                                                placeholder="驾校竞争优势"></textarea>
+                                                                placeholder="驾校竞争优势（软件方面）"></textarea>
                                                 </div>
                                             </div>
 
-                                            <!--<div class="control-group">-->
-                                                <!--<label class="control-label" for="shuttleroute">班车路线</label>-->
-                                                <!--<div class="controls">-->
-                                                    <!--<textarea   class="span4" id="shuttleroute" rows="3"  ng-model="formData.shuttleroute" placeholder="班车路线"></textarea>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
                                             <div class="control-group">
                                                 <label class="control-label" for="introduction">驾校简介</label>
                                                 <div class="controls">
@@ -272,7 +271,7 @@
                                             </div>
                                             <div class="control-group">
                                                 <label class="control-label" for="trainimg">驾校展示</label>
-                                                <div class="controls">
+                                                <div class="controls" calss="span6">
                                                     <div class="widget">
                                                         <div class="widget-content">
                                                             <div style="float:left;margin: 0 6px;">
@@ -294,28 +293,38 @@
                                                 </div>
                                             </div>
                                             <div class="control-group">
+                                                <label class="control-label" for="phone">客服电话</label>
+                                                <div class="controls">
+                                                    <input type="text" class="span4" id="phone" ng-model="formData.phone"
+                                                           placeholder="客服电话">
+                                                </div> <!-- /controls -->
+                                            </div> <!-- /control-group -->
+                                            <div class="control-group">
                                                 <label class="control-label" for="linkman1">校长</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman1" >   电话： <input type="text" class="span2" id="linktele1" >
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
+
                                             <div class="control-group">
                                                 <label class="control-label" for="linkman2">招生负责人1</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman2" >   电话： <input type="text" class="span2" id="linktele2" >
-                                                    <span class="errtext">用户报名验证</span>
+                                                    <span class="errtext">用户报名验证（用于接收验证码）</span>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
                                                 <label class="control-label" for="linkman3">招生负责人2</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman3" >   电话： <input type="text" class="span2" id="linktele3" >
+                                                    <span class="errtext">用户报名验证（用于接收验证码）</span>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
                                             <div class="control-group">
                                                 <label class="control-label" for="linkman4">招生负责人3</label>
                                                 <div class="controls">
                                                     <input type="text" class="span2" id="linkman4" >   电话： <input type="text" class="span2" id="linktele4" >
+                                                    <span class="errtext">用户报名验证（用于接收验证码）</span>
                                                 </div> <!-- /controls -->
                                             </div> <!-- /control-group -->
                                             <br />
@@ -401,12 +410,15 @@
             dropmenu:"#m2",//弹出层
             hiddenID : "licensetype"//隐藏域ID
         });
+
+
     })
 </script>
 
 <script type="application/javascript">
     ybxcApp.controller("addSchool",function($scope,$http){
        // initlicensetype($scope,$http);
+         //$('#tagstest').tags({});
         $scope.formData = {};
         $scope.showlicensetype="";
         var schoolid=GetQueryString("schoolid");
@@ -443,7 +455,6 @@
                             $("#trainimgimg2").attr("src",$scope.formData.pictures_path[1]);
                             $("#trainimgimg3").attr("src",$scope.formData.pictures_path[2]);
                            var  licensetype="";
-                            console.log($scope.formData.licensetype);
                             for(i=0;i<$scope.formData.licensetype.length;i++){
                                 for(j=0;j<$scope.licensetypelist.length;j++){
                                     if($scope.formData.licensetype[i]==$scope.licensetypelist[j].modelsid)
@@ -454,6 +465,10 @@
                                 }
                             }
                             $scope.showlicensetype=licensetype==""?"请选择驾照类型":licensetype;
+                            var cartype=$scope.formData.cartype.toString().split(",");
+                            for(i=0;i<cartype.length;i++){
+                                $('#tagstest').tags().addTag(cartype[i]);
+                            }
                         }
 
 
@@ -530,7 +545,7 @@
                 alert("请在地图上选择地址");
                 return false;
             }
-
+            $scope.formData.cartype=$('#tagstest').tags().getTags();
 
             if($("#licensetype").val()==""){
                 alert("驾照类型不为空");

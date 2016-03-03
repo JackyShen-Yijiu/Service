@@ -10,6 +10,8 @@ var ActivitySchema=new Schema({
     begindate:{type:Date,default:Date.now()}, // 班级开始时间
     enddate:{type:Date,default:Date.now()},  // 班级结束时间
     createtime:{type:Date,default:Date.now()}, // 记录创建时间
+    ativitypublishtime:{type:Date,default:Date.now()}, // 活动上线时间
+    ativityregion:{type:Number,default:0}, // 活动区域 0 全国， 1 定位
     is_using:{type:Boolean,default:true},  // 该课程是否正在使用
     province: {type:String,default:''}, // 省
     city: {type:String,default:''}, // 市

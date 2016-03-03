@@ -47,6 +47,7 @@ app.use('/', routes);
 app.use('/down', routes);
 app.use('/users', users);
 app.use('/coach', coach);
+app.use('/feedback', routes);
 app.use('/question', question);
 app.use('/questionwronglist', questionwronglist);
 app.use('/questiontest', questiontest);
