@@ -67,14 +67,18 @@ exports.headMasterLogin=function(userinfo,callback){
                         //cache.set(token,returnmodel,function(err,data){
                         //    console.log(data);
                         //});
+                        regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                            headMasterModle.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                        })
                         return callback(null,returnmodel);
                     })
 
                 //if (newinstace.is_registermobim===undefined||newinstace.is_registermobim==0){
-                    regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
-                        headMasterModle.update({"_id":new mongodb.ObjectId(newinstace._id)},
-                            { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
-                    })
+                //    regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                //        headMasterModle.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                //            { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                //    })
                 //}
 
 
