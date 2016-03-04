@@ -59,6 +59,21 @@ router.get('/finishquesitonidlist/:userid', function(req,res){
     res.json({"finishquesitonidlist":[]});
   }
 });
+//获取我的 成绩单
+router.get("/getmysocre",function(req,res){
+  var  userid=req.query.userid;
+  userinfo.FindByID(userid)
+      .select("kemuyi_score kemusi_score")
+      .exec(function(err,scoredata) {
+        if(err){
+          return res.JSON({ status:err , code:0});
+        }
+        if(!scoredata){
+          return res.JSON({ status:"没有查询到成绩信息" , code:0});
+        }
+        return res.JSON({ data:scoredata , code:1});
+      })
+})
 router.post("/sendtestsocre",function(req,res){
   var userid=req.body.userid;
   var begintime=req.body.begintime;
