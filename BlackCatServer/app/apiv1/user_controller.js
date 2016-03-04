@@ -795,7 +795,8 @@ exports.updatePassword=function(req,res){
       mobile:req.body.mobile,
       usertype:req.body.usertype
   }
-    if (pwdinfo.mobile===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
+    //if (pwdinfo.mobile===undefined||pwdinfo.password===undefined||pwdinfo.smscode===undefined) {
+    if (pwdinfo.mobile===undefined||pwdinfo.password===undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数错误",""));
     }
