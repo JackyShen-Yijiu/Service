@@ -163,7 +163,7 @@ exports.postSignUp=function(req,res){
 
    // console.log('moblie:'+userinfo.mobile);
     if (usertype===undefined||userinfo.mobile === undefined||
-        userinfo.smscode === undefined||userinfo.password === undefined) {
+       userinfo.password === undefined) {
         return res.json(
             new BaseReturnInfo(0,"参数不完整",""));
     }
