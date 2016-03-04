@@ -1,0 +1,45 @@
+body{
+  font-family:'microsoft yahei', Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  background-color: #F5F5F5;
+}
+
+.header {
+    padding-top: 17px;
+    line-height: 64px;
+    text-align: center;
+    width: 100%;
+    height: 48px;
+    position: fixed;
+    top: 0px;
+    background-color: #db4437;
+}
+
+.header span {
+	color: #FFFFFF;
+    font-size: 18px;
+    line-height: 50px;
+}
+
+.main {
+	position: absolute;
+	top: 65px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	overflow: auto;
+}
+
+.score-block {
+	padding: 15px;
+}
+
+.score-block .title {
+	text-align: left;
+}
+
+.score-block .cell {
+	text-align: left;
+}

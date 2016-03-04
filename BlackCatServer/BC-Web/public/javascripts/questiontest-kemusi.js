@@ -198,7 +198,7 @@ var endTime;
 
 function startTime()
 {
-  console.log("start timer");
+  //console.log("start timer");
 
   sec--;
   if(sec < 0){

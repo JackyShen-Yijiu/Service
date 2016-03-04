@@ -75,15 +75,22 @@ function showQuestions(questoinBody, status, enable) {
   $("#img_ans_3").prop("src","../images/default-c.png");
   $("#img_ans_4").prop("src","../images/default-d.png");
 
+  //console.log(questoinBody);
 
   //show question img
-  if(questoinBody.sinaimg  != ""){
+  if(questoinBody.sinaimg) {
+    $("#question_vedio").hide();
     $("#question_img").show();
     $("#question_img").prop("src","../images/kemuyi/img-600/" + questoinBody.sinaimg );
-  }else if(questoinBody.imageurl != ""){
+  }
+
+  if(questoinBody.imageurl && questoinBody.imageurl.indexOf('http://') == -1) {
+    $("#question_img").hide();
     $("#question_vedio").show();
     $("#question_vedio").prop("src", "http://player.youku.com/embed/" + questoinBody.imageurl);
-  }else{
+  }
+
+  if(!questoinBody.sinaimg && !questoinBody.imageurl) {
     $("#question_img").hide();
     $("#question_vedio").hide();
   }
