@@ -93,13 +93,21 @@
       background-color: #FFFFFF;
       /*border-top: 1px solid #CCCCCC;*/
     }
+    #timer_div {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      height: 48px;
+    }
     </style>
   </head>
   <body onload="init()">
       <div class="topDiv" style="">
         <div id="top_title" onclick="save()">科目四测试</div>
-        <div id="timer_txt"></div>
-        <img id="timer_pic" src="../images/timer.png">
+        <div id="timer_div">
+          <div id="timer_txt"></div>
+          <img id="timer_pic" src="../images/timer.png">
+        </div>
       </div>
 
 <!--
