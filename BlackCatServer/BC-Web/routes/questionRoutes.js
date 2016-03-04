@@ -63,20 +63,20 @@ router.get('/finishquesitonidlist/:userid', function(req,res){
 router.get("/getmysocre",function(req,res){
   var  userid=req.query.userid;
   try {
-    userinfo.FindByID(userid)
+    userinfo.fidOne({"id":userid})
         .select("kemuyi_score kemusi_score")
         .exec(function (err, scoredata) {
           if (err) {
-            return res.JSON({status: err, code: 0});
+            return res.json({status: err, code: 0});
           }
           if (!scoredata) {
-            return res.JSON({status: "没有查询到成绩信息", code: 0});
+            return res.json({status: "没有查询到成绩信息", code: 0});
           }
-          return res.JSON({data: scoredata, code: 1});
+          return res.json({data: scoredata, code: 1});
         })
   }
   catch(e){
-    return res.JSON({status: e.message, code: 0});
+    return res.json({status: e.message, code: 0});
   }
 })
 router.post("/sendtestsocre",function(req,res){
@@ -85,14 +85,17 @@ router.post("/sendtestsocre",function(req,res){
   var endtime=req.body.endtime;
   var socre=req.body.socre;
   var subjectid=req.body.subjectid;  //1/4
+  console.log(req.body);
   userinfo.FindByID(userid,function(err,questions) {
     if (!err) {
-      console.log('finded: ' + questions);
-      if (questions == null) {
+      //console.log('finded: ' + questions.id);
+      if (!questions) {
         var u = new userinfo();
         u.id = userid;
         u.kemuyi_wronglist = [];
         u.kemusi_wronglist = [];
+        u.kemuyi_score=[];
+        u.kemusi_score=[];
         var tempsocre= {
           socre:socre,
           begintime:begintime,
@@ -119,12 +122,20 @@ router.post("/sendtestsocre",function(req,res){
           endtime:endtime,
           is_pass:socre>=90?1:0
         }
+        if(questions.kemuyi_score===undefined){
+          questions.kemuyi_score=[];
+        }
+        if(questions.kemusi_score===undefined){
+          questions.kemusi_score=[];
+        }
+
         if(subjectid==1){
-          u.kemuyi_score.push(tempsocre);
+          questions.kemuyi_score.push(tempsocre);
         }
         else {
           questions.kemusi_score.push(tempsocre);
         }
+
         questions.save(function(err,data){
           if(err){
             res.send(JSON.stringify({ status:err , code:0}));

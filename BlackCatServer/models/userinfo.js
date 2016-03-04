@@ -16,7 +16,7 @@ var UserInfoSchema= new Schema({
 
 UserInfoSchema.statics.FindByID = function(_id, callback) {
     this.findOne({id:_id}, function(err, result){
-    	console.log(result);
+    	//console.log(result);
     	callback(err, result); 
     });
 };
