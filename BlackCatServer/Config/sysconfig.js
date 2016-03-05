@@ -4,25 +4,28 @@
 // 系统 配置项
 //  app配置基本信息
 exports.appconfiginfo={
-    appname:"一步学车",  // appname  一步学车  极致驾服
-    companyname:"一步科技" ,  // 公司名称  一步科技 极致驾服
-    appport:8181,       //app  端口  一步 8181  极致 8183
+    appname:"极致驾服",  // appname  一步学车  极致驾服
+    companyname:"极致驾服" ,  // 公司名称  一步科技 极致驾服
+    appport:8183,       //app  端口  一步 8181  极致 8183
+}
+exports.smsconfig={
+    ext:"2427511"       //一步是空 极致2427511
 }
 // 支付宝配置信息
 exports.AlipayConfig = {
     //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
     // 合作身份者ID，以2088开头由16位纯数字组成的字符串
-    partner:"2088121519930520",
+    partner:"2088221033158753",
 
 // 交易安全检验码，由数字和字母组成的32位字符串
-    key:"dfc16nxjp7g57kkf1xcukwmkp37bab3d",
+    key:"xjz579z3wds1kd9244pfeu9r8ha913ta",
     // z支付宝公钥
 
     alipaypubkey:"-----BEGIN PUBLIC KEY-----"+ "\r\n" +
-    "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHk"+ "\r\n" +
-    "rIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEs"+ "\r\n" +
-    "raprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2Q"+ "\r\n" +
-    "hUrCmZYI/FCEa3/cNMW0QIDAQAB"+ "\r\n" +
+    "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkR"+ "\r\n" +
+    "AFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/Pr"+ "\r\n" +
+    "QEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5"+ "\r\n" +
+    "KsiNG9zpgmLCUYuLkxpLQIDAQAB"+ "\r\n" +
     "-----END PUBLIC KEY-----",
     //alipaypubkey:"-----BEGIN PUBLIC KEY-----"+ "\r\n" +
     //"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNb6OYvMg1/V8W1Ye4wQU+WuvA"+ "\r\n" +
@@ -32,7 +35,7 @@ exports.AlipayConfig = {
     //"-----END PUBLIC KEY-----",
 
 // 签约支付宝账号或卖家收款支付宝帐户
-    seller_email:"ybpay@ybxch.com",
+    seller_email:"jizhipay@joyincorp.com",
 
 // 支付宝服务器通知的页面 要用 http://格式的完整路径，不允许加?id:123这类自定义参数
 // 必须保证其地址能够在互联网中访问的到
@@ -66,16 +69,16 @@ exports.AlipayConfig = {
 
 exports.jpushCofig={
     Student:{
-        AppKey:"d9f9dc8db6bc3dd2c913ced0",
-        MasterSecret:"debb46435e738c43c2a200ef"
+        AppKey:"3ed0386d38153e3768ef0f26",
+        MasterSecret:"e24deeb5486ff165336cbdda"
     },
     Coach:{
-        AppKey:"099332657d28a65d5308af2a",
-        MasterSecret:"a37f1a213d8972963f718ea8"
+        AppKey:"d4d7ba64212dbad5a2be2c0e",
+        MasterSecret:"81f49b8a8b124a8d0f173f3f"
     },
     HeadMaster:{
-        AppKey:"ad6f3ad01c2fad2ead8f9b08",
-        MasterSecret:"d1e2f9048d82ddb5383f3ff2"
+        AppKey:"735aae789d2c47772abdd395",
+        MasterSecret:"b3f1e56e8848ba16f44a49cc"
     },
     is_push:true,  // 推送消息
     is_debug:false   //是否是测试状态
@@ -83,19 +86,19 @@ exports.jpushCofig={
 
 // 测试环信im配置地址
 
- //exports.imConfig={
- //    client_id:"YXA6In9icIkvEeWcN8Xg9ZIE7w",
- //    client_secret:"YXA66Vo2yOfs5iupNCButKMuFmfnTdY",
- //    org_name:"black-cat",
- //    app_name:"yibuxuechetest"
- //}
+//exports.imConfig={
+//    client_id:"YXA6In9icIkvEeWcN8Xg9ZIE7w",
+//    client_secret:"YXA66Vo2yOfs5iupNCButKMuFmfnTdY",
+//    org_name:"black-cat",
+//    app_name:"yibuxuechetest"
+//}
 
 //// 环信正式版
 exports.imConfig={
-   client_id:"YXA663xwEIkuEeW9qmOsf__X8A",
-   client_secret:"YXA6WC4NmA71-YQ49tAKYHHqS4sCRt4",
-   org_name:"black-cat",
-   app_name:"yibuxuecheprod"
+    client_id:"YXA6ONqXQN1QEeWtegnP9oHYeg",
+    client_secret:"YXA6XReGe02mbcsd828ddCL-9aYsa2E",
+    org_name:"black-cat",
+    app_name:"jizhijaifu"
 }
 
 
@@ -110,7 +113,7 @@ exports.imConfig={
 // redis 正式
 
 exports.redisConfig={
-    redis_host: "123.56.185.59",
+    redis_host: "101.200.204.240",
     //redis_host: "127.0.0.1",
     redis_port: 6379,
     redis_db: 0,

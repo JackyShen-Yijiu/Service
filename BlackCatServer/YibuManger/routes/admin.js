@@ -368,7 +368,7 @@ var  returnAdminRouter=function(io) {
     });
     //router.get("/manage/editBusiness" ,function(req, res, next) {
     //    res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
-    //});
+    //});eeeeeeeee
 
     //行业信息
     router.get("/manage/industrynewsList" ,function(req, res, next) {
@@ -384,6 +384,7 @@ var  returnAdminRouter=function(io) {
         };
         res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews",null,tagindex));
     });
+
     router.get("/news" ,function(req, res, next) {
         var newsid=req.query.newsid;
         adminserver.getindustrynewsByid2(newsid,function(data){

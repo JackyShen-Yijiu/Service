@@ -771,6 +771,20 @@ var userid=req.query.userid;
     })
 
 }
+// IM 获取用户信息
+exports.getImUserInfo=function(req,res){
+    var userid  = req.query.userid;
+    if(userid===undefined){
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",{}));
+    }
+    userserver.getImUserInfo(userid, function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
 //获取用户信息
 exports.getUserinfo=function(req,res){
     var apptype=req.params.type;
