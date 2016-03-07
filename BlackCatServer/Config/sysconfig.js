@@ -9,7 +9,7 @@ exports.appconfiginfo={
     appport:8183,       //app  端口  一步 8181  极致 8183
 }
 exports.smsconfig={
-    ext:"2427511"       //一步是空 极致2427511
+    ext:"1"       //一步是空 极致2427511
 }
 // 支付宝配置信息
 exports.AlipayConfig = {
