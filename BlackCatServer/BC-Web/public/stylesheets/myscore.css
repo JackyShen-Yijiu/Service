@@ -43,3 +43,39 @@ body{
 .score-block .cell {
 	text-align: left;
 }
+
+/**/
+*{margin: 0;padding: 0;}
+body{
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.main{
+    width: 100%;
+    height:auto;
+}
+.score-block{
+    width:90%;
+    height: 200px;
+    margin: 0 auto;
+    /*border:1px solid red;*/
+}
+.title{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: blanchedalmond;
+    font-size: 20px;
+    color: maroon;
+    margin-bottom: 4px;
+    text-indent: 100px;
+
+}
+.cell{
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    /*background: blueviolet;*/
+    margin-left: 24px;
+    margin-bottom: 2px;
+}

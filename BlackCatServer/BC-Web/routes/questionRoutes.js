@@ -63,7 +63,7 @@ router.get('/finishquesitonidlist/:userid', function(req,res){
 router.get("/getmysocre",function(req,res){
   var  userid=req.query.userid;
   try {
-    userinfo.fidOne({"id":userid})
+    userinfo.findOne({"id":userid})
         .select("kemuyi_score kemusi_score")
         .exec(function (err, scoredata) {
           if (err) {
