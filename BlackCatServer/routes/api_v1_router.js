@@ -286,6 +286,10 @@ v1.post("/userinfo/usercouponforpay",ensureAuthorizedController.ensureAuthorized
 v1.get("/userinfo/getmypayorder",ensureAuthorizedController.ensureAuthorized,
     userController.getMyApplyPayOrder);
 
+//聊天获取用户的基本信息
+v1.get("/userinfo/getimuserinfo",ensureAuthorizedController.ensureAuthorized,
+    userController.getImUserInfo);
+
 //===========================================================
 
 //---------------------------------ceshishiyong---------------------------------------

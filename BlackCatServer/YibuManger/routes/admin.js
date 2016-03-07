@@ -29,6 +29,7 @@ var moment = require('moment');
 var randomstring = require("randomstring");
 var store = require('../util/store.js');
 require('date-utils');
+var fs = require('fs');
 var pngword = new PW(PW.GRAY);
 
 /* GET home page. */
@@ -368,7 +369,7 @@ var  returnAdminRouter=function(io) {
     });
     //router.get("/manage/editBusiness" ,function(req, res, next) {
     //    res.render('business/editBusiness', adminFunc.setPageInfo(req,res,"/admin/manage/editBusiness"));
-    //});
+    //});eeeeeeeee
 
     //行业信息
     router.get("/manage/industrynewsList" ,function(req, res, next) {
@@ -384,11 +385,20 @@ var  returnAdminRouter=function(io) {
         };
         res.render('industryNews/editIndustrynews', adminFunc.setPageInfo(req,res,"/admin/manage/editIndustrynews",null,tagindex));
     });
+    //用户反馈界面
+    router.get("/manage/userfeedbacklist",function(req, res, next){
+        var tagindex={
+            userfeedbacklist:true
+        };
+        res.render('manger/userfeedback', adminFunc.setPageInfo(req,res,"/admin/manage/userfeedbacklist",null,tagindex));
+    }
+)
+
     router.get("/news" ,function(req, res, next) {
         var newsid=req.query.newsid;
         adminserver.getindustrynewsByid2(newsid,function(data){
             data.data.createtime2= (new Date(data.data.createtime)).toFormat("YYYY-MM-DD");
-            console.log(data.data.createtime2);
+            //console.log(data.data.createtime2);
             res.render('industryNews/Industrynews',data);
         })
 
@@ -487,7 +497,9 @@ var  returnAdminRouter=function(io) {
     // 校长管理
     router.get("/manage/getheadmasterlist",adminserver.getheadmasterlist);
     router.post("/manage/updateheadmaster",adminserver.updateheadmaster);
-
+    // 反馈管理
+    router.get("/manage/getuserfeedbacklist",adminserver.getuserfeedbacklist);
+    router.get('/manage/exportExcel.xls', adminserver.exportsfeedbackexcle);
     router.get('/qiniu', function(req, res, next) {
         var params = req.query;
         var action = params['action'];

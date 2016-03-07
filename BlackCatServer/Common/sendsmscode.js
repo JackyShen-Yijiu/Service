@@ -7,6 +7,7 @@ var request = require('superagent');
 
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
 var config=require("../Config/sysconfig").appconfiginfo;
+var smsconfig=require("../Config/sysconfig").smsconfig;
 exports.addsmscode=function(mobile,callback){
     var smscodeInstace=new smsVerifyCodeModel();
     smscodeInstace.mobile=mobile;
@@ -42,7 +43,7 @@ exports.sendsmscode=function(mobile,callback) {
             "pwd": "DD6929B3420DA8E2785261FBF1074440",
             "mobile": mobilecode,
             "content": sms,
-            "ext":"",
+            "ext":smsconfig.ext,
             "stime":"",
             "rrid":"",
             "msgfmt":""
@@ -59,7 +60,9 @@ exports.sendsmscode=function(mobile,callback) {
             .send(options)
             .type('form')
             .end(function(err, res){
-               // console.log(res)
+
+                //console.log(res.statusCode);
+                //console.log(res.text);
                 callback(err, res);
             });
 

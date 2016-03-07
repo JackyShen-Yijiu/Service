@@ -20,7 +20,8 @@ exports.ClientType = {
 
 exports.UserType={
     User:1,
-    Coach:2
+    Coach:2,
+    HeadMaster:3
 };
 // j教练验证状态
 exports.CoachValidationState={

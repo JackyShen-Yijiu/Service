@@ -21,6 +21,7 @@ var  coachmodel=mongodb.CoachModel;
 var usermodel=mongodb.UserModel;
 var classtypemodel=mongodb.ClassTypeModel;
 var headMastermodel=mongodb.HeadMasterModel;
+var  userfeedback=mongodb.FeedBackModel;
 //var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var headMasterOperation=require("../../Server/headmaster_operation_server");
@@ -33,6 +34,8 @@ require('date-utils');
 var _ = require("underscore");
 var eventproxy   = require('eventproxy');
 var crypto = require('crypto');
+var fs = require('fs');
+var xlsx = require('node-xlsx');
 exports.getStatitic=function(req,res){
 
 }
@@ -1249,7 +1252,105 @@ exports.updateheadmaster=function(req,res){
             }
         })
     }
-}
+};
+//========================================用户反馈
+exports.getuserfeedbacklist=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+    //var name=req.query.searchKey?req.query.searchKey:"";
+    //var  schoolid=req.query.schoolid?req.query.schoolid:"";
+    //var serchcondition= {"name":new RegExp(name)};
+    //if (schoolid!=""){
+    //    serchcondition.driveschool=new mongodb.ObjectId(schoolid);
+    //}
+    var serchcondition={"feedbacktype" : 3}
+    userfeedback.find(serchcondition)
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            if (err){
+                res.json(new BaseReturnInfo(0, "查询出错"+err, null));
+            };
+            var returndata=[];
+            data.forEach(function(r,indx){
+               var  onedate=JSON.parse(r.usefeedbackmessage);
+                onedate.createtime= r.createtime;
+                returndata.push(onedate);
+            })
+
+            defaultFun.getModelCount(userfeedback,serchcondition,function (err,userfeedbackcount) {
+                returninfo = {
+                    pageInfo:{
+                        totalItems: userfeedbackcount,
+                        currentPage:index,
+                        limit:limit,
+                        pagecount: Math.floor(userfeedbackcount/limit )+1
+                    },
+                    datalist: returndata
+                }
+                res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+        });
+};
+exports.exportsfeedbackexcle=function(req,res){
+    var index=req.query.index?req.query.index:0;
+    var limit=req.query.limit?req.query.limit:10;
+
+    var serchcondition={"feedbacktype" : 3}
+    userfeedback.find(serchcondition)
+        .skip((index-1)*limit)
+        .limit(limit)
+        .sort({createtime:-1})
+        .exec(function(err,data) {
+            if (err) {
+                res.json(new BaseReturnInfo(0, "查询出错" + err, null));
+            };
+            var datalist=[];
+            var returndata=[
+                "姓名","部门","手机号","手机型号","测试地点","APP终端","美观度","易用性",
+                "流畅度","功能完备度","时间消耗","流量消耗","分享","分享原因","问题",
+                "问题程度","建议","建议程度","反馈时间"
+            ];
+            datalist.push(returndata);
+            data.forEach(function(r,indx){
+                var feedback=[];
+                var  onedate=JSON.parse(r.usefeedbackmessage);
+                feedback.push(onedate.username);
+                feedback.push(onedate.department);
+                feedback.push(onedate.mobile);
+                feedback.push(onedate.phoneType);
+                feedback.push(onedate.testPlace);
+                feedback.push(onedate.whoUse);
+                feedback.push(onedate.outward+"分");
+                feedback.push(onedate.easy+"分");
+                feedback.push(onedate.affluent+"分");
+                feedback.push(onedate.function+"分");
+                feedback.push(onedate.timeUse);
+                feedback.push(onedate.flowUse);
+                feedback.push(onedate.share);
+                feedback.push(onedate.sharereason);
+                feedback.push(onedate.problem);
+                feedback.push(onedate.problemimportent);
+                feedback.push(onedate.suggest);
+                feedback.push(onedate.suggestimportent);
+                feedback.push( r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS"));
+                //onedate.createtime= r.createtime;
+                datalist.push(feedback);
+            });
+
+            console.log("kaishi");
+            var buffer = xlsx.build([{name: "mySheetName", data: datalist}]);
+            var filename=(new Date()).getTime()+".xlsx";
+            console.log(filename);
+            //fs.writeFileSync('public/userfeedbackfile/'+filename, buffer, 'binary');
+            //res.send('userfeedbackfile/'+filename);
+            res.writeHead(200, {'Content-Type':'application/vnd.ms-excel'});
+            res.write(buffer);
+            res.end();
+
+        });
+};
 ///=====================================驾校管理
 exports.getSchoolist=function(req,res){
     var index=req.query.index?req.query.index:0;

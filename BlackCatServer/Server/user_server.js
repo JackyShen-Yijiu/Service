@@ -38,6 +38,7 @@ var CoachTag=mongodb.CoachTagsModel;
 var UserCashOutModel=mongodb.UserCashOutModel;
 var SystemMessage=mongodb.SystemMessageModel;
 var UserPayModel=mongodb.UserPayModel;
+var HeadMaster=mongodb.HeadMasterModel;
 var activityCouponModel=mongodb.ActivityCouponModel;
 require('date-utils');
 var _ = require("underscore");
@@ -2170,9 +2171,9 @@ exports.applyschoolinfo=function(applyinfo,callback){
       {
           return  callback("此用户已锁定，请联系客服");
       }
-      if(userdata.applycount>10){
-          return  callback("您已经超过了最大报名次数");
-      }
+      //if(userdata.applycount>10){
+      //    return  callback("您已经超过了最大报名次数");
+      //}
       if(userdata.applystate>appTypeEmun.ApplyState.Applying){
           return  callback("您已经报名成功，请不要重复报名");
       }
@@ -2649,7 +2650,46 @@ exports.updateCoachServer=function(updateinfo,callback){
         return callback("保存病人信息错误:"+err);
     }
 };
+//IM 获取用户信息
+exports.getImUserInfo=function(userid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid))
+        .select("name  nickname headportrait")
+        .exec(function(err,userdata){
+            if(err){
+                return callback("查询用户出错：" + err);
+            }
+            if(userdata){
+                return callback(null,userdata);
+            }else {
+                coachmode.findById(new mongodb.ObjectId(userid))
+                    .select("name   headportrait")
+                    .exec(function(err,userdata){
+                        if(err){
+                            return callback("查询用户出错：" + err);
+                        }
+                        if(userdata) {
+                            return callback(null, userdata);
+                        }
+                        else {
+                            HeadMaster.findById(new mongodb.ObjectId(userid))
+                                .select("name   headportrait")
+                                .exec(function(err,userdata){
+                                    if(err){
+                                        return callback("查询用户出错：" + err);
+                                    }
+                                    if(userdata) {
+                                        return callback(null, userdata);
+                                    }
+                                    else {
+                                        return callback("没有查询到此用户");
+                                    }
+                                })
+                        }
+                    })
+            }
 
+    })
+}
 //获取用户信息
 exports.getUserinfoServer=function(type,userid,getuserid,callback){
     if(type==appTypeEmun.UserType.User){
