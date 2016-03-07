@@ -9,7 +9,8 @@
                         <h3>反馈列表</h3>
                         <div style="float: right ; padding-right: 10px" >
                             <div style="float: left;  padding-right: 10px">
-                                <a href="/admin/manage/editschool"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                                <a  href="/admin/manage/exportExcel.xls?limit=limit&index=currentPage" class="btn  btn-success">导出</a>
+
                             </div>
                             <div style="float: right ; padding-right: 10px">
                                 <% include ../public/searchBox %>
@@ -22,43 +23,141 @@
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-
-                                        <th> 驾校名称 </th>
-                                        <th> 地址</th>
-                                        <th> 今日新学员</th>
-                                        <th> 今日订单</th>
-                                        <th> 今日投诉</th>
-                                        <th> 录入时间</th>
-                                        <th class="td-actions"> 操作</th>
+                                        <th> 姓名 </th>
+                                        <th> 部门</th>
+                                        <th> 手机号</th>
+                                        <th> 手机型号</th>
+                                        <th> 测试地点</th>
+                                        <th> APP终端</th>
+                                        <th> 美观度</th>
+                                        <th> 易用性</th>
+                                        <th> 流畅度</th>
+                                        <th> 功能完备度</th>
+                                        <th> 时间消耗</th>
+                                        <th> 流量消耗</th>
+                                        <th> 分享</th>
+                                        <th> 原因</th>
+                                        <th> 问题</th>
+                                        <th> 问题程度</th>
+                                        <th> 建议</th>
+                                        <th> 建议程度</th>
+                                        <th> 反馈时间</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
                                         <td >
-                                            <a href="/admin/manage/schoolmain?schoolid={{content.shcoolid}}" >
-                                                <span>{{content.name}}</span> </a>
+                                                <span>{{content.username}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.address}}</span>
+                                            <span>{{content.department}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.applyingstudentcount}}</span>
+                                            <span>{{content.mobile}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.reservationcoursecount}}</span>
+                                            <span>{{content.phoneType}}</span>
                                         </td>
                                         <td >
-                                            <span>{{content.complaintcount}}</span>
+                                            <span>{{content.testPlace}}</span>
                                         </td>
-                                        <td>{{content.createtime}}</td>
+                                        <td  >
+                                            <span ng-switch="content.whoUse">
+                                                <div ng-switch-when="1">
+                                                    学员
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    教练
+                                                </div>
+                                                <div ng-switch-when="3">
+                                                    校长
+                                                </div>
+                                                </span>
+                                        </td>
+                                        <td>{{content.outward}}分</td>
+                                        <td>{{content.easy}}分</td>
+                                        <td>{{content.affluent}}分</td>
+                                        <td>{{content.function}}分</td>
+                                        <td  >
+                                            <span ng-switch="content.timeUse">
+                                                <div ng-switch-when="1">
+                                                    短
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    中等
+                                                </div>
+                                                <div ng-switch-when="3">
+                                                    长
+                                                </div>
+                                                 <div ng-switch-when="4">
+                                                     过长
+                                                 </div>
+                                                </span>
+                                        </td>
+                                        <td  >
+                                            <span ng-switch="content.flowUse">
+                                                <div ng-switch-when="1">
+                                                    少
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    中等
+                                                </div>
+                                                <div ng-switch-when="3">
+                                                    多
+                                                </div>
+                                                 <div ng-switch-when="4">
+                                                     过多
+                                                 </div>
+                                                </span>
+                                        </td>
+
+                                        <td  >
+                                            <span ng-switch="content.share">
+                                                <div ng-switch-when="1">
+                                                    分享
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    不分享
+                                                </div>
+
+                                                </span>
+                                        </td>
+                                        <td>{{content.sharereason}}</td>
+                                        <td>{{content.problem}}</td>
+                                        <td  >
+                                            <span ng-switch="content.problemimportent">
+                                                <div ng-switch-when="1">
+                                                    必须有
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    应该有
+                                                </div>
+                                                <div ng-switch-when="3">
+                                                    最好有
+                                                </div>
+                                                 <div ng-switch-when="4">
+                                                     可以有
+                                                 </div>
+                                                </span>
+                                        </td>
+                                        <td>{{content.suggest}}</td>
+                                        <td  >
+                                            <span ng-switch="content.suggestimportent">
+                                                <div ng-switch-when="1">
+                                                    必须有
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    应该有
+                                                </div>
+                                                <div ng-switch-when="3">
+                                                    最好有
+                                                </div>
+                                                 <div ng-switch-when="4">
+                                                     可以有
+                                                 </div>
+                                                </span>
+                                        </td>
+                                        <td>{{content.createtime|date:"yyyy/MM/dd"}}</td>
 
 
-                                        <td>{{content.author}}</td>
-
-                                        <td class="td-actions">
-                                            <a href="/admin/manage/editschool?schoolid={{content.shcoolid}}"
-                                               class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a href="#"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
-                                        </td>
 
 
                                     </tr>
@@ -85,9 +184,16 @@
     ybxcApp.controller("userfeedbacklist",function($scope,$http){
         $scope.formData = {};
         //获取文档列表信息
-        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getschoollist?");
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getuserfeedbacklist?");
 
-
+        $scope.exportexcle=function(){
+           // window.location.href="/admin/manage/exportExcel";
+            $http.get("/admin/manage/exportExcel?"+"&limit="+$scope.limit+"&index="+$scope.currentPage).success(function(result){
+                console.log(result);
+                window.open(window.location.host+"/"+result);
+                //$http.get("http://127.0.0.1:8182/"+result).success(function(){});
+            })
+        }
     });
 
 
