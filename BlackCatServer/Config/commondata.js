@@ -199,15 +199,15 @@ exports.examquestioninfo={
     subjectone:{questionlisturl:"http://www.yibuxueche.com/question",
         questiontesturl:"http://www.yibuxueche.com/questiontest",
         questionerrorurl:"http://www.yibuxueche.com/questionwronglist",
-        kemuyichengjidanurl:"http://www.yibuxueche.com/questionwronglist",
-        kemusichengjidanurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html",
+        kemuyichengjidanurl:"http://www.yibuxueche.com/myscore.html",
+        kemusichengjidanurl:"http://www.yibuxueche.com/myscore.html",
 
     },
 
 subjectfour:{questionlisturl:"http://www.yibuxueche.com/questionlist-kemusi.html",
     questiontesturl:"http://www.yibuxueche.com/questiontest-kemusi.html",
     questionerrorurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html",
-    kemusichengjidanurl:"http://www.yibuxueche.com/questionwronglist-kemusi.html",
+    kemusichengjidanurl:"http://www.yibuxueche.com/myscore.html",
 }
 }
 exports.integralrule={

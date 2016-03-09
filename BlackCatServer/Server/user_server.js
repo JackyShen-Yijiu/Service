@@ -643,7 +643,7 @@ exports.updateMobile=function(mobileinfo,callback){
                     return callback("查找用户出错:" + err);
                 }
                 if (userinstace) {
-                    return callback("改手机号已经存在，请更换手机号");
+                    return callback("该手机号已经存在，请更换手机号");
                 }
                 usermodel.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
                     if (err) {
@@ -660,7 +660,7 @@ exports.updateMobile=function(mobileinfo,callback){
                     return callback("查找用户出错:" + err);
                 }
                 if (userinstace) {
-                    return callback("改手机号已经存在，请更换手机号");
+                    return callback("该手机号已经存在，请更换手机号");
                 }
             })
             coachmode.update({_id: new mongodb.ObjectId(mobileinfo.userid)}, {$set: {mobile: mobileinfo.mobile}}, function (err) {
