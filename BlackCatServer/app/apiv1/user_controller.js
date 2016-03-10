@@ -95,6 +95,23 @@ exports.UserLogin=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 };
+// 用户通过验证吗登录
+exports.studentLoginByCode=function(req,res){
+    var userinfo={
+        mobile:req.body.mobile,
+        smscode:req.body.smscode
+    }
+    if (userinfo.mobile===undefined||userinfo.smscode === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    }
+    userserver.studentLoginByCode(userinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 //  用户购买商品
 exports.userBuyProduct=function(req,res){
     var  postinfo={

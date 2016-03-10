@@ -70,7 +70,7 @@ var  UserSchema=new Schema({
     favorschool: [{type: Schema.Types.ObjectId, default:null, ref: 'DriveSchool'}],
     //科目一上课信息
     subjectone:{
-        totalcourse:{type:Number,default:24},
+        totalcourse:{type:Number,default:3},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
         missingcourse:{type:Number,default:0}, // 漏课数量
@@ -80,7 +80,7 @@ var  UserSchema=new Schema({
     },
     //科目二上课信息
     subjecttwo:{
-        totalcourse:{type:Number,default:3},
+        totalcourse:{type:Number,default:24},
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
         missingcourse:{type:Number,default:0}, // 漏课数量
