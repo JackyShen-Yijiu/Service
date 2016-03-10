@@ -148,7 +148,8 @@ var  UserSchema=new Schema({
     // 用户支付类型
     paytype:{type:Number,default:1}, //  1 线下支付， 2 线上支付
     // 用户支付状态
-    paytypestatus:{type:Number,default:0} // 0 未支付  20支付成功(等待验证)  30 支付失败
+    paytypestatus:{type:Number,default:0}, // 0 未支付  20支付成功(等待验证)  30 支付失败
+    weixinopenid:{type:String,default:""}, // 用户微信关联的id
 });
 UserSchema.index({mobile: 1}, {unique: true});
 module.exports = mongoose.model('User', UserSchema);
