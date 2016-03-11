@@ -178,6 +178,8 @@ v1.get("/userinfo/getusefulcoachtimely/index/:index",ensureAuthorizedController.
 
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
+// 获取教练课程安排and 自己课程安排
+v1.get("/courseinfo/getcoursebycoachv2",courseController.getcoursebycoachv2);
 // 获取我预约过的教练
 v1.get("/courseinfo/getmyreservationcoach",courseController.getMyReservationCoach);
 // 用户预约课程
