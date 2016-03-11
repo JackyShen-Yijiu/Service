@@ -2,7 +2,7 @@
 	// http://localhost:3600/question/getmysocre?userid=56c129e11bedd418084c043b
 
     //获取数据
-    $.get('http://192.168.0.107:3600/question/getmysocre?userid=56c129e11bedd418084c043b', function(Mydata){
+    $.get('http://www.yibuxueche.com/question/getmysocre?userid=56c129e11bedd418084c043b', function(Mydata){
         console.log(Mydata.data);
         //console.log(Mydata.data.kemusi_score);//科四
         //console.log(Mydata.data.kemuyi_score);//科目一
