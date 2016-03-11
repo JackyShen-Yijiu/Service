@@ -84,7 +84,12 @@ function nextQestion(){
       if(QIndex == Allcount){
           console.log("结束");
           $("#btnNext").text("结束");
+
+          /*$("#btnNext").click(function(){
+
+          })*/
       }
+
   }
 }
 function preQestion(){
@@ -92,6 +97,9 @@ function preQestion(){
     console.log("next");
     $("#number_title").text(--QIndex);
     getWrongQuestionByID(myExamID[QIndex - 1], showQuestions);
+      if(QIndex <Allcount){
+          $("#btnNext").text("下一题");
+      }
   }
 }
 function answerIsRight() {
