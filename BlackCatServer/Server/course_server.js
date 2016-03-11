@@ -457,7 +457,8 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
                         trainfieldlinfo: r.trainfieldlinfo,
                         cancelreason: r.cancelreason,
                         begintime: r.begintime,
-                        endtime: r.endtime
+                        endtime: r.endtime,
+                        sigintime: r.sigintime,
                     }
                     list.push(listone);
                 })

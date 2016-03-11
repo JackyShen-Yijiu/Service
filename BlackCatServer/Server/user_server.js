@@ -440,6 +440,7 @@ exports.studentLoginByCode=function(userinfo,callback){
                     returnmodel.userid =newinstace._id;
                     returnmodel.idcardnumber=newinstace.idcardnumber;
                     returnmodel.usersetting=newinstace.usersetting;
+                    returnmodel.password=newinstace.password;
                     regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
 
                     })
@@ -452,7 +453,7 @@ exports.studentLoginByCode=function(userinfo,callback){
                 newuser.mobile = userinfo.mobile;
                 newuser.create = new Date();
                 //newuser.referrerCode=userinfo.referrerCode;
-                newuser.password= "";
+                newuser.password= "93e6bf49e71743b00cee035c0f3fc92f";
                 newuser.loc.coordinates=[0,0];
                 getUserCount(function(err,usercoutinfo){
                     if (err){
@@ -475,9 +476,10 @@ exports.studentLoginByCode=function(userinfo,callback){
                         returnmodel.userid =newinstace._id;
                         returnmodel.idcardnumber=newinstace.idcardnumber;
                         returnmodel.usersetting=newinstace.usersetting;
+                        returnmodel.password= "93e6bf49e71743b00cee035c0f3fc92f";
                         usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
                             { $set: { token:token }},{safe: false},function(err,doc){});
-                        regisermobIm.addsuer(newinstace._id,userinfo.password,function(err,data){
+                        regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
                             //usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
                             //    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
                         })
