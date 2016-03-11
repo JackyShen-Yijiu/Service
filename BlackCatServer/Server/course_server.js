@@ -1560,7 +1560,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
                 begintime:resdata.begintime,
                 endtime:resdata.endtime,
                 coachid:coachinfo,
-                sigintime:resdata.sigintime,
+                sigintime:resdata.sigintime?resdata.sigintime:"",
                 subject:resdata.subject
             }
             //resdata.coachid=coachinfo;
