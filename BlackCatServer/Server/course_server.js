@@ -1527,7 +1527,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
         "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment" +
-            " learningcontent begintime endtime sigintime")
+            " learningcontent begintime endtime sigintime comment")
         .populate("coachid","_id  name headportrait  driveschoolinfo  starlevel")
         .exec(function(err,resdata){
             if(err){
@@ -1559,6 +1559,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
                 learningcontent :resdata.learningcontent?resdata.learningcontent:"",
                 begintime:resdata.begintime,
                 endtime:resdata.endtime,
+                comment:resdata.comment,
                 coachid:coachinfo,
                 sigintime:resdata.sigintime?resdata.sigintime:"",
                 subject:resdata.subject
