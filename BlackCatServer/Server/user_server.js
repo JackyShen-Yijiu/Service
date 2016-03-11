@@ -412,6 +412,88 @@ exports.getMyorderList=function(searchinfo,callback){
         });
 
 }
+// 用户通过验证码的登录
+exports.studentLoginByCode=function(userinfo,callback){
+    checkSmsCode(userinfo.mobile,userinfo.smscode,function(err) {
+        if (err) {
+            return callback(err);
+        }
+        usermodel.findOne({mobile: userinfo.mobile}, function (err, userinstace) {
+            if (err) {
+                return callback( "查找用户出错:" + err);
+            }
+            if (userinstace) {
+                var token = jwt.sign({
+                    userId: userinstace._id,
+                    timestamp: new Date(),
+                    aud: secretParam.audience
+                }, secretParam.secret);
+                userinstace.token = token;
+                userinstace.logintime = Date.now();
+                userinstace.save(function (err, newinstace) {
+                    if (err) {
+                        return callback("save  user login  err:" + err);
+                    }
+                    var returnmodel=new resbaseuserinfomodel(newinstace);
+                    returnmodel.token=token;
+                    returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
+                    returnmodel.userid =newinstace._id;
+                    returnmodel.idcardnumber=newinstace.idcardnumber;
+                    returnmodel.usersetting=newinstace.usersetting;
+                    returnmodel.password=newinstace.password;
+                    regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+
+                    })
+                    return callback(null,returnmodel);
+
+                });
+
+            } else {
+                var newuser = new usermodel();
+                newuser.mobile = userinfo.mobile;
+                newuser.create = new Date();
+                //newuser.referrerCode=userinfo.referrerCode;
+                newuser.password= "93e6bf49e71743b00cee035c0f3fc92f";
+                newuser.loc.coordinates=[0,0];
+                getUserCount(function(err,usercoutinfo){
+                    if (err){
+                        return callback( " 获取用户ID出错 :"+err);
+                    }
+                    newuser.displayuserid=usercoutinfo.value.displayid;
+                    newuser.invitationcode=usercoutinfo.value.invitationcode;
+                    newuser.save(function (err, newinstace) {
+                        if (err) {
+                            return callback("保存用户出错"+err);
+                        }
+                        var token = jwt.sign({
+                            userId: newinstace._id,
+                            timestamp: new Date(),
+                            aud: secretParam.audience
+                        }, secretParam.secret);
+                        var returnmodel=new resbaseuserinfomodel(newinstace);
+                        returnmodel.token=token;
+                        returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
+                        returnmodel.userid =newinstace._id;
+                        returnmodel.idcardnumber=newinstace.idcardnumber;
+                        returnmodel.usersetting=newinstace.usersetting;
+                        returnmodel.password= "93e6bf49e71743b00cee035c0f3fc92f";
+                        usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                            { $set: { token:token }},{safe: false},function(err,doc){});
+                        regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                            //usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                            //    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                        })
+                        return callback(null,returnmodel);
+
+                    });
+
+                });
+
+            }
+        })
+
+    });
+}
 // 用户登录
 exports.userlogin= function(usertype,userinfo,callback){
     if (usertype==userTypeEmun.User) {
@@ -562,6 +644,7 @@ exports.userSignup=function(usertype,userinfo,callback){
                             returnmodel.token=token;
                             returnmodel.displaymobile=mobileObfuscator(userinfo.mobile);
                             returnmodel.userid =newinstace._id;
+                            returnmodel.usersetting=newinstace.usersetting;
                             usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
                                 { $set: { token:token }},{safe: false},function(err,doc){});
                             regisermobIm.addsuer(newinstace._id,userinfo.password,function(err,data){

@@ -88,6 +88,9 @@ v1.get('/Verificationsmscode', userController.verificationSmscode);
 v1.post('/userinfo/signup', userController.postSignUp);
 //用户登录
 v1.post('/userinfo/userlogin', userController.UserLogin);
+
+// 学生通过密码登录
+v1.post("/userinfo/studentloginbycode", userController.studentLoginByCode);
 // 用户报名
 v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,userController.postapplySchool);
 // 用户报名验证（对于已经报名的用户）
@@ -289,6 +292,7 @@ v1.get("/userinfo/getmypayorder",ensureAuthorizedController.ensureAuthorized,
 //聊天获取用户的基本信息
 v1.get("/userinfo/getimuserinfo",ensureAuthorizedController.ensureAuthorized,
     userController.getImUserInfo);
+
 
 //===========================================================
 
