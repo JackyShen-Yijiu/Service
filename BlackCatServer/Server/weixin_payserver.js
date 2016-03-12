@@ -24,13 +24,14 @@ var wxpay = WXPay({
 //    spbill_create_ip: '192.168.2.210',
 //    notify_url: 'http://wxpay_notify_url',
 //    trade_type: 'APP',
-//    product_id: '1234567890'
+//   // product_id: '1234567890'
 //}, function(err, result){
 //    console.log(err);
 //    console.log(result);
 //});
 
 exports.createUnifiedOrder=function(payinfo,callback){
+
     wxpay.createUnifiedOrder(payinfo,function(err,data){
         console.log(err);
         console.log(data);

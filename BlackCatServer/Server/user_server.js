@@ -2499,11 +2499,12 @@ exports.getprepayinfo=function(payconfirminfo,callback){
         }
         var weixinpayinfo={
             body: userpaydata.applyschoolinfo.name+" "+userpaydata.applyclasstypeinfo.name,
-            out_trade_no: userpaydata._id,
+            out_trade_no: userpaydata._id.toString(),
             total_fee: userpaydata.paymoney,
             spbill_create_ip: payconfirminfo.clientip,
             notify_url: merchant.notify_url,
             trade_type: 'APP',
+            // product_id: '1234567890'
         };
         console.log("开始请求微信支付");
         console.log(weixinpayinfo);
@@ -2522,7 +2523,7 @@ exports.getprepayinfo=function(payconfirminfo,callback){
                     package: "prepay_id="+weixinpaydata.prepay_id,
                     signType: "MD5"
                 };
-                reqparam.paySign = wenpay.sign(reqparam);
+                reqparam.paySign = weixinpauserver.sign(reqparam);
                 reqparam.partnerid=merchant.id;
                 return callback(null,reqparam);
             }
