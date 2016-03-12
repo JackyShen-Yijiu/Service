@@ -1,7 +1,7 @@
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var    customUserinfo = require('../../custommodel/userinfomodel.js').userInfo;
 var userserver=require('../../Server/user_server');
-
+var requestIp = require('request-ip');
 
 var mobileVerify = /^1\d{10}$/;
 exports.verificationSmscode=function(req,res){
@@ -530,10 +530,17 @@ exports.usercouponforpay=function(req,res){
     });
 };
 function getClientIp(req) {
-    return req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
+    //return req.headers['x-forwarded-for'] ||
+    //    req.connection.remoteAddress ||
+    //    req.socket.remoteAddress ||
+    //    req.connection.socket.remoteAddress;
+    console.log(req.connection);
+    var ipAddress;
+    var headers = req.headers;
+    var forwardedIpsStr = headers['x-real-ip'] || headers['x-forwarded-for'];
+    forwardedIpsStr ? ipAddress = forwardedIpsStr : ipAddress = null;
+    if (!ipAddress)
+    { ipAddress = req.connection.remoteAddress; } return ipAddress;
 };
 // 生成用户预支付订单
 exports.getprepayinfo=function(req,res){
@@ -550,7 +557,17 @@ exports.getprepayinfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    payconfirminfo.clientip=getClientIp(req);
+    payconfirminfo.clientip=requestIp.getClientIp(req);//
+    if (payconfirminfo.clientip.length < 15)
+    {
+        payconfirminfo.clientip = payconfirminfo.clientip;
+    }
+    else
+    {
+        var nyIP = payconfirminfo.clientip.slice(7);
+        payconfirminfo.clientip = nyIP;
+    }
+    console.log( payconfirminfo.clientip);
     userserver.getprepayinfo(payconfirminfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
