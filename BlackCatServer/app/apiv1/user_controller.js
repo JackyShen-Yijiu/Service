@@ -503,6 +503,7 @@ exports.postenrollverification=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 };
+
 //  用户支付信息确认
 exports.usercouponforpay=function(req,res){
     var payconfirminfo= {
@@ -522,6 +523,35 @@ exports.usercouponforpay=function(req,res){
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
     userserver.usercouponforpay(payconfirminfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,""));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+};
+function getClientIp(req) {
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+};
+// 生成用户预支付订单
+exports.getprepayinfo=function(req,res){
+    var payconfirminfo= {
+        userid:req.query.userid,
+        payoderid:req.query.payoderid
+    };
+    if (payconfirminfo.userid===undefined|| payconfirminfo.payoderid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",""));
+    };
+
+    if(payconfirminfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    payconfirminfo.clientip=getClientIp(req);
+    userserver.getprepayinfo(payconfirminfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
         }

@@ -4,8 +4,11 @@
 var async = require('async');
 var smscodemodule=require('../Common/sendsmscode').sendsmscode;
 var addtestsmscode=require('../Common/sendsmscode').addsmscode;
+var  app=require("../Config/sysconfig").weixinconfig;
+var  merchant=require("../Config/sysconfig").merchant;
 var mongodb = require('../models/mongodb.js');
 var geolib = require('geolib');
+var  weixinpauserver=require("./weixin_payserver");
 var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
 var jwt = require('jsonwebtoken');
 var userTypeEmun=require("../custommodel/emunapptype").UserType;
@@ -2479,6 +2482,51 @@ exports.usercouponforpay=function(payconfirminfo,callback){
                 });
 
             })
+    })
+};
+//用户生成微信预支付订单
+exports.getprepayinfo=function(payconfirminfo,callback){
+    UserPayModel.findOne({"_id":payconfirminfo.payoderid,
+        "userid":payconfirminfo.userid},function(err,userpaydata) {
+        if (err) {
+            return callback("查询支付信息失败：" + err);
+        }
+        if (!userpaydata) {
+            return callback("没有查询到订单信息");
+        }
+        if (userpaydata.userpaystate != 0) {
+            return callback("订单状态不能使用优惠券");
+        }
+        var weixinpayinfo={
+            body: userpaydata.applyschoolinfo.name+" "+userpaydata.applyclasstypeinfo.name,
+            out_trade_no: userpaydata._id,
+            total_fee: userpaydata.paymoney,
+            spbill_create_ip: payconfirminfo.clientip,
+            notify_url: merchant.notify_url,
+            trade_type: 'APP',
+        };
+        console.log("开始请求微信支付");
+        console.log(weixinpayinfo);
+        weixinpauserver.createUnifiedOrder(weixinpayinfo,function(err,weixinpaydata){
+            if(err){
+                return callback("创建微信订单失败："+err);
+            }
+            if(weixinpaydata.return_code=="FAIL"){
+                return callback("创建微信订单失败："+weixinpaydata.return_msg);
+            }
+            else {
+                var reqparam = {
+                    appId: app.id,
+                    timeStamp: Math.floor(Date.now()/1000)+"",
+                    nonceStr: weixinpaydata.nonce_str,
+                    package: "prepay_id="+weixinpaydata.prepay_id,
+                    signType: "MD5"
+                };
+                reqparam.paySign = wenpay.sign(reqparam);
+                reqparam.partnerid=merchant.id;
+                return callback(null,reqparam);
+            }
+        })
     })
 }
 //更新用户信息

@@ -296,7 +296,10 @@ v1.get("/userinfo/getimuserinfo",ensureAuthorizedController.ensureAuthorized,
     userController.getImUserInfo);
 
 
-//===========================================================
+//========================微信相关=================================
+v1.get("/payinfo/getprepayinfo",ensureAuthorizedController.ensureAuthorized,
+    userController.getprepayinfo);
+//=============================================================
 
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);

@@ -7,7 +7,7 @@ var mongodb = require('../models/mongodb.js');
 var UserPayModel=mongodb.UserPayModel;
 var AliPayNoticeModel=mongodb.AliPayNoticeModel;
 var  UserModel=mongodb.UserModel;
-
+var  weixinpauserver=require("../Server/weixin_payserver");
 var AlipayConfig=require("../Config/sysconfig").AlipayConfig;
 var AlipayNotify={
     verity:function(params,callback){
@@ -260,6 +260,7 @@ router.post("/alipay",function(req,res){
 
 });
 
+router.post("/weixin",weixinpauserver.paycallback);
 
 
 module.exports = router;

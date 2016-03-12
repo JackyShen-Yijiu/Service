@@ -11,6 +11,19 @@ exports.appconfiginfo={
 exports.smsconfig={
     ext:"1"       //一步是空 极致2427511
 }
+// 微信支付配置
+exports.weixinconfig = {
+    id: 'wxb815a53dcb2faf06',
+    secret: '2637931343bdd1d1991fcef1b28a187a',
+    token: 'jizhijiafuweixin'
+};
+
+
+exports.merchant = {
+    id: "1317721101",
+    key: "JIZHIjiafu20150810andyibukejiinn",
+    notify_url:"http://jzapi.yibuxueche.com/paynotice/weixin"
+};
 // 支付宝配置信息
 exports.AlipayConfig = {
     //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
