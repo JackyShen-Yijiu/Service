@@ -567,7 +567,7 @@ exports.getprepayinfo=function(req,res){
         var nyIP = payconfirminfo.clientip.slice(7);
         payconfirminfo.clientip = nyIP;
     }
-    console.log( payconfirminfo.clientip);
+    //console.log( payconfirminfo.clientip);
     userserver.getprepayinfo(payconfirminfo,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));

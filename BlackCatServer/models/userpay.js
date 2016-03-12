@@ -22,7 +22,8 @@ var UserPaySchema= new Schema({
     discountmoney:{type:Number,default:0},
     paymoney:Number,   // 实际支付金额
     trade_no:String, // 支付宝中生成的交易号
-    paynoticeid:String // 关联支付宝通知表
+    paynoticeid:String, // 关联支付宝通知表
+    weixinpayinfo:{type:String,default:""},  //微信与支付信息
 });
 
 UserPaySchema.index({userid: 1});

@@ -2497,6 +2497,9 @@ exports.getprepayinfo=function(payconfirminfo,callback){
         if (userpaydata.userpaystate != 0) {
             return callback("订单状态不能使用优惠券");
         }
+        if(userpaydata.weixinpayinfo!=undefined&&userpaydata.weixinpayinfo!=""){
+            return callback(null,JSON.parse(userpaydata.weixinpayinfo));
+        }
         var weixinpayinfo={
             body: userpaydata.applyschoolinfo.name+" "+userpaydata.applyclasstypeinfo.name,
             out_trade_no: userpaydata._id.toString(),
@@ -2520,11 +2523,15 @@ exports.getprepayinfo=function(payconfirminfo,callback){
                     appId: app.id,
                     timeStamp: Math.floor(Date.now()/1000)+"",
                     nonceStr: weixinpaydata.nonce_str,
-                    package: "prepay_id="+weixinpaydata.prepay_id,
+                    prepayid:weixinpaydata.prepay_id,
+                    sign:weixinpaydata.sign,
+                    package: "Sign=WXPay",
                     signType: "MD5"
                 };
-                reqparam.paySign = weixinpauserver.sign(reqparam);
+                //reqparam.paySign = weixinpauserver.sign(reqparam);
                 reqparam.partnerid=merchant.id;
+                UserPayModel.update({"_id":payconfirminfo.payoderid},
+                    {$set:{weixinpayinfo:JSON.stringify(reqparam)}},function(err,data){});
                 return callback(null,reqparam);
             }
         })
