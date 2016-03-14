@@ -50,14 +50,20 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
                  }
              }
         };
-        var datenow =new Date(date);
-        var datetomorrow = datenow.addDays(1);
+
+        var datenow = new Date( new Date(date).toFormat("YYYY-MM-DD").toString());
+        var datetomorrow = new Date( new Date(date).toFormat("YYYY-MM-DD").toString()).addDays(1);
+        //console.log(new Date(date).toFormat("YYYY-MM-DD").toString());
+        //console.log(datenow);
+        //console.log(datetomorrow);
         // 查询我已经预约的数据
         coursemode.find( { courseuser:new mongodb.ObjectId(userid)
-                ,begintime: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}})
+        ,coursebegintime: { $gte: (datenow).clearTime(), $lte:datetomorrow.clearTime()}
+        })
             .populate( "coachid"," _id  name headportrait ")
             .sort({"begintime":1})
             .exec(function(err,coursedata){
+
                 for(var i=0;i<coursedata.length;i++){
                     for (j=0;j<userAlltimes.length;j++){
                         if(coursedata[i].coursetime.timeid==userAlltimes[j].timeid){
