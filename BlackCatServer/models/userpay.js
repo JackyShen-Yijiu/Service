@@ -12,7 +12,7 @@ var UserPaySchema= new Schema({
     creattime:Date,  // 订单生成时间
     payendtime:Date,                  // 支付订单结束时间
     beginpaytime:Date,// 开始 支付时间
-    paychannel:{type:Number,default:0} , // 支付渠道  0 暂未选择  1 支付宝  2 微信
+    paychannel:{type:Number,default:0} , // 支付渠道  0 暂未选择（线下支付）  1 支付宝  2 微信
     applyschoolinfo:{name:String,id:String}, //申请学校信息
     applyclasstypeinfo:{name:String,id:String,price:Number,onsaleprice:Number}, // 报考班型 信息
     // 活动优惠卷

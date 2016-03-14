@@ -2422,14 +2422,15 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       coachdata.studentcoount=coachdata.studentcoount+1;
                       classtypedata.save();
                       coachdata.save();
-                      if (applyinfo.paytype==2){
-                          createuserpayorder(newuserdata,classtypedata,function(err,payorderdata){
-                      return callback(null,"success",payorderdata);
-                          })
-                      }else
-                      {
-                          return callback(null,"success");
-                      }
+                      createuserpayorder(newuserdata,classtypedata,function(err,payorderdata){
+                          return callback(null,"success",payorderdata);
+                      })
+                      //if (applyinfo.paytype==2){
+                      //
+                      //}else
+                      //{
+                      //    return callback(null,"success");
+                      //}
                   });
                       })
 
