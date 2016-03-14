@@ -411,7 +411,14 @@ exports.getUserFirstCoach=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    userserver.getUserFirstCoach(userid,subjectid,function(err,data){});
+    userserver.getUserFirstCoach(userid,subjectid,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
 
 }
 // 获取 当前时段可以预约的教练

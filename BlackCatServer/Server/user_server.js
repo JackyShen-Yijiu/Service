@@ -1334,6 +1334,56 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
             });
 
     });
+};
+// 第一次预约获取教练
+exports.getUserFirstCoach=function(userid,subjectid,callback){
+    usermodel.findById(new mongodb.ObjectId(userid),function(err,user){
+        if(err){
+            return callback("查询出错"+err);
+        }
+        if(!user){
+            return callback("没有查到相关用户信息");
+        }
+        //判断用户状态
+        if(user.is_lock==true)
+        {
+            return  callback("此用户已锁定，请联系客服");
+        }
+        //判断用户的预约权限
+        if(user.applystate!=2)
+        {
+            return  callback("用户没有报名的权限");
+        }
+        if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
+            return  callback("该用户现阶段不能预约课程:"+user.subject.name);
+        }
+        coachmode.findOne({is_lock:false,is_validation:true,
+                driveschool:new mongodb.ObjectId(user.applyschool),
+                //"carmodel.modelsid":user.carmodel.modelsid,
+                "subject.subjectid":{'$in':[subjectid]}})
+            .sort({"passrate": -1})
+            .exec(function(err ,coachdata) {
+                if (err || !coachdata  ) {
+                    console.log(err);
+                    return callback("获取教练失败：" + err);
+
+                }
+                var returnmodel = { //new resbasecoachinfomode(r);
+                    coachid: coachdata._id,
+                    name: coachdata.name,
+                    driveschoolinfo: coachdata.driveschoolinfo,
+                    headportrait:coachdata.headportrait,
+                    starlevel: coachdata.starlevel,
+                    is_shuttle: coachdata.is_shuttle,
+                    passrate: coachdata.passrate,
+                    Seniority: coachdata.Seniority,
+                    subject: coachdata.subject,
+                    Gender: coachdata.Gender
+                }
+                return callback(null,returnmodel);
+            });
+
+    });
 }
 exports.getUsefulCoachList=function(useid,index,searchname,callback){
     var limintcount=10;

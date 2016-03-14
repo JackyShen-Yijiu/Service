@@ -37,7 +37,7 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
             userAlltimes[i].is_outofdate=1;  // 0 过期  1  正常
             userAlltimes[i].is_reservation=0;   // 0没有预约  1 已经预约
             userAlltimes[i].reservationcoachname="";//
-            userAlltimes[i].coachcount=0;
+            userAlltimes[i].coachcount=1;
             if(((worktimes[i].timeid+4)<=hourse)&&(day==day2))
             {
                 userAlltimes[i].is_outofdate=0;

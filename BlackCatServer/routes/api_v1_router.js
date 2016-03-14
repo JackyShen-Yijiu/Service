@@ -182,6 +182,7 @@ v1.get("/userinfo/getusefulcoachtimely/index/:index",ensureAuthorizedController.
 v1.get("/userinfo/getmyfirstcoach/",ensureAuthorizedController.ensureAuthorized,
     userController.getUserFirstCoach);
 
+
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);
 // 获取教练课程安排and 自己课程安排
