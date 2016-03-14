@@ -43,6 +43,7 @@ var SystemMessage=mongodb.SystemMessageModel;
 var UserPayModel=mongodb.UserPayModel;
 var HeadMaster=mongodb.HeadMasterModel;
 var activityCouponModel=mongodb.ActivityCouponModel;
+var userAvailableFcodeModel=mongodb.UserAvailableFcodeModel;
 require('date-utils');
 var _ = require("underscore");
 
@@ -1525,7 +1526,7 @@ exports.FavoritSchoolList=function(userid,callback){
         .populate("favorschool")
         .exec(function(err,data){
             if(err||!data){
-                return callback("查詢出錯:"+err);
+                return callback("查询出错:"+err);
             }
             if (data.favorschool){
                 process.nextTick(function(){
@@ -1748,6 +1749,24 @@ exports.receiveMyCupon=function(queryinfo,callback){
             }
 
         })
+};
+// 获取我可以使用的Y码
+exports.getUserAvailableFcode=function(queryinfo,callback){
+    userAvailableFcodeModel.find({"userid":queryinfo.userid},function(err,data){
+        if(err){
+            return callback("查找可用Y码出错");
+        }
+        var  returndatalist=[];
+        data.forEach(function(r,index){
+            var Ycode={
+                Ycode: r.fcode,
+                name: r.name,
+                date: r.createtime.toFormat("YYYY/MM/DD")
+            }
+            returndatalist.push(Ycode);
+        })
+        return callback(null,returndatalist);
+    })
 }
 exports.getmyCupon=function(queryinfo,callback){
     coupon.find({"userid":queryinfo.userid})

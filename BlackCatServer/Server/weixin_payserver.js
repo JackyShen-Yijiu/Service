@@ -17,18 +17,18 @@ var wxpay = WXPay({
     pfx: fs.readFileSync('./apiclient_cert.p12'), //微信商户平台证书
 });
 
-wxpay.createUnifiedOrder({
-    body: '扫码支付测试',
-    out_trade_no: '20140703'+Math.random().toString().substr(2, 10),
-    total_fee: 1,
-    spbill_create_ip: '192.168.2.210',
-    notify_url: 'http://wxpay_notify_url',
-    trade_type: 'APP',
-   // product_id: '1234567890'
-}, function(err, result){
-    console.log(err);
-    console.log(result);
-});
+//wxpay.createUnifiedOrder({
+//    body: '扫码支付测试',
+//    out_trade_no: '20140703'+Math.random().toString().substr(2, 10),
+//    total_fee: 1,
+//    spbill_create_ip: '192.168.2.210',
+//    notify_url: 'http://wxpay_notify_url',
+//    trade_type: 'APP',
+//   // product_id: '1234567890'
+//}, function(err, result){
+//    console.log(err);
+//    console.log(result);
+//});
 
 exports.createUnifiedOrder=function(payinfo,callback){
 

@@ -68,6 +68,10 @@ v1.get("/userinfo/getmycupon",ensureAuthorizedController.ensureAuthorized,userCo
 v1.get("/userinfo/getmymoneylist",ensureAuthorizedController.ensureAuthorized,userController.getMymoneyList);
 // 领取优惠券或者密码
 v1.get("/userinfo/receivemycupon",ensureAuthorizedController.ensureAuthorized,userController.receivemycupon);
+//报名时获取我可以使用的Y码
+// 获取我领取的F吗
+v1.get("/userinfo/getUserAvailableFcode",ensureAuthorizedController.ensureAuthorized,
+    userController.getUserAvailableFcode);
 
 ////=====================================Y码相关=======================================
 //======================================用户信息======================================
@@ -175,6 +179,8 @@ v1.get("/userinfo/getusefulcoach/index/:index",ensureAuthorizedController.ensure
 //  获取 当前时段我可以预约的教练
 v1.get("/userinfo/getusefulcoachtimely/index/:index",ensureAuthorizedController.ensureAuthorized,
     userController.getUsefulCoachListtimely);
+v1.get("/userinfo/getmyfirstcoach/",ensureAuthorizedController.ensureAuthorized,
+    userController.getUserFirstCoach);
 
 // 获取教练课程安排
 v1.get("/courseinfo/getcoursebycoach",courseController.GetCourseByCoach);

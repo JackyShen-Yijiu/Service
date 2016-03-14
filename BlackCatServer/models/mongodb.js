@@ -84,3 +84,4 @@ exports.UserPayModel=require("./userpay");
 exports.AliPayNoticeModel=require("./alipaynotice");
 exports.AdminGroup=require("./AdminGroup");
 exports.AdminUser=require("./AdminUser");
+exports.UserAvailableFcodeModel=require('./useravailableFcode');

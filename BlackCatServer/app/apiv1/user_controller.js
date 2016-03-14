@@ -403,6 +403,17 @@ exports.getUsefulCoachList=function(req,res){
         }
     });
 }
+//  获取我第一次预约的教练
+exports.getUserFirstCoach=function(req,res){
+    var userid=req.query.userid;
+    var subjectid=req.query.subjectid;
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getUserFirstCoach(userid,subjectid,function(err,data){});
+
+}
 // 获取 当前时段可以预约的教练
 exports.getUsefulCoachListtimely=function(req,res){
     var  index=req.params.index?req.params.index:1;
@@ -995,6 +1006,27 @@ exports.receivemycupon=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
+};
+// 报名时获取我可以使用的Y码
+exports.getUserAvailableFcode=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+    };
+    if (queryinfo.userid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    //if(queryinfo.userid!=req.userId){
+    //    return res.json(
+    //        new BaseReturnInfo(0,"无法确认请求用户",{}));
+    //};
+     userserver.getUserAvailableFcode(queryinfo,function(err,data){
+         if(err){
+             return res.json(new BaseReturnInfo(0,err,[]));
+         }
+         return res.json(new BaseReturnInfo(1,"",data));
+     })
+
 }
 // 获取我的优惠劵
 exports.getmyCupon=function(req,res){
