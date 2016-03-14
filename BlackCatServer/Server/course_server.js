@@ -19,7 +19,11 @@ require('date-utils');
 // 2.0 预约界面
 exports.getMyCourseoneday=function(coachid,userid,date ,callback){
     getCoachCourse(coachid,date,function(err,data){
-       var  courselist=data;
+        var  courselist=[];
+        if(data){
+            courselist=data;
+        }
+
         if(err){
             coachlist=[];
         }
