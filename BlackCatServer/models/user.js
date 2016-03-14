@@ -81,6 +81,7 @@ var  UserSchema=new Schema({
     //科目二上课信息
     subjecttwo:{
         totalcourse:{type:Number,default:24},
+        buycoursecount:{type:Number,default:0}, //购买学时数
         reservation:{type:Number,default:0},
         finishcourse:{type:Number,default:0},// 学习进度
         missingcourse:{type:Number,default:0}, // 漏课数量
@@ -92,6 +93,7 @@ var  UserSchema=new Schema({
     subjectthree:{
         totalcourse:{type:Number,default:16},
         reservation:{type:Number,default:0},
+        buycoursecount:{type:Number,default:0}, //购买学时数
         finishcourse:{type:Number,default:0},
         missingcourse:{type:Number,default:0}, // 漏课数量
         progress:{type:String,default:"未开始"}, // 学习进度
@@ -150,6 +152,7 @@ var  UserSchema=new Schema({
     // 用户支付状态
     paytypestatus:{type:Number,default:0}, // 0 未支付  20支付成功(等待验证)  30 支付失败
     weixinopenid:{type:String,default:""}, // 用户微信关联的id
+    bcode:String  //报名的渠道码
 });
 UserSchema.index({mobile: 1}, {unique: true});
 module.exports = mongoose.model('User', UserSchema);
