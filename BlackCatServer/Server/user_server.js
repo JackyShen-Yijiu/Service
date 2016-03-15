@@ -2567,9 +2567,7 @@ exports.getprepayinfo=function(payconfirminfo,callback){
         if (userpaydata.userpaystate != 0) {
             return callback("订单状态不能使用优惠券");
         }
-        if(userpaydata.weixinpayinfo!=undefined&&userpaydata.weixinpayinfo!=""){
-            return callback(null,JSON.parse(userpaydata.weixinpayinfo));
-        }
+
         var weixinpayinfo={
             body: userpaydata.applyschoolinfo.name+" "+userpaydata.applyclasstypeinfo.name,
             out_trade_no: userpaydata._id.toString(),
@@ -2581,6 +2579,10 @@ exports.getprepayinfo=function(payconfirminfo,callback){
         };
         console.log("开始请求微信支付");
         console.log(weixinpayinfo);
+        if(userpaydata.weixinpayinfo!=undefined&&userpaydata.weixinpayinfo!=""){
+            console.log("已经获取过预支付信息");
+            return callback(null,JSON.parse(userpaydata.weixinpayinfo));
+        }
         weixinpauserver.createUnifiedOrder(weixinpayinfo,function(err,weixinpaydata){
             if(err){
                 return callback("创建微信订单失败："+err);
