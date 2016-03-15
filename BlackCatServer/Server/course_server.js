@@ -1551,7 +1551,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
             resdata.reservationstate=(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
                 appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_comment=undefined;
-            basedatafun.getschoolinfo(resdata.coachid.driveschoolinfo.id,function(err,schoolidata){
+            basedatafun.getschoolinfo(resdata.coachid.driveschoolinfo.id,function(err,schooldata){
             var coachinfo={
                 "coachid":resdata.coachid._id,
                 _id :resdata.coachid._id,
