@@ -2590,13 +2590,12 @@ exports.getprepayinfo=function(payconfirminfo,callback){
             }
             else {
                 var reqparam = {
-                    appId: app.id,
-                    timeStamp: Math.floor(Date.now()/1000)+"",
-                    nonceStr: weixinpaydata.nonce_str,
+                    appid: app.id,
+                    timestamp: Math.floor(Date.now()/1000)+"",
+                    noncestr: weixinpaydata.nonce_str,
                     prepayid:weixinpaydata.prepay_id,
                     sign:weixinpaydata.sign,
-                    package: "Sign=WXPay",
-                    signType: "MD5"
+                    package: "Sign=WXPay"
                 };
                 //reqparam.paySign = weixinpauserver.sign(reqparam);
                 reqparam.partnerid=merchant.id;
