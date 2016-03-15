@@ -2510,6 +2510,7 @@ exports.getmyOrder=function(userid,callback){
                     //}
                     basedatafun.getschoolinfo(userData.applyschool,function(err,schooldata){
                     var returndata = {
+                        applystate:userData.applystate,
                         schoollogoimg:schooldata?schooldata.logoimg.originalpic:"",
                         applyschoolinfo: userData.applyschoolinfo,
                         applyclasstypeinfo: userData.applyclasstypeinfo,
@@ -2522,6 +2523,9 @@ exports.getmyOrder=function(userid,callback){
                         paytype: userData.paytype,
                         paytypestatus: userData.paytypestatus,
                     };
+                        if(!returndata.applyclasstypeinfo.onsaleprice){
+                            returndata.applyclasstypeinfo.onsaleprice=returndata.applyclasstypeinfo.price;
+                        }
                     if (userData.applystate == 2) {
                         returndata.paytypestatus = 20
                     }

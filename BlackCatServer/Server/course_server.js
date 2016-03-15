@@ -13,6 +13,7 @@ var pushstudent=require("../Common/PushStudentMessage");
 var pushcoach=require("../Common/PushCoachMessage");
 var worktimes=require("../Config/commondata").worktimes;;
 var eventproxy   = require('eventproxy');
+var basedatafun=require("./basedatafun");
 var _ = require("underscore");
 require('date-utils');
 
@@ -1550,6 +1551,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
             resdata.reservationstate=(resdata.is_comment&&resdata.reservationstate==appTypeEmun.ReservationState.ucomments)?
                 appTypeEmun.ReservationState.finish: resdata.reservationstate,
                 resdata.is_comment=undefined;
+            basedatafun.getschoolinfo(resdata.coachid.driveschoolinfo.id,function(err,schoolidata){
             var coachinfo={
                 "coachid":resdata.coachid._id,
                 _id :resdata.coachid._id,
@@ -1557,7 +1559,8 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
                 headportrait:resdata.coachid.headportrait,
                 starlevel:resdata.coachid.starlevel,
                 driveschoolinfo:resdata.coachid.driveschoolinfo,
-                schoolimage:""
+                schoolimage:schooldata?schooldata.logoimg.originalpic:"",
+                schoolmobile:schooldata?schooldata.logoimg.phone:"",
             };
             resdatainfo={
                 reservationstate:resdata.reservationstate,
@@ -1577,7 +1580,9 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
             }
             //resdata.coachid=coachinfo;
             //console.log(coachinfo)
-            return callback(null,resdatainfo);})
+            return callback(null,resdatainfo);
+            })
+            })
 
 }
 exports.getCoachReservationinfo=function(reservationid,coachid,callback){
