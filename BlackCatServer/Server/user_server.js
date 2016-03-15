@@ -2581,7 +2581,7 @@ exports.getMyApplyPayOrder=function(userid,orderstate,callback){
             applyschoolinfo:r.applyschoolinfo,
             applyclasstypeinfo:r.applyclasstypeinfo,
             discountmoney:r.discountmoney,
-            paymoney:r.paymoney*100,
+            paymoney:r.paymoney,
             activitycoupon:r.activitycoupon?r.activitycoupon:"",
             couponcode:r.couponcode?r.couponcode:"",
         };
@@ -2645,7 +2645,7 @@ exports.getprepayinfo=function(payconfirminfo,callback){
         var weixinpayinfo={
             body: userpaydata.applyschoolinfo.name+" "+userpaydata.applyclasstypeinfo.name,
             out_trade_no: userpaydata._id.toString(),
-            total_fee: userpaydata.paymoney,
+            total_fee: userpaydata.paymoney*100,
             spbill_create_ip: payconfirminfo.clientip,
             notify_url: merchant.notify_url,
             trade_type: 'APP',

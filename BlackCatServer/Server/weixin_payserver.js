@@ -98,7 +98,7 @@ exports.paycallback=wxpay.useWXCallback(function(msg, req, res, next){
                     res.success();
                 }
                 // 判断订单金额
-                if (total_fee != userpaydata.paymoney*100) {
+                if (msg.total_fee != userpaydata.paymoney*100) {
                     savenoticedata.is_deal = 2; //暂时不用处理
                     savenoticedata.dealreamk = "订单金额不对无法完成支付";
                     savenoticedata.save(function (err, data) {
