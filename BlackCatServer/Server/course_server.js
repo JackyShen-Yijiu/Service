@@ -488,7 +488,7 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
     }
     reservationmodel.find(searhinfo)
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
-        "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime  cancelreason")
+        "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime  cancelreason learningcontent")
         .populate("coachid","_id name driveschoolinfo headportrait  Gender")
        .sort({begintime:-1})
         .exec(function(err,reservationlist){
@@ -521,9 +521,10 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
                         begintime: r.begintime,
                         endtime: r.endtime,
                         sigintime: r.sigintime,
+                        learningcontent: r.learningcontent
                     }
                     list.push(listone);
-                })
+                });
                 return callback(null,list);
             })
         });

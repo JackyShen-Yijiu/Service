@@ -220,7 +220,7 @@ router.post("/alipay",function(req,res){
                                     });
                                     res.end("fail");
                                 }
-                                UserModel.update({"_id":data.userid},{"paytypestatus":20},{safe: false},function(err,data){});
+                                UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2},{safe: false},function(err,data){});
                                 savenoticedata.is_deal = 1; //成功
                                 savenoticedata.dealreamk = "保存订单更新成功";
                                 savenoticedata.save(function (err, data) {

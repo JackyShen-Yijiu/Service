@@ -594,7 +594,7 @@ exports.getprepayinfo=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
-// 获取用户报名支付的订单
+// 获取用户报名支付的订单 列表
 exports.getMyApplyPayOrder=function(req,res){
     var userid= req.query.userid;
     var orderstate=req.query.orderstate?req.query.orderstate:-1;
@@ -604,7 +604,7 @@ exports.getMyApplyPayOrder=function(req,res){
     };
     userserver.getMyApplyPayOrder(userid,orderstate,function(err,data){
         if(err){
-            return res.json(new BaseReturnInfo(0,err,""));
+            return res.json(new BaseReturnInfo(0,err,[]));
         }
         return res.json(new BaseReturnInfo(1,"",data));
     });
@@ -657,6 +657,34 @@ exports.postapplySchool=function(req,res){
 
 
 };
+// 用户取消报名
+exports.usercancelorder=function(req,res){
+    var userid = req.query.userid;
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.userCancelOrder(userid, function (err, data) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err, ""));
+        }
+        return res.json(new BaseReturnInfo(1, "", data));
+    })
+};
+// 获取我的报名订单
+exports.getmyOrder=function(req,res){
+    var userid= req.query.userid;
+    if(userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.getmyOrder(userid,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 
 // 更新用户信息
 exports.updateUserInfo=function(req,res){

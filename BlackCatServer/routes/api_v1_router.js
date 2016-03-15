@@ -97,6 +97,10 @@ v1.post('/userinfo/userlogin', userController.UserLogin);
 v1.post("/userinfo/studentloginbycode", userController.studentLoginByCode);
 // 用户报名
 v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,userController.postapplySchool);
+// 用户取消报名订单
+v1.get('/userinfo/usercancelorder',ensureAuthorizedController.ensureAuthorized,userController.usercancelorder);
+// 获取我的订单
+v1.get("/userinfo/getmyorder",ensureAuthorizedController.ensureAuthorized,userController.getmyOrder);
 // 用户报名验证（对于已经报名的用户）
 v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthorized,userController.postenrollverification);
 // 获取我的报名状态
@@ -294,7 +298,7 @@ v1.get("/courseinfo/getreservationapply",ensureAuthorizedController.ensureAuthor
 // 用户订单使用优惠
 v1.post("/userinfo/usercouponforpay",ensureAuthorizedController.ensureAuthorized,
     userController.usercouponforpay);
-// 获取 我的报名支付订单
+// 获取 我的报名支付订单列表
 v1.get("/userinfo/getmypayorder",ensureAuthorizedController.ensureAuthorized,
     userController.getMyApplyPayOrder);
 

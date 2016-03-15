@@ -2461,6 +2461,72 @@ var getuserpayorder=function(userid,callback){
     //    }
     //})
 }
+// 用户取消订单
+exports.userCancelOrder=function(userid,callback){
+    usermodel.findById(userid)
+        .exec(function (err, userData) {
+            if (err) {
+                return callback("查找用户出错");
+            }
+            if (!userData) {
+                return callback("没有查询到用户信息");
+            }
+            if (userData.applystate != 1) {
+                return callback("该订单无法取消");
+            }
+            UserPayModel.update({userid: userData._id, userpaystate: 0}, {userpaystate: 4}, function (err, excdata) {
+            });
+
+            userData.applystate = 0;  // 未报名
+            userData.paytypestatus = 0;
+            userData.save(function (err, data) {
+                if (err) {
+                    return callback("取消订单失败：" + err);
+                }
+                return callback(null, "", "success");
+            })
+        })
+};
+exports.getmyOrder=function(userid,callback){
+    usermodel.findById(userid)
+        .exec(function (err, userData) {
+            if (err) {
+                return callback("查找用户出错");
+            }
+            if (!userData) {
+                return callback("没有查询到用户信息");
+            }
+            if (userData.applystate == 0) {
+                return callback("用户未报名");
+            }
+            UserPayModel.findOne({"userid":userData._id,'$or':[{"userpaystate":0},{"userpaystate":2}]},
+                function(err,payorderdata){
+                    if (err) {
+                        return callback("查询订单出错"+err);
+                    }
+                    if(!payorderdata){
+                        return callback("没有查询到订单信息");
+                    }
+                    var returndata = {
+                        applyschoolinfo: userData.applyschoolinfo,
+                        applyclasstypeinfo: userData.applyclasstypeinfo,
+                        applytime: userData.applyinfo.applytime.toFormat("YYYY/MM/DD"),
+                        endapplytime:userData.applyinfo.applytime.addMonths(1).toFormat("YYYY/MM/DD"),
+                        scanauditurl: userData.scanauditurl,
+                        orderid: payorderdata._id,
+                        name: userData.name,
+                        mobile: userData.mobile,
+                        paytype: userData.paytype,
+                        paytypestatus: userData.paytypestatus,
+                    };
+                    if (userData.applystate == 2) {
+                        returndata.paytypestatus = 20
+                    }
+                    return callback(null, returndata);
+                })
+
+        })
+}
 //   用户线上支付 生成支付订单
 var createuserpayorder=function(userdata,classdata,callback){
     var  userpayinfo=new  UserPayModel();
@@ -2507,7 +2573,7 @@ exports.getMyApplyPayOrder=function(userid,orderstate,callback){
             applyschoolinfo:r.applyschoolinfo,
             applyclasstypeinfo:r.applyclasstypeinfo,
             discountmoney:r.discountmoney,
-            paymoney:r.paymoney,
+            paymoney:r.paymoney*100,
             activitycoupon:r.activitycoupon?r.activitycoupon:"",
             couponcode:r.couponcode?r.couponcode:"",
         };
