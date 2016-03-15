@@ -2355,10 +2355,10 @@ exports.applyschoolinfo=function(applyinfo,callback){
       }
       // 检查报名驾校和教练
       coachmode.findOne(searchcoachinfo,function(err,coachdata){
-          if(err||!coachdata){
+          if(err){
               return callback("不能找到报名的教练");
           }
-          applyinfo.coachid=coachdata._id;
+          applyinfo.coachid=coachdata?coachdata._id:"";
           // 检查教练
           schoolModel.findById(new mongodb.ObjectId(applyinfo.schoolid),function(err,schooldata){
               if(err||!schooldata){
@@ -2399,7 +2399,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       userdata.applycount=userdata.applycount+1;
                   userdata.applycoach=applyinfo.coachid;
                   userdata.applycoachinfo.id=applyinfo.coachid;
-                  userdata.applycoachinfo.name=coachdata.name;
+                  userdata.applycoachinfo.name=coachdata?coachdata.name:"";
 
                   userdata.applyclasstype=applyinfo.classtypeid;
                   userdata.applyclasstypeinfo.id=applyinfo.classtypeid;
@@ -2420,11 +2420,17 @@ exports.applyschoolinfo=function(applyinfo,callback){
                        return   callback("保存申请信息错误："+err);
                       }
                       classtypedata.applycount=classtypedata.applycount+1;
-                      coachdata.studentcoount=coachdata.studentcoount+1;
+                      if(coachdata){
+                          coachdata.studentcoount=coachdata.studentcoount+1;
+                          coachdata.save();
+                      }
                       classtypedata.save();
-                      coachdata.save();
                       createuserpayorder(newuserdata,classtypedata,function(err,payorderdata){
-                          return callback(null,"success",payorderdata);
+                          basedatafun.getschoolinfo(newuserdata.applyschool,function(err,schooldata) {
+                              payorderdata.schoollogoimg = schooldata ? schooldata.logoimg.originalpic : "";
+                              return callback(null, "success", payorderdata);
+                          })
+
                       })
                       //if (applyinfo.paytype==2){
                       //
