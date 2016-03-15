@@ -564,7 +564,8 @@ function getClientIp(req) {
 exports.getprepayinfo=function(req,res){
     var payconfirminfo= {
         userid:req.query.userid,
-        payoderid:req.query.payoderid
+        payoderid:req.query.payoderid,
+        clientip:req.query.clientip
     };
     if (payconfirminfo.userid===undefined|| payconfirminfo.payoderid === undefined) {
         return res.json(
@@ -575,7 +576,7 @@ exports.getprepayinfo=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    payconfirminfo.clientip=requestIp.getClientIp(req);//
+    //payconfirminfo.clientip=requestIp.getClientIp(req);//
     if (payconfirminfo.clientip.length < 15)
     {
         payconfirminfo.clientip = payconfirminfo.clientip;
