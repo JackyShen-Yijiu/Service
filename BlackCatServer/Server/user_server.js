@@ -2596,11 +2596,12 @@ exports.getprepayinfo=function(payconfirminfo,callback){
                     timestamp: Math.floor(Date.now()/1000)+"",
                     noncestr: weixinpaydata.nonce_str,
                     prepayid:weixinpaydata.prepay_id,
-                    sign:weixinpaydata.sign,
-                    package: "Sign=WXPay"
+                    //sign:weixinpaydata.sign,
+                    package: "Sign=WXPay",
+                    partnerid:merchant.id
                 };
-                //reqparam.paySign = weixinpauserver.sign(reqparam);
-                reqparam.partnerid=merchant.id;
+                reqparam.sign = weixinpauserver.sign(reqparam);
+                //reqparam.partnerid=merchant.id;
                 UserPayModel.update({"_id":payconfirminfo.payoderid},
                     {$set:{weixinpayinfo:JSON.stringify(reqparam)}},function(err,data){});
                 return callback(null,reqparam);
