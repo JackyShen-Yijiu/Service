@@ -1560,7 +1560,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
                 starlevel:resdata.coachid.starlevel,
                 driveschoolinfo:resdata.coachid.driveschoolinfo,
                 schoolimage:schooldata?schooldata.logoimg.originalpic:"",
-                schoolmobile:schooldata?schooldata.logoimg.phone:"",
+                schoolmobile:schooldata?schooldata.phone:"",
             };
             resdatainfo={
                 reservationstate:resdata.reservationstate,
