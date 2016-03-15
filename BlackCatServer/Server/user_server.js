@@ -21,6 +21,7 @@ var subjectlist=require("../Config/commondata").subject;
 var colorarray=require("../Config/sysconfig").coachtagcolor;
 var auditurl=require("../Config/sysconfig").validationurl;
 var secretParam= require('./jwt-secret').secretParam;
+var basedatafun=require("./basedatafun");
 var cache=require('../Common/cache');
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
@@ -2504,16 +2505,18 @@ exports.getmyOrder=function(userid,callback){
                     if (err) {
                         return callback("查询订单出错"+err);
                     }
-                    if(!payorderdata){
-                        return callback("没有查询到订单信息");
-                    }
+                    //if(!payorderdata){
+                    //    return callback("没有查询到订单信息");
+                    //}
+                    basedatafun.getschoolinfo(userData.applyschool,function(err,schooldata){
                     var returndata = {
+                        schoollogoimg:schooldata?schooldata.logoimg.originalpic:"",
                         applyschoolinfo: userData.applyschoolinfo,
                         applyclasstypeinfo: userData.applyclasstypeinfo,
                         applytime: userData.applyinfo.applytime.toFormat("YYYY/MM/DD"),
                         endapplytime:userData.applyinfo.applytime.addMonths(1).toFormat("YYYY/MM/DD"),
                         scanauditurl: userData.scanauditurl,
-                        orderid: payorderdata._id,
+                        orderid:payorderdata? payorderdata._id:userData._id,
                         name: userData.name,
                         mobile: userData.mobile,
                         paytype: userData.paytype,
@@ -2523,6 +2526,7 @@ exports.getmyOrder=function(userid,callback){
                         returndata.paytypestatus = 20
                     }
                     return callback(null, returndata);
+                    })
                 })
 
         })
