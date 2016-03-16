@@ -2536,7 +2536,10 @@ exports.getmyOrder=function(userid,callback){
                         if(!returndata.applyclasstypeinfo.onsaleprice){
                             returndata.applyclasstypeinfo.onsaleprice=returndata.applyclasstypeinfo.price;
                         }
-                    if (userData.applystate == 2) {
+                        returndata.applycoachinfo.coachid=returndata.applycoachinfo.id;
+                        returndata.applyclasstypeinfo._id=returndata.applyclasstypeinfo.id;
+                        returndata.applyclasstypeinfo.classname=returndata.applyclasstypeinfo.name;
+                        if (userData.applystate == 2) {
                         returndata.paytypestatus = 20
                     }
                     return callback(null, returndata);
