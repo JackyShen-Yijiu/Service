@@ -2566,7 +2566,7 @@ exports.confirmPayOrder=function(payInfo,callback){
                     if(!payorderdata){
                         return callback("没有查询到订单信息");
                     }
-                    usermodel.update({"_id":data.userid},{"paytype":payInfo.paytype>0?1:0,"bcode":payInfo.bcode},{safe: false},function(err,data){});
+                    usermodel.update({"_id":userData._id},{"paytype":payInfo.paytype>0?1:0,"bcode":payInfo.bcode},{safe: false},function(err,data){});
                     payorderdata.paychannel=payInfo.paytype;
                     payorderdata.save(function(err,data){
                         return callback(null, "success");

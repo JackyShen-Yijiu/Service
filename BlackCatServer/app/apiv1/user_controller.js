@@ -690,7 +690,7 @@ exports.confirmPayOrder=function(req,res){
     var payInfo={
         userid:req.body.userid,
         bcode:req.body.bcode,   // 渠道码
-        paytype:req.body.paytype?req.body.paytype:1  // 支付方式 1  线下支付  2 线上支付
+        paytype:req.body.paytype?req.body.paytype:1  // 支付方式 0  线下支付  1 支付宝  2 微信
     }
     if(payInfo.userid!=req.userId){
         return res.json(

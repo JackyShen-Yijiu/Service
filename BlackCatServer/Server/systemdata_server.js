@@ -29,7 +29,15 @@ exports.getUserConsult=function(index,callback){
             if(err){
                 return callback("查询数据出错："+err);
             }
-            return callback(null,data);
+            var list=[];
+            data.forEach(function(r,index){
+                console.log(r);
+                if(!r.userid){
+                    r.userid=undefined;
+                }
+                list.push(r);
+            })
+            return callback(null,list);
         })
 }
 // 保存用户咨询信息
