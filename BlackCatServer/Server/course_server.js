@@ -226,7 +226,7 @@ VerificationCourse=function(courselist,userid,callback){
     });
 }
 
-syncReservationdesc=function(userid,callback){
+var syncReservationdesc=function(userid,callback){
     usermodel.findById(new mongodb.ObjectId(userid))
         .select("subject subjecttwo  subjectthree")
         .exec(function(err,userdata) {
@@ -234,6 +234,7 @@ syncReservationdesc=function(userid,callback){
                 if(userdata.subject.subjectid==2||userdata.subject.subjectid==3){
                     reservationmodel.find({userid:new mongodb.ObjectId(userid),"subject.subjectid":userdata.subject.subjectid
                     ,"$or":[{reservationstate:appTypeEmun.ReservationState.applying},{reservationstate:appTypeEmun.ReservationState.applyconfirm},
+                                {reservationstate:appTypeEmun.ReservationState.signin},
                             {reservationstate:appTypeEmun.ReservationState.unconfirmfinish} ]})
                         .select("_id coursehour subject")
                         .sort({begintime:1})
@@ -259,7 +260,14 @@ syncReservationdesc=function(userid,callback){
                                     console.log(data);
                                 })
                             })
-                        })
+                        });
+                        console.log(reservationlist.length)
+                        if(userdata.subject.subjectid==2){
+                            usermodel.update({"_id":userdata._id},{"subjecttwo.reservation":reservationlist.length},{safe: false},function(err,data){});
+                        }
+                        if(userdata.subject.subjectid==3){
+                            usermodel.update({"_id":userdata._id},{"subjectthree.reservation":reservationlist.length},{safe: false},function(err,data){});
+                        }
                         callback(null);
                     })
                 }
@@ -269,6 +277,9 @@ syncReservationdesc=function(userid,callback){
             }
         });
 }
+syncReservationdesc("56937987e6b6a92c09a54d6b",function(err,data){
+
+});
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
     usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
