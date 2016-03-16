@@ -483,7 +483,7 @@ exports.getMyReservationCoach=function(userid,callback){
 //getMyReservation("568b21993b4fb24b6b5614a6",function(err,data){})
 //获取用户的预约信息
 exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
-    var searhinfo={userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid};
+    var searhinfo={userid:new mongodb.ObjectId(userid),"subject.subjectid":subjectid,"reservationstate":{"$ne":2}};
     if (reservationstate>0){
         searhinfo.reservationstate=reservationstate;
     }
@@ -1539,7 +1539,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
         userid:new mongodb.ObjectId(userid)})
         .select(" reservationstate reservationcreatetime is_shuttle shuttleaddress " +
         "  courseprocessdesc classdatetimedesc trainfieldlinfo coachid subject is_comment" +
-            " learningcontent begintime endtime sigintime comment")
+            " learningcontent begintime endtime sigintime comment cancelreason")
         .populate("coachid","_id  name headportrait  driveschoolinfo  starlevel")
         .exec(function(err,resdata){
             if(err){
@@ -1576,6 +1576,7 @@ exports.getUserReservationinfo=function(reservationid,userid,callback){
                 comment:resdata.comment,
                 coachid:coachinfo,
                 sigintime:resdata.sigintime?resdata.sigintime:"",
+                cancelreason:resdata.cancelreason,
                 subject:resdata.subject
             }
             //resdata.coachid=coachinfo;

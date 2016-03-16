@@ -2428,6 +2428,8 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       createuserpayorder(newuserdata,classtypedata,function(err,payorderdata){
                           basedatafun.getschoolinfo(newuserdata.applyschool,function(err,schooldata) {
                               payorderdata.schoollogoimg = schooldata ? schooldata.logoimg.originalpic : "";
+                              payorderdata.schooladdress = schooldata ? schooldata.address:"";
+                              payorderdata.applycoachinfo=newuserdata.applycoachinfo;
                               return callback(null, "success", payorderdata);
                           })
 
@@ -2518,6 +2520,8 @@ exports.getmyOrder=function(userid,callback){
                     var returndata = {
                         applystate:userData.applystate,
                         schoollogoimg:schooldata?schooldata.logoimg.originalpic:"",
+                        schooladdress :schooldata ? schooldata.address:"",
+                        applycoachinfo:userData.applycoachinfo,
                         applyschoolinfo: userData.applyschoolinfo,
                         applyclasstypeinfo: userData.applyclasstypeinfo,
                         applytime: userData.applyinfo.applytime.toFormat("YYYY/MM/DD"),
@@ -2540,7 +2544,37 @@ exports.getmyOrder=function(userid,callback){
                 })
 
         })
-}
+};
+// 用户确认支付
+exports.confirmPayOrder=function(payInfo,callback){
+    usermodel.findById(payInfo.userid)
+        .exec(function (err, userData) {
+            if (err) {
+                return callback("查找用户出错");
+            }
+            if (!userData) {
+                return callback("没有查询到用户信息");
+            }
+            if (userData.applystate !=1) {
+                return callback("用户未报名");
+            }
+            UserPayModel.findOne({"userid":userData._id,"userpaystate":0},
+                function(err,payorderdata){
+                    if (err) {
+                        return callback("查询订单出错"+err);
+                    }
+                    if(!payorderdata){
+                        return callback("没有查询到订单信息");
+                    }
+                    usermodel.update({"_id":data.userid},{"paytype":payInfo.paytype>0?1:0,"bcode":payInfo.bcode},{safe: false},function(err,data){});
+                    payorderdata.paychannel=payInfo.paytype;
+                    payorderdata.save(function(err,data){
+                        return callback(null, "success");
+                    })
+                })
+
+        })
+};
 //   用户线上支付 生成支付订单
 var createuserpayorder=function(userdata,classdata,callback){
     var  userpayinfo=new  UserPayModel();

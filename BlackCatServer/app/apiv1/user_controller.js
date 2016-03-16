@@ -685,6 +685,25 @@ exports.getmyOrder=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 用户确认支付
+exports.confirmPayOrder=function(req,res){
+    var payInfo={
+        userid:req.body.userid,
+        bcode:req.body.bcode,   // 渠道码
+        paytype:req.body.paytype?req.body.paytype:1  // 支付方式 1  线下支付  2 线上支付
+    }
+    if(payInfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    userserver.confirmPayOrder(payInfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+
 
 // 更新用户信息
 exports.updateUserInfo=function(req,res){

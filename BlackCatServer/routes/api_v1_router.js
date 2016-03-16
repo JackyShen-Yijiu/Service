@@ -101,6 +101,8 @@ v1.post('/userinfo/userapplyschool',ensureAuthorizedController.ensureAuthorized,
 v1.get('/userinfo/usercancelorder',ensureAuthorizedController.ensureAuthorized,userController.usercancelorder);
 // 获取我的订单
 v1.get("/userinfo/getmyorder",ensureAuthorizedController.ensureAuthorized,userController.getmyOrder);
+// 确认支付
+v1.post("/userinfo/confirmpayorder",ensureAuthorizedController.ensureAuthorized,userController.confirmPayOrder);
 // 用户报名验证（对于已经报名的用户）
 v1.post("/userinfo/enrollverification",ensureAuthorizedController.ensureAuthorized,userController.postenrollverification);
 // 获取我的报名状态
