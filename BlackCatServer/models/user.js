@@ -70,13 +70,13 @@ var  UserSchema=new Schema({
     favorschool: [{type: Schema.Types.ObjectId, default:null, ref: 'DriveSchool'}],
     //科目一上课信息
     subjectone:{
-        totalcourse:{type:Number,default:3},
-        reservation:{type:Number,default:0},
-        finishcourse:{type:Number,default:0},// 学习进度
+        totalcourse:{type:Number,default:3},  //总共学时
+        reservation:{type:Number,default:0},//  预约中的学时
+        finishcourse:{type:Number,default:0},// 完成学习
         missingcourse:{type:Number,default:0}, // 漏课数量
         progress:{type:String,default:"未开始"}, // 学习进度
         reservationid:String, //学习进度id
-        officialhours:{type:Number,default:0}, // 官方学时
+        officialhours:{type:Number,default:0}, // 官方总学时
         officialfinishhours:{type:Number,default:0} // 官方完成学时
     },
     //科目二上课信息

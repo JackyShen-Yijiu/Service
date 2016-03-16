@@ -2682,7 +2682,7 @@ exports.getprepayinfo=function(payconfirminfo,callback){
             return callback("没有查询到订单信息");
         }
         if (userpaydata.userpaystate != 0) {
-            return callback("订单状态不能使用优惠券");
+            return callback("订单状态不能支付");
         }
 
         var weixinpayinfo={
