@@ -427,6 +427,9 @@ exports.getUsefulCoachListtimely=function(req,res){
     var  useid=req.userId;
     var  coursedate=req.query.coursedate;
     var  timeid =req.query.timeid ;
+    if(index==2){
+        return res.json(new BaseReturnInfo(1,"",[]));
+    }
     userserver.getUsefulCoachListtimely(useid,index,coursedate,timeid,function(err,data){
         if (err)
         {
