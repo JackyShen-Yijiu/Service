@@ -2397,9 +2397,12 @@ exports.applyschoolinfo=function(applyinfo,callback){
                       userdata.referrerfcode=applyinfo.fcode;
                       userdata.applycount=userdata.applycount?userdata.applycount:0;
                       userdata.applycount=userdata.applycount+1;
-                  userdata.applycoach=applyinfo.coachid;
-                  userdata.applycoachinfo.id=applyinfo.coachid;
-                  userdata.applycoachinfo.name=coachdata?coachdata.name:"";
+                          if (applyinfo.coachid != "") {
+                              userdata.applycoach=applyinfo.coachid;
+                              userdata.applycoachinfo.id=applyinfo.coachid;
+                              userdata.applycoachinfo.name=coachdata?coachdata.name:"";
+                          }
+
 
                   userdata.applyclasstype=applyinfo.classtypeid;
                   userdata.applyclasstypeinfo.id=applyinfo.classtypeid;
