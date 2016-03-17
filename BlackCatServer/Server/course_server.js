@@ -56,10 +56,11 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
                     coachlist=[];
                 }
                 var userAlltimes=worktimes;
+                console.log(userAlltimes);
                 var coachnoplantimes=[];
                 var hourse=(new Date()).getHours();
                 var day=(new Date()).getUTCDate();
-                var day2= (new Date(date)).getUTCDate();
+                var day2= (datenow).getUTCDate();
                 for(var i=0 ;i<worktimes.length;i++){
                     userAlltimes[i].is_rest=0; //休息  1 不休息
                     userAlltimes[i].is_outofdate=1;  // 0 过期  1  正常
@@ -73,7 +74,7 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
                     // 这个时段 可以预约教练的数量
                     if(coursecount){
                         for(var j=0 ;j<coursecount.length;j++){
-                            if(worktimes[i].timeid=coursecount[j]._id){
+                            if(worktimes[i].timeid==coursecount[j]._id){
                                 userAlltimes[i].coachcount=coursecount[j].coachcount;
                                 break;
                             }
@@ -101,10 +102,13 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
                     .populate( "coachid"," _id  name headportrait ")
                     .sort({"begintime":1})
                     .exec(function(err,coursedata){
-
+                        console.log(coursedata.length);
                         for(var i=0;i<coursedata.length;i++){
-                            for (j=0;j<userAlltimes.length;j++){
+                            for (var j=0;j<userAlltimes.length;j++){
+                                //console.log(userAlltimes[j].timeid)
                                 if(coursedata[i].coursetime.timeid==userAlltimes[j].timeid){
+                                    //console.log(userAlltimes[j].timeid)
+                                    //console.log(coursedata[i].coursetime.timeid)
                                     userAlltimes[j].is_reservation=1;   // 0没有预约  1 已经预约
                                     userAlltimes[j].reservationcoachname=coursedata[i].coachid.name;
                                 }

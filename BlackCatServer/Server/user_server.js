@@ -1280,62 +1280,117 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
         if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
             return  callback("该用户现阶段不能预约课程:"+user.subject.name);
         }
-        coachmode.find({is_lock:false,is_validation:true,
-                driveschool:new mongodb.ObjectId(user.applyschool),
-                //"carmodel.modelsid":user.carmodel.modelsid,
-                "subject.subjectid":{'$in':[user.subject.subjectid]}})
-            .sort({"passrate": -1})
-            //.skip((index-1)*10)
-            //.limit(10)
-            .exec(function(err ,coachlist) {
-                if (err || !coachlist  ) {
-                    console.log(err);
-                    return callback("get coach list failed" + err);
-
-                } else if(coachlist.length == 0)
-                {
-                    return callback(null,coachlist);
-                }
-                else {
-                    coursemode.findfullCourseTimely(timeid,coursedate,user.applyschool,function(err,coursedata){
-                       if(err) {
-                           return callback("查询教练出错：" + err);
-                       }
-                        //console.log(coursedata);
-                        //console.log(coachlist.length);
+        var _date= new Date( new Date(coursedate).toFormat("YYYY-MM-DD").toString());
+        coursemode.aggregate([
+                {"$project":{
+                    "driveschool":"$driveschool",
+                    "coursedate":"$coursedate",
+                    "coursetime":"$coursetime",
+                    "coachid":"$coachid",
+                    "val": { $subtract : [ "$coursestudentcount", "$selectedstudentcount" ] },
+                }},
+                {$match:{
+                    "driveschool":new mongodb.ObjectId(user.applyschool),
+                    "coursedate": _date
+                    ,"coursetime.timeid":parseInt(timeid)
+                    ,"val":{$gt:0}
+                }}
+                ,{$group:{_id:"$coachid",coachcount : {$sum : 1}}}
+            ],
+            function(err,data) {
+                console.log(data);
+                if(data&&data.length>0){
+                    var coachidlist=[];
+                    data.forEach(function(r,indx){
+                        coachidlist.push(r._id);
+                    })
+                    coachmode.find({is_lock:false,is_validation:true,
+                        _id:{"$in":coachidlist}},function(err,coachdata){
                         process.nextTick(function () {
                             rescoachlist = [];
-                            coachlist.forEach(function (r, idx) {
-                                //console.log(r._id);
-                                 if (coursedata.indexOf(r._id)==-1) {
-                                     var returnmodel = { //new resbasecoachinfomode(r);
-                                         coachid: r._id,
-                                         name: r.name,
-                                         driveschoolinfo: r.driveschoolinfo,
-                                         headportrait: r.headportrait,
-                                         starlevel: r.starlevel,
-                                         is_shuttle: r.is_shuttle,
-                                         passrate: r.passrate,
-                                         Seniority: r.Seniority,
-                                         latitude: r.latitude,
-                                         longitude: r.longitude,
-                                         subject: r.subject,
-                                         Gender: r.Gender
-                                     }
-                                     //  r.restaurantId = r._id;
-                                     // delete(r._id);
-                                     rescoachlist.push(returnmodel);
-                                 }
+                            coachdata.forEach(function (r, idx) {
+                                var returnmodel = { //new resbasecoachinfomode(r);
+                                    coachid: r._id,
+                                    name: r.name,
+                                    driveschoolinfo: r.driveschoolinfo,
+                                    headportrait: r.headportrait,
+                                    starlevel: r.starlevel,
+                                    is_shuttle: r.is_shuttle,
+                                    passrate: r.passrate,
+                                    Seniority: r.Seniority,
+                                    latitude: r.latitude,
+                                    longitude: r.longitude,
+                                    subject: r.subject,
+                                    Gender: r.Gender
+                                }
+                                rescoachlist.push(returnmodel);
                             });
                             callback(null, rescoachlist);
-                        });
+                        })
                     })
-
                 }
-            });
+                else {
+                    return callback(err,[])
+                }
+
+            })
+        //coachmode.find({is_lock:false,is_validation:true,
+        //        driveschool:new mongodb.ObjectId(user.applyschool),
+        //        //"carmodel.modelsid":user.carmodel.modelsid,
+        //        "subject.subjectid":{'$in':[user.subject.subjectid]}})
+        //    .sort({"passrate": -1})
+        //    //.skip((index-1)*10)
+        //    //.limit(10)
+        //    .exec(function(err ,coachlist) {
+        //        if (err || !coachlist  ) {
+        //            console.log(err);
+        //            return callback("get coach list failed" + err);
+        //
+        //        } else if(coachlist.length == 0)
+        //        {
+        //            return callback(null,coachlist);
+        //        }
+        //        else {
+        //            coursemode.findfullCourseTimely(timeid,coursedate,user.applyschool,function(err,coursedata){
+        //               if(err) {
+        //                   return callback("查询教练出错：" + err);
+        //               }
+        //                //console.log(coursedata);
+        //                //console.log(coachlist.length);
+        //                process.nextTick(function () {
+        //                    rescoachlist = [];
+        //                    coachlist.forEach(function (r, idx) {
+        //                        //console.log(r._id);
+        //                         if (coursedata.indexOf(r._id)==-1) {
+        //                             var returnmodel = { //new resbasecoachinfomode(r);
+        //                                 coachid: r._id,
+        //                                 name: r.name,
+        //                                 driveschoolinfo: r.driveschoolinfo,
+        //                                 headportrait: r.headportrait,
+        //                                 starlevel: r.starlevel,
+        //                                 is_shuttle: r.is_shuttle,
+        //                                 passrate: r.passrate,
+        //                                 Seniority: r.Seniority,
+        //                                 latitude: r.latitude,
+        //                                 longitude: r.longitude,
+        //                                 subject: r.subject,
+        //                                 Gender: r.Gender
+        //                             }
+        //                             //  r.restaurantId = r._id;
+        //                             // delete(r._id);
+        //                             rescoachlist.push(returnmodel);
+        //                         }
+        //                    });
+        //                    callback(null, rescoachlist);
+        //                });
+        //            })
+        //
+        //        }
+        //    });
 
     });
 };
+
 // 第一次预约获取教练
 exports.getUserFirstCoach=function(userid,subjectid,callback){
     usermodel.findById(new mongodb.ObjectId(userid),function(err,user){
