@@ -460,6 +460,11 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getclasstypelist",adminserver.classtypelist);
     router.get("/manage/getclasstypebyid",adminserver.getclasstypebyid);
     router.post("/manage/saveclasstype",adminserver.saveClassType);
+    // 班车操作
+    router.get("/manage/getCarRouteList", adminserver.getCarRouteList);
+    router.get("/manage/getCarRouteById", adminserver.getCarRouteById);
+    router.post("/manage/saveCarRoute", adminserver.saveCarRoute);
+    router.post("/manage/updateCarRoute", adminserver.updateCarRoute);
     //订单管理
     router.get("/manage/getorderlist",adminserver.getorderlist);
     // 学员预约
