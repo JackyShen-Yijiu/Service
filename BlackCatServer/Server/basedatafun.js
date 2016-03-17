@@ -5,6 +5,7 @@
 var cache=require('../Common/cache');
 var mongodb = require('../models/mongodb.js');
 var schoolModel=mongodb.DriveSchoolModel;
+var userModel=mongodb.UserModel;
 var basedataFunc = {
 
     getschoolinfo: function(schoolid,callback){
@@ -20,6 +21,19 @@ var basedataFunc = {
             }
         })
     },
+    getstudentinfo:function(userid,callback){
+        cache.get("getstudentinfo"+userid,function(err,data){
+            if(!data){
+                userModel.findById(new mongodb.ObjectId(userid),function(err,userdata){
+                    cache.set("getstudentinfo"+userid,userdata,60,function(err){});
+                    return callback(null,userdata);
+                })
+            }
+            if(data){
+                return callback(null,data);
+            }
+        })
+    }
 
 
 }

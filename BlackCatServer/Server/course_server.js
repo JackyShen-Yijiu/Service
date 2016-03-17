@@ -17,65 +17,110 @@ var basedatafun=require("./basedatafun");
 var _ = require("underscore");
 require('date-utils');
 
+
+// 获取各个时段可以预约教练的数量
+var getUseFullCoachCount=function(schoolid,_date,callback){
+    coursemode.aggregate([
+            {"$project":{
+                "driveschool":"$driveschool",
+                "coursedate":"$coursedate",
+                "coursetime":"$coursetime",
+                "val": { $subtract : [ "$coursestudentcount", "$selectedstudentcount" ] },
+            }},
+        {$match:{
+            "driveschool":new mongodb.ObjectId(schoolid),
+            "coursedate": _date
+            ,"val":{$gt:0}
+        }}
+            ,{$group:{_id:"$coursetime.timeid",coachcount : {$sum : 1}}}
+        ],
+        function(err,data) {
+            return callback(err,data)
+        })
+}
+//getUseFullCoachCount("562dcc3ccb90f25c3bde40da",new Date("2016-03-17"),function(err,data){
+//    console.log(data);
+//})
 // 2.0 预约界面
 exports.getMyCourseoneday=function(coachid,userid,date ,callback){
-    getCoachCourse(coachid,date,function(err,data){
-        var  courselist=[];
-        if(data){
-            courselist=data;
-        }
-
-        if(err){
-            coachlist=[];
-        }
-        var userAlltimes=worktimes;
-        var coachnoplantimes=[];
-        var hourse=(new Date()).getHours();
-        var day=(new Date()).getDay();
-        var day2= (new Date(date)).getDay();
-        for(var i=0 ;i<worktimes.length;i++){
-            userAlltimes[i].is_rest=0; //休息  1 不休息
-            userAlltimes[i].is_outofdate=1;  // 0 过期  1  正常
-            userAlltimes[i].is_reservation=0;   // 0没有预约  1 已经预约
-            userAlltimes[i].reservationcoachname="";//
-            userAlltimes[i].coachcount=1;
-            if(((worktimes[i].timeid+4)<=hourse)&&(day==day2))
-            {
-                userAlltimes[i].is_outofdate=0;
-            }
-             for(var j=0 ;j<courselist.length;j++){
-                 if(worktimes[i].timeid==courselist[j].coursetime.timeid){
-                     //break;
-                     userAlltimes[i].is_rest=1;
-                     userAlltimes[i].coursedata=courselist[j];
-                 }
-             }
-        };
-
+    basedatafun.getstudentinfo(userid,function(err,userdata){
         var datenow = new Date( new Date(date).toFormat("YYYY-MM-DD").toString());
-        var datetomorrow = new Date( new Date(date).toFormat("YYYY-MM-DD").toString()).addDays(1);
-        //console.log(new Date(date).toFormat("YYYY-MM-DD").toString());
-        //console.log(datenow);
-        //console.log(datetomorrow);
-        // 查询我已经预约的数据
-        coursemode.find( { courseuser:new mongodb.ObjectId(userid)
-        ,coursebegintime: { $gte: (datenow).clearTime(), $lte:datetomorrow.clearTime()}
-        })
-            .populate( "coachid"," _id  name headportrait ")
-            .sort({"begintime":1})
-            .exec(function(err,coursedata){
+        getUseFullCoachCount(userdata.applyschool,datenow,function(err,coursecount){
+            getCoachCourse(coachid,date,function(err,data){
+                var  courselist=[];
+                if(data){
+                    courselist=data;
+                }
 
-                for(var i=0;i<coursedata.length;i++){
-                    for (j=0;j<userAlltimes.length;j++){
-                        if(coursedata[i].coursetime.timeid==userAlltimes[j].timeid){
-                            userAlltimes[j].is_reservation=1;   // 0没有预约  1 已经预约
-                            userAlltimes[j].reservationcoachname=coursedata[i].coachid.name;
+                if(err){
+                    coachlist=[];
+                }
+                var userAlltimes=worktimes;
+                console.log(userAlltimes);
+                var coachnoplantimes=[];
+                var hourse=(new Date()).getHours();
+                var day=(new Date()).getUTCDate();
+                var day2= (datenow).getUTCDate();
+                for(var i=0 ;i<worktimes.length;i++){
+                    userAlltimes[i].is_rest=0; //休息  1 不休息
+                    userAlltimes[i].is_outofdate=1;  // 0 过期  1  正常
+                    userAlltimes[i].is_reservation=0;   // 0没有预约  1 已经预约
+                    userAlltimes[i].reservationcoachname="";//
+                    userAlltimes[i].coachcount=0;
+                    if(((worktimes[i].timeid+4)<=hourse)&&(day==day2))
+                    {
+                        userAlltimes[i].is_outofdate=0;
+                    }
+                    // 这个时段 可以预约教练的数量
+                    if(coursecount){
+                        for(var j=0 ;j<coursecount.length;j++){
+                            if(worktimes[i].timeid==coursecount[j]._id){
+                                userAlltimes[i].coachcount=coursecount[j].coachcount;
+                                break;
+                            }
                         }
                     }
-                }
-                return callback(null,userAlltimes);
-            })
-    });
+                    // 是否休息
+                    for(var j=0 ;j<courselist.length;j++){
+                        if(worktimes[i].timeid==courselist[j].coursetime.timeid){
+                            //break;
+                            userAlltimes[i].is_rest=1;
+                            userAlltimes[i].coursedata=courselist[j];
+                        }
+                    }
+                };
+
+
+                var datetomorrow = new Date( new Date(date).toFormat("YYYY-MM-DD").toString()).addDays(1);
+                //console.log(new Date(date).toFormat("YYYY-MM-DD").toString());
+                //console.log(datenow);
+                //console.log(datetomorrow);
+                // 查询我已经预约的数据
+                coursemode.find( { courseuser:new mongodb.ObjectId(userid)
+                        ,coursebegintime: { $gte: (datenow).clearTime(), $lte:datetomorrow.clearTime()}
+                    })
+                    .populate( "coachid"," _id  name headportrait ")
+                    .sort({"begintime":1})
+                    .exec(function(err,coursedata){
+                        console.log(coursedata.length);
+                        for(var i=0;i<coursedata.length;i++){
+                            for (var j=0;j<userAlltimes.length;j++){
+                                //console.log(userAlltimes[j].timeid)
+                                if(coursedata[i].coursetime.timeid==userAlltimes[j].timeid){
+                                    //console.log(userAlltimes[j].timeid)
+                                    //console.log(coursedata[i].coursetime.timeid)
+                                    userAlltimes[j].is_reservation=1;   // 0没有预约  1 已经预约
+                                    userAlltimes[j].reservationcoachname=coursedata[i].coachid.name;
+                                }
+                            }
+                        }
+                        return callback(null,userAlltimes);
+                    })
+            });
+        })
+
+    })
+
 }
 
 var getCoachCourse=function(coachid,date ,callback){
@@ -277,9 +322,9 @@ var syncReservationdesc=function(userid,callback){
             }
         });
 }
-syncReservationdesc("56937987e6b6a92c09a54d6b",function(err,data){
-
-});
+//syncReservationdesc("56937987e6b6a92c09a54d6b",function(err,data){
+//
+//});
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
     usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
