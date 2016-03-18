@@ -13,7 +13,7 @@ var vipserver=mongodb.VipServerModel;
  var userCountModel=mongodb.UserCountModel;
 var  merchantmodel=mongodb.MerChantModel;
 var cache=require("../../Common/cache");
-
+var busRouteModel = mongodb.SchoolBusRouteModel;
 
 var basedataFunc = {
     getallMerchant:function(callback){
@@ -108,6 +108,11 @@ var basedataFunc = {
         trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schoolid)},function(err,fileddata){
             cache.set("schooltrainingfield"+schoolid,fileddata,60*5,function(err){});
         })
+    },
+    refbusroute:function(schoolid,callback) {
+        busRouteModel.find({"driveschool":new mongodb.ObjectId(schoolid)}, function(err, busdata) {
+            cache.set("schoolbusroute" + schoolid, filddata,60*5, function(err){});
+        });
     },
     gettrainingfiledbyid:function(trainingfiledid,callback){
         cache.get("gettrainingfiledbyid"+trainingfiledid,function(err,data){

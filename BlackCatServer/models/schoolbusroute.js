@@ -9,7 +9,10 @@ var Schema = mongoose.Schema;
 var SchoolBusRouteSchema=new Schema({
     schoolid :{type: Schema.Types.ObjectId, ref: 'DriveSchool'},   //学校id
     routename:{type:String,default:""},  // 路线名称
-    routecontent:{type:String,default:""}  // 路线详情
+    routecontent:{type:String,default:""},  // 路线详情
+    trainingfieldid: {type:String,default:""},//训练场Id
+    begintime: {type:String,default:""}, // 发车时间
+    endtime: {type:String,default:""}//到达时间
 });
 
 SchoolBusRouteSchema.index({schoolid: 1});
