@@ -56,7 +56,7 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
                     coachlist=[];
                 }
                 var userAlltimes=worktimes;
-                console.log(userAlltimes);
+                //console.log(userAlltimes);
                 var coachnoplantimes=[];
                 var hourse=(new Date()).getHours();
                 var day=(new Date()).getUTCDate();
@@ -102,7 +102,7 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
                     .populate( "coachid"," _id  name headportrait ")
                     .sort({"begintime":1})
                     .exec(function(err,coursedata){
-                        console.log(coursedata.length);
+                        //console.log(coursedata.length);
                         for(var i=0;i<coursedata.length;i++){
                             for (var j=0;j<userAlltimes.length;j++){
                                 //console.log(userAlltimes[j].timeid)
