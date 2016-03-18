@@ -111,7 +111,7 @@ var basedataFunc = {
     },
     refbusroute:function(schoolid,callback) {
         busRouteModel.find({"driveschool":new mongodb.ObjectId(schoolid)}, function(err, busdata) {
-            cache.set("schoolbusroute" + schoolid, filddata,60*5, function(err){});
+            cache.set("schoolbusroute" + schoolid, busdata,60*5, function(err){});
         });
     },
     gettrainingfiledbyid:function(trainingfiledid,callback){
@@ -167,6 +167,22 @@ var basedataFunc = {
             if(!data||data.length==0){
                 //console.log(data);
                 classtype.find({"schoolid":new mongodb.ObjectId(schoolid)},function(err,classdata){
+                    cache.set("getschoolclasstype" + schoolid, classdata, 60 * 5, function (err) {});
+                    return callback(null, classdata);
+
+                })
+            }
+            else{
+                return callback(null,data);
+            }
+        })
+    },
+    getBusRoute:function(schoolid,callback){
+        cache.get("getbusroute"+schoolid,function(err,data){
+            //console.log(data);
+            if(!data||data.length==0){
+                //console.log(data);
+                busRouteModel.find({"schoolid":new mongodb.ObjectId(schoolid)},function(err,classdata){
                     cache.set("getschoolclasstype" + schoolid, classdata, 60 * 5, function (err) {});
                     return callback(null, classdata);
 

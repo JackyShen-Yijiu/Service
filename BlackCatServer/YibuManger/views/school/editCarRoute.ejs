@@ -1,5 +1,4 @@
-
-<div class="main" ng-controller="addTraing">
+<div class="main" ng-controller="addCarRoute">
 
     <div class="main-inner">
 
@@ -13,152 +12,170 @@
 
                         <div class="widget-header">
                             <i class="icon-th-large"></i>
+
                             <h3>添加班车路线</h3>
-                        </div> <!-- /widget-header -->
+                        </div>
+                        <!-- /widget-header -->
                         <div class="widget-content">
                             <div class="tabbable">
                                 <br>
+
                                 <div class="tab-pane" id="formcontrols">
-                                    <form id="edit-profile" class="form-horizontal" name="myForm" ng-submit="processForm(myForm.$valid)"  novalidate>
+                                    <form id="edit-profile" class="form-horizontal" name="myForm"
+                                          ng-submit="processForm(myForm.$valid)" novalidate>
                                         <fieldset>
                                             <div class="control-group">
-                                                <label class="control-label" for="name" >路线名称</label>
+                                                <label class="control-label" for="routename">路线名称</label>
+
                                                 <div class="controls">
-                                                    <input type="text" class="span6 " name="name"    id="name"  placeholder="名称最多三十个字"
-                                                           ng-minlength="5" ng-maxlength="30" ng-model="formData.fieldname" required>
-                                                    <div class="alert alert-danger span4"  ng-show="myForm.name.$dirty && myForm.name.$invalid && !myForm.name.$pristine"
-                                                         role="alert">5-30个非特殊字符</div>
-                                                </div> <!-- /controls -->
+                                                    <input type="text" class="span6 " name="routename" id="routename"
+                                                           placeholder="名称最多三十个字"
+                                                           ng-minlength="3" ng-maxlength="30"
+                                                           ng-model="formData.routename" required>
+
+                                                    <div class="alert alert-danger span4"
+                                                         ng-show="myForm.routename.$dirty && myForm.routename.$invalid && !myForm.routename.$pristine"
+                                                         role="alert">3-30个非特殊字符
+                                                    </div>
+                                                </div>
+                                                <!-- /controls -->
                                             </div>
 
                                             <div class="control-group">
-                                                <label class="control-label" for="introduction">详细路线</label>
+                                                <label class="control-label" for="routecontent">详细路线</label>
+
                                                 <div class="controls">
-                                                    <textarea   class="span4" id="introduction" rows="3" ng-model="formData.fielddesc" placeholder="详细路线"></textarea>
-                                                </div><!-- /controls -->
-                                            </div><!-- /control-group -->
+                                                    <textarea class="span4" id="routecontent" rows="3"
+                                                              ng-model="formData.routecontent"
+                                                              placeholder="详细路线"></textarea>
+                                                </div>
+                                                <!-- /controls -->
+                                            </div>
+                                            <!-- /control-group -->
 
 
+                                            <div class="control-group" style="height: 250px;width: 600px">
+                                                <label class="control-label">地址选择</label>
 
-                                            <div class="control-group"  style="height: 250px;width: 600px">
-                                                <label class="control-label" >地址选择</label>
                                                 <div class="controls">
-                                                    <div id="allmap" class="span6" style="width:600px;height:250px;border:1px solid #000"></div>
+                                                    <div id="allmap" class="span6"
+                                                         style="width:600px;height:250px;border:1px solid #000"></div>
                                                 </div>
                                             </div>
 
 
                                             <div class="control-group">
                                                 <label class="control-label" for="linkman1">发车时间</label>
+
                                                 <div class="controls">
-                                                    <select class="span2" id="begintimeint"  >
+                                                    <select class="span2" id="begintime" ng-model="formData.begintime">
                                                         <option value="5">5:00</option>
-                                                        <option value="6" >6:00</option>
+                                                        <option value="6">6:00</option>
                                                         <option value="7">7:00</option>
-                                                        <option value="8" selected>8:00</option>
+                                                        <option value="8">8:00</option>
                                                         <option value="9">9:00</option>
                                                     </select>
                                                     &nbsp;&nbsp;到&nbsp;
-                                                    <select class="span2" id="endtimeint"  >
+                                                    <select class="span2" id="endtime" ng-model="formData.endtime">
                                                         <option value="17">17:00</option>
-                                                        <option value="18"selected>18:00</option>
+                                                        <option value="18">18:00</option>
                                                         <option value="19">19:00</option>
                                                         <option value="20">20:00</option>
                                                         <option value="21">21:00</option>
                                                     </select>
                                                 </div>
-                                            </div> <!-- /control-group -->
+                                            </div>
+                                            <!-- /control-group -->
 
 
                                             <div class="form-actions">
-                                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >提交</button>
+                                                <button type="submit" class="btn btn-primary"
+                                                        ng-disabled="myForm.$invalid">提交
+                                                </button>
                                                 <button class="btn">取消</button>
-                                            </div> <!-- /form-actions -->
+                                            </div>
+                                            <!-- /form-actions -->
                                         </fieldset>
                                     </form>
                                 </div>
                             </div>
-                        </div> <!-- /widget-content -->
+                        </div>
+                        <!-- /widget-content -->
 
-                    </div> <!-- /widget -->
+                    </div>
+                    <!-- /widget -->
 
-                </div> <!-- /span8 -->
-            </div> <!-- /row -->
+                </div>
+                <!-- /span8 -->
+            </div>
+            <!-- /row -->
 
-        </div> <!-- /container -->
+        </div>
+        <!-- /container -->
 
-    </div> <!-- /main-inner -->
+    </div>
+    <!-- /main-inner -->
 
 
 </div> <!-- /main -->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=201bccec2ea05baf5cf275aca9901cc0"></script>
-<script  src="/js/baidumap.js"></script>
+<script src="/js/baidumap.js"></script>
 <script type="text/javascript" src="/js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="/js/plupload/i18n/zh_CN.js"></script>
 <script type="text/javascript" src="/js/qiniu.js"></script>
 <script type="text/javascript" src="/js/qiniuupfile.js"></script>
 <script type="application/javascript">
-   /* ybxcApp.controller("addTraing",function($scope,$http){
+    ybxcApp.controller("addCarRoute", function ($scope, $http) {
         $scope.formData = {};
-        var trainingfiledid=GetQueryString("trainingfiledid");
-        if(trainingfiledid !=null && trainingfiledid.toString().length>1)
-        {
-            $http.get("gettrainingfieldbyid?trainingfiledid="+trainingfiledid)
-                    .success(function(response){
-                        if (response.type==0){
+        var car_route_id = GetQueryString("car_route_id");
+        if (car_route_id != null && car_route_id.toString().length > 1) {
+            $http.get("getBusRouteById?car_route_id=" + car_route_id)
+                    .success(function (response) {
+                        if (response.type == 0) {
                             alert(response.msg);
-                        }else{
+                        } else {
                             $scope.formData = response.data;
                             console.log(response.data);
-                            $("#logimg").val($scope.formData.logoimg);
-                            $("#logimgimg").attr("src",$scope.formData.logoimg);
-
-                            $("#trainimg").val($scope.formData.trainimg);
-                            $("#trainimgimg1").attr("src",$scope.formData.trainimg);
-
-                            setPoint($scope.formData.longitude,$scope.formData.latitude);
-                            $("#latitude").val($scope.formData.latitude);
-                            $("#longitude").val($scope.formData.longitude);
-                            $("#is_validation").val($scope.formData.is_validation);
+                            $("routename").var($scope.formData.routename);
+                            $("routecontent").var($scope.formData.routecontent);
+                            $("begintime").var($scope.formData.begintime);
+                            $("endtime").var($scope.formData.endtime);
                         }
 
 
                     })
-        }else{
-            $scope.formData.fieldlevel="5";
-            $scope.formData.is_validation=1;
-            $("#is_validation").val($scope.formData.is_validation);
+        } else {
+            //默认参数设置
         }
 
-        $scope.processForm = function(isValid){
+        $scope.processForm = function (isValid) {
             console.log(isValid);
-            if (!isValid){
+            if (!isValid) {
                 alert("参数错误");
                 return;
             }
-            if($scope.formData.trainingfiledid!=undefined&&$scope.formData.trainingfiledid!="")
-            {
-                if(!savedata()){
+            if ($scope.formData.car_route_id != undefined && $scope.formData.car_route_id != "") {
+                if (!savedata()) {
                     return;
                 }
-                $http.post("/admin/manage/updatetrainingfield",$scope.formData)
-                        .success(function(response){
-                            if (response.type==0){
+                $http.post("/admin/manage/updateBusRouteId", $scope.formData)
+                        .success(function (response) {
+                            if (response.type == 0) {
                                 alert(response.msg);
-                            }else{
+                            } else {
                                 alert("修改成功");
                                 //window.location.href="/admin/manage/schoollsit";
                             }
                         })
-            }else {
-                if(!savedata()){
+            } else {
+                if (!savedata()) {
                     return;
                 }
-                $http.post("/admin/manage/savetrainingfield",$scope.formData)
-                        .success(function(response){
-                            if (response.type==0){
+                $http.post("/admin/manage/saveBusRoute", $scope.formData)
+                        .success(function (response) {
+                            if (response.type == 0) {
                                 alert(response.msg);
-                            }else{
+                            } else {
                                 alert("添加成功");
                                 //window.location.href="/admin/manage/schoollsit";
                             }
@@ -167,26 +184,20 @@
 
         };
 
-        var savedata=function(){
-            $scope.formData.logoimg=$("#logimg").val();
-            //$scope.formData.logimgimg=$("#logimgimg").val();
-            $scope.formData.trainimg=$("#trainimg").val();
-            $scope.formData.province=$("#province").val();
-            $scope.formData.city=$("#city").val();
-            $scope.formData.address=$("#address").val();
-            $scope.formData.latitude=$("#latitude").val();
-            $scope.formData.longitude=$("#longitude").val();
-            $scope.formData.is_validation=$("#is_validation").val();
-            $scope.formData.fieldlevel=$("#fieldlevel").val();
-            $scope.formData.schoolid="<%=schoolid%>";
+        var savedata = function () {
+            $scope.formData.routename = $("#routename").val();
+            $scope.formData.routecontent = $("routecontent").val();
+            $scope.formData.begintime = $("begintime").val();
+            $scope.formData.endtime = $("endtime").val();
+            $scope.formData.schoolid = "<%=schoolid%>";
             return true;
         }
-    });*/
+    });
 
 
     //手写定位地图
-    $("#address").on("blur", function(){
-        setaddress(this.value ||"");
+    $("#address").on("blur", function () {
+        setaddress(this.value || "");
     });
 
 </script>

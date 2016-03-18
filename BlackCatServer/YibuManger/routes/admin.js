@@ -317,19 +317,20 @@ var  returnAdminRouter=function(io) {
 
     });
     //班车列表
-    router.get("/manage/carRoutelist" ,function(req, res, next) {
+    router.get("/manage/busRouteList" ,function(req, res, next) {
         var tagindex={
-            isCarrouteList:true
+            isCarRouteList:true
         };
-        res.render('school/carRoutelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/carRoutelist",null,tagindex));
+        res.render('school/carRoutelist', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/busRouteList",null,tagindex));
     });
     //编辑班车信息
     router.get("/manage/editCarRoute" ,function(req, res, next) {
         var tagindex={
-            isCarrouteList:true
+            isCarRouteList:true
         };
-        res.render('school/editCarRoute', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/editCarRoute",null,tagindex));
-    });
+        console.log("进入编辑班车信息");
+        res.render('school/editCarRoute', adminFunc.setSchoolPageInfo(req,res,"/admin/manage/getBusRouteList",null,tagindex));
+        });
 //======================================================================================================================
     //获取Y码列表
     router.get("/manage/Ycodelist" ,function(req, res, next) {
@@ -461,10 +462,10 @@ var  returnAdminRouter=function(io) {
     router.get("/manage/getclasstypebyid",adminserver.getclasstypebyid);
     router.post("/manage/saveclasstype",adminserver.saveClassType);
     // 班车操作
-    router.get("/manage/getCarRouteList", adminserver.getCarRouteList);
-    router.get("/manage/getCarRouteById", adminserver.getCarRouteById);
-    router.post("/manage/saveCarRoute", adminserver.saveCarRoute);
-    router.post("/manage/updateCarRoute", adminserver.updateCarRoute);
+    router.get("/manage/getBusRouteList", adminserver.getCarRouteList);
+    router.get("/manage/getBusRouteById", adminserver.getCarRouteById);
+    router.post("/manage/saveBusRoute", adminserver.saveCarRoute);
+    router.post("/manage/updateBusRoute", adminserver.updateCarRoute);
     //订单管理
     router.get("/manage/getorderlist",adminserver.getorderlist);
     // 学员预约

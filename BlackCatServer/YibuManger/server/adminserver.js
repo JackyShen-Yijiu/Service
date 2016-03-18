@@ -320,7 +320,7 @@ var defaultFun = {
         //console.log(classtype);
         return classtype;
     },
-    getCarRouteInfo: function(req) {
+    getCarRouteInfo: function (req) {
         classtype = {
             schoolid: req.body.schoolid,
             routecontent: req.body.routecontent ? req.body.routecontent : "",//内容
@@ -831,11 +831,69 @@ exports.updateTrainingField = function (req, res) {
 
 // 班车管理
 exports.getCarRouteList = function (req, res) {
+    var schoolid = req.query.schoolid;
+    if (schoolid === undefined || schoolid == "") {
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    busRouteModel.find({schoolid: new mongodb.ObjectId(schoolid)})
+        .select("_id routename  driveschool routecontent begintime endtime")//
+        .exec(function (err, datalist) {
+            if (datalist.length == 0) {
+                console.log("没有数据");
+            }
+            process.nextTick(function () {
+                var basRouteList = [];
+                datalist.forEach(function (r, index) {
+                    onedata = {
+                        id: r._id,
+                        schoolid: r.driveschool,
+                        routename: r.routename,
+                        routecontent: r.routecontent,
+                        begintime: r.begintime,
+                        endtime: r.endtime
+                    };
+                    basRouteList.push(onedata);
+                });
+                returninfo = {
+                    pageInfo: {
+                        totalItems: basRouteList.length,
+                        currentPage: 1,
+                        limit: basRouteList.length
+                        //pagecount: Math.floor(filedlist.length/limit )+1
+                    },
+                    datalist: basRouteList
+                }
+                return res.json(new BaseReturnInfo(1, "", returninfo));
+            })
+
+        })
 
 };
 
 exports.getCarRouteById = function (req, res) {
+    console.log("getCarRouteById id = " + busRouteId);
+    var busRouteId = req.query.car_route_id;
+    if (busRouteId === undefined || busRoutId == "") {
+        res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    busRouteModel.findById(new mongodb.ObjectId(busRouteId), function (err, busRouteData) {
+        if (err) {
+            res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
+        }
+        if (!busRouteData) {
+            res.json(new BaseReturnInfo(0, "没有查询到练车场", ""));
+        }
+        var busRouteInfo = {
+            bus_route_id: busRouteData._id,
+            schoolid: busRouteData.schoolid,
+            routename: busRouteData.routename,
+            routecontent: busRouteData.routecontent,
+            begintime: busRouteData.begintime,
+            endtime: busRouteData.endtime
 
+        };
+        res.json(new BaseReturnInfo(1, "", busRouteInfo));
+    })
 };
 
 exports.saveCarRoute = function (req, res) {
