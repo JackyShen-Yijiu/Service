@@ -25,7 +25,7 @@
 
                                         <th> 路线名称 </th>
                                         <th> 班车时间</th>
-                                        <th class="td-actions"> 路线浏览</th>
+                                        <!--<th class="td-actions"> 路线浏览</th>-->
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
@@ -35,14 +35,15 @@
                                         <td>
                                             <span>{{content.begintime}} - {{content.endtime}}</span>
                                         </td>
-                                        <td>
-                                            <a  id="editapplyinfo"
-                                                ng-click="editApplyinfo()"
-                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-eye-open"> </i></a>
-                                        </td>
+                                        <!--<td>-->
+                                            <!--<a  id="editapplyinfo"-->
+                                                <!--ng-click="editApplyinfo()"-->
+                                                <!--class="btn btn-small btn-success" >-->
+                                                <!--<i class="btn-icon-only icon-eye-open"> </i></a>-->
+                                        <!--</td>-->
 
                                         <td class="td-actions">
-                                            <a href="/admin/manage/editCarRoute?bus_route_id={{content.id}}"
+                                            <a href="/admin/manage/editCarRoute?car_route_id={{content.id}}"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
                                             <a href="#"
                                                class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>

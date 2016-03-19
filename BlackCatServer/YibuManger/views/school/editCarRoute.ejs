@@ -54,16 +54,6 @@
                                             <!-- /control-group -->
 
 
-                                            <div class="control-group" style="height: 250px;width: 600px">
-                                                <label class="control-label">地址选择</label>
-
-                                                <div class="controls">
-                                                    <div id="allmap" class="span6"
-                                                         style="width:600px;height:250px;border:1px solid #000"></div>
-                                                </div>
-                                            </div>
-
-
                                             <div class="control-group">
                                                 <label class="control-label" for="linkman1">发车时间</label>
 
@@ -86,7 +76,52 @@
                                                 </div>
                                             </div>
                                             <!-- /control-group -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="linkman1">班车站点</label>
 
+
+                                                <div class="controls">
+                                                    <a ng-click="add(-1)" class="btn btn-small btn-success">添加</a>
+                                                    <table class="table table-hover">
+                                                        <td>
+                                                            序号
+                                                        </td>
+                                                        <td>
+                                                            站名
+                                                        </td>
+                                                        <td>
+                                                           到达时间
+                                                        </td><td>
+                                                            经度
+                                                        </td><td>
+                                                            纬度
+                                                        </td><td>
+                                                            操作
+                                                        </td>
+                                                        <tr class="datalist" ng-repeat="content in formData.stationinfo">
+                                                            <td>
+                                                                <span>{{content.index}}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span>{{content.stationname}}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span>{{content.time}}</span>
+                                                            </td><td>
+                                                                <span>{{content.longitude}}</span>
+                                                            </td><td>
+                                                                <span>{{content.latitude}}</span>
+                                                            </td>
+                                                            <td><a ng-click="up(content.index)" class="btn btn-small btn-success" >上移</a>
+                                                                <a ng-click="down(content.index)" class="btn btn-small btn-success">下移</a>
+                                                                <a ng-click="add(content.index)" class="btn btn-small btn-success">追加</a>
+                                                                <a ng-click="edit(content.index)" class="btn btn-small btn-success">编辑</a>
+                                                                <a ng-click="del(content.index)" class="btn btn-small btn-danger">删除</a></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                            </div>
 
                                             <div class="form-actions">
                                                 <button type="submit" class="btn btn-primary"
@@ -101,7 +136,36 @@
                             </div>
                         </div>
                         <!-- /widget-content -->
+                        <div id="editpage" class="widget-content"  style="display: none">
+                            <div class="control-group">
+                                <div >
+                                    站点名称：
+                                    <input type="text" class="span6 " name="routename" id="routename"
+                                           placeholder="名称最多三十个字"
+                                           ng-minlength="3" ng-maxlength="30"
+                                           ng-model="addstationdata.stationname" required>
+                                </div>
+                                <div >
+                                    到时时间：
+                                    <input type="text" class="span6 " name="routename" id="routename"
+                                           placeholder="6:00/10:30/15:30"
+                                           ng-model="addstationdata.time" required>
+                                    例如：6:00/10:30/15:30
+                                </div>
 
+                                地址选择：  <input type="number" class="span2 " id="longitude"
+                                              ng-model="addstationdata.longitude"  required>
+                                <input type="number" class="span2 " id="latitude"
+                                       ng-model="addstationdata.latitude"required>
+                                <div style="height: 250px;width: 600px">
+                                <div id="allmap" class="span6"
+                                     style="width:600px;height:250px;border:1px solid #000"></div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary"
+                                    ng-click="savestation()">保存</button>
+                        </div>
                     </div>
                     <!-- /widget -->
 
@@ -125,27 +189,161 @@
 <script type="text/javascript" src="/js/qiniu.js"></script>
 <script type="text/javascript" src="/js/qiniuupfile.js"></script>
 <script type="application/javascript">
+
     ybxcApp.controller("addCarRoute", function ($scope, $http) {
         $scope.formData = {};
+        $scope.addstationindex=0;
+        $scope.addstationdata={};
+        var openid=0;
         var car_route_id = GetQueryString("car_route_id");
         if (car_route_id != null && car_route_id.toString().length > 1) {
-            $http.get("getBusRouteById?car_route_id=" + car_route_id)
+            $http.get("/manage/getBusRouteById?car_route_id=" + car_route_id)
                     .success(function (response) {
                         if (response.type == 0) {
                             alert(response.msg);
                         } else {
                             $scope.formData = response.data;
-                            console.log(response.data);
-                            $("routename").var($scope.formData.routename);
-                            $("routecontent").var($scope.formData.routecontent);
-                            $("begintime").var($scope.formData.begintime);
-                            $("endtime").var($scope.formData.endtime);
+//                            console.log(response.data);
+//                            $("#routename").val($scope.formData.routename);
+//                            $("#routecontent").val($scope.formData.routecontent);
+//                            $("#begintime").val($scope.formData.begintime);
+//                            $("#endtime").val($scope.formData.endtime);
+                            if($scope.formData.stationinfo===undefined){
+                                $scope.formData.stationinfo=[];
+                            }
                         }
 
 
                     })
-        } else {
+        } else
+        {
+            $scope.formData.begintime="5";
+            $scope.formData.endtime="21";
+//            $("#begintime").val($scope.formData.begintime);
+//            $("#endtime").val($scope.formData.endtime);
+            $scope.formData.stationinfo=[];
+
             //默认参数设置
+        }
+        $scope.show=function(){
+            console.log( $scope.formData.stationinfo[0]);
+
+           // $scope.formData.stationinfo.reverse();
+        }
+        $scope.savestation=function(){
+            if($scope.addstationdata.stationname===undefined||$scope.addstationdata.stationname==""
+            ||$scope.addstationdata.time===undefined||$scope.addstationdata.time==""
+                    ||$scope.addstationdata.longitude===undefined||$scope.addstationdata.longitude==""
+                    ||$scope.addstationdata.latitude===undefined||$scope.addstationdata.latitude==""){
+                return;
+            }
+            if($scope.addstationdata.index!=undefined&&$scope.addstationdata.index>0){
+
+            }
+            else {
+                $scope.addstationdata.index=$scope.formData.stationinfo.length+1;
+                $scope.formData.stationinfo.splice($scope.addstationindex,0,$scope.addstationdata);
+                $scope.addstationdata={};
+            }
+            layer.close(openid);
+        }
+        $scope.up=function(stationindex){
+            var  length=$scope.formData.stationinfo.length;
+            var seqindex=0;
+            var data={};
+            for (var i=0;i<$scope.formData.stationinfo.length;i++){
+                if($scope.formData.stationinfo[i].index==stationindex){
+                    data=$scope.formData.stationinfo[i];
+                    seqindex=i;
+                    break;
+                }
+            }
+            if(seqindex==0){
+                return;
+            }
+            $scope.formData.stationinfo.splice(seqindex,1);
+            $scope.formData.stationinfo.splice(seqindex-1,0,data);
+            sortstation();
+        }
+        $scope.down=function(stationindex){
+            var  length=$scope.formData.stationinfo.length;
+            var seqindex=-1;
+            var data={};
+            for (var i=0;i<$scope.formData.stationinfo.length;i++){
+                if($scope.formData.stationinfo[i].index==stationindex){
+                    data=$scope.formData.stationinfo[i];
+                    seqindex=i;
+                    break;
+                }
+            }
+            if(seqindex==($scope.formData.stationinfo.length-1||seqindex==-1)){
+                return;
+            }
+            $scope.formData.stationinfo.splice(seqindex,1);
+            $scope.formData.stationinfo.splice(seqindex+1,0,data);
+            sortstation();
+        };
+        $scope.add=function(stationindex){
+            $scope.addstationindex=0;
+            $scope.addstationdata={};
+            var  length=$scope.formData.stationinfo.length+1;
+            var seqindex=0;
+            for (var i=0;i<$scope.formData.stationinfo.length;i++){
+                if($scope.formData.stationinfo[i].index==stationindex){
+                    seqindex=i;
+                    break;
+                }
+            }
+            $scope.addstationindex=(seqindex+1);
+            openid= layer.open({
+                type: 1,
+                title: '添加站点',
+                shadeClose: true, //点击遮罩关闭层
+                 area : ['800px' , '520px'],
+                content:$("#editpage")
+            });
+//            var c={stationname:"test"+length,
+//                latitude: 0,
+//                longitude: 0,
+//                time:length,
+//                index:length}
+//            $scope.formData.stationinfo.splice(seqindex+1,0,c);
+        }
+        $scope.del=function(stationindex){
+            var  length=$scope.formData.stationinfo.length;
+            var seqindex=-1;
+            for (var i=0;i<$scope.formData.stationinfo.length;i++){
+                if($scope.formData.stationinfo[i].index==stationindex){
+                    seqindex=i;
+                    break;
+                }
+            }
+            if(seqindex==-1){
+                return;
+            }
+            $scope.formData.stationinfo.splice(seqindex,1);
+            sortstation();
+        }
+        $scope.edit=function(stationindex){
+            $scope.addstationdata={};
+            var seqindex=-1;
+            for (var i=0;i<$scope.formData.stationinfo.length;i++){
+                if($scope.formData.stationinfo[i].index==stationindex){
+                    $scope.addstationdata=$scope.formData.stationinfo[i];
+                    seqindex=i;
+                    break;
+                }
+            }
+            if(seqindex==-1){
+                return;
+            }
+            openid= layer.open({
+                type: 1,
+                title: '编辑站点--'+$scope.addstationdata.stationname,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['800px' , '520px'],
+                content:$("#editpage")
+            });
         }
 
         $scope.processForm = function (isValid) {
@@ -154,50 +352,36 @@
                 alert("参数错误");
                 return;
             }
-            if ($scope.formData.car_route_id != undefined && $scope.formData.car_route_id != "") {
-                if (!savedata()) {
-                    return;
-                }
-                $http.post("/admin/manage/updateBusRouteId", $scope.formData)
-                        .success(function (response) {
-                            if (response.type == 0) {
-                                alert(response.msg);
-                            } else {
-                                alert("修改成功");
-                                //window.location.href="/admin/manage/schoollsit";
-                            }
-                        })
-            } else {
-                if (!savedata()) {
-                    return;
-                }
-                $http.post("/admin/manage/saveBusRoute", $scope.formData)
-                        .success(function (response) {
-                            if (response.type == 0) {
-                                alert(response.msg);
-                            } else {
-                                alert("添加成功");
-                                //window.location.href="/admin/manage/schoollsit";
-                            }
-                        })
+            if (!savedata()) {
+                return;
             }
+            console.log($scope.formData);
+            //return;
+            $http.post("/admin/manage/saveBusRoute", $scope.formData)
+                    .success(function (response) {
+                        if (response.type == 0) {
+                            alert(response.msg);
+                        } else {
+                            alert("修改成功");
+                            window.location.href="/admin/manage/busRouteList";
+                        }
+                    })
 
         };
-
+        var sortstation=function(){
+            for (var i=0;i<$scope.formData.stationinfo.length;i++){
+                formData.stationinfo[i].index=i+1;
+            }
+        }
         var savedata = function () {
-            $scope.formData.routename = $("#routename").val();
-            $scope.formData.routecontent = $("routecontent").val();
-            $scope.formData.begintime = $("begintime").val();
-            $scope.formData.endtime = $("endtime").val();
+//            $scope.formData.routename = $("#routename").val();
+//            $scope.formData.routecontent = $("#routecontent").val();
+//            $scope.formData.begintime = $("#begintime").val();
+//            $scope.formData.endtime = $("#endtime").val();
             $scope.formData.schoolid = "<%=schoolid%>";
             return true;
         }
     });
 
-
-    //手写定位地图
-    $("#address").on("blur", function () {
-        setaddress(this.value || "");
-    });
 
 </script>

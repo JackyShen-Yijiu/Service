@@ -326,7 +326,8 @@ var defaultFun = {
             routecontent: req.body.routecontent ? req.body.routecontent : "",//内容
             routename: req.body.routename ? req.body.routename : "",//名称
             begintime: req.body.begintime,//发车时间
-            endtime: req.body.endtime//结束时间
+            endtime: req.body.endtime,//结束时间
+            stationinfo:req.body.stationinfo?req.body.stationinfo:[],
         };
         return classtype;
     }
@@ -873,7 +874,7 @@ exports.getCarRouteList = function (req, res) {
 exports.getCarRouteById = function (req, res) {
     console.log("getCarRouteById id = " + busRouteId);
     var busRouteId = req.query.car_route_id;
-    if (busRouteId === undefined || busRoutId == "") {
+    if (busRouteId === undefined || busRouteId == "") {
         res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
     busRouteModel.findById(new mongodb.ObjectId(busRouteId), function (err, busRouteData) {
@@ -889,7 +890,8 @@ exports.getCarRouteById = function (req, res) {
             routename: busRouteData.routename,
             routecontent: busRouteData.routecontent,
             begintime: busRouteData.begintime,
-            endtime: busRouteData.endtime
+            endtime: busRouteData.endtime,
+            stationinfo: busRouteData.stationinfo
 
         };
         res.json(new BaseReturnInfo(1, "", busRouteInfo));
@@ -898,16 +900,31 @@ exports.getCarRouteById = function (req, res) {
 
 exports.saveCarRoute = function (req, res) {
     carRouteInfo = defaultFun.getCarRouteInfo(req);
-    var carRoute = busRouteModel(carRouteInfo);
-    carRoute.save(function (err, data) {
-        basedatafun.refbusroute(req.session.schoolid, function (err, data) {
-        });
-        if (err) {
-            return res.json(new BaseReturnInfo(0, "保存班车出错：" + err, ""));
-        } else {
-            return res.json(new BaseReturnInfo(1, "", "sucess"));
-        }
-    })
+    var bus_route_id = req.body.bus_route_id;
+    if (bus_route_id === undefined || bus_route_id == "") {
+
+        var carRoute = busRouteModel(carRouteInfo);
+        carRoute.save(function (err, data) {
+            basedatafun.refbusroute(req.session.schoolid, function (err, data) {
+            });
+            if (err) {
+                return res.json(new BaseReturnInfo(0, "保存班车出错：" + err, ""));
+            } else {
+                return res.json(new BaseReturnInfo(1, "", "sucess"));
+            }
+        })
+    }   else
+    {
+        var conditions = {_id: bus_route_id};
+        var update = {$set: carRouteInfo};
+        busRouteModel.update(conditions, update, function (err, data) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, "修改教练出错：" + err, ""));
+            } else {
+                return res.json(new BaseReturnInfo(1, "", "sucess"));
+            }
+        })
+    }
 };
 
 exports.updateCarRoute = function (req, res) {

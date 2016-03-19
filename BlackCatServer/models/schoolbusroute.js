@@ -12,7 +12,12 @@ var SchoolBusRouteSchema=new Schema({
     routecontent:{type:String,default:""},  // 路线详情
     trainingfieldid: {type:String,default:""},//训练场Id
     begintime: {type:String,default:""}, // 发车时间
-    endtime: {type:String,default:""}//到达时间
+    endtime: {type:String,default:""},//到达时间
+    stationinfo:[{stationname:{type:String,default:""},
+        latitude: {type:Number,default:0},
+        longitude: {type:Number,default:0},
+        time:{type:String,default:""},
+        index:Number}]
 });
 
 SchoolBusRouteSchema.index({schoolid: 1});
