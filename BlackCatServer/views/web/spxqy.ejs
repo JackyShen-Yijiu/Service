@@ -11,7 +11,7 @@
        /* .title{width: 100%;!*border: 1px solid #fff; *! text-align: center;  font-size: 16px;  height: 60px;  line-height: 60px;  color: #fff;  font-weight: 600;}*/
         .showPic{/*border:1px solid blue;*/margin:0px auto;width:242px;height: 274px; background:url("/img/picgroun3.png") no-repeat 50% 50%;margin-top: -192px;}
         .integral{display: block;  width: 100%;  height: 50px;  line-height: 50px;  /*border: 1px solid red;*/  text-align: center;  }
-        .integral strong{font-size: 16px;color: #db4437;padding-right:5px;}
+        .integral strong{font-size: 18px;color: #db4437;padding-right:5px;}
         .convertBtn{width: 150px;/*height: 75px;*//*border: 1px solid blue;*/margin: 0 auto;margin-top: 10px;}
         .overDate{width: 100%;display: block;color: #6e6e6e;text-align:center;}
         .btn{width: 142px;height: 60px;margin: 5px 0 0 5px;}
@@ -35,7 +35,7 @@
     </div>
     <div class="showPic">
         <img src="<%=data.productimg%>" alt="" style="width: 186px;height: 186px;margin: 22px 28px 0 28px;">
-        <span class="integral"><strong>60</strong>积分</span>
+        <span class="integral"><strong><%=data.productprice%></strong>积分</span>
     </div>
     <div class="convertBtn">
         <span class="overDate">截至日期： <%=data.enddate%></span>
