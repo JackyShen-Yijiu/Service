@@ -132,6 +132,8 @@ exports.getUserapplySchool=function(userid,callback){
                     data.applyinfo.handelmessage=schooldata.name+"扫描验证";
                     data.subject.subjectid=1;
                     data.subject.name="科目一";
+                        data.paytype=1;
+                        data.paytypestatus=20;
                     data.save(function(err,data){
                         if(err){
                             return callback("驾校确认失败");

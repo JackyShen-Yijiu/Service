@@ -9,6 +9,7 @@ var AliPayNoticeModel=mongodb.AliPayNoticeModel;
 var  UserModel=mongodb.UserModel;
 var  weixinpauserver=require("../Server/weixin_payserver");
 var AlipayConfig=require("../Config/sysconfig").AlipayConfig;
+var moneyCalculation=require("../Server/purse/moneyCalculation");
 var AlipayNotify={
     verity:function(params,callback){
         var mysign=getMySign(params);
@@ -221,10 +222,22 @@ router.post("/alipay",function(req,res){
                                     res.end("fail");
                                 }
                                 UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2},{safe: false},function(err,data){});
+                               //生成Y吗
+                                UserModel.findById(new mongodb.ObjectId(data.userid),function(err,userdata){
+                                    var  userinfo={
+                                        referrerfcode:userdata.referrerfcode,
+                                        userid:userdata._id,
+                                        usertype:1,
+                                        invitationcode:userdata.invitationcode,
+                                        "applyclasstype":userdata.applyclasstype
+                                    }
+                                    moneyCalculation.applySuccess(userinfo,function(err,data){});
+                                });
                                 savenoticedata.is_deal = 1; //成功
                                 savenoticedata.dealreamk = "保存订单更新成功";
                                 savenoticedata.save(function (err, data) {
                                 });
+
                                 res.end("success");
                             })
                         })
