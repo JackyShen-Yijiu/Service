@@ -1,6 +1,7 @@
 /**
  * Created by li on 2015/11/5.
  */
+//处理自增数据
 var  Counter=require("./sequence")
 module.exports = new (function () {
 

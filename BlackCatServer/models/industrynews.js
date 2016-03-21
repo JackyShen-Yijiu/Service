@@ -2,7 +2,7 @@
  * Created by li on 2015/11/28.
  */
 
-// ��ҵ��Ѷ ��Ϣ
+// 新闻资讯
 
 
 var mongoose = require('mongoose');

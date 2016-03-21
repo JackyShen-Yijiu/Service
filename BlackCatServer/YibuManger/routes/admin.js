@@ -468,6 +468,7 @@ var  returnAdminRouter=function(io) {
     router.post("/manage/updateBusRoute", adminserver.updateCarRoute);
     //订单管理
     router.get("/manage/getorderlist",adminserver.getorderlist);
+    router.get("/manage/getOrderDetailById", adminserver.getOrderDetailById);
     // 学员预约
     router.get("/manage/getUsefulCoachList",adminserver.getUsefulCoachList);
     // 获取教练课程安排

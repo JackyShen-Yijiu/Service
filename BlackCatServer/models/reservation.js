@@ -1,6 +1,7 @@
 /**
  * Created by v-lyf on 2015/9/6.
  */
+// 预约
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

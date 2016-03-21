@@ -380,7 +380,59 @@ exports.getorderlist = function (req, res) {
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         })
-}
+};
+
+exports.getOrderDetailById = function(req, res) {
+    var orderId = req.query.order_id;
+    console.log("enter getOrderDetailById" + orderId);
+    if (orderId == undefined || orderId == "") {
+        return  res.json(new BaseReturnInfo(0, "参数有误", ""));
+    }
+    reservationmodel.findById(new mongodb.ObjectId(orderId))
+        .populate("userid", "_id name mobile")
+        .populate("coachid", "_id name mobile")
+        .populate("driveschool", "_id name")
+        .exec(function(err, orderData) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
+        }
+        if (!orderData) {
+            return res.json(new BaseReturnInfo(0, "没有查询到订单详情", ""));
+        }
+
+        var orderInfo = {
+            id : orderData._id,
+            userid : orderData.userid,
+            coachid : orderData.coachid,
+            driveschool : orderData.driveschool,
+            trainfieldlinfo : orderData.trainfieldlinfo,
+            trainfieldid : orderData.trainfieldid,
+            reservationstate : orderData.reservationstate,
+            reservationcreatetimeachid : orderData.reservationcreatetime,
+            startclassnum : orderData.startclassnum,
+            endclassnum : orderData.endclassnum,
+            finishtime : orderData.finishtime,
+            classdatetimedescchid : orderData.classdatetimedesc,
+            reservationcourse : orderData.reservationcourse,
+            is_comment : orderData.is_comment == true ? "是" : "否" ,
+            comment : orderData.comment,
+            is_coachcomment : orderData.is_coachcomment == true ? "是" : "否",
+            coachcomment : orderData.coachcomment,
+            is_complaint : orderData.is_complaint == true ? "是" : "否",
+            complaint : orderData.complaint,
+            is_signin : orderData.is_signin == true ? "是" : "否",
+            coacsigintimehid : orderData.sigintime,
+            cancelreason : orderData.cancelreason,
+            is_shuttle : orderData.is_shuttle == true ? "是" : "否",
+            shuttleaddress : orderData.shuttleaddress ? orderData.shuttleaddress : "暂无",
+            learningcontent : orderData.learningcontent ? orderData.learningcontent : "暂无",
+            courseprocessdesc : orderData.courseprocessdesc,
+            subject : orderData.subject
+        };
+        console.log(orderInfo);
+        return res.json(new BaseReturnInfo(1, "", orderInfo));
+    });
+};
 
 //====================================b班级管理
 exports.saveClassType = function (req, res) {

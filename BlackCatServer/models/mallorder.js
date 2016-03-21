@@ -1,7 +1,7 @@
 /**
  * Created by li on 2015/11/9.
  */
-// �̳Ƕ�����
+// 商品订单
 
 
 var mongoose = require('mongoose');

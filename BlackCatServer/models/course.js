@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-//鏁欑粌鐨勮绋嬩俊鎭�
+//教练课程安排
 var CourseSchema=new Schema({
     coachid:{type: Schema.Types.ObjectId, ref: 'coach'},  // 教练
     driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
