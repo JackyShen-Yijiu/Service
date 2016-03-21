@@ -10,6 +10,7 @@ var  merchant=require("../Config/sysconfig").merchant;
 var fs=require("fs");
 var WXPay = require('weixin-pay');
 var mongodb = require('../models/mongodb.js');
+var moneyCalculation=require("./purse/moneyCalculation");
 var WeiXinPayNotice =mongodb.WeiXinPayNotice;
 var UserPayModel=mongodb.UserPayModel;
 var  UserModel=mongodb.UserModel;
@@ -120,6 +121,16 @@ exports.paycallback=wxpay.useWXCallback(function(msg, req, res, next){
                         res.end("fail");
                     }
                     UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2},{safe: false},function(err,data){});
+                    UserModel.findById(new mongodb.ObjectId(data.userid),function(err,userdata){
+                        var  userinfo={
+                            referrerfcode:userdata.referrerfcode,
+                            userid:userdata._id,
+                            usertype:1,
+                            invitationcode:userdata.invitationcode,
+                            "applyclasstype":userdata.applyclasstype
+                        }
+                        moneyCalculation.applySuccess(userinfo,function(err,data){});
+                    });
                     savenoticedata.is_deal = 1; //成功
                     savenoticedata.dealreamk = "保存订单更新成功";
                     savenoticedata.save(function (err, data) {
