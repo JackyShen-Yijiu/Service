@@ -423,7 +423,7 @@ var returnAdminRouter = function (io) {
 
     //==================================================================================================================
     //  数据统计
-     router.get('/manage/getStatic',adminserver.getStatic);
+    router.get('/manage/getStatic',adminserver.getStatic);
     //  系统
     //  获取图片上传token
     router.get('/manage/qiniuuptoken', appsystemController.GetqiniuupToken2);

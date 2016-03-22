@@ -36,7 +36,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var xlsx = require('node-xlsx');
 var busRouteModel = mongodb.SchoolBusRouteModel;
-
+var async = require('async');
 
 var defaultFun = {
     getModelCount: function (obj, searchinfo, callback) {
@@ -1953,6 +1953,46 @@ exports.getApplySchoolinfo = function (req, res) {
         });
 };
 //获取驾校数据统计
-exports.getStatic = function (res, req) {
+exports.getStatic = function (req, res) {
+    async.waterfall([
+        //  获取驾校总数
+        function(cb) {
+            schoolModel.count().exec(function(err, count) {
+                if (err) {
+                    return callback("查询出错：" + err);
+                } else {
+                    var data = {
+                        school_num :　count
+                    };
+                    cb(err, data);
+                }
+            });
+        },
 
+        //  获取教练数
+        function(data, cb) {
+            coachmodel.count().exec(function (err, count){
+                if (err) {
+                    return callback("查询出错：" + err);
+                } else {
+                    data.coach_num = count;
+                    cb(err, data);
+                }
+            });
+        },
+        //  获取学生数
+        function(data, cb) {
+            usermodel.count().exec(function (err, count) {
+                if (err) {
+                    return callback("查询出错：" + err);
+                } else {
+                    data.student_num = count;
+                    return res.json(new BaseReturnInfo(1, "", data));
+                }
+            });
+        }
+    ], function (err, result) {
+            return callback(err, result);
+        }
+    );
 };

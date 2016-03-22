@@ -21,7 +21,7 @@
                                     <div class="span4">
                                         <div class="stats-box-title">驾校统计</div>
                                         <div class="stats-box-all-info"><i class="icon-user" style="color:#3366cc;"></i>
-                                            555K
+                                            <span>{{formData.school_num}}</span>
                                         </div>
                                         <div class="wrap-chart">
                                             <div id="visitor-stat" class="chart"
@@ -35,7 +35,8 @@
                                     <div class="span4">
                                         <div class="stats-box-title">学员统计</div>
                                         <div class="stats-box-all-info"><i class="icon-thumbs-up"
-                                                                           style="color:#F30"></i> 66.66
+                                                                           style="color:#F30"></i>
+                                            <span>{{formData.student_num}}</span>
                                         </div>
                                         <div class="wrap-chart">
                                             <div id="order-stat" class="chart"
@@ -49,7 +50,8 @@
                                     <div class="span4">
                                         <div class="stats-box-title">教练统计</div>
                                         <div class="stats-box-all-info"><i class="icon-shopping-cart"
-                                                                           style="color:#3C3"></i> 15.55
+                                                                           style="color:#3C3"></i>
+                                            <span>{{formData.coach_num}}</span>
                                         </div>
                                         <div class="wrap-chart">
 
@@ -130,14 +132,14 @@
 
 </div> <!-- /main -->
 <script>
-    ybxhApp.controller("index", function ($scope, $http) {
-        $scope.formdata = {};
+    ybxcApp.controller("index", function ($scope, $http) {
+        $scope.formData = {};
         //获取信息
         $http.get("getStatic").success(function (response) {
             if (response.type == 0) {
                 alert(response.msg);
             } else {
-                console.log(response.data);
+                console.log(response);
                 $scope.formData = response.data;
             }
         });
