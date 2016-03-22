@@ -1,6 +1,7 @@
 /**
  * Created by v-lyf on 2015/9/2.
  */
+// Ã‚ø‚
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

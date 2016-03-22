@@ -1,159 +1,196 @@
-<link type="text/css" rel="stylesheet" 	href="/css/mask.css" />
-<div class="main" >
+<link type="text/css" rel="stylesheet" href="/css/mask.css"/>
+<div class="main" ng-controller="orderDetail">
     <div class="main-inner">
         <div class="container">
             <div class="row">
                 <div class="span12">
                     <div>
-                        <p>查看订单信息/当前订单号:<span>{{1234567}}</span></p>
-                    </div> <!-- /widget-header -->
+                        <p>查看订单信息/当前订单号:<span>{{formData.id}}</span></p>
+                    </div>
+                    <!-- /widget-header -->
                     <div class="widget-content">
                         <div class="box">
                             <div class="box-body table-responsive no-padding">
                                 <table class="table table-hover">
                                     <tr>
-                                        <td >
-                                            <label ><h4>订单信息</h4></label>
+                                        <td>
+                                            <label><h4>订单信息</h4></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约课程:<span>{{content.userid}}</span></label>
+                                        <td>
+                                            <label>用户:<span>{{formData.userid.name}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约教练:<span>{{content.coachid}}</span></label>
+                                        <td>
+                                            <label>预约教练:<span>{{formData.coachid.name}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >所在学校:<span>{{content.driveschool}}</span></label>
+                                        <td>
+                                            <label>所在学校:<span>{{formData.driveschool.name}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label > 练车场同车学员:<span>{{content.trainfieldid}}</span></label>
+                                        <td>
+                                            <label>训练场信息:<span>{{formData.trainfieldlinfo.name}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >训练场信息:<span>{{content.trainfieldlinfo}}</span></label>
+                                        <td>
+                                            <label>预约状态:
+                                                 <span ng-switch="formData.reservationstate">
+                                                    <span ng-switch-when=1>
+                                                     预约中
+                                                     </span>
+                                                     <span ng-switch-when=2>
+                                                      学员取消
+                                                     </span>
+                                                     <span ng-switch-when=3>
+                                                      已接受
+                                                     </span>
+                                                     <span ng-switch-when=4>
+                                                         教练拒绝
+                                                     </span>
+                                                     <span ng-switch-when=5>
+                                                        待确认学完
+                                                     </span>
+                                                     <span ng-switch-when=6>
+                                                        待评价
+                                                     </span>
+                                                     <span ng-switch-when=8>
+                                                         系统取消
+                                                     </span>
+                                                     <span ng-switch-when=7>
+                                                      已完成
+                                                     </span>
+                                                     <span ng-switch-when=9>
+                                                      已签到
+                                                     </span>
+                                                     <span ng-switch-when=10>
+                                                      未签到
+                                                     </span>
+                                                 </span>
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约状态:<span>{{content.reservationstate}}</span></label>
+                                        <td>
+                                            <label>预约时间:<span>{{formData.reservationcreatetime}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约时间:<span>{{content.reservationcreatetime}}</span></label>
+                                        <td>
+                                            <label>预约开始第几个课时:<span>{{formData.startclassnum}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约 开始第几个课时:<span>{{content.startclassnum}}</span></label>
+                                        <td>
+                                            <label>预约到第几个课时:<span>{{formData.endclassnum}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约到第几个课时:<span>{{content.endclassnum}}</span></label>
+                                        <td>
+                                            <label>完成时间:<span>{{formData.endtime}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >完成时间:<span>{{content.endtime}}</span></label>
+                                        <td>
+                                            <label>上课时间描述:<span>{{formData.classdatetimedesc}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >上课时间描述:<span>{{content.classdatetimedesc}}</span></label>
+                                        <td>
+                                            <label>是否评论:<span>{{formData.is_comment}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >预约课程:<span>{{content.reservationcourse}}</span></label>
+                                        <td>
+                                            <label>评论内容:<span>{{formData.comment.commentcontent}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >是否评论:<span>{{content.is_comment}}</span></label>
+                                        <td>
+                                            <label>评论时间:<span>{{formData.comment.commenttime}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >评论:<span>{{content.comment}}</span></label>
+                                        <td>
+                                            <label>教练是否评论:<span>{{formData.is_coachcomment}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >教练是否评论:<span>{{content.is_coachcomment}}</span></label>
+                                        <td>
+                                            <label>教练评论:<span>{{formData.coachcomment.commentcontent}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >教练评论:<span>{{content.coachcomment}}</span></label>
+                                        <td>
+                                            <label>评论时间:<span>{{formData.coachcomment.commenttime}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >是否投诉:<span>{{content.is_complaint}}</span></label>
+                                        <td>
+                                            <label>是否投诉:<span>{{formData.is_complaint}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >投诉内容:<span>{{content.complaint}}</span></label>
+                                        <td>
+                                            <label>投诉内容:<span>{{formData.complaint.complaintcontent}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >是否签到:<span>{{content.is_signin}}</span></label>
+                                        <td>
+                                            <label>是否签到:<span>{{formData.is_signin}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >签到时间:<span>{{content.sigintime}}</span></label>
+                                        <td>
+                                            <label>签到时间:<span>{{formData.sigintime}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >取消预约原因:<span>{{content.cancelreason}}</span></label>
+                                        <td>
+                                            <label>取消预约原因:<span>{{formData.cancelreason.cancelcontent}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >是否接送:<span>{{content.is_shuttle}}</span></label>
+                                        <td>
+                                            <label>是否接送:<span>{{formData.is_shuttle}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >接送地址:<span>{{content.shuttleaddress}}</span></label>
+                                        <td>
+                                            <label>接送地址:<span>{{formData.shuttleaddress}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >学习内容:<span>{{content.learningcontent}}</span></label>
+                                        <td>
+                                            <label>学习内容:<span>{{formData.learningcontent}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >课程进度描述:<span>{{content.courseprocessdesc}}</span></label>
+                                        <td>
+                                            <label>课程进度描述:<span>{{formData.courseprocessdesc}}</span></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td >
-                                            <label >科目:<span>{{content.subject}}</span></label>
+                                        <td>
+                                            <label>科目:<span>{{formData.subject.name}}</span></label>
                                         </td>
                                     </tr>
 
                                 </table>
-                            </div><!-- /.box-body -->
+                            </div>
+                            <!-- /.box-body -->
                             <div class="form-actions">
-                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" >修改</button>
+                                <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid">修改</button>
                                 <button class="btn" onclick="history.go(-1)">返回</button>
-                            </div> <!-- /form-actions -->
-                        </div><!-- /.box -->
+                            </div>
+                            <!-- /form-actions -->
+                        </div>
+                        <!-- /.box -->
 
                     </div>
                 </div>
@@ -165,10 +202,24 @@
     <!-- /container -->
 </div>
 <!-- /main-inner -->
-</div>
+<script>
+    ybxcApp.controller("orderDetail", function ($scope, $http) {
+        $scope.formData = {};
+        $scope.showlicensetype = "";
+        var orderId = GetQueryString("orderid");
+        if (orderId != null && orderId.toString().length > 1) {
+            console.log(orderId);
+            $http.get("getOrderDetailById?order_id=" + orderId)
+                    .success(function (response) {
+                if (response.type == 0) {
+                    alert(response.msg);
+                } else {
+                    console.log(response.data);
+                    $scope.formData = response.data;
+                }
+            });
+        }
+    });
 
 
-
-
-
-</div><!--mask end-->
+</script>

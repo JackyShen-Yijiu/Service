@@ -1,7 +1,7 @@
 /**
  * Created by li on 2015/11/3.
  */
-    // vip �����б�
+    // vip 服务列表
 var mongoose = require('mongoose');
 var seqlist=require("./idautoinc");
 var Schema = mongoose.Schema;

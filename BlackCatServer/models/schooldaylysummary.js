@@ -2,7 +2,7 @@
  * Created by li on 2015/11/30.
  */
 
-//
+//驾校汇总
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
