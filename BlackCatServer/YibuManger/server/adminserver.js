@@ -36,9 +36,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var xlsx = require('node-xlsx');
 var busRouteModel = mongodb.SchoolBusRouteModel;
-exports.getStatitic = function (req, res) {
 
-}
 
 var defaultFun = {
     getModelCount: function (obj, searchinfo, callback) {
@@ -327,11 +325,11 @@ var defaultFun = {
             routename: req.body.routename ? req.body.routename : "",//名称
             begintime: req.body.begintime,//发车时间
             endtime: req.body.endtime,//结束时间
-            stationinfo:req.body.stationinfo?req.body.stationinfo:[],
+            stationinfo: req.body.stationinfo ? req.body.stationinfo : [],
         };
         return classtype;
     }
-}
+};
 
 // 订单管理
 exports.getorderlist = function (req, res) {
@@ -345,7 +343,6 @@ exports.getorderlist = function (req, res) {
     if (schoolid === undefined || schoolid == "") {
         return res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
-    ;
     var searchinfo = {
         "driveschool": new mongodb.ObjectId(schoolid),
         reservationcreatetime: {
@@ -357,7 +354,6 @@ exports.getorderlist = function (req, res) {
     if (reservationstate > 0) {
         searchinfo.reservationstate = reservationstate;
     }
-    ;
     // 预约时间
     reservationmodel.find(searchinfo)
         .select("userid coachid reservationstate reservationcreatetime begintime endtime subject")
@@ -376,62 +372,60 @@ exports.getorderlist = function (req, res) {
                         pagecount: Math.floor(ordercount / limit) + 1
                     },
                     datalist: data
-                }
+                };
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         })
 };
 
-exports.getOrderDetailById = function(req, res) {
+//  根据id获取订单详情
+exports.getOrderDetailById = function (req, res) {
     var orderId = req.query.order_id;
-    console.log("enter getOrderDetailById" + orderId);
     if (orderId == undefined || orderId == "") {
-        return  res.json(new BaseReturnInfo(0, "参数有误", ""));
+        return res.json(new BaseReturnInfo(0, "参数有误", ""));
     }
     reservationmodel.findById(new mongodb.ObjectId(orderId))
         .populate("userid", "_id name mobile")
         .populate("coachid", "_id name mobile")
         .populate("driveschool", "_id name")
-        .exec(function(err, orderData) {
-        if (err) {
-            return res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
-        }
-        if (!orderData) {
-            return res.json(new BaseReturnInfo(0, "没有查询到订单详情", ""));
-        }
-
-        var orderInfo = {
-            id : orderData._id,
-            userid : orderData.userid,
-            coachid : orderData.coachid,
-            driveschool : orderData.driveschool,
-            trainfieldlinfo : orderData.trainfieldlinfo,
-            trainfieldid : orderData.trainfieldid,
-            reservationstate : orderData.reservationstate,
-            reservationcreatetimeachid : orderData.reservationcreatetime,
-            startclassnum : orderData.startclassnum,
-            endclassnum : orderData.endclassnum,
-            finishtime : orderData.finishtime,
-            classdatetimedescchid : orderData.classdatetimedesc,
-            reservationcourse : orderData.reservationcourse,
-            is_comment : orderData.is_comment == true ? "是" : "否" ,
-            comment : orderData.comment,
-            is_coachcomment : orderData.is_coachcomment == true ? "是" : "否",
-            coachcomment : orderData.coachcomment,
-            is_complaint : orderData.is_complaint == true ? "是" : "否",
-            complaint : orderData.complaint,
-            is_signin : orderData.is_signin == true ? "是" : "否",
-            coacsigintimehid : orderData.sigintime,
-            cancelreason : orderData.cancelreason,
-            is_shuttle : orderData.is_shuttle == true ? "是" : "否",
-            shuttleaddress : orderData.shuttleaddress ? orderData.shuttleaddress : "暂无",
-            learningcontent : orderData.learningcontent ? orderData.learningcontent : "暂无",
-            courseprocessdesc : orderData.courseprocessdesc,
-            subject : orderData.subject
-        };
-        console.log(orderInfo);
-        return res.json(new BaseReturnInfo(1, "", orderInfo));
-    });
+        .exec(function (err, orderData) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
+            }
+            if (!orderData) {
+                return res.json(new BaseReturnInfo(0, "没有查询到订单详情", ""));
+            }
+            var orderInfo = {
+                id: orderData._id,
+                userid: orderData.userid,
+                coachid: orderData.coachid,
+                driveschool: orderData.driveschool,
+                trainfieldlinfo: orderData.trainfieldlinfo,
+                trainfieldid: orderData.trainfieldid,
+                reservationstate: orderData.reservationstate,
+                reservationcreatetime: orderData.reservationcreatetime,
+                startclassnum: orderData.startclassnum,
+                endclassnum: orderData.endclassnum,
+                finishtime: orderData.finishtime,
+                classdatetimedesc: orderData.classdatetimedesc,
+                reservationcourse: orderData.reservationcourse,
+                is_comment: orderData.is_comment == true ? "是" : "否",
+                comment: orderData.comment,
+                is_coachcomment: orderData.is_coachcomment == true ? "是" : "否",
+                coachcomment: orderData.coachcomment,
+                is_complaint: orderData.is_complaint == true ? "是" : "否",
+                complaint: orderData.complaint,
+                is_signin: orderData.is_signin == true ? "是" : "否",
+                sigintime: orderData.sigintime,
+                cancelreason: orderData.cancelreason,
+                is_shuttle: orderData.is_shuttle == true ? "是" : "否",
+                shuttleaddress: orderData.shuttleaddress ? orderData.shuttleaddress : "暂无",
+                learningcontent: orderData.learningcontent ? orderData.learningcontent : "暂无",
+                courseprocessdesc: orderData.courseprocessdesc,
+                subject: orderData.subject
+            };
+            return res.json(new BaseReturnInfo(1, "", orderInfo));
+        });
 };
 
 //====================================b班级管理
@@ -446,11 +440,8 @@ exports.saveClassType = function (req, res) {
             } else {
                 return res.json(new BaseReturnInfo(1, "", "sucess"));
             }
-        })
-
-
-    }
-    else {
+        });
+    } else {
         var conditions = {_id: classtypeid};
         var update = {$set: classinfo};
         classtypemodel.update(conditions, update, function (err, data) {
@@ -462,13 +453,12 @@ exports.saveClassType = function (req, res) {
         })
     }
 
-}
+};
 exports.classtypelist = function (req, res) {
     var schoolid = req.query.schoolid;
     if (schoolid === undefined || schoolid == "") {
         return res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
-    ;
     classtypemodel.find({schoolid: new mongodb.ObjectId(schoolid)})
         //.select("_id phone  driveschool fieldname address responsible")
         .exec(function (err, datalist) {
@@ -485,7 +475,7 @@ exports.classtypelist = function (req, res) {
                         price: r.price,
                         classchedule: r.classchedule,
                         onsaleprice: r.onsaleprice
-                    }
+                    };
                     filedlist.push(onedata);
                 });
                 returninfo = {
@@ -496,19 +486,16 @@ exports.classtypelist = function (req, res) {
                         //pagecount: Math.floor(filedlist.length/limit )+1
                     },
                     datalist: filedlist
-                }
+                };
                 return res.json(new BaseReturnInfo(1, "", returninfo));
             })
-
         })
-
 };
 exports.getclasstypebyid = function (req, res) {
     var classtypeid = req.query.classtypeid;
     if (classtypeid === undefined || classtypeid == "") {
         res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
-    ;
     classtypemodel.findById(new mongodb.ObjectId(classtypeid), function (err, classdata) {
         if (err) {
             return res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
@@ -537,7 +524,7 @@ exports.getclasstypebyid = function (req, res) {
         };
         return res.json(new BaseReturnInfo(1, "", classtypeinfo));
     })
-}
+};
 ///====================================教练管理
 exports.getCoachlist = function (req, res) {
     var schoolid = req.query.schoolid;
@@ -682,7 +669,7 @@ exports.getstudentlist = function (req, res) {
         "applyschool": schoolid,
         "applystate": 2,
         "name": new RegExp(name)
-    }
+    };
     usermodel.find(searchinfo)
         .select("_id name mobile  headportrait subject carmodel applycoachinfo applyclasstypeinfo")
         .skip((index - 1) * limit)
@@ -720,7 +707,6 @@ exports.getstudentbyid = function (req, res) {
     if (studentid === undefined || studentid == "") {
         return res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
-    ;
     usermodel.findById(new mongodb.ObjectId(studentid), function (err, userdata) {
         if (err) {
             return res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
@@ -795,24 +781,24 @@ exports.getTrainingFieldList = function (req, res) {
                         responsible: r.responsible,
                         phone: r.phone,
                         pictures: r.pictures
-                    }
+                    };
                     filedlist.push(onedata);
                 });
                 returninfo = {
                     pageInfo: {
                         totalItems: filedlist.length,
                         currentPage: 1,
-                        limit: filedlist.length,
+                        limit: filedlist.length
                         //pagecount: Math.floor(filedlist.length/limit )+1
                     },
                     datalist: filedlist
-                }
+                };
                 return res.json(new BaseReturnInfo(1, "", returninfo));
             })
 
         })
 
-}
+};
 exports.saveTrainingField = function (req, res) {
     fieldinfo = defaultFun.getfiledinfo(req);
     var trainfild = trainingfiledModel(fieldinfo);
@@ -825,13 +811,12 @@ exports.saveTrainingField = function (req, res) {
             return res.json(new BaseReturnInfo(1, "", "sucess"));
         }
     })
-}
+};
 exports.getTrainingFieldbyId = function (req, res) {
     var trainingfiledid = req.query.trainingfiledid;
     if (trainingfiledid === undefined || trainingfiledid == "") {
         res.json(new BaseReturnInfo(0, "参数错误", ""));
     }
-    ;
     trainingfiledModel.findById(new mongodb.ObjectId(trainingfiledid), function (err, trainingfileddata) {
         if (err) {
             res.json(new BaseReturnInfo(0, "查询出错:" + err, ""));
@@ -856,10 +841,10 @@ exports.getTrainingFieldbyId = function (req, res) {
             latitude: trainingfileddata.latitude,
             longitude: trainingfileddata.longitude,
             fielddesc: trainingfileddata.fielddesc,
-        }
+        };
         res.json(new BaseReturnInfo(1, "", trainingfiledidinfo));
     })
-}
+};
 exports.updateTrainingField = function (req, res) {
     var trainingfiledid = req.body.trainingfiledid;
     if (trainingfiledid === undefined || trainingfiledid == "") {
@@ -880,9 +865,9 @@ exports.updateTrainingField = function (req, res) {
             return res.json(new BaseReturnInfo(1, "", "sucess"));
         }
     })
-}
+};
 
-// 班车管理
+//=====================================班车管理
 exports.getCarRouteList = function (req, res) {
     var schoolid = req.query.schoolid;
     if (schoolid === undefined || schoolid == "") {
@@ -915,14 +900,11 @@ exports.getCarRouteList = function (req, res) {
                         //pagecount: Math.floor(filedlist.length/limit )+1
                     },
                     datalist: basRouteList
-                }
+                };
                 return res.json(new BaseReturnInfo(1, "", returninfo));
             })
-
         })
-
 };
-
 exports.getCarRouteById = function (req, res) {
     console.log("getCarRouteById id = " + busRouteId);
     var busRouteId = req.query.car_route_id;
@@ -949,7 +931,6 @@ exports.getCarRouteById = function (req, res) {
         res.json(new BaseReturnInfo(1, "", busRouteInfo));
     })
 };
-
 exports.saveCarRoute = function (req, res) {
     carRouteInfo = defaultFun.getCarRouteInfo(req);
     var bus_route_id = req.body.bus_route_id;
@@ -965,8 +946,7 @@ exports.saveCarRoute = function (req, res) {
                 return res.json(new BaseReturnInfo(1, "", "sucess"));
             }
         })
-    }   else
-    {
+    } else {
         var conditions = {_id: bus_route_id};
         var update = {$set: carRouteInfo};
         busRouteModel.update(conditions, update, function (err, data) {
@@ -978,12 +958,11 @@ exports.saveCarRoute = function (req, res) {
         })
     }
 };
-
 exports.updateCarRoute = function (req, res) {
 
-}
+};
 
-//  活动管理 ===
+//=====================================活动管理
 exports.getactivitybyid = function (req, res) {
     var activityid = req.query.activityid;
     if (activityid === undefined || activityid == "") {
@@ -1011,8 +990,9 @@ exports.getactivitybyid = function (req, res) {
         }
         res.json(new BaseReturnInfo(1, "", activity));
     })
-}
-//保存活动信息
+};
+
+//=====================================保存活动信息
 exports.updateactivty = function (req, res) {
     activtyfo = defaultFun.getActivity(req);
     var activityid = req.body.activityid;
@@ -1039,7 +1019,7 @@ exports.updateactivty = function (req, res) {
             }
         })
     }
-}
+};
 exports.getactivtylist = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
     var limit = req.query.limit ? req.query.limit : 10;
@@ -1075,8 +1055,9 @@ exports.getactivtylist = function (req, res) {
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         });
-}
-//==============行业信息
+};
+
+//=====================================行业信息
 exports.getindustrynewsList = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
     var limit = req.query.limit ? req.query.limit : 10;
@@ -1172,7 +1153,8 @@ exports.updateindustrynews = function (req, res) {
             }
         })
     }
-}
+};
+
 //  ===================================商城管理
 exports.getbusinesslist = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
@@ -1276,8 +1258,9 @@ exports.updateproduct = function (req, res) {
             }
         })
     }
-}
-/// =====================================用户管理
+};
+
+/// ===================================用户管理
 exports.getadminuserlist = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
     var limit = req.query.limit ? req.query.limit : 10;
@@ -1361,7 +1344,8 @@ exports.deleteadminuser = function (req, res) {
         return res.json(new BaseReturnInfo(0, "删除信息出错：" + ex.message, ""));
     }
 };
-//=========================================校长管理
+
+//======================================校长管理
 exports.getheadmasterlist = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
     var limit = req.query.limit ? req.query.limit : 10;
@@ -1431,7 +1415,8 @@ exports.updateheadmaster = function (req, res) {
         })
     }
 };
-//========================================用户反馈
+
+//======================================用户反馈
 exports.getuserfeedbacklist = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
     var limit = req.query.limit ? req.query.limit : 10;
@@ -1531,6 +1516,7 @@ exports.exportsfeedbackexcle = function (req, res) {
 
         });
 };
+
 ///=====================================驾校管理
 exports.getSchoolist = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
@@ -1582,8 +1568,7 @@ exports.getSchoolist = function (req, res) {
                     })
             })
         });
-}
-
+};
 exports.saveSchoolInfo = function (req, res) {
     schoolinfo = defaultFun.getschoolinfo(req);
     console.log(schoolinfo);
@@ -1612,8 +1597,7 @@ exports.saveSchoolInfo = function (req, res) {
     })
 
 
-}
-
+};
 exports.updateSchoolInfo = function (req, res) {
     //console.log(req.body);
     try {
@@ -1639,8 +1623,7 @@ exports.updateSchoolInfo = function (req, res) {
     }
 
 
-}
-
+};
 exports.getSchoolInfoById = function (req, res) {
     var schoolid = req.query.schoolid;
     if (schoolid === undefined || schoolid == "") {
@@ -1697,8 +1680,7 @@ exports.getSchoolInfoById = function (req, res) {
         }
         res.json(new BaseReturnInfo(1, "", schoolinfo));
     })
-}
-
+};
 exports.getmainPagedata = function (schoolid, callback) {
     var queryinfo = {
         userid: "",
@@ -1723,10 +1705,10 @@ exports.getmainPagedata = function (schoolid, callback) {
     basedatafun.getschoolinfo(schoolid, proxy.done('schooldata'));
     userCenterServer.getIndustryNews(queryinfo, proxy.done('newsinfo'));
     getSchoolallCoach(schoolid, proxy.done('coachdata'));
-}
+};
 
 
-//查询驾校所有教练
+//  查询驾校所有教练
 var getSchoolallCoach = function (schoolid, callback) {
     cache.get("schoolcoach" + schoolid, function (err, data) {
         if (err) {
@@ -1752,7 +1734,7 @@ var getSchoolallCoach = function (schoolid, callback) {
         }
     })
 };
-//查询教练的课时学
+//  查询教练的课时学
 var getCoachCourseplan = function (schoolid, beginDate, endDate, callback) {
     cache.get('getCoachCourseplan:' + schoolid + beginDate, function (err, data) {
         if (err) {
@@ -1809,9 +1791,8 @@ exports.getcoachcourse = function (schoolid, callback) {
     var enddate = (new Date()).addDays(7).clearTime();
     coachmodel.find(searchinfo)
         .select("_id name mobile  createtime carmodel trainfieldlinfo")
-}
-
-//获取我可以预约的教练
+};
+//  获取我可以预约的教练
 exports.getUsefulCoachList = function (req, res) {
     var userid = req.query.studentid;
     var index = -1;
@@ -1822,8 +1803,8 @@ exports.getUsefulCoachList = function (req, res) {
             return res.json(new BaseReturnInfo(1, "", data));
         }
     });
-}
-// 获取某一 教练的课程安排
+};
+//  获取某一 教练的课程安排
 exports.getcoursebycoach = function (req, res) {
     var coachid = req.query.coachid;
     var date = req.query.date;
@@ -1847,7 +1828,7 @@ exports.getcoursebycoach = function (req, res) {
         return res.json(new BaseReturnInfo(1, "", data));
     });
 };
-// 用户提交数据
+//  用户提交数据
 exports.postReservation = function (req, res) {
     var reservationinfo = {
         userid: req.body.userid,
@@ -1876,7 +1857,7 @@ exports.postReservation = function (req, res) {
         return res.json(new BaseReturnInfo(1, "", data));
     });
 };
-// 取消课程
+//  取消课程
 exports.cancelReservation = function (req, res) {
     var cancelinfo = {
         userid: req.body.userid,
@@ -1898,8 +1879,8 @@ exports.cancelReservation = function (req, res) {
         }
         return res.json(new BaseReturnInfo(1, "", data));
     });
-}
-// 提交用户申请信息
+};
+//  提交用户申请信息
 exports.auditstudentapplyinfo = function (req, res) {
     var auditinfo = {
         userid: req.body.userid,
@@ -1935,8 +1916,7 @@ exports.auditstudentapplyinfo = function (req, res) {
             return res.json(new BaseReturnInfo(1, "", "success"));
         })
     });
-}
-
+};
 //==========================================主页信息
 exports.getApplySchoolinfo = function (req, res) {
     var index = req.query.index ? req.query.index : 0;
@@ -1967,8 +1947,12 @@ exports.getApplySchoolinfo = function (req, res) {
                         pagecount: Math.floor(usercount / limit) + 1
                     },
                     datalist: data
-                }
+                };
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         });
-}
+};
+//获取驾校数据统计
+exports.getStatic = function (res, req) {
+
+};
