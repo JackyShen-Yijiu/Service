@@ -305,7 +305,7 @@ var defaultFun = {
             cartype: req.body.cartype ? req.body.cartype : "", //车品牌  富康、奔驰等
             classdesc: req.body.classdesc ? req.body.classdesc : "",  // 课程描述
             vipserverlist: req.body.vipserverlist ? req.body.vipserverlist : [], // 该课程提供的vip 服务列表{接送、包过，1对1}
-            price: req.body.price ? req.body.price : "", // 价格
+            price: req.body.price ? req.body.price : 0, // 价格
             onsaleprice: req.body.onsaleprice ? req.body.onsaleprice : 0, // 优化价格,
             originalprice: req.body.originalprice ? req.body.originalprice : 0, // 原价
             systemretains: req.body.systemretains ? req.body.systemretains : 0,// 系统预留
