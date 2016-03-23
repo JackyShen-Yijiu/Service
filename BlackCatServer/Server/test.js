@@ -7,6 +7,6 @@ var userserver=require('./user_server');
 //})
 console.log(new Date("2016-03-17"));
 console.log(new Date("2016-3-17"));
-userserver.getUsefulCoachList("56ef61ebb54c719e3ca2f511",-1,"",function(err,data){
-    console.log(data.length)
-})
+//userserver.getUsefulCoachList("56ef61ebb54c719e3ca2f511",-1,"",function(err,data){
+//    console.log(data.length)
+//})

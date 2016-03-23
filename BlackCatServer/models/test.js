@@ -29,7 +29,31 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 var crypto = require('crypto');
-console.log(crypto.createHash('md5').update("123456").digest('hex'));
+
+schoolModel.find({},function(err,data){
+    data.forEach(function(r,index){
+        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
+            var minprice=1000000000;
+            var maxprice=0;
+            for (var i=0 ;i<classdata.length;i++){
+               if( classdata[i].onsaleprice>maxprice){
+                   maxprice=classdata[i].onsaleprice;
+               }
+                if( classdata[i].onsaleprice<minprice){
+                    minprice=classdata[i].onsaleprice;
+                }
+            }
+            if(maxprice==0){
+                minprice=0;
+            }
+
+            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
+        })
+    })
+})
+//console.log(crypto.createHash('md5').update("123456").digest('hex'));
+
+
 //mallProductModel.find({"is_using":true,"enddate":{$gte:new Date()},"is_scanconsumption":false})
 //    .populate("merchantid","",{"city":new RegExp("北京")})
 //    .sort({"productprice" : 1})

@@ -2172,28 +2172,34 @@ exports.getapplyschoolinfo=function(userid,callback){
             if(data.applystate==appTypeEmun.ApplyState.NotApply){
                 return callback("该用户没有提交报名申请");
             }
-            var userinfo={
-                userid:data._id,
-                name: data.name,
-                mobile:data.mobile,
-                scanauditurl:data.scanauditurl,
-                applystate:data.applystate,
-                applytime:(data.applyinfo.applytime).toFormat("YYYY-MM-DD"),
-                endtime:(data.applyinfo.applytime).addMonths(1).toFormat("YYYY-MM-DD"),
-                applyschoolinfo:data.applyschoolinfo,
-                applycoachinfo:data.applycoachinfo,
-                carmodel:data.carmodel,
-                applyclasstypeinfo:data.applyclasstypeinfo,
-                paytype:data.paytype,
-                paytypestatus:data.paytypestatus,
-                applyorderid:data.displayuserid,
-                schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
-                applynotes:data.applyschool.applynotes?data.applyschool.applynotes:""
-            };
-            if(userinfo.applyclasstypeinfo.onsaleprice===undefined){
-                userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
-            }
-            return callback(null,userinfo);
+            userfcode.findOne({"userid":userid})
+                .select("userid fcode money")
+                .exec(function(err, userfcode){
+                    var userinfo={
+                        userid:data._id,
+                        name: data.name,
+                        mobile:data.mobile,
+                        scanauditurl:data.scanauditurl,
+                        applystate:data.applystate,
+                        applytime:(data.applyinfo.applytime).toFormat("YYYY-MM-DD"),
+                        endtime:(data.applyinfo.applytime).addMonths(1).toFormat("YYYY-MM-DD"),
+                        applyschoolinfo:data.applyschoolinfo,
+                        applycoachinfo:data.applycoachinfo,
+                        carmodel:data.carmodel,
+                        applyclasstypeinfo:data.applyclasstypeinfo,
+                        paytype:data.paytype,
+                        paytypestatus:data.paytypestatus,
+                        applyorderid:data.displayuserid,
+                        schoollogoimg:data.applyschool?data.applyschool.logoimg.originalpic:"",
+                        applynotes:data.applyschool.applynotes?data.applyschool.applynotes:"",
+                        fcode:userfcode?userfcode.fcode:""
+                    };
+                    if(userinfo.applyclasstypeinfo.onsaleprice===undefined){
+                        userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
+                    }
+                    return callback(null,userinfo);
+                })
+
         })
 }
 
