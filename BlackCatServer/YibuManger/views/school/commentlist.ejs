@@ -1,0 +1,126 @@
+<div class="main" ng-controller="commentlist">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+
+                        <h3>评论列表</h3>
+
+                        <div style="float: right ; padding-right: 10px">
+                            <div style="float: left;  padding-right: 10px;padding-top:4px ">
+                                <input type="date" class="span2" id="begindate" placeholder="开始日期"
+                                       ng-model="formData.begindate" onclick="laydate()">
+                                <input type="date" class="span2" id="enddate" placeholder="结束日期"
+                                       ng-model="formData.enddate" onclick="laydate()">
+                                <select class="span1" id="starlevel" ng-model="formData.starlevel">
+                                    <option value=0>星级</option>
+                                    <option value=1>差评</option>
+                                    <option value=2>中评</option>
+                                    <option value=3>好评</option>
+                                </select>
+                                <a class="btn btn-sm btn-default" type="button" ng-click="searchinfo()">查询</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="box">
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th style="width:10%"> 学员</th>
+                                        <th style="width:10%"> 学员手机号</th>
+                                        <th style="width:10%"> 教练</th>
+                                        <th style="width:30%"> 评论内容</th>
+                                        <th style="width:10%"> 评论等级</th>
+                                        <th style="width:20%"> 上课日期</th>
+                                        <th style="width:10%"> 评论日期</th>
+                                    </tr>
+                                    <tr class="datalist" ng-repeat="content in data">
+
+                                        <td>
+                                            <span>{{content.userid.name}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.userid.mobile}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.coachid.name}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.comment.commentcontent}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-switch="content.comment.starlevel">
+                                             <div ng-switch-when=0>
+                                                 差评
+                                             </div>
+                                                <div ng-switch-when=1>
+                                                    差评
+                                                </div>
+                                                <div ng-switch-when=2>
+                                                    中评
+                                                </div>
+                                                 <div ng-switch-when=3>
+                                                     中评
+                                                 </div>
+                                                 <div ng-switch-when=4>
+                                                     好评
+                                                 </div>
+                                                <div ng-switch-when=5>
+                                                    好评
+                                                </div>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.classdatetimedesc}}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{content.comment.commenttime |date:'yyyy-MM-dd'}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.box -->
+                        <% include ../public/tableFooter %>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<script type="text/javascript" src="/js/laydate.js"></script>
+<script>
+    ybxcApp.controller("commentlist",function($scope,$http){
+        getsearchinfo=function(){
+            var searchinfo="";
+            for (var o in $scope.formData){
+                searchinfo= searchinfo+o+"="+ $scope.formData[o]+"&";
+            }
+            searchinfo= searchinfo+"begindates="+ Math.round($scope.formData.begindate.getTime()/1000)+"&";
+            searchinfo= searchinfo+"enddates="+   Math.round($scope.formData.enddate.getTime()/1000)+"&";
+            return searchinfo;
+        }
+        $scope.formData = {starlevel:"0"};
+        $scope.formData.begindate=(new Date());
+        $scope.formData.enddate=(new Date());
+        //获取文档列表信息
+        searchinfo=getsearchinfo();
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getCommentList?"+searchinfo+"schoolid=<%=schoolid%>");
+
+        $scope.searchinfo=function(){
+            $scope.formData.begindate=new Date( $("#begindate").val());
+            $scope.formData.enddate=new Date($("#enddate").val());
+            searchinfo=getsearchinfo();
+            initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getCommentList?"+searchinfo+"schoolid=<%=schoolid%>");
+        }
+    });
+</script>
