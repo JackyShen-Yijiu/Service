@@ -427,7 +427,128 @@ exports.getOrderDetailById = function (req, res) {
             return res.json(new BaseReturnInfo(1, "", orderInfo));
         });
 };
+//  评论管理
+exports.getCommentList = function (req, res) {
+    var schoolid = req.query.schoolid;
+    var index = req.query.index ? req.query.index : 0;
+    var limit = req.query.limit ? req.query.limit : 10;
+    var starlevel = req.query.starlevel ? req.query.starlevel : 0;
+    var begindate = req.query.begindates;
+    var enddate = req.query.enddates;
+    if (schoolid === undefined || schoolid == "") {
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    var searchinfo = {
+        "driveschool": new mongodb.ObjectId(schoolid),
+        "is_comment": "True",
+        "comment.commenttime": {
+            $gte: new Date(begindate * 1000).clearTime(),
+            $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+        }
+    };
+    // 星级
 
+    if (starlevel == "1") {
+        searchinfo = {
+            $or: [
+                {
+                    "driveschool": new mongodb.ObjectId(schoolid),
+                    "comment.starlevel": "0",
+                    "is_comment": "True",
+                    "comment.commenttime": {
+                        $gte: new Date(begindate * 1000).clearTime(),
+                        $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+                    }
+                },
+                {
+                    "driveschool": new mongodb.ObjectId(schoolid),
+                    "comment.starlevel": "1",
+                    "is_comment": "True",
+                    "comment.commenttime": {
+                        $gte: new Date(begindate * 1000).clearTime(),
+                        $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+                    }
+                }
+            ]
+        };
+    } else if (starlevel == "2") {
+        searchinfo = {
+            $or: [
+                {
+                    "driveschool": new mongodb.ObjectId(schoolid),
+                    "comment.starlevel": "2",
+                    "is_comment": "True",
+                    "comment.commenttime": {
+                        $gte: new Date(begindate * 1000).clearTime(),
+                        $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+                    }
+                },
+                {
+                    "driveschool": new mongodb.ObjectId(schoolid),
+                    "comment.starlevel": "3",
+                    "is_comment": "True",
+                    "comment.commenttime": {
+                        $gte: new Date(begindate * 1000).clearTime(),
+                        $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+                    }
+                }
+            ]
+        };
+    } else if (starlevel == "3") {
+        searchinfo = {
+            $or: [
+                {
+                    "driveschool": new mongodb.ObjectId(schoolid),
+                    "comment.starlevel": "4",
+                    "is_comment": "True",
+                    "comment.commenttime": {
+                        $gte: new Date(begindate * 1000).clearTime(),
+                        $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+                    }
+                },
+                {
+                    "driveschool": new mongodb.ObjectId(schoolid),
+                    "comment.starlevel": "5",
+                    "is_comment": "True",
+                    "comment.commenttime": {
+                        $gte: new Date(begindate * 1000).clearTime(),
+                        $lte: (new Date(enddate * 1000)).addDays(1).clearTime()
+                    }
+                }
+            ]
+        };
+    }
+    //
+    reservationmodel.find(searchinfo)
+        .select("userid coachid comment classdatetimedesc")
+        .populate("userid", "_id name mobile")
+        .populate("coachid", "_id name mobile")
+        .skip((index - 1) * limit)
+        .limit(limit)
+        .sort({"comment.commenttime": -1})
+        .exec(function (err, data) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, "获取评论：" + err, ""));
+            } else {
+                defaultFun.getModelCount(reservationmodel, searchinfo, function (err, commentcount) {
+                    if (err) {
+                        return res.json(new BaseReturnInfo(0, "获取评论：" + err, ""));
+                    } else {
+                        returninfo = {
+                            pageInfo: {
+                                totalItems: commentcount,
+                                currentPage: index,
+                                limit: limit,
+                                pagecount: Math.floor(commentcount / limit) + 1
+                            },
+                            datalist: data
+                        };
+                        res.json(new BaseReturnInfo(1, "", returninfo));
+                    }
+                })
+            }
+        })
+};
 //====================================b班级管理
 exports.saveClassType = function (req, res) {
     classinfo = defaultFun.getClasstype(req);
@@ -1955,43 +2076,43 @@ exports.getApplySchoolinfo = function (req, res) {
 //获取驾校数据统计
 exports.getStatic = function (req, res) {
     async.waterfall([
-        //  获取驾校总数
-        function(cb) {
-            schoolModel.count().exec(function(err, count) {
-                if (err) {
-                    return callback("查询出错：" + err);
-                } else {
-                    var data = {
-                        school_num :　count
-                    };
-                    cb(err, data);
-                }
-            });
-        },
+            //  获取驾校总数
+            function (cb) {
+                schoolModel.count().exec(function (err, count) {
+                    if (err) {
+                        return callback("查询出错：" + err);
+                    } else {
+                        var data = {
+                            school_num: count
+                        };
+                        cb(err, data);
+                    }
+                });
+            },
 
-        //  获取教练数
-        function(data, cb) {
-            coachmodel.count().exec(function (err, count){
-                if (err) {
-                    return callback("查询出错：" + err);
-                } else {
-                    data.coach_num = count;
-                    cb(err, data);
-                }
-            });
-        },
-        //  获取学生数
-        function(data, cb) {
-            usermodel.count().exec(function (err, count) {
-                if (err) {
-                    return callback("查询出错：" + err);
-                } else {
-                    data.student_num = count;
-                    return res.json(new BaseReturnInfo(1, "", data));
-                }
-            });
-        }
-    ], function (err, result) {
+            //  获取教练数
+            function (data, cb) {
+                coachmodel.count().exec(function (err, count) {
+                    if (err) {
+                        return callback("查询出错：" + err);
+                    } else {
+                        data.coach_num = count;
+                        cb(err, data);
+                    }
+                });
+            },
+            //  获取学生数
+            function (data, cb) {
+                usermodel.count().exec(function (err, count) {
+                    if (err) {
+                        return callback("查询出错：" + err);
+                    } else {
+                        data.student_num = count;
+                        return res.json(new BaseReturnInfo(1, "", data));
+                    }
+                });
+            }
+        ], function (err, result) {
             return callback(err, result);
         }
     );

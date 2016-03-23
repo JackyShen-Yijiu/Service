@@ -420,6 +420,13 @@ var returnAdminRouter = function (io) {
         })
 
     });
+    //  评论列表
+    router.get("/manage/commentList", function (req, res, next) {
+        var tagindex = {
+            isCommentList: true
+        };
+        res.render('school/commentlist', adminFunc.setSchoolPageInfo(req, res, "/admin/manage/commentList", null, tagindex));
+    });
 
     //==================================================================================================================
     //  数据统计
@@ -461,6 +468,8 @@ var returnAdminRouter = function (io) {
     //  订单管理
     router.get("/manage/getorderlist", adminserver.getorderlist);
     router.get("/manage/getOrderDetailById", adminserver.getOrderDetailById);
+    //  评论管理
+    router.get("/manage/getCommentList", adminserver.getCommentList);
     //  学员预约
     router.get("/manage/getUsefulCoachList", adminserver.getUsefulCoachList);
     //  获取教练课程安排
