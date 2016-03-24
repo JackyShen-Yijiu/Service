@@ -18,10 +18,10 @@ var schooldaysunmmary = mongodb.SchoolDaySummaryModel;
 var trainingfiledModel = mongodb.TrainingFieldModel;
 var coachmodel = mongodb.CoachModel;
 var usermodel = mongodb.UserModel;
+var userpaymodel = mongodb.UserPayModel;
 var classtypemodel = mongodb.ClassTypeModel;
 var headMastermodel = mongodb.HeadMasterModel;
 var userfeedback = mongodb.FeedBackModel;
-//var usermodel=mongodb.UserModel;
 var reservationmodel = mongodb.ReservationModel;
 var headMasterOperation = require("../../Server/headmaster_operation_server");
 var userCenterServer = require("../../Server/headMaste_Server");
@@ -37,7 +37,8 @@ var fs = require('fs');
 var xlsx = require('node-xlsx');
 var busRouteModel = mongodb.SchoolBusRouteModel;
 var async = require('async');
-
+var weixinpaymodel = mongodb.WeiXinPayNotice;
+var alipaymodel = mongodb.AliPayNoticeModel;
 var defaultFun = {
     getModelCount: function (obj, searchinfo, callback) {
         obj.count(searchinfo, function (err, count) {
@@ -2072,6 +2073,66 @@ exports.getApplySchoolinfo = function (req, res) {
                 res.json(new BaseReturnInfo(1, "", returninfo));
             })
         });
+};
+//  获取支付详情
+exports.getUserPayDetail = function(req, res) {
+    var userId = req.query.userId;
+    if (userId == undefined) {
+        return res.json(
+            new BaseReturnInfo(0, "参数不完整", ""));
+    }
+    var searchinfo = {
+        userid:userId,
+        userpaystate:2
+    };
+    userpaymodel.findOne(searchinfo)
+        .select("paychannel discountmoney trade_no paynoticeid weixinpayinfo")
+        .exec(function (err, data) {
+            if (err) {
+                return res.json(new BaseReturnInfo(0, "处理出错：" + err, ""));
+            }
+            if (!data) {
+                return res.json(new BaseReturnInfo(0,"无此支付订单", ""));
+            }
+            if (1 == data.paychannel) {
+                alipaymodel.findById(new mongodb.ObjectId(data.paynoticeid))
+                    .exec(function (err, alipaydata) {
+                        var paydetail = {
+                            subject:alipaydata.subject,
+                            trade_no:alipaydata.trade_no,
+                            buyer_email:alipaydata.buyer_email,
+                            trade_status:alipaydata.trade_status,
+                            total_fee:alipaydata.total_fee,
+                            gmt_payment:alipaydata. gmt_payment,
+                            gmt_create:alipaydata.gmt_create,
+                            discountmoney:data.discountmoney
+                        };
+                        returninfo = {
+                            paychannel:1,
+                            paydetail:paydetail
+                        };
+                        console.log(returninfo);
+                        res.json(new BaseReturnInfo(1, "", returninfo));
+                    });
+            } else if(2 == data.paychannel) {
+                weixinpaymodel.findById(new mongodb.ObjectId(data.paynoticeid))
+                    .exec(function (err, aweixinpaydata) {
+                        var paydetail = {
+                            cash_fee:aweixinpaydata.cash_fee,
+                            time_end:aweixinpaydata.time_end,
+                            total_fee:aweixinpaydata.total_fee,
+                            discountmoney:data.discountmoney
+
+                        };
+                        returninfo = {
+                            paychannel:2,
+                            paydetail:paydetail
+                        };
+                        console.log(returninfo);
+                        res.json(new BaseReturnInfo(1, "", returninfo));
+                    });
+            }
+    });
 };
 //获取驾校数据统计
 exports.getStatic = function (req, res) {

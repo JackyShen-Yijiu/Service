@@ -437,7 +437,8 @@ var returnAdminRouter = function (io) {
     router.get('/manage/carmodel', appsystemController.GetCarModel);
     //  获取申请报名人员信息
     router.get('/manage/getapplyschoolinfo', adminserver.getApplySchoolinfo);
-
+    //  获取已支付用户的支付信息
+    router.get('/manage/getUserPayDetail', adminserver.getUserPayDetail);
     //  驾校信息 处理
     router.get("/manage/getschoollist", adminserver.getSchoolist);
     router.post("/manage/saveschool", adminserver.saveSchoolInfo);
