@@ -2194,7 +2194,7 @@ exports.getapplyschoolinfo=function(userid,callback){
                         applynotes:data.applyschool.applynotes?data.applyschool.applynotes:"",
                         fcode:userfcode?userfcode.fcode:""
                     };
-                    if(userinfo.applyclasstypeinfo.onsaleprice===undefined){
+                    if(userinfo.applyclasstypeinfo.onsaleprice===undefined||userinfo.applyclasstypeinfo.onsaleprice==0){
                         userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
                     }
                     return callback(null,userinfo);
@@ -2597,7 +2597,7 @@ exports.getmyOrder=function(userid,callback){
                         paytype: userData.paytype,
                         paytypestatus: userData.paytypestatus,
                     };
-                        if(!returndata.applyclasstypeinfo.onsaleprice){
+                        if(!returndata.applyclasstypeinfo.onsaleprice||returndata.applyclasstypeinfo.onsaleprice==0){
                             returndata.applyclasstypeinfo.onsaleprice=returndata.applyclasstypeinfo.price;
                         }
                         returndata.applycoachinfo.coachid=returndata.applycoachinfo.id;
@@ -2654,7 +2654,7 @@ var createuserpayorder=function(userdata,classdata,callback){
     userpayinfo.applyclasstypeinfo.name=classdata.classname;
     userpayinfo.applyclasstypeinfo.price=classdata.price;
     userpayinfo.applyclasstypeinfo.onsaleprice=classdata.onsaleprice?classdata.onsaleprice:classdata.price;
-    userpayinfo.paymoney=classdata.onsaleprice;
+    userpayinfo.paymoney=classdata.onsaleprice?classdata.onsaleprice:classdata.price;
     userpayinfo.save(function(err,data){
         if(err){
            return callback("生成支付订单失败："+err);

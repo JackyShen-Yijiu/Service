@@ -123,7 +123,14 @@ var  UserSchema=new Schema({
      ticketnumber:String},
     // 考试信息：
     examinationinfo:{
+        subjectone:{
+            examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
+            examinationresultdesc:{type:String,default:"未考核"},  //  考试结果描述
+
+        },
         subjecttwo:{
+            examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
+            examinationresultdesc:{type:String,default:"未考核"} , //  考试结果描述
             examinationstate:{type:Number,default:0}, //科目二报考状态
             applydate:Date,  //  申请时间
             examinationdate:Date, // 考试信息
@@ -131,12 +138,18 @@ var  UserSchema=new Schema({
             examinationhandelinfo:String   //报考信息处理
         },
         subjectthree:{
+            examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
+            examinationresultdesc:{type:String,default:"未考核"} , //  考试结果描述
             examinationstate:{type:Number,default:0}, // 科目三报考状态
             applydate:Date,  //  申请时间
             examinationdate:Date, // 考试信息
             // 申请处理信息
             examinationhandelinfo:String  // 报考信息处理
-        }
+        },
+        subjectfour:{
+            examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
+            examinationresultdesc:{type:String,default:"未考核"},  //  考试结果描述
+        },
     },
     //个人设置
     usersetting:{
@@ -157,7 +170,8 @@ var  UserSchema=new Schema({
     // 用户支付状态
     paytypestatus:{type:Number,default:0}, // 0 未支付  20支付成功(等待验证)  30 支付失败
     weixinopenid:{type:String,default:""}, // 用户微信关联的id
-    bcode:String  //报名的渠道码
+    bcode:String , //报名的渠道码
+    schooluserid:String // 驾校系统中的唯一 编码
 });
 UserSchema.index({mobile: 1}, {unique: true});
 module.exports = mongoose.model('User', UserSchema);

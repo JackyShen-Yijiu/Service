@@ -32,6 +32,9 @@
     "jssha": "^1.5.0",
     "weixin-pay":"^1.1.6",
     "request-ip":"^1.1.2",
-    "express-partials": "*"
+    "express-partials": "*",
+    "xml2js": "*",
+    "xpath.js": "*",
+    "xmldom": "*"
   }
 }
