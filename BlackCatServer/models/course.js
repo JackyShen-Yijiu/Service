@@ -21,8 +21,8 @@ var CourseSchema=new Schema({
     signinstudentcount:{type:Number,default:0} , // 签到学生数量
     carmodelid :Number, // 车型 id c1 c2
     subjectid:Number, // 科目id
-    coachname: String , // 教练名称
-    platenumber:String // 车牌号
+    coachname: {type:String,default:""} , // 教练名称
+    platenumber:{type:String,default:""} // 车牌号
 });
 
 CourseSchema.statics.findCourse = function(coachid, _date, callback){
