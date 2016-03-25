@@ -2597,7 +2597,7 @@ exports.getmyOrder=function(userid,callback){
                         paytype: userData.paytype,
                         paytypestatus: userData.paytypestatus,
                     };
-                        if(!returndata.applyclasstypeinfo.onsaleprice){
+                        if(!returndata.applyclasstypeinfo.onsaleprice||returndata.applyclasstypeinfo.onsaleprice==0){
                             returndata.applyclasstypeinfo.onsaleprice=returndata.applyclasstypeinfo.price;
                         }
                         returndata.applycoachinfo.coachid=returndata.applycoachinfo.id;
