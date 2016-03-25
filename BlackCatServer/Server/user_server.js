@@ -2194,7 +2194,7 @@ exports.getapplyschoolinfo=function(userid,callback){
                         applynotes:data.applyschool.applynotes?data.applyschool.applynotes:"",
                         fcode:userfcode?userfcode.fcode:""
                     };
-                    if(userinfo.applyclasstypeinfo.onsaleprice===undefined){
+                    if(userinfo.applyclasstypeinfo.onsaleprice===undefined||userinfo.applyclasstypeinfo.onsaleprice==0){
                         userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
                     }
                     return callback(null,userinfo);
