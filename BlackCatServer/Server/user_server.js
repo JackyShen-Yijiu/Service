@@ -2654,7 +2654,7 @@ var createuserpayorder=function(userdata,classdata,callback){
     userpayinfo.applyclasstypeinfo.name=classdata.classname;
     userpayinfo.applyclasstypeinfo.price=classdata.price;
     userpayinfo.applyclasstypeinfo.onsaleprice=classdata.onsaleprice?classdata.onsaleprice:classdata.price;
-    userpayinfo.paymoney=classdata.onsaleprice;
+    userpayinfo.paymoney=classdata.onsaleprice?classdata.onsaleprice:classdata.price;
     userpayinfo.save(function(err,data){
         if(err){
            return callback("生成支付订单失败："+err);
