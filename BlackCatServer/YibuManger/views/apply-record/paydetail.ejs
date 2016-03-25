@@ -1,0 +1,81 @@
+
+<div class="main" ng-controller="paydetail">
+    <div class="main-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="widget-header">
+                        <i class="icon-th-large"></i>
+                        <h3>支付详情</h3>
+                        <div style="float: right ; padding-right: 10px" >
+                            <!--
+                            <div style="float: left;  padding-right: 10px">
+                                <a href="/admin/manage/editActivty"  class="btn  btn-success">添加<i class="btn-icon-only icon-plus " style="float: none"> </i></a>
+                            </div>
+                            -->
+                            <div style="float: right ; padding-right: 10px">
+                                <% include ../public/searchBox %>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- 弹出层 -->
+                    <div id="popuppage" style="display: block;">
+                        <!--弹出层部分-->
+                        <div class="widget-header" style="border-bottom: 1px solid #000;">
+                            <i class="icon-th-large"></i>
+                            <h3>支付详情</h3>
+                        </div> <!-- /widget-header -->
+                        <div class="widget-content">
+                            <table class="table table-hover">
+                                <tr style="border-bottom: 1px solid #ccc;">
+                                    <th>支付渠道 </th>
+                                    <th>支付标题</th>
+                                    <th>支付金额</th>
+                                    <th>支付时间</th>
+                                    <th>备注</th>
+                                </tr>
+                                <tr class="datalist" ng-repeat="content in data">
+
+                                    <td >
+                                        <span>{{content.ID}}</span> </a>
+                                    </td>
+                                    <td >
+                                        <span>{{content.name}}</span>
+                                    </td>
+                                    <td >
+                                        <span>{{content.identity}}</span>
+                                    </td>
+                                    <td >
+                                        <span>{{content.Ycode}}</span>
+                                    </td>
+                                    <td >
+                                        <span>{{content.money}}</span>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /main-inner -->
+</div>
+
+
+<script>
+    ybxcApp.controller("paydetail",function($scope,$http){
+        $scope.formData = {};
+        //获取文档列表信息
+        initPagination($scope,$http,"<%=searchKey%>","/admin/manage/getapplyschoolinfo?schoolid=<%=schoolid%>");
+    });
+</script>

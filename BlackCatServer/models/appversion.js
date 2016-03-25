@@ -10,7 +10,8 @@ var AppversionSchema = new Schema({
     versionCode:String,
     downloadUrl:{type:String,default:''},
     updateMessage :{type:String,default:''},
-    updateTime:{type:Date,default:Date.now()}
+    updateTime:{type:Date,default:Date.now()},
+    versionName:String //版本名称
 });
 
 AppversionSchema.statics.getVersionInfo = function (clienttype, callback) {
