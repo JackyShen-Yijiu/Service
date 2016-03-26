@@ -385,6 +385,13 @@ exports.postReservation=function(reservationinfo,callback){
 
                     currentcoursecount =userdata.subjecttwo.finishcourse+ userdata.subjecttwo.reservation;
                     userdata.subjecttwo.reservation = userdata.subjecttwo.reservation + coursecount;
+                    if(!userdata.subjecttwocoach||userdata.subjecttwocoach.length==0){
+                        userdata.subjecttwocoach=[];
+                    }
+                    var index=userdata.subjecttwocoach.indexOf(reservationinfo.coachid.toString());
+                    if (index==-1){
+                        userdata.subjecttwocoach.push(reservationinfo.coachid.toString());
+                    }
 
                 }
                 else if (userdata.subject.subjectid == 3) {
@@ -393,6 +400,14 @@ exports.postReservation=function(reservationinfo,callback){
                     }
                     currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjectthree.reservation;
                     userdata.subjectthree.reservation = userdata.subjectthree.reservation + coursecount;
+
+                    if(!userdata.subjectthreecoach||userdata.subjectthreecoach.length==0){
+                        userdata.subjectthreecoach=[];
+                    }
+                    var index=userdata.subjectthreecoach.indexOf(reservationinfo.coachid.toString());
+                    if (index==-1){
+                        userdata.subjectthreecoach.push(reservationinfo.coachid.toString());
+                    }
                 }
                 else {
                     return callback("不存在该阶段");

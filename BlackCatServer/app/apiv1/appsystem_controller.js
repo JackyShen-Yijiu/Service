@@ -71,6 +71,27 @@ exports.appVersion=function(req,res){
 //获取科目
 exports.GetSubject=function(req,res){
     var subject=commondataServer.subject;
+    var subject=[{
+        subjectid:1,
+        name:'科目一'
+
+    },
+        {
+            subjectid:2,
+            name:'科目二'
+
+        },
+        {
+            subjectid:3,
+            name:'科目三'
+
+        }
+        ,
+        {
+            subjectid:4,
+            name:'科目四'
+
+        }];
     return res.json( new BaseReturnInfo(1,'',subject));
 }
 exports.GetCarModel=function(req,res){

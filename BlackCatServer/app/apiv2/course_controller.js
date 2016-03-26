@@ -31,10 +31,68 @@ exports.getstudentdetialinfo=function(req,res){
     if (userid===undefined){
         return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
     }
-    courseserverv2.getstudentdetialinfo(coachid,function(err,data){
+    courseserverv2.getstudentdetialinfo(userid,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,{}));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
         }
-        return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+// 教练获取待确认完成列表
+exports.getUConfirmCourse=function(req,res){
+    var  coachid=req.query.coachid;
+    if (coachid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getUConfirmCourse(coachid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+};
+// 获取待预约学员列表
+exports.getUreservationUserList=function(req,res){
+    var  coachid=req.query.coachid;
+    var subjectid=req.query.subjectid;  // 预约学员的科目  -1 全部 2 科目二 3科目三
+    if (coachid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getUreservationUserList(coachid,subjectid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+}
+// 获取我的 学员
+exports.getMyStudentList=function(req,res){
+    var  coachid=req.query.coachid;
+    var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
+    var studentstate=req.query.studentstate;  // 0在学学员 1 未考学员 2约考学员 4补考学员  5通过学员
+    if (coachid===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getMyStudentList(coachid,subjectid,studentstate,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+};

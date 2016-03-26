@@ -16,6 +16,18 @@ v2.get("/courseinfo/daytimelysreservation",
 v2.get("/courseinfo/studentdetialinfo",
     ensureAuthorizedController.ensureAuthorized, courseController.getstudentdetialinfo);
 
+//  工时确认列表
+v2.get("/courseinfo/getuconfirmcourse",
+    ensureAuthorizedController.ensureAuthorized, courseController.getUConfirmCourse);
+// 获取添加学员列表(没有预约学员列表)
+v2.get("/courseinfo/getureservationuserlist",
+    ensureAuthorizedController.ensureAuthorized, courseController.getUreservationUserList);
+
+// 获取我的学员列表
+
+v2.get("/courseinfo/getmystudentlist",
+    ensureAuthorizedController.ensureAuthorized, courseController.getMyStudentList);
+
 
 //========================================================
 

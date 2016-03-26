@@ -3100,7 +3100,7 @@ exports.getUserinfoServer=function(type,userid,getuserid,callback){
         coachmode.findById(new mongodb.ObjectId(userid))
             .populate("tagslist"," _id  tagname tagtype color")
             .populate("trainfield"," _id  pictures fieldname phone")
-            .populate("serverclasslist","classname carmodel cartype classdesc price onsaleprice",{"is_using":true})
+            .populate("serverclasslist","classname carmodel cartype begindate enddate classdesc price onsaleprice",{"is_using":true})
             .exec(function(err,coachdata){
             if (err || !coachdata) {
                 return callback("查询教练出错：" + err);
