@@ -79,7 +79,7 @@
                                         </td>
                                         <td ng-switch="content.paytypestatus">
                                             <span  ng-switch-when="0">未支付</span>
-                                            <span  ng-switch-when="20"><a href="/admin/manage/getUserPayDetail?userId={{content._id}}">支付成功</a></span>
+                                            <span  ng-switch-when="20">支付成功</span>
                                             <span  ng-switch-when="30">支付失败</span>
                                         </td>
 
@@ -150,47 +150,7 @@
                                 ng-click="auditestudent()">处理</button>
                 </div>
                     <!-- 弹出层 -->
-                    <div id="popuppage" style="display: block;">
-                        <!--弹出层部分-->
-                        <div class="widget-header" style="border-bottom: 1px solid #000;">
-                            <i class="icon-th-large"></i>
-                            <h3>支付详情</h3>
-                        </div> <!-- /widget-header -->
-                        <div class="widget-content">
-                            <table class="table table-hover">
-                                <tr style="border-bottom: 1px solid #ccc;">
-                                    <th>支付渠道 </th>
-                                    <th>支付标题</th>
-                                    <th>支付金额</th>
-                                    <th>支付时间</th>
-                                    <th>备注</th>
-                                </tr>
-                                <tr class="datalist" ng-repeat="content in data">
 
-                                    <td >
-                                        <span>{{content.ID}}</span> </a>
-                                    </td>
-                                    <td >
-                                        <span>{{content.name}}</span>
-                                    </td>
-                                    <td >
-                                        <span>{{content.identity}}</span>
-                                    </td>
-                                    <td >
-                                        <span>{{content.Ycode}}</span>
-                                    </td>
-                                    <td >
-                                        <span>{{content.money}}</span>
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </div>
-
-
-
-
-                    </div>
             </div>
 
         </div>
