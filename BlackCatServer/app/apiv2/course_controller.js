@@ -80,15 +80,20 @@ exports.getUreservationUserList=function(req,res){
 exports.getMyStudentList=function(req,res){
     var  coachid=req.query.coachid;
     var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
-    var studentstate=req.query.studentstate;  // 0在学学员 1 未考学员 2约考学员 4补考学员  5通过学员
-    if (coachid===undefined){
+    var studentstate=req.query.studentstate;  // 0 全部学员 1在学学员 2未考学员 3约考学员 4补考学员  5通过学员
+    var index=req.query.index?req.query.index:1;
+    var count=req.query.count?req.query.count:10;
+    if (coachid===undefined||
+        subjectid===undefined||
+        studentstate===undefined
+    ){
         return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
     }
     if(coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",[]));
     };
-    courseserverv2.getMyStudentList(coachid,subjectid,studentstate,function(err,data){
+    courseserverv2.getMyStudentList(coachid,subjectid,studentstate,index,count,function(err,data){
         if (err){
             return res.json(new BaseReturnInfo(0,err,[]));
         }else {

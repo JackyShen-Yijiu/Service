@@ -9,6 +9,7 @@ var Schema = mongoose.Schema;
 
 var UserAvailableFcodeSchema=new Schema({
     userid:String, // 用户ID
+    mobile:String,
     createtime:{type:Date,default:Date.now()}, //创建时间
     fcode:{type:String,default:""},  // 领取的f吗
     name:{type:String,default:""},   // 分享着名字

@@ -28,6 +28,9 @@ v2.get("/courseinfo/getureservationuserlist",
 v2.get("/courseinfo/getmystudentlist",
     ensureAuthorizedController.ensureAuthorized, courseController.getMyStudentList);
 
+// 我 模块
+
+
 
 //========================================================
 

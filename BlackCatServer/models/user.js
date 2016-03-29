@@ -126,29 +126,45 @@ var  UserSchema=new Schema({
         subjectone:{
             examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
             examinationresultdesc:{type:String,default:"未考核"},  //  考试结果描述
-
+            testcount:{type:Number,default:0},  //考试次数
+            examinationstate:{type:Number,default:0}, //科目二报考状态  0 未申请 1 申请中  2 申请拒绝
+            //  3 已安排
+            applydate:Date,  //  申请时间
+            applyenddate:Date, // 结束申请时间
+            examinationdate:Date, // 考试时间
         },
         subjecttwo:{
             examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
             examinationresultdesc:{type:String,default:"未考核"} , //  考试结果描述
-            examinationstate:{type:Number,default:0}, //科目二报考状态
+            testcount:{type:Number,default:0},  //考试次数
+            examinationstate:{type:Number,default:0}, //科目二报考状态  0 未申请 1 申请中  2 申请拒绝
+                                                         //  3 已安排
             applydate:Date,  //  申请时间
-            examinationdate:Date, // 考试信息
+            applyenddate:Date, // 结束申请时间
+            examinationdate:Date, // 考试时间
             // 申请处理信息
             examinationhandelinfo:String   //报考信息处理
         },
         subjectthree:{
             examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
             examinationresultdesc:{type:String,default:"未考核"} , //  考试结果描述
-            examinationstate:{type:Number,default:0}, // 科目三报考状态
+            testcount:{type:Number,default:0},  //考试次数
+            examinationstate:{type:Number,default:0}, //  0 未申请 1 申请中  2 申请拒绝//  3 已安排
             applydate:Date,  //  申请时间
-            examinationdate:Date, // 考试信息
+            applyenddate:Date, // 结束申请时间
+            examinationdate:Date, // 考试时间
             // 申请处理信息
             examinationhandelinfo:String  // 报考信息处理
         },
         subjectfour:{
             examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
             examinationresultdesc:{type:String,default:"未考核"},  //  考试结果描述
+            passtime:Date, // 考试通过时间
+            testcount:{type:Number,default:0} , //考试次数
+            examinationstate:{type:Number,default:0}, //科目二报考状态  0 未申请 1 申请中  2 申请拒绝//  3 已安排
+            applydate:Date,  //  申请时间
+            applyenddate:Date, // 结束申请时间
+            examinationdate:Date, // 考试时间
         },
     },
     //个人设置

@@ -38,7 +38,7 @@ var  defaultFun={
                     subjectfour:r.subjectfour,
                     examinationinfo:{
                         subjectone:{
-                            examinationresult: r.examinationinfo.subjectone.examinationresult,  //  l考试结果状态 0 未考核 1 未通过 2 通过
+                            examinationresult: r.examinationinfo.subjectone.examinationstate,  //  l考试结果状态 0 未考核 1 未通过 2 通过
                             examinationresultdesc:r.examinationinfo.subjectone.examinationresultdesc,  //  考试结果描述
 
                         },
@@ -306,11 +306,181 @@ exports.getUreservationUserList=function(coachid,subjectid,callback){
 
 };
 // 获取我的学员列表
-exports.getMyStudentList=function(coachid,subjectid,studentstate,callback){
+exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,callback){
     //var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
-    //var studentstate=req.query.studentstate;  // 0在学学员 1 未考学员 2约考学员 4补考学员  5通过学员
+    //var studentstate=req.query.studentstate;  // 0 全部学员 1在学学员 2未考学员 3约考学员 4补考学员  5通过学员
     var searchinfo={};
-    if(studentstate.toString()=="0"){
+    if(studentstate.toString()=="0"){  //全部学员
+        //searchinfo={ "subject.subjectid":subjectid};
+    }
+    if(studentstate.toString()=="1"){  //在学学员
         searchinfo={ "subject.subjectid":subjectid}
     }
+    if(studentstate.toString()=="2"){  //未考学员
+        switch (subjectid.toString())
+        {
+            case "1":
+                searchinfo={ "subject.subjectid":subjectid,
+                "examinationinfo.subjectone.examinationresult":0}
+                break;
+            case "2":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjecttwo.examinationresult":0}
+                break;
+            case "3":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjectthree.examinationresult":0}
+                break;
+            case "4":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjectfour.examinationresult":0}
+                break;
+            default:
+                callback("科目状态信息出错");
+                break;
+        };
+
+    }
+    if(studentstate.toString()=="3"){  //约考学员
+        switch (subjectid.toString())
+        {
+            case "1":
+                searchinfo= {
+                    "subject.subjectid": subjectid,
+                    "$or": [{"examinationinfo.subjectthree.examinationstate": 1},
+                        {"examinationinfo.subjectthree.examinationstate": 3}]
+                }
+                break;
+            case "2":
+                searchinfo= {
+                    "subject.subjectid": subjectid,
+                    "$or": [{"examinationinfo.subjectthree.examinationstate": 1},
+                        {"examinationinfo.subjectthree.examinationstate": 3}]
+                }
+                break;
+            case "3":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "$or":[ {"examinationinfo.subjectthree.examinationstate":1},
+                        {"examinationinfo.subjectthree.examinationstate":3}]
+                }
+
+                break;
+            case "4":
+                searchinfo= {
+                    "subject.subjectid": subjectid,
+                    "$or": [{"examinationinfo.subjectthree.examinationstate": 1},
+                        {"examinationinfo.subjectthree.examinationstate": 3}]
+                }
+                break;
+            default:
+                callback("科目状态信息出错");
+                break;
+        };
+
+    }
+    if(studentstate.toString()=="4"){  //补考学员
+        switch (subjectid.toString())
+        {
+            case "1":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjectone.examinationresult":1}
+                break;
+            case "2":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjecttwo.examinationresult":1}
+                break;
+            case "3":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjectthree.examinationresult":1}
+                break;
+            case "4":
+                searchinfo={ "subject.subjectid":subjectid,
+                    "examinationinfo.subjectfour.examinationresult":1}
+                break;
+            default:
+                callback("科目状态信息出错");
+                break;
+        };
+
+    }
+    else if(studentstate.toString()=="5") {  // 通过学员
+        searchinfo={ "subject.subjectid":{"$gt":subjectid}};
+    }
+    switch (subjectid.toString())
+    {
+        case "1":
+            searchinfo.subjectonecoach={$in: [coachid]};
+            break;
+        case "2":
+            searchinfo.subjecttwocoach={$in: [coachid]};
+            break;
+        case "3":
+            searchinfo.subjectthreecoach={$in: [coachid]};
+            break;
+        case "4":
+            searchinfo.subjectfourcoach={$in: [coachid]};
+            break;
+        default:
+            callback("科目状态信息出错");
+           break;
+    };
+    console.log(searchinfo);
+    usermodel.find(searchinfo)
+        .select("_id name mobile headportrait  applyclasstypeinfo subject subjectone  " +
+            "subjecttwo  subjectthree subjectfour examinationinfo")
+        .skip((index-1)*10)
+        .limit(count)
+        .exec(function(err,userdata){
+            if(err){
+                return callback("查询学员出错:"+err);
+            }
+            var userlist=[];
+            userdata.forEach(function(r,index){
+                var oneuser={
+                    userid: r._id,
+                    name: r.name,
+                    mobile: r.mobile,
+                    headportrait: r.headportrait,
+                    applyclasstypeinfo: r.applyclasstypeinfo,
+                    subject: r.subject,
+                }
+                switch (subjectid.toString())
+                {
+                    case "1":
+                        oneuser.courseinfo= r.subjectone;
+                        oneuser.examinationdate=r.examinationinfo.subjectone.examinationdate||new Date();
+                        oneuser.applydate=r.examinationinfo.subjectone.applydate||new Date();
+                        oneuser.applyenddate=r.examinationinfo.subjectone.applyenddate||new Date();
+                        oneuser.testcount=r.examinationinfo.subjectone.testcount||0;
+
+                        break;
+                    case "2":
+                        oneuser.courseinfo=r.subjecttwo;
+                        oneuser.examinationdate=r.examinationinfo.subjecttwo.examinationdate||new Date();
+                        oneuser.applydate=r.examinationinfo.subjectone.applydate||new Date();
+                        oneuser.applyenddate=r.examinationinfo.subjectone.applyenddate||new Date();
+                        oneuser.testcount=r.examinationinfo.subjecttwo.testcount||0;
+                        break;
+                    case "3":
+                        oneuser.courseinfo=r.subjectthree;
+                        oneuser.examinationdate=r.examinationinfo.subjectthree.examinationdate||new Date();
+                        oneuser.applydate=r.examinationinfo.subjectone.applydate||new Date();
+                        oneuser.applyenddate=r.examinationinfo.subjectone.applyenddate||new Date();
+                        oneuser.testcount=r.examinationinfo.subjectthree.testcount||0;
+                        break;
+                    case "4":
+                        oneuser.courseinfo=r.subjectfour;
+                        oneuser.examinationdate=r.examinationinfo.subjectfour.examinationdate||new Date();
+                        oneuser.applydate=r.examinationinfo.subjectone.applydate||new Date();
+                        oneuser.applyenddate=r.examinationinfo.subjectone.applyenddate||new Date();
+                        oneuser.passtime=r.examinationinfo.subjectfour.passtime||0;
+                        break;
+                    default:
+
+                        break;
+                }
+                userlist.push(oneuser);
+            })
+            return callback(null,userlist);
+        })
 }
