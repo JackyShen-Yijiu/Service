@@ -439,6 +439,7 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
             userdata.forEach(function(r,index){
                 var oneuser={
                     userid: r._id,
+                    _id:r._id,
                     name: r.name,
                     mobile: r.mobile,
                     headportrait: r.headportrait,
