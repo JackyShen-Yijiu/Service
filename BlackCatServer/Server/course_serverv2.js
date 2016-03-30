@@ -8,6 +8,7 @@ var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var cache=require("../Common/cache");
+var UserExamInfo=mongodb.UserExamInfo;
 var eventproxy   = require('eventproxy');
 require('date-utils');
 var _ = require("underscore");
@@ -424,7 +425,7 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
             callback("科目状态信息出错");
            break;
     };
-    console.log(searchinfo);
+
     usermodel.find(searchinfo)
         .select("_id name mobile headportrait  applyclasstypeinfo subject subjectone  " +
             "subjecttwo  subjectthree subjectfour examinationinfo")
@@ -483,4 +484,217 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
             })
             return callback(null,userlist);
         })
+};
+
+var getavgcomment=function(coachid,callback){
+    reservationmodel.aggregate([{$match:{
+            "coachid":new mongodb.ObjectId(coachid),
+            "is_comment":true
+            ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+                {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}
+                , {reservationstate: { $ne : appTypeEmun.ReservationState.systemcancel }}]
+        }},
+            {$group:{_id:"$coachid",commentcount : {$sum : 1},
+                "starlevel":{"$avg":"$comment.starlevel"},  "attitudelevel":{"$avg":"$comment.attitudelevel"},
+                "timelevel":{"$avg":"$comment.timelevel"}, "abilitylevel":{"$avg":"$comment.abilitylevel"}}}],
+        function(err,commentdata) {
+            if(err){
+                return callback(err);
+            };
+            return callback(null,commentdata);
+        });
+}
+var  getcommentcount=function(coachid,callback){
+    reservationmodel.aggregate([{$match:{
+            "coachid":new mongodb.ObjectId(coachid),
+            "is_comment":true
+            ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+                {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}
+                , {reservationstate: { $ne : appTypeEmun.ReservationState.systemcancel }}]
+        }},
+            {$group:{_id:"$comment.starlevel",studentcount : {$sum : 1}}}],
+        function(err,commentdata) {
+            if (err) {
+                return callback(err);
+            }
+            ;
+            var commentcountdayly = {
+                goodcommnent: 0,
+                generalcomment: 0,
+                badcomment: 0
+            }
+            if (commentdata && commentdata.length > 0) {
+                commentdata.forEach(function (r, index) {
+                    if (r._id == 0 || r._id == 1) {
+                        commentcountdayly.badcomment = commentcountdayly.badcomment + r.studentcount;
+                    } else if (r._id == 2 || r._id == 3) {
+                        commentcountdayly.generalcomment = commentcountdayly.generalcomment + r.studentcount;
+                    } else {
+                        commentcountdayly.goodcommnent = commentcountdayly.goodcommnent + r.studentcount;
+                    }
+                })
+            }
+            return callback(null, commentcountdayly);
+        });
+}
+// 获取教练评论统计
+exports.getCoachSummary=function(coachid,callback){
+    cache.get('CoachCommentSummary:'+coachid, function(err,data) {
+        if (err) {
+            return callback(err);
+        }
+        if(data){
+            return callback(null,data);
+        }
+        else {
+            var proxy = new eventproxy();
+            proxy.all('getavgcomment', "getcommentcount",
+                function (getavgcomment, getcommentcount) {
+                    if(getavgcomment.length==0){
+                        return callback("统计出错，没有查询到数据")
+                    }
+                    var info=getavgcomment[0];
+                    info.goodcommnent=getcommentcount.goodcommnent;
+                    info.generalcomment=getcommentcount.generalcomment;
+                    info.badcomment=getcommentcount.badcomment;
+                    cache.set('CoachCommentSummary:'+coachid, info,60*10,function(){});
+                    return callback(null, info);
+                });
+            proxy.fail(callback);
+
+            //// 获取评论平均
+            getavgcomment(coachid,proxy.done('getavgcomment'));
+            ////获取评论数量
+            getcommentcount(coachid,proxy.done('getcommentcount'));
+
+        }
+    })
+};
+
+var execExamSummaryInfo=function(coachid,index ,count,callback) {
+    console.log(count);
+    UserExamInfo.aggregate([{
+            $match: {
+                coachlist: {$in: [coachid]},
+                "examinationstate": {"$gt": 2}
+            }
+        },
+            {
+                "$project": {
+                    "examinationstate": "$examinationstate",
+                    "subjectid": "$subjectid",
+                    "uninid": {
+                        "$concat": [{"$substr": [{$year: "$examinationdate"}, 0, 4]},
+                            '-',
+                            {"$substr": [{$month: "$examinationdate"}, 0, 2]},
+                            '-',
+                            {"$substr": [{$dayOfMonth: "$examinationdate"}, 0, 2]},
+                            {"$substr": ["$subjectid", 0, 1]}]
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$uninid", studentcount: {$sum: 1},
+                    examinationstate: {"$push": "$examinationstate"}
+                }
+            }
+            , {
+                "$sort": {"_id": -1}
+            },
+            {
+                "$limit": parseInt(count)
+            },
+            {
+                "$skip": (index-1)*count
+            }
+        ],
+        function (err, examinfodata) {
+            if (err) {
+               return  callback("查询出错:"+err);
+            }
+            else {
+                examinfo=[];
+                examinfodata.forEach(function(r,index){
+                    var oneexaminfo={
+                        examdate: r._id.substr(0,(r._id.length-1)),
+                        subject:r._id.substr(r._id.length-1),
+                        studentcount: r.studentcount,
+                        passstudent:0,
+                        nopassstudent:0,
+                        missexamstudent:0,
+                    }
+                    var passstudent=0;
+                    var nopassstudent=0;
+                    var missexamstudent=0;
+                    for(var i=0;i< r.examinationstate.length;i++){
+                        if(r.examinationstate[i]==5){
+                            passstudent=passstudent+1;
+                        }
+                        else if(r.examinationstate[i]==4)
+                        {
+                            nopassstudent=nopassstudent+1;
+                        }
+                        else {
+                            missexamstudent=missexamstudent+1;
+                        }
+                    }
+                    oneexaminfo.passstudent=passstudent;
+                    oneexaminfo.nopassstudent=nopassstudent;
+                    oneexaminfo.missexamstudent=missexamstudent;
+                    if (oneexaminfo.passstudent==0||oneexaminfo.studentcount==0){
+                        oneexaminfo.passrate=0;
+                    }
+                    else{
+                        oneexaminfo.passrate=oneexaminfo.passstudent/oneexaminfo.studentcount;
+                    }
+                    examinfo.push(oneexaminfo);
+                })
+                return callback(null,examinfo);
+            }
+
+        }
+    )
+}
+
+//execExamSummaryInfo("5666365ef14c20d07ffa6ae8",1,10,function(err,data){
+//    console.log(data);
+//});
+
+
+// 统计教练学员的考试信息
+exports.getExamSummaryInfo=function(coachid,index ,count,callback){
+    execExamSummaryInfo(coachid,index,count,callback);
+}
+
+exports.getExamStudentList=function(coachid,subjectid,examdate,examstate,callback){
+    //getExamStudentList  0 全部学员 1 通过学员 2 未通过学员 3 漏靠学员
+    date=new Date(examdate).toFormat("YYYY-MM-DD").toString();
+    var datenow =new Date(date);
+    var datetomorrow = datenow.addDays(1);
+    var  searchinfo={
+        coachlist: {$in: [coachid]},
+        "examinationstate": {"$gt": 2},
+        "subjectid":subjectid,
+        examinationdate: { $gte: (new Date(date)).clearTime(), $lte:datetomorrow.clearTime()}
+    }
+    switch (examstate){
+        case "1":
+            searchinfo.examinationstate=5;
+            break;
+        case "2":
+            searchinfo.examinationstate=4;
+            break;
+        case "3":
+            searchinfo.examinationstate=3;
+            break;
+        default:
+            break;
+    }
+    UserExamInfo.find(searchinfo)
+        .select("userid score examinationdate")
+        .populate("userid","_id  name headportrait ")
+        .exec(function(err,data){
+            return callback(err,data);
+    })
 }

@@ -101,3 +101,58 @@ exports.getMyStudentList=function(req,res){
         }
     });
 };
+
+//获取评论统计
+exports.getCoachSummary=function(req,res){
+    var  coachid=req.query.coachid;
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getCoachSummary(coachid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+}
+// 统计教练的学员考试信息
+exports.getExamSummaryInfo=function(req,res){
+    var  coachid=req.query.coachid;
+    var index=req.query.index?req.query.index:1;
+    var count=req.query.count?req.query.count:10;
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getExamSummaryInfo(coachid,index,count,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+}
+// 获取考试学员列表
+exports.getExamStudentList=function(req,res){
+    var  coachid=req.query.coachid;
+    var subjectid=req.query.subjectid;
+    var examdate=req.query.examdate;
+    var examstate=req.query.examstate;  //0 全部学员 1 通过学员 2 未通过学员 3 漏靠学员
+    if (coachid===undefined||subjectid===undefined||
+        examdate===undefined){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getExamStudentList(coachid,subjectid,examdate,examstate,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+}

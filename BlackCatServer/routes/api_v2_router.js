@@ -23,13 +23,25 @@ v2.get("/courseinfo/getuconfirmcourse",
 v2.get("/courseinfo/getureservationuserlist",
     ensureAuthorizedController.ensureAuthorized, courseController.getUreservationUserList);
 
+//====================学员模块===================================
 // 获取我的学员列表
 
 v2.get("/courseinfo/getmystudentlist",
     ensureAuthorizedController.ensureAuthorized, courseController.getMyStudentList);
 
-// 我 模块
+//========================= 我 模块====================================
 
+// 教练获取得到评论的统计
+v2.get("/courseinfo/getcoachsummary",
+    ensureAuthorizedController.ensureAuthorized, courseController.getCoachSummary);
+
+// 考试信息
+v2.get("/courseinfo/getexamsummaryinfo",
+    ensureAuthorizedController.ensureAuthorized, courseController.getExamSummaryInfo);
+
+// 考试学员列表
+v2.get("/courseinfo/getexamstudentlist",
+    ensureAuthorizedController.ensureAuthorized, courseController.getExamStudentList);
 
 
 //========================================================

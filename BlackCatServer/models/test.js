@@ -30,27 +30,59 @@ var cache=require('../Common/cache');
 
 var crypto = require('crypto');
 
-schoolModel.find({},function(err,data){
-    data.forEach(function(r,index){
-        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
-            var minprice=1000000000;
-            var maxprice=0;
-            for (var i=0 ;i<classdata.length;i++){
-               if( classdata[i].onsaleprice>maxprice){
-                   maxprice=classdata[i].onsaleprice;
-               }
-                if( classdata[i].onsaleprice<minprice){
-                    minprice=classdata[i].onsaleprice;
-                }
-            }
-            if(maxprice==0){
-                minprice=0;
-            }
-
-            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
-        })
-    })
-})
+//usermodel.find({applystate:2},function(err,userdata){
+//    var i=0
+//    userdata.forEach(function(r,index){
+//        if(!r.subjecttwocoach||r.subjecttwocoach.length==0){
+//            r.subjecttwocoach=[];
+//        }
+//        if(!r.subjectthreecoach||r.subjectthreecoach.length==0){
+//            r.subjectthreecoach=[];
+//        }
+//        reservationmodel.find({userid:new mongodb.ObjectId(r._id)},function(err,reservatiodata){
+//            reservatiodata.forEach(function(d,index2){
+//                if(d.subject.subjectid==2){
+//                    var index=r.subjecttwocoach.indexOf(d.coachid.toString());
+//                    if (index==-1){
+//                        r.subjecttwocoach.push(d.coachid.toString());
+//                    }
+//                }
+//                else if(d.subject.subjectid==3){
+//                    var index=r.subjectthreecoach.indexOf(d.coachid.toString());
+//                    if (index==-1){
+//                        r.subjectthreecoach.push(d.coachid.toString());
+//                    }
+//                }
+//            })
+//            r.save(function(err,data){
+//                console.log(i);
+//                i++;
+//            });
+//        })
+//
+//    })
+//})
+//schoolModel.find({},function(err,data){
+//    data.forEach(function(r,index){
+//        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
+//            var minprice=1000000000;
+//            var maxprice=0;
+//            for (var i=0 ;i<classdata.length;i++){
+//               if( classdata[i].onsaleprice>maxprice){
+//                   maxprice=classdata[i].onsaleprice;
+//               }
+//                if( classdata[i].onsaleprice<minprice){
+//                    minprice=classdata[i].onsaleprice;
+//                }
+//            }
+//            if(maxprice==0){
+//                minprice=0;
+//            }
+//
+//            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
+//        })
+//    })
+//})
 //console.log(crypto.createHash('md5').update("123456").digest('hex'));
 
 
