@@ -177,7 +177,7 @@ exports.getCoachDayTimelysreservation=function(coachid,date,callback){
                                         if (index>-1){
 
                                             courserlist[i].coursereservationdetial.push(list[index]);
-                                            console.log( courserlist[i]);
+                                            //console.log( courserlist[i]);
                                         }
 
                                     }
@@ -306,8 +306,7 @@ exports.getUreservationUserList=function(coachid,subjectid,callback){
     })
 
 };
-// 获取我的学员列表
-exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,callback){
+var getsearcinfo=function(coachid,subjectid,studentstate){
     //var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
     //var studentstate=req.query.studentstate;  // 0 全部学员 1在学学员 2未考学员 3约考学员 4补考学员  5通过学员
     var searchinfo={};
@@ -322,7 +321,7 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
         {
             case "1":
                 searchinfo={ "subject.subjectid":subjectid,
-                "examinationinfo.subjectone.examinationresult":0}
+                    "examinationinfo.subjectone.examinationresult":0}
                 break;
             case "2":
                 searchinfo={ "subject.subjectid":subjectid,
@@ -337,7 +336,7 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
                     "examinationinfo.subjectfour.examinationresult":0}
                 break;
             default:
-                callback("科目状态信息出错");
+                //callback("科目状态信息出错");
                 break;
         };
 
@@ -374,7 +373,7 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
                 }
                 break;
             default:
-                callback("科目状态信息出错");
+               // callback("科目状态信息出错");
                 break;
         };
 
@@ -399,7 +398,7 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
                     "examinationinfo.subjectfour.examinationresult":1}
                 break;
             default:
-                callback("科目状态信息出错");
+                //callback("科目状态信息出错");
                 break;
         };
 
@@ -422,9 +421,17 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
             searchinfo.subjectfourcoach={$in: [coachid]};
             break;
         default:
-            callback("科目状态信息出错");
-           break;
+           // callback("科目状态信息出错");
+            break;
     };
+
+    return  searchinfo;
+}
+// 获取我的学员列表
+exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,callback){
+    //var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
+    //var studentstate=req.query.studentstate;  // 0 全部学员 1在学学员 2未考学员 3约考学员 4补考学员  5通过学员
+    var searchinfo=getsearcinfo(coachid,subjectid,studentstate);
 
     usermodel.find(searchinfo)
         .select("_id name mobile headportrait  applyclasstypeinfo subject subjectone  " +
@@ -486,6 +493,49 @@ exports.getMyStudentList=function(coachid,subjectid,studentstate,index,count,cal
             return callback(null,userlist);
         })
 };
+
+var  getstudentcount=function(searchinfo,callback){
+    usermodel.count(searchinfo, function (err, count) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(null, count);
+    })
+}
+exports.getMyStudentCount=function(coachid,subjectid,callback){
+    //var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
+    //var studentstate=req.query.studentstate;  // 0 全部学员 1在学学员 2未考学员 3约考学员 4补考学员  5通过学员
+    var searchinfo=[];
+    for (var i=0;i<=5;i++){
+        searchinfo.push(getsearcinfo(coachid,subjectid,i));
+    }
+    var proxy = new eventproxy();
+    proxy.all('studentcount', "onstudystudentcount","noexamstudentcount",
+        "reservationstudentcount","nopassstudentcount","passstudentcount",
+        function (studentcount, onstudystudentcount,noexamstudentcount,
+                  reservationstudentcount,nopassstudentcount,passstudentcount) {
+            var info = {
+                "studentcount": studentcount,
+                "onstudystudentcount": onstudystudentcount,
+                "noexamstudentcount": noexamstudentcount,
+                "reservationstudentcount": reservationstudentcount,
+                "nopassstudentcount": nopassstudentcount,
+                "passstudentcount": passstudentcount,
+            };
+            return callback(null, info);
+        });
+    proxy.fail(callback);
+
+    //// 获取学生信息
+    getstudentcount(searchinfo[0],proxy.done('studentcount'));
+    getstudentcount(searchinfo[1],proxy.done('onstudystudentcount'));
+    getstudentcount(searchinfo[2],proxy.done('noexamstudentcount'));
+    getstudentcount(searchinfo[3],proxy.done('reservationstudentcount'));
+    getstudentcount(searchinfo[4],proxy.done('nopassstudentcount'));
+    getstudentcount(searchinfo[5],proxy.done('passstudentcount'));
+
+
+}
 
 var getavgcomment=function(coachid,callback){
     reservationmodel.aggregate([{$match:{

@@ -89,6 +89,12 @@ exports.getMyStudentList=function(req,res){
     ){
         return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
     }
+    if(parseInt(subjectid)>4||parseInt(subjectid)<1){
+        return res.json(new BaseReturnInfo(0,"科目状态出错",[]));
+    }
+    if(parseInt(studentstate)>5||parseInt(subjectid)<0){
+        return res.json(new BaseReturnInfo(0,"获取考试状态出错",[]));
+    }
     if(coachid!=req.userId){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",[]));
@@ -101,6 +107,30 @@ exports.getMyStudentList=function(req,res){
         }
     });
 };
+// 获取我的学员数量
+exports.getMyStudentCount=function(req,res){
+    var  coachid=req.query.coachid;
+    var subjectid=req.query.subjectid;  // 预约学员的科目   1 科目一 2 科目二 3科目三 4 科目四
+    if (coachid===undefined||
+        subjectid===undefined
+    ){
+        return res.json(new BaseReturnInfo(0,"获取参数错误",[]));
+    }
+    if(parseInt(subjectid)>4||parseInt(subjectid)<1){
+        return res.json(new BaseReturnInfo(0,"科目状态出错",[]));
+    }
+    if(coachid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    courseserverv2.getMyStudentCount(coachid,subjectid,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }else {
+            return res.json(new BaseReturnInfo(1, "", data));
+        }
+    });
+}
 
 //获取评论统计
 exports.getCoachSummary=function(req,res){

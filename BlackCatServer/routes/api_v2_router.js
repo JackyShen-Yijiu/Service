@@ -28,6 +28,9 @@ v2.get("/courseinfo/getureservationuserlist",
 
 v2.get("/courseinfo/getmystudentlist",
     ensureAuthorizedController.ensureAuthorized, courseController.getMyStudentList);
+//学员列表数量统计
+v2.get("/courseinfo/getmystudentcount",
+    ensureAuthorizedController.ensureAuthorized, courseController.getMyStudentCount);
 
 //========================= 我 模块====================================
 
