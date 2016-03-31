@@ -73,7 +73,7 @@ var basedataFunc = {
         cache.get("schoolinfo"+schoolid,function(err,data){
             if(!data){
                 schoolModel.findById(new mongodb.ObjectId(schoolid),function(err,schooldata){
-                    cache.set("schoolinfo"+schoolid,schooldata,function(err){});
+                    cache.set("schoolinfo"+schoolid,schooldata,60 * 5,function(err){});
                     return callback(null,schooldata);
                 })
             }
@@ -98,7 +98,7 @@ var basedataFunc = {
         tempdata.driveschool=schooldata._id;
         tempdata.save(function(err,data){
             trainingfiledModel.find({"driveschool":new mongodb.ObjectId(schooldata._id)},function(err,fileddata){
-                cache.set("schooltrainingfield"+schooldata._id,fileddata,function(err){});
+                cache.set("schooltrainingfield"+schooldata._id,fileddata,60 * 5,function(err){});
                 return callback(null,fileddata)
             });
             return callback(err,data);

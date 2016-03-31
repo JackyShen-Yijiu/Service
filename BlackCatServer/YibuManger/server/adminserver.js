@@ -266,9 +266,10 @@ var defaultFun = {
         coachinfo.loc = req.session.schooldata.loc;
         coachinfo.province = req.session.schooldata.province;
         coachinfo.city = req.session.schooldata.city;
+        //console.log( req.session.schooldata);
         if (coachinfo.trainfield != undefined && coachinfo.trainfield.length > 0) {
             basedatafun.gettrainingfiledbyid(coachinfo.trainfield, function (err, data) {
-                console.log(data);
+                //console.log(data);
                 if (data) {
                     coachinfo.trainfieldlinfo.name = data.fieldname;
                     coachinfo.trainfieldlinfo.id = data._id;
