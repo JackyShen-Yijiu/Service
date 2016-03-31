@@ -75,7 +75,7 @@ var  defaultFun={
     // 获取学员获取到的评论
     getStuentComment:function(userid,callback){
         reservationmodel.find({"userid":new mongodb.ObjectId(userid),"is_coachcomment":"true"})
-            .select("coachid coachcomment finishtime")
+            .select("coachid coachcomment finishtime learningcontent courseprocessdesc")
             .populate("coachid","_id  name headportrait gender ")
             .sort({"coachcomment.commenttime":-1})
             .exec(function(err,data){
@@ -89,6 +89,8 @@ var  defaultFun={
                             _id: r._id,
                             coachid : r.coachid,
                             coachcomment: r.coachcomment,
+                            learningcontent: r.learningcontent,
+                            courseprocessdesc: r.courseprocessdesc,
                             finishtime: r.finishtime,
                             timestamp:(new Date(r.finishtime)).getTime()
                         }
