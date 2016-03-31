@@ -72,21 +72,21 @@
                                             <div class="control-group">
                                                 <div class="controls">
                                                     市场价格：
-                                                    <input name="price"  type="number" ng-model="formData.price"
+                                                    <input name="price"  type="number" ng-model="formData.price" min="1"
                                                            class="span2" id="price" value="100"  required  placeholder="仅供展示">
                                                     <span class="errtext">*</span>
                                                 </div>
                                                 <br>
                                                 <div class="controls">
                                                     优惠价格：
-                                                    <input   name="onsaleprice"  type="number" ng-model="formData.onsaleprice"
-                                                             class="span2" id="onsaleprice" placeholder="用户实际支付" value="100"  required>
+                                                    <input   name="onsaleprice"  type="number" min="1" max="{{formData.price}}" ng-model="formData.onsaleprice"
+                                                             class="span2" id="onsaleprice" placeholder="用户实际支付" value="100"   required>
                                                     <span class="errtext">*</span>
                                                 </div>
                                                 <br>
                                                 <div class="controls">
                                                     成本价格：
-                                                    <input   name="originalprice" type="number" ng-model="formData.originalprice"
+                                                    <input   name="originalprice" type="number" min="1" max="{{formData.onsaleprice}}" ng-model="formData.originalprice"
                                                              class="span2" id="originalprice" value="100"
                                                              placeholder="支付给驾校"
                                                              required>
@@ -96,7 +96,7 @@
                                                 <div class="controls">
                                                     预留利润：
                                                     <input name="systemretains"  type="number" ng-model="formData.systemretains"
-                                                           class="span2" id="systemretains" value="100"
+                                                           class="span2" id="systemretains" value="100" min="0" max="{{formData.onsaleprice-formData.originalprice}}"
                                                            placeholder="系统保留利润"
                                                            required>
                                                     <span class="errtext">*</span>
@@ -104,7 +104,7 @@
                                                 <br>
                                                 <div class="controls">
                                                     用户直返：
-                                                    <input name="feedbackuser"  type="number" ng-model="formData.feedbackuser"
+                                                    <input name="feedbackuser"  type="number" ng-model="formData.feedbackuser" min="0"
                                                            placeholder="通过app报名返给用户" class="span2" id="feedbackuser" value="100"  required>
                                                     <span class="errtext">*</span>
                                                 </div>
@@ -112,7 +112,7 @@
                                                 <div class="controls">
                                                     渠道佣金：
                                                     <input name="rewardmoney"  type="number" ng-model="formData.rewardmoney" class="span2"
-                                                           id="rewardmoney" value="100"
+                                                           id="rewardmoney" value="100" min="0"
                                                            placeholder="奖励各种代理"
                                                            required>
                                                     <span class="errtext">*</span>

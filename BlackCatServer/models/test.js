@@ -29,7 +29,35 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 var crypto = require('crypto');
+usermodel.find({},function(err,userdata){
+    userdata.forEach(function(r,index){
+        r.examinationinfo.subjectone.examinationresult=0;
+        r.examinationinfo.subjectone.testcount=0;
+        r.examinationinfo.subjectone.examinationstate=0;
+        r.examinationinfo.subjectone.examinationresultdesc="未考核";
 
+        r.examinationinfo.subjecttwo.examinationresult=0;
+        r.examinationinfo.subjecttwo.testcount=0;
+        r.examinationinfo.subjecttwo.examinationstate=0;
+        r.examinationinfo.subjecttwo.examinationresultdesc="未考核";
+
+        r.examinationinfo.subjectthree.examinationresult=0;
+        r.examinationinfo.subjectthree.testcount=0;
+        r.examinationinfo.subjectthree.examinationstate=0;
+        r.examinationinfo.subjectthree.examinationresultdesc="未考核";
+
+        r.examinationinfo.subjectfour.examinationresult=0;
+        r.examinationinfo.subjectfour.testcount=0;
+        r.examinationinfo.subjectfour.examinationstate=0;
+        r.examinationinfo.subjectfour.examinationresultdesc="未考核";
+        r.save(function(err,data){
+            console.log(index);
+        })
+
+
+
+    })
+})
 //usermodel.find({applystate:2},function(err,userdata){
 //    var i=0
 //    userdata.forEach(function(r,index){

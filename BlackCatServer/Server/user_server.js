@@ -487,8 +487,9 @@ exports.studentLoginByCode=function(userinfo,callback){
                         regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
                             //usermodel.update({"_id":new mongodb.ObjectId(newinstace._id)},
                             //    { $set: { is_registermobim:1 }},{safe: false},function(err,doc){});
+                            return callback(null,returnmodel);
                         })
-                        return callback(null,returnmodel);
+
 
                     });
 
@@ -774,10 +775,10 @@ exports.updatePassword=function(pwdinfo,callback){
                 return  callback("用户未注册");
             }
      checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
-         //if (err) {
-         //    return callback("验证码错误" );
-         //
-         //}
+         if (err) {
+             return callback("验证码错误" );
+
+         }
          userdata.password=pwdinfo.password;
          userdata.save(function(err,newdata){
              if(err){
@@ -797,9 +798,9 @@ exports.updatePassword=function(pwdinfo,callback){
                 return  callback("查询用户出错："+err);
             }
             checkSmsCode(userdata.mobile,pwdinfo.smscode,function(err) {
-                //if (err) {
-                //    return callback("验证码出错");
-                //}
+                if (err) {
+                    return callback("验证码出错");
+                }
                 userdata.password=pwdinfo.password;
                 userdata.save(function(err,newdata){
                     if(err){
