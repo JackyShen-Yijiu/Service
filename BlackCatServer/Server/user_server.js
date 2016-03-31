@@ -1323,7 +1323,8 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
                                     latitude: r.latitude,
                                     longitude: r.longitude,
                                     subject: r.subject,
-                                    Gender: r.Gender
+                                    Gender: r.Gender,
+                                    commentcount: r.commentcount
                                 }
                                 rescoachlist.push(returnmodel);
                             });
