@@ -1306,6 +1306,7 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
                         coachidlist.push(r._id);
                     })
                     coachmode.find({is_lock:false,is_validation:true,
+                        driveschool:new mongodb.ObjectId(user.applyschool),
                         _id:{"$in":coachidlist}},function(err,coachdata){
                         process.nextTick(function () {
                             rescoachlist = [];
