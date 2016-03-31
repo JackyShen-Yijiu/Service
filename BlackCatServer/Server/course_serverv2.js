@@ -41,22 +41,31 @@ var  defaultFun={
                         subjectone:{
                             examinationresult: r.examinationinfo.subjectone.examinationstate,  //  l考试结果状态 0 未考核 1 未通过 2 通过
                             examinationresultdesc:r.examinationinfo.subjectone.examinationresultdesc,  //  考试结果描述
+                            testcount:r.examinationinfo.subjectone.testcount||0,  //  考试结果描述
+                            examinationdate:r.examinationinfo.subjectone.examinationdate,  //  考试结果描述
+                            score:r.examinationinfo.subjectone.score,  //  考试结果描述
 
                         },
                         subjecttwo:{
                             examinationresult: r.examinationinfo.subjecttwo.examinationresult,  //  l考试结果状态 0 未考核 1 未通过 2 通过
                             examinationresultdesc:r.examinationinfo.subjecttwo.examinationresultdesc,  //  考试结果描述
-
+                            testcount:r.examinationinfo.subjecttwo.testcount||0,  //  考试结果描述
+                            examinationdate:r.examinationinfo.subjecttwo.examinationdate,  //  考试结果描述
+                            score:r.examinationinfo.subjecttwo.score,  //  考试结果描述
                         },
                         subjectthree:{
-                            examinationresult: r.examinationinfo.subjectone.examinationresult,  //  l考试结果状态 0 未考核 1 未通过 2 通过
-                            examinationresultdesc:r.examinationinfo.subjectone.examinationresultdesc,  //  考试结果描述
-
+                            examinationresult: r.examinationinfo.subjectthree.examinationresult,  //  l考试结果状态 0 未考核 1 未通过 2 通过
+                            examinationresultdesc:r.examinationinfo.subjectthree.examinationresultdesc,  //  考试结果描述
+                            testcount:r.examinationinfo.subjectthree.testcount||0,  //  考试结果描述
+                            examinationdate:r.examinationinfo.subjectthree.examinationdate,  //  考试结果描述
+                            score:r.examinationinfo.subjectthree.score,  //  考试结果描述
                         },
                         subjectfour:{
-                            examinationresult: r.examinationinfo.subjectone.examinationresult,  //  l考试结果状态 0 未考核 1 未通过 2 通过
-                            examinationresultdesc:r.examinationinfo.subjectone.examinationresultdesc,  //  考试结果描述
-
+                            examinationresult: r.examinationinfo.subjectfour.examinationresult,  //  l考试结果状态 0 未考核 1 未通过 2 通过
+                            examinationresultdesc:r.examinationinfo.subjectfour.examinationresultdesc,  //  考试结果描述
+                            testcount:r.examinationinfo.subjectfour.testcount||0,  //  考试结果描述
+                            examinationdate:r.examinationinfo.subjectfour.examinationdate,  //  考试结果描述
+                            score:r.examinationinfo.subjectfour.score,  //  考试结果描述
                         }
                     },
                 }
@@ -743,7 +752,7 @@ exports.getExamStudentList=function(coachid,subjectid,examdate,examstate,callbac
             break;
     }
     UserExamInfo.find(searchinfo)
-        .select("userid score examinationdate")
+        .select("userid score examinationdate examinationstate")
         .populate("userid","_id  name headportrait ")
         .exec(function(err,data){
             return callback(err,data);

@@ -132,6 +132,7 @@ var  UserSchema=new Schema({
             applydate:Date,  //  申请时间
             applyenddate:Date, // 结束申请时间
             examinationdate:Date, // 考试时间
+            score:Number ,  // 成绩
         },
         subjecttwo:{
             examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
@@ -143,7 +144,8 @@ var  UserSchema=new Schema({
             applyenddate:Date, // 结束申请时间
             examinationdate:Date, // 考试时间
             // 申请处理信息
-            examinationhandelinfo:String   //报考信息处理
+            examinationhandelinfo:String,  //报考信息处理
+            score:Number ,  // 成绩
         },
         subjectthree:{
             examinationresult:{type:Number,default:0},  //  l考试结果状态 0 未考核 1 未通过 2 通过
@@ -153,6 +155,7 @@ var  UserSchema=new Schema({
             applydate:Date,  //  申请时间
             applyenddate:Date, // 结束申请时间
             examinationdate:Date, // 考试时间
+            score:Number ,  // 成绩
             // 申请处理信息
             examinationhandelinfo:String  // 报考信息处理
         },
@@ -165,6 +168,7 @@ var  UserSchema=new Schema({
             applydate:Date,  //  申请时间
             applyenddate:Date, // 结束申请时间
             examinationdate:Date, // 考试时间
+            score:Number ,  // 成绩
         },
     },
     //个人设置
