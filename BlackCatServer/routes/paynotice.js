@@ -221,7 +221,8 @@ router.post("/alipay",function(req,res){
                                     });
                                     res.end("fail");
                                 }
-                                UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2},{safe: false},function(err,data){});
+                                UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2,
+                                "subject.subjectid":1, "subject.name":"科目一"},{safe: false},function(err,data){});
                                //生成Y吗
                                 UserModel.findById(new mongodb.ObjectId(data.userid),function(err,userdata){
                                     var  userinfo={

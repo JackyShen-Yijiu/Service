@@ -120,7 +120,8 @@ exports.paycallback=wxpay.useWXCallback(function(msg, req, res, next){
                         });
                         res.end("fail");
                     }
-                    UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2},{safe: false},function(err,data){});
+                    UserModel.update({"_id":data.userid},{"paytypestatus":20,"applystate":2,"paytype":2,
+                        "subject.subjectid":1, "subject.name":"科目一"},{safe: false},function(err,data){});
                     UserModel.findById(new mongodb.ObjectId(data.userid),function(err,userdata){
                         var  userinfo={
                             referrerfcode:userdata.referrerfcode,
