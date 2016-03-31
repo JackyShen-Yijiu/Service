@@ -15,8 +15,8 @@
             var spans="";
             //毫秒转换成本地时间
             /*date start*/
-            var date_start=new Date(Mydata.data.kemuyi_score[i].begintime);
-            var date_end=new Date(Mydata.data.kemuyi_score[i].endtime);
+            var date_start=new Date(Mydata.data.kemuyi_score[i].begintime*1000);
+            var date_end=new Date(Mydata.data.kemuyi_score[i].endtime*1000);
 
             var year_start=date_start.getFullYear();
             var year_end=date_end.getFullYear();
@@ -50,14 +50,14 @@
 
         var oScoreBlock=$('.score-block')[1];
 
-        for (var i = 0; i < Mydata.data.kemuyi_score.length; i++) {
+        for (var i = 0; i < Mydata.data.kemusi_score.length; i++) {
             var div=document.createElement('div');
 
             var spans="";
 
             /*date start*/
-            var date_start=new Date(Mydata.data.kemuyi_score[i].begintime);
-            var date_end=new Date(Mydata.data.kemuyi_score[i].endtime);
+            var date_start=new Date(Mydata.data.kemusi_score[i].begintime*1000);
+            var date_end=new Date(Mydata.data.kemusi_score[i].endtime*1000);
 
             var year_start=date_start.getFullYear();
             var year_end=date_end.getFullYear();
@@ -72,11 +72,11 @@
             var date_end=year_end+"/"+month_end+"/"+day_end;
             /*date end*/
 
-            spans+="<span class='cell-title'>"+"得分："+Mydata.data.kemuyi_score[i].socre+"</span>";
+            spans+="<span class='cell-title'>"+"得分："+Mydata.data.kemusi_score[i].socre+"</span>";
             spans+="<span class='cell-title'>"+"开始时间："+date_start+"</span>";
             spans+="<span class='cell-title'>"+"结束时间："+date_end+"</span>";
 
-            if(Mydata.data.kemuyi_score[i].is_pass==1){
+            if(Mydata.data.kemusi_score[i].is_pass==1){
                 spans+="<span class='cell-title'>"+"是否通过：是"+"</span>";
             }else{
                 spans+="<span class='cell-title'>"+"是否通过：否"+"</span>";
