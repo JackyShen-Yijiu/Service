@@ -755,7 +755,7 @@ exports.getExamStudentList=function(coachid,subjectid,examdate,examstate,callbac
     }
     UserExamInfo.find(searchinfo)
         .select("userid score examinationdate examinationstate")
-        .populate("userid","_id  name headportrait ")
+        .populate("userid","_id  name headportrait mobile ")
         .exec(function(err,data){
             return callback(err,data);
     })
