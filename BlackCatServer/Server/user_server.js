@@ -2200,6 +2200,9 @@ exports.getapplyschoolinfo=function(userid,callback){
                     if(userinfo.applyclasstypeinfo.onsaleprice===undefined||userinfo.applyclasstypeinfo.onsaleprice==0){
                         userinfo.applyclasstypeinfo.onsaleprice=data.applyclasstypeinfo.price;
                     }
+                    if (userinfo.applystate == 2) {
+                        userinfo.paytypestatus = 20
+                    }
                     return callback(null,userinfo);
                 })
 
