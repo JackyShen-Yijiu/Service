@@ -9,7 +9,7 @@ var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var cache=require("../Common/cache");
 var UserExamInfo=mongodb.UserExamInfo;
-var courses_serverv1=require("/course_server");
+var courses_serverv1=require("./course_server");
 var eventproxy   = require('eventproxy');
 require('date-utils');
 var _ = require("underscore");
