@@ -165,7 +165,7 @@ exports.getProductDetail=function(req,res){
 //  获取活动信息
 exports.getActivity=function(req,res){
     var cityname=req.query.cityname;
-    return res.json(new BaseReturnInfo(0,err,[]));
+    return res.json(new BaseReturnInfo(0,"",[]));
     //sysstemserver.getActivity(cityname,function(err ,data){
     //    if(err){
     //        return res.json(new BaseReturnInfo(0,err,[]));
