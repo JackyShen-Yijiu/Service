@@ -9,6 +9,7 @@ var reservationmodel=mongodb.ReservationModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var cache=require("../Common/cache");
 var UserExamInfo=mongodb.UserExamInfo;
+var courses_serverv1=require("/course_server");
 var eventproxy   = require('eventproxy');
 require('date-utils');
 var _ = require("underscore");
@@ -122,7 +123,32 @@ exports.getCoachDayTimelysreservation=function(coachid,date,callback){
         }
 
         if (!coursedata || coursedata.length == 0) {
-            return callback(null,[]);
+           // return callback(null,[]);
+            courses_serverv1.GetCoachCourse(coachid,date,function(err,coursedata){
+                if(err){
+                    return callback(err,[]);
+                }
+                var courserlist=[];
+                coursedata.forEach(function(r,index){
+                    var listone= {
+                        _id: r._id,
+                        coachid: r.coachid,
+                        driveschool:r.coachid ,// 所在学校
+                        coursedate:r.coursedate,  //  课程日期
+                        coursebegintime:r.coursebegintime,  // 课程开始时间
+                        courseendtime:r.courseendtime,  // 课程的结束时间
+                        createtime:r.createtime,
+                        coursetime:r.coursetime,  // 璇剧▼鏃堕棿
+                        coursestudentcount:r.coursestudentcount,//课程 可以选择的人数
+                        selectedstudentcount:r.selectedstudentcount , //选择 学生人数
+                        courseuser:r.courseuser, // 选择学生人
+                        coursereservation:r.coursereservation, //预约id
+                        signinstudentcount:r.signinstudentcount , // 签到学生数量
+                    };
+                    courserlist.push(listone);
+                });
+                return callback(null,courserlist);
+            })
         }
         else{
             var datenow =new Date(date);
