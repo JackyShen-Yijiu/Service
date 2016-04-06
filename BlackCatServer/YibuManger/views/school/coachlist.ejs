@@ -26,7 +26,8 @@
                                         <th> 联系电话</th>
                                         <th> 科目</th>
                                         <th>训练场</th>
-                                        <th>状态</th>
+                                        <th>申请状态</th>
+                                        <th>使用状态</th>
                                         <th class="td-actions"> 操作</th>
                                     </tr>
                                     <tr class="datalist" ng-repeat="content in data">
@@ -56,12 +57,23 @@
                                                  </div>
                                             </span>
                                         </td>
+                                        <td >
+                                            <span ng-switch="content.is_lock">
+                                                 <div ng-switch-when=false>
+                                                     正常
+                                                 </div>
+                                                <div ng-switch-when=true>
+                                                    锁定
+                                                </div>
+                                            </span>
+                                        </td>
 
                                         <td class="td-actions">
                                             <a href="/admin/manage/editcoachinfo?coachid={{content.coachid}}"
                                                class="btn btn-small btn-success" ><i class="btn-icon-only icon-edit"> </i></a>
-                                            <a href="#"
-                                               class="btn btn-small btn-danger" ><i class="btn-icon-only icon-remove-circle "> </i></a>
+                                            <a href="#" ng-click="lockuser(content.coachid,content.name)"
+                                               class="btn btn-small btn-danger" >
+                                                <i class="btn-icon-only icon-remove-circle "> </i></a>
                                         </td>
 
 
@@ -91,6 +103,30 @@
         //获取文档列表信息
         initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
 
+        $scope.lockuser=function(coachid,name){
+            layer.confirm('您确定要删除教练：'+name, {
+                btn: ['删除','不删除'] //按钮
+            }, function(){
+                $http.get("/admin/manage/lockcoachbyid?coachid="+coachid)
+                        .success(function(response){
+                            if (response.type==0){
+                                layer.msg(response.msg, {
+                                    icon: 2,
+                                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                            }else{
+                                layer.msg("删除成功", {
+                                    icon: 1,
+                                    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                                initPagination($scope,$http,"<%=searchKey%>","/manage/getCoachlist?schoolid=<%=schoolid%>");
+                            }
+                        })
+
+            }, function(){
+               return;
+            });
+        }
 
     });
 

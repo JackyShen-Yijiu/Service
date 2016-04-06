@@ -448,6 +448,7 @@ var returnAdminRouter = function (io) {
     router.get("/manage/getCoachlist", adminserver.getCoachlist);
     router.post("/manage/savecoachinfo", adminserver.saveCoachInfo);
     router.get("/manage/getcoachbyid", adminserver.getcoachbyid);
+    router.get("/manage/lockcoachbyid", adminserver.lockcoachbyid);
     //  学员信息
     router.get("/manage/getstudentlist", adminserver.getstudentlist);
     router.get("/manage/getstudentbyid", adminserver.getstudentbyid);

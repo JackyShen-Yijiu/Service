@@ -655,11 +655,12 @@ exports.getCoachlist = function (req, res) {
     var limit = req.query.limit ? req.query.limit : 10;
     var schoolname = req.query.searchKey ? req.query.searchKey : "";
     var searchinfo = {
+        "is_lock":false,
         "driveschool": schoolid,
         "name": new RegExp(schoolname)
     }
     coachmodel.find(searchinfo)
-        .select("_id name mobile  createtime carmodel trainfieldlinfo validationstate")
+        .select("_id name mobile  createtime carmodel trainfieldlinfo validationstate is_lock")
         .skip((index - 1) * limit)
         .limit(limit)
         .sort({createtime: -1})
@@ -674,7 +675,8 @@ exports.getCoachlist = function (req, res) {
                         carmodel: r.carmodel,
                         trainfieldlinfo: r.trainfieldlinfo,
                         createtime: r.createtime.toFormat("YYYY-MM-DD HH24:MI:SS"),
-                        validationstate: r.validationstate
+                        validationstate: r.validationstate,
+                        is_lock: r.is_lock
                     }
                     coachlist.push(onedata);
                 });
@@ -782,6 +784,21 @@ exports.getcoachbyid = function (req, res) {
         return res.json(new BaseReturnInfo(1, "", coachinfo));
     })
 };
+exports.lockcoachbyid= function (req, res){
+    var coachid = req.query.coachid;
+    if (coachid === undefined || coachid == "") {
+        res.json(new BaseReturnInfo(0, "参数错误", ""));
+    };
+    coachmodel.update({_id:new mongodb.ObjectId(coachid)},{"is_lock":true},function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0, "删除失败:"+err, {}));
+        }
+        else {
+            return res.json(new BaseReturnInfo(1, "删除成功", {}));
+        }
+
+    })
+}
 //=======================================学员管理
 exports.getstudentlist = function (req, res) {
     var schoolid = req.query.schoolid;

@@ -29,35 +29,35 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 var crypto = require('crypto');
-usermodel.find({},function(err,userdata){
-    userdata.forEach(function(r,index){
-        r.examinationinfo.subjectone.examinationresult=0;
-        r.examinationinfo.subjectone.testcount=0;
-        r.examinationinfo.subjectone.examinationstate=0;
-        r.examinationinfo.subjectone.examinationresultdesc="未考核";
-
-        r.examinationinfo.subjecttwo.examinationresult=0;
-        r.examinationinfo.subjecttwo.testcount=0;
-        r.examinationinfo.subjecttwo.examinationstate=0;
-        r.examinationinfo.subjecttwo.examinationresultdesc="未考核";
-
-        r.examinationinfo.subjectthree.examinationresult=0;
-        r.examinationinfo.subjectthree.testcount=0;
-        r.examinationinfo.subjectthree.examinationstate=0;
-        r.examinationinfo.subjectthree.examinationresultdesc="未考核";
-
-        r.examinationinfo.subjectfour.examinationresult=0;
-        r.examinationinfo.subjectfour.testcount=0;
-        r.examinationinfo.subjectfour.examinationstate=0;
-        r.examinationinfo.subjectfour.examinationresultdesc="未考核";
-        r.save(function(err,data){
-            console.log(index);
-        })
-
-
-
-    })
-})
+//usermodel.find({},function(err,userdata){
+//    userdata.forEach(function(r,index){
+//        r.examinationinfo.subjectone.examinationresult=0;
+//        r.examinationinfo.subjectone.testcount=0;
+//        r.examinationinfo.subjectone.examinationstate=0;
+//        r.examinationinfo.subjectone.examinationresultdesc="未考核";
+//
+//        r.examinationinfo.subjecttwo.examinationresult=0;
+//        r.examinationinfo.subjecttwo.testcount=0;
+//        r.examinationinfo.subjecttwo.examinationstate=0;
+//        r.examinationinfo.subjecttwo.examinationresultdesc="未考核";
+//
+//        r.examinationinfo.subjectthree.examinationresult=0;
+//        r.examinationinfo.subjectthree.testcount=0;
+//        r.examinationinfo.subjectthree.examinationstate=0;
+//        r.examinationinfo.subjectthree.examinationresultdesc="未考核";
+//
+//        r.examinationinfo.subjectfour.examinationresult=0;
+//        r.examinationinfo.subjectfour.testcount=0;
+//        r.examinationinfo.subjectfour.examinationstate=0;
+//        r.examinationinfo.subjectfour.examinationresultdesc="未考核";
+//        r.save(function(err,data){
+//            console.log(index);
+//        })
+//
+//
+//
+//    })
+//})
 //usermodel.find({applystate:2},function(err,userdata){
 //    var i=0
 //    userdata.forEach(function(r,index){
@@ -90,27 +90,27 @@ usermodel.find({},function(err,userdata){
 //
 //    })
 //})
-//schoolModel.find({},function(err,data){
-//    data.forEach(function(r,index){
-//        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
-//            var minprice=1000000000;
-//            var maxprice=0;
-//            for (var i=0 ;i<classdata.length;i++){
-//               if( classdata[i].onsaleprice>maxprice){
-//                   maxprice=classdata[i].onsaleprice;
-//               }
-//                if( classdata[i].onsaleprice<minprice){
-//                    minprice=classdata[i].onsaleprice;
-//                }
-//            }
-//            if(maxprice==0){
-//                minprice=0;
-//            }
-//
-//            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
-//        })
-//    })
-//})
+schoolModel.find({},function(err,data){
+    data.forEach(function(r,index){
+        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
+            var minprice=1000000000;
+            var maxprice=0;
+            for (var i=0 ;i<classdata.length;i++){
+               if( classdata[i].onsaleprice>maxprice){
+                   maxprice=classdata[i].onsaleprice;
+               }
+                if( classdata[i].onsaleprice<minprice){
+                    minprice=classdata[i].onsaleprice;
+                }
+            }
+            if(maxprice==0){
+                minprice=0;
+            }
+
+            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
+        })
+    })
+})
 //console.log(crypto.createHash('md5').update("123456").digest('hex'));
 
 
