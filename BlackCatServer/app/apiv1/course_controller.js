@@ -91,7 +91,7 @@ exports.postReservation=function(req,res){
             new BaseReturnInfo(0,"课程不能为空",""));
     }
     var now=new Date();
-    if(now-(new Date(begintime))>0){
+    if(now-(new Date(reservationinfo.begintime))>0){
         return res.json(new BaseReturnInfo(0,"该时段不能预约",[]));
     }
     courseserver.postReservation(reservationinfo,function(err,data){
