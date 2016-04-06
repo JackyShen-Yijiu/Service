@@ -46,7 +46,10 @@ v2.get("/courseinfo/getexamsummaryinfo",
 v2.get("/courseinfo/getexamstudentlist",
     ensureAuthorizedController.ensureAuthorized, courseController.getExamStudentList);
 
-
+//  ==================================用户登录=====================================
+// 用户登录验证
+v2.get("/courseinfo/",
+    ensureAuthorizedController.ensureAuthorized, courseController.getExamStudentList);
 //========================================================
 
 

@@ -336,7 +336,7 @@ exports.postReservation=function(reservationinfo,callback){
         .select("_id" )
         .exec(function(err,reservationdata){
             if(reservationdata&&reservationdata.length>0){
-                return callback("此时段您已经预约其他教练" + err);
+                return callback("此时段您已经预约其他教练");
             }
             usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
         if (err | !userdata) {
