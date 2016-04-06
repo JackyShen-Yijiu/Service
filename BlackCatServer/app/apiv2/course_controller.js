@@ -4,6 +4,7 @@
 
 var BaseReturnInfo = require('../../custommodel/basereturnmodel.js');
 var courseserverv2=require('../../Server/course_serverv2');
+var mobileVerify = /^1\d{10}$/;
 
 // 教练获取某一天 按时段的上课信息
 exports.getCoachDayTimelysreservation=function(req,res){
@@ -184,5 +185,50 @@ exports.getExamStudentList=function(req,res){
         }else {
             return res.json(new BaseReturnInfo(1, "", data));
         }
+    });
+}
+// 教练登录手机号验证
+exports.coachMobileVerification=function(req,res){
+    var mobile = req.query.mobile;
+
+    if (mobile === undefined) {
+        //req.log.warn({err: 'no mobile in query string'});
+        return res.json(
+            new BaseReturnInfo(0,"手机号错误",""));
+    }
+    var number = mobileVerify.exec(mobile);
+    if (number != mobile) {
+        return res.status(400).json(
+            new BaseReturnInfo(0,"手机号错误","")
+        );
+    }
+    //  console.log("fetchCode mobile:"+mobile)
+    courseserverv2.coachMobileVerification(mobile,function(err){
+        if(err){
+            return  res.json(
+                new BaseReturnInfo(0,err,""));
+        }
+        else
+        {
+            return  res.json(
+                new BaseReturnInfo(1,"","send success"));
+        }
+    });
+}
+
+exports.coachLoginBycode=function(req,res){
+    var userinfo={
+        mobile:req.body.mobile,
+        smscode:req.body.smscode
+    }
+    if (userinfo.mobile===undefined||userinfo.smscode === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    }
+    courseserverv2.studentLoginByCode(userinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
     });
 }

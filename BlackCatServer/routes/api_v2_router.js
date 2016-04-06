@@ -48,8 +48,9 @@ v2.get("/courseinfo/getexamstudentlist",
 
 //  ==================================用户登录=====================================
 // 用户登录验证
-v2.get("/courseinfo/",
-    ensureAuthorizedController.ensureAuthorized, courseController.getExamStudentList);
+v2.get("/userinfo/coachmobileverification", courseController.coachMobileVerification);
+
+v2.post("/userinfo/coachloginbycode", courseController.coachLoginBycode);
 //========================================================
 
 

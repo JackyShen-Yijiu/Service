@@ -6,14 +6,21 @@ var coachmode=mongodb.CoachModel;
 var coursemode=mongodb.CourseModel;
 var usermodel=mongodb.UserModel;
 var reservationmodel=mongodb.ReservationModel;
+var smsVerifyCodeModel = mongodb.SmsVerifyCodeModel;
+var userfcode= mongodb.UserFcode;
 var appTypeEmun=require("../custommodel/emunapptype");
 var cache=require("../Common/cache");
+var jwt = require('jsonwebtoken');
+var secretParam= require('./jwt-secret').secretParam;
 var UserExamInfo=mongodb.UserExamInfo;
+var resbasecoachinfomode=require("../custommodel/returncoachinfo").resBaseCoachInfo;
+var regisermobIm=require('../Common/mobIm');
 var courses_serverv1=require("./course_server");
+var user_serverv1=require("./user_server");
 var eventproxy   = require('eventproxy');
 require('date-utils');
 var _ = require("underscore");
-
+var timeout = 60 * 5;
 var  defaultFun={
     getStudentInfo:function(userid,callback){
         usermodel.findById(new mongodb.ObjectId(userid))
@@ -791,4 +798,118 @@ exports.getExamStudentList=function(coachid,subjectid,examdate,examstate,callbac
         .exec(function(err,data){
             return callback(err,data);
     })
+}
+//coachMobileVerification
+exports.coachMobileVerification=function(mobile,callback){
+    coachmode.findOne({"mobile":mobile},function(err,coachdata){
+        if(err){
+            return callback("查找教练失败："+err);
+        }
+        if(!coachdata){
+            return callback("没有查询到您的注册信息");
+        }
+        if (coachdata.is_validation==false){
+            return callback("您的账号没有通过验证，暂时无法登录");
+        }
+        if (coachdata.driveschool===undefined||coachdata.driveschool.length<5){
+            return callback("您的账号没有所在驾校");
+        }
+        user_serverv1.getCodebyMolile(mobile,function(err){
+            return callback(err);
+        })
+
+    })
+}
+
+// 用户通过验证码登录
+exports.studentLoginByCode=function(userinfo,callback){
+    checkSmsCode(userinfo.mobile,userinfo.smscode,function(err) {
+        if (err) {
+            return callback(err);
+        }
+        coachmode.findOne({mobile: userinfo.mobile})
+            .populate("tagslist"," _id  tagname tagtype color")
+            .exec(function (err, userinstace) {
+                if (err)
+                {
+                    return callback ("查找用户出错:"+ err);
+                } else
+                {
+                    if(!userinstace){
+                        return callback("用户不存在");
+                    }else {
+                     {
+                            var token = jwt.sign({
+                                userId: userinstace._id,
+                                timestamp: new Date(),
+                                aud: secretParam.audience
+                            }, secretParam.secret);
+                            userinstace.token = token;
+                            userinstace.logintime = Date.now();
+                            userinstace.save(function (err, newinstace) {
+                                if (err) {
+                                    return callback("save  user login  err:" + err);
+                                }
+                                var returnmodel=new resbasecoachinfomode(newinstace);
+                                returnmodel.token=token;
+                                returnmodel.password=newinstace.password;
+                                //returnmodel.mobile=mobileObfuscator(userinfo.mobile);
+                                returnmodel.usersetting=newinstace.usersetting;
+                                returnmodel.idcardnumber=newinstace.idcardnumber;
+                                returnmodel.coachid =newinstace._id;
+                                returnmodel.tagslist=userinstace.tagslist;
+
+                                regisermobIm.addsuer(newinstace._id,newinstace.password,function(err,data){
+                                    coachmode.update({"_id":new mongodb.ObjectId(newinstace._id)},
+                                        { $set: { is_registermobim:1 }},{safe: false},function(err,doc){
+                                            userfcode.findOne({"userid":newinstace._id})
+                                                .select("userid fcode money")
+                                                .exec(function(err, fcodedata){
+                                                    returnmodel.fcode=fcodedata&&fcodedata.fcode?fcodedata.fcode:"";
+                                                    return callback(null,returnmodel);
+                                                })
+
+                                        });
+                                });
+
+
+                            });
+                        }
+
+                    }
+
+                }
+            });
+
+    });
+}
+
+var  checkSmsCode=function(mobile,code,callback){
+    smsVerifyCodeModel.findOne({mobile:mobile,smsCode:code, verified: false},function(err,instace){
+        if(err)
+        {
+            return callback("查询出错: "+ err);
+        }
+        if (!instace)
+        {
+            return callback("验证码错误，请重新发送");
+        }
+        //console.log(instace);
+        var  now=new Date();
+        /*console.log(now);
+         console.log(instace.createdTime);
+         console.log(now-instace.createdTime);*/
+        if ((now-instace.createdTime)>timeout*1000){
+            return callback("您已超时请重新发送");
+        }
+        instace.verified=true;
+        instace.save(function(err,temp){
+            if (err)
+            {
+                return callback("服务器内部错误:"+err);
+            }
+            return callback(null);
+        })
+
+    });
 }
