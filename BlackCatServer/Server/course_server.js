@@ -331,7 +331,8 @@ exports.postReservation=function(reservationinfo,callback){
             ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
                 ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
                 ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
-            ,begintime: { $gte: (new Date(reservationinfo.begintime)), $lte:new Date(reservationinfo.endtime)}})
+            ,begintime: { $gte: (new Date(reservationinfo.begintime))}
+    , endtime:{$lte:new Date(reservationinfo.endtime)}})
         .select("_id" )
         .exec(function(err,reservationdata){
             if(reservationdata&&reservationdata.length>0){
