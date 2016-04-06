@@ -806,13 +806,13 @@ exports.coachMobileVerification=function(mobile,callback){
             return callback("查找教练失败："+err);
         }
         if(!coachdata){
-            return callback("没有查询到您的注册信息");
+            return callback("您的手机号不属于联盟驾校，暂时无法通过验证");
         }
         if (coachdata.is_validation==false){
             return callback("您的账号没有通过验证，暂时无法登录");
         }
         if (coachdata.driveschool===undefined||coachdata.driveschool.length<5){
-            return callback("您的账号没有所在驾校");
+            return callback("您的手机号不属于联盟驾校，暂时无法通过验证");
         }
         user_serverv1.getCodebyMolile(mobile,function(err){
             return callback(err);
