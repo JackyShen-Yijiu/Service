@@ -327,7 +327,17 @@ var syncReservationdesc=function(userid,callback){
 //});
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
-    usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
+    reservationmodel.find( { userid:new mongodb.ObjectId(reservationinfo.userid)
+            ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
+                ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
+                ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
+            ,begintime: { $gte: (new Date(reservationinfo.begintime)), $lte:new Date(reservationinfo.endtime)}})
+        .select("_id" )
+        .exec(function(err,reservationdata){
+            if(reservationdata&&reservationdata.length>0){
+                return callback("此时段您已经预约其他教练" + err);
+            }
+            usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
         if (err | !userdata) {
             return callback("不能找到此用户" + err);
         }
@@ -489,6 +499,7 @@ exports.postReservation=function(reservationinfo,callback){
             });
 
     });
+        })
 };
 
 exports.getmyuncommentreservation=function(userid,subjectid,callback){
