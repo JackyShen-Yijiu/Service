@@ -359,8 +359,9 @@ exports.postReservation=function(reservationinfo,callback){
             return callback("无法确定您的选择课程");
         }
         coachmode.findById(new mongodb.ObjectId(reservationinfo.coachid), function (err, coachdata) {
-            if(err|| !coachdata){
-                return callback("查询教练出错："+err);
+            if(err|| !coachdata) {
+                return callback("查询教练出错：" + err);
+            }
                 if (coachdata.is_lock){
                     return callback("该教练被锁定：");
                 }
@@ -381,7 +382,6 @@ exports.postReservation=function(reservationinfo,callback){
                     return callback("该教练不服务您所报的班级，无法报名");
                 }
 
-            }
             VerificationCourse(arr, reservationinfo.userid, function (err) {
                 if (err) {
                     return callback("验证课程出错：" + err);

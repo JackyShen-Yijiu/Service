@@ -871,8 +871,6 @@ exports.studentLoginByCode=function(userinfo,callback){
 
                                         });
                                 });
-
-
                             });
                         }
 
