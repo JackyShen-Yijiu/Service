@@ -363,13 +363,13 @@ exports.postReservation=function(reservationinfo,callback){
                 return callback("查询教练出错：" + err);
             }
                 if (coachdata.is_lock){
-                    return callback("该教练被锁定：");
+                    return callback("该教练被锁定");
                 }
                 if (!coachdata.is_validation){
-                    return callback("该教练没有通过验证不能预约：");
+                    return callback("该教练没有通过验证不能预约");
                 }
                 // 判断报名的教练是否在所报名的驾校下
-                if(coachdata.driveschool!=userdata.driveschool){
+                if(coachdata.driveschool.toString()!=userdata.driveschool.toString()){
                     return callback("报名教练所在教练与所在驾校不相符，无法预约");
                 }
                 // 判断科目、、if(userdata.subject.subjectid==)
