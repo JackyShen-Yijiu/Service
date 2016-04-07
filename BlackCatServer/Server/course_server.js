@@ -369,12 +369,12 @@ exports.postReservation=function(reservationinfo,callback){
                     return callback("该教练没有通过验证不能预约");
                 }
                 // 判断报名的教练是否在所报名的驾校下
-                if(coachdata.driveschool.toString()!=userdata.driveschool.toString()){
+                if(coachdata.driveschool.toString()!=userdata.applyschool.toString()){
                     return callback("报名教练所在教练与所在驾校不相符，无法预约");
                 }
                 // 判断科目、、if(userdata.subject.subjectid==)
                 // 判断车型 C1 C2
-                if(usermodel.carmodel.modelsid!=coachdata.carmodel.modelsid){
+                if(userdata.carmodel.modelsid!=coachdata.carmodel.modelsid){
                     return callback("您所报的驾照类型与该教练教的不同，无法预约");
                 }
                 // 判断班级
