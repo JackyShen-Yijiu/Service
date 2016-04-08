@@ -332,6 +332,9 @@ exports.postReservation=function(reservationinfo,callback){
     var datetomorrow = endtime.addDays(1);
     arr = reservationinfo.courselist.split(',');
     coursecount = arr.length;
+    if(coursecount>4){
+        return callback("每次预约最多四个课时");
+    }
     reservationmodel.find( { userid:new mongodb.ObjectId(reservationinfo.userid)
             ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
                 ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
@@ -349,10 +352,10 @@ exports.postReservation=function(reservationinfo,callback){
             }
             if(reservationdata&&reservationdata.length>0){
                 for (var i =0;i<reservationdata.length;i++){
-                    console.log(reservationdata[i].begintime);
-                    console.log(new Date(reservationinfo.begintime));
+                    //console.log(reservationdata[i].begintime);
+                    //console.log(new Date(reservationinfo.begintime));
                     if(reservationdata[i].begintime.getTime()==new Date(reservationinfo.begintime).getTime()){
-                        console.log("有相同的时间段");
+                        //console.log("有相同的时间段");
                         return callback("你已经预约过该时段的课程");
                         break;
                     }

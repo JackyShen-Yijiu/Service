@@ -325,7 +325,8 @@ exports.getUreservationUserList=function(coachid,subjectid,callback){
                         "subject.subjectid":subjectid
                     }
                 }
-                searchinfo.applyschool=coachdata.driveschool
+                searchinfo.applyschool=coachdata.driveschool;
+                searchinfo.applyclasstype={"$in":coachdata.serverclasslist};
                 usermodel.find(searchinfo)
                     .select("_id name mobile headportrait   subject   " +
                         "subjecttwo  subjectthree   ")
