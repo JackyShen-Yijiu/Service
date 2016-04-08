@@ -273,6 +273,11 @@ VerificationCourse=function(courselist,userid,callback){
 };
 // 判断教练是否修改过工作时间
 VCoachCourseCoachCourse=function(courselist,coachdata,coachid,date,callback){
+    var now = new Date();
+    var coursedate=new Date(date);
+    if(now.getDaysBetween(coursedate)<0){
+        return callback(err,courselist);
+    }
     var worktimecount=coachdata.worktime.length;
     var coursecount=courselist.length;
     var courstudentcount= coachdata.coursestudentcount ? coachdata.coursestudentcount : 1;

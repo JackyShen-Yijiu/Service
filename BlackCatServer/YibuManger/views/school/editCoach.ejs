@@ -132,6 +132,8 @@
                                                     <input  type="number" ng-model="formData.passrate"   class="span1" id="passrate" value="90" >%
                                                     &nbsp;&nbsp;学员数&nbsp;
                                                     <input  type="number" ng-model="formData.studentcount"   class="span1" id="studentcount" value="0" >
+                                                    &nbsp;&nbsp;每节带学员的数量&nbsp;
+                                                    <input  type="number" ng-model="formData.coursestudentcount" min=1 max=10   class="span1" id="coursestudentcount" value="0" >
                                                 </div>
                                             </div> <!-- /control-group -->
 
@@ -292,6 +294,7 @@
                         $scope.formData.Seniority=1;
                         $scope.formData.passrate=90;
                         $scope.formData.studentcount=90;
+                        $scope.formData.coursestudentcount=1;
                         $scope.formData.starlevel="2";
                         $scope.formData.begintimeint="8";
                         $scope.formData.endtimeint="19";
