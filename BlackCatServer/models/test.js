@@ -29,6 +29,12 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 var crypto = require('crypto');
+usermodel.remove({applystate:0},function(err,data){
+    console.log(data);
+})
+//coachmode.remove({is_validation:false},function(err,data){
+//    console.log(data);
+//})
 //usermodel.find({},function(err,userdata){
 //    userdata.forEach(function(r,index){
 //        r.examinationinfo.subjectone.examinationresult=0;

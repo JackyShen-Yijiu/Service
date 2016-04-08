@@ -1418,6 +1418,7 @@ exports.getUserFirstCoach=function(userid,subjectid,callback){
         }
         coachmode.findOne({is_lock:false,is_validation:true,
                 driveschool:new mongodb.ObjectId(user.applyschool),
+                serverclasslist:{'$in':[user.applyclasstype]},
                 //"carmodel.modelsid":user.carmodel.modelsid,
                 "subject.subjectid":{'$in':[subjectid]}})
             .sort({"passrate": -1})
@@ -1473,6 +1474,7 @@ exports.getUsefulCoachList=function(useid,index,searchname,callback){
         coachmode.find({is_lock:false,is_validation:true,
             driveschool:new mongodb.ObjectId(user.applyschool),
             name:new RegExp(searchname),
+            serverclasslist:{'$in':[user.applyclasstype]},
             //"carmodel.modelsid":user.carmodel.modelsid,
         "subject.subjectid":{'$in':[user.subject.subjectid]}})
             .sort({"passrate": -1})

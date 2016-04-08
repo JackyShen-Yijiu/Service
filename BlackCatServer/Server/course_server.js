@@ -186,6 +186,7 @@ var getCoachCourse=function(coachid,date ,callback){
                 })
 
             } else{
+                VCoachCourseCoachCourse(coursedata,coachdata,coachid,date,function(err,coursedata){
                 var list=[];
                 if (coachdata.leaveendtime!=undefined&& coachdata.leaveendtime>Date.now()) {
                     coursedata.forEach(function (r, index) {
@@ -201,6 +202,7 @@ var getCoachCourse=function(coachid,date ,callback){
                 //list.sort(coursebegintime);
                 list= _.sortBy(list,'coursebegintime');
                 return callback(null,list);
+                })
             }
 
         });
@@ -213,7 +215,6 @@ var savecourse=function(coachdata,coachid,date,callback){
         var insertcount=coachdata.worktime.length;
         var count=0;
         coachdata.worktime.forEach(function (r) {
-
             var course = new coursemode;
             course.coachid = new mongodb.ObjectId(coachid);
             course.coursedate = new Date(date);
@@ -269,6 +270,59 @@ VerificationCourse=function(courselist,userid,callback){
             }
         });
     });
+};
+// 判断教练是否修改过工作时间
+VCoachCourseCoachCourse=function(courselist,coachdata,coachid,date,callback){
+    var worktimecount=coachdata.worktime.length;
+    var coursecount=courselist.length;
+    var courstudentcount= coachdata.coursestudentcount ? coachdata.coursestudentcount : 1;
+    // 判断有没有新加课程
+    for(var i=0;i<worktimecount;i++){
+        var searchcourse=false;
+        for(var j=0;j<coursecount;j++){
+            if(coachdata.worktime[i].timeid==courselist[j].coursetime.timeid){
+                searchcourse=true;
+                // 人员减少
+                if(courselist[j].coursestudentcount>courstudentcount){
+                    if(courselist[j].selectedstudentcount<courstudentcount) {
+                        coursemode.update({"_id": courselist[j]._id},{"coursestudentcount":courstudentcount},function(err,data){})
+                    }
+                }
+                // 人员增加
+                else if(courselist[j].coursestudentcount<courstudentcount){
+                    coursemode.update({"_id": courselist[j]._id},{"coursestudentcount":courstudentcount},function(err,data){})
+                }
+                break;
+            }
+        };
+        if(!searchcourse){
+            var r=coachdata.worktime[i];
+            var course = new coursemode;
+            course.coachid = new mongodb.ObjectId(coachid);
+            course.coursedate = new Date(date);
+            course.driveschool=coachdata.driveschool;
+            course.coursestudentcount = coachdata.coursestudentcount ? coachdata.coursestudentcount : 1;
+            course.coursetime.timeid = r.timeid;
+            course.coursebegintime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.begintime);
+            course.courseendtime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.endtime);
+            course.coursetime.timespace = r.timespace;
+            course.coursetime.begintime = r.begintime;
+            course.coursetime.endtime = r.endtime;
+            course.carmodelid=coachdata.carmodel.modelsid;
+            course.subjectid=coachdata.subject.length>0?coachdata.subject[0].subjectid:2;
+            course.coachname=coachdata.name;
+            course.platenumber=coachdata.platenumber;
+            course.save(function (err, newcouse) {
+                if (err || !newcouse) {
+                    return callback("存储课程出错：" + err);
+                }
+            })
+        }
+    }
+    coursemode.findCourse(coachid,date,function(err,coursedata){
+        return callback(err,coursedata);
+    })
+
 }
 
 var syncReservationdesc=function(userid,callback){
