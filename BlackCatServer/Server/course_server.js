@@ -351,7 +351,8 @@ exports.postReservation=function(reservationinfo,callback){
                 for (var i =0;i<reservationdata.length;i++){
                     console.log(reservationdata[i].begintime);
                     console.log(new Date(reservationinfo.begintime));
-                    if(reservationdata[i].begintime==new Date(reservationinfo.begintime)){
+                    if(reservationdata[i].begintime.getTime()==new Date(reservationinfo.begintime).getTime()){
+                        console.log("有相同的时间段");
                         return callback("你已经预约过该时段的课程");
                         break;
                     }
