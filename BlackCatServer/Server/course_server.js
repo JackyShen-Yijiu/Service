@@ -328,15 +328,17 @@ var syncReservationdesc=function(userid,callback){
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
     var begintime=new Date(reservationinfo.begintime);
-    var endtime=new Date(reservationinfo.endtime);
+    var endtime=new Date(reservationinfo.begintime);
+    var datetomorrow = endtime.addDays(1);
     arr = reservationinfo.courselist.split(',');
     coursecount = arr.length;
     reservationmodel.find( { userid:new mongodb.ObjectId(reservationinfo.userid)
             ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
                 ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
                 ,{reservationstate:appTypeEmun.ReservationState.unconfirmfinish},{reservationstate:9},{reservationstate:10}]
-            ,begintime: { $gte: (new Date(reservationinfo.begintime))}
-    , endtime:{$lte:new Date(reservationinfo.endtime)}})
+            ,begintime: { $gte: begintime.clearTime(),$lte:datetomorrow.clearTime()}
+   // , endtime:{$lte:new Date(reservationinfo.endtime)}
+    })
         .select("_id" )
         .exec(function(err,reservationdata){
             if(reservationdata&&reservationdata.length>=4){
