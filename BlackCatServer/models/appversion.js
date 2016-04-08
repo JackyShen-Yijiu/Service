@@ -8,6 +8,7 @@ var AppversionSchema = new Schema({
     name: {type:String,default:''},
     apptype:Number,
     versionCode:String,
+    innerversionCode:{type:Number,default:0},
     downloadUrl:{type:String,default:''},
     updateMessage :{type:String,default:''},
     updateTime:{type:Date,default:Date.now()},

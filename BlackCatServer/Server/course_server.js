@@ -327,6 +327,10 @@ var syncReservationdesc=function(userid,callback){
 //});
 // 提交预约课程
 exports.postReservation=function(reservationinfo,callback){
+    var begintime=new Date(reservationinfo.begintime);
+    var endtime=new Date(reservationinfo.endtime);
+    arr = reservationinfo.courselist.split(',');
+    coursecount = arr.length;
     reservationmodel.find( { userid:new mongodb.ObjectId(reservationinfo.userid)
             ,$or:[{reservationstate:appTypeEmun.ReservationState.applyconfirm},{reservationstate:appTypeEmun.ReservationState.applying}
                 ,{reservationstate:appTypeEmun.ReservationState.finish},{reservationstate:appTypeEmun.ReservationState.ucomments}
@@ -335,11 +339,23 @@ exports.postReservation=function(reservationinfo,callback){
     , endtime:{$lte:new Date(reservationinfo.endtime)}})
         .select("_id" )
         .exec(function(err,reservationdata){
-            if(reservationdata&&reservationdata.length>0){
-                return callback("此时段您已经预约其他教练");
+            if(reservationdata&&reservationdata.length>=4){
+                return callback("您今天预约的课程超过了最大预约数据");
             }
+            if(reservationdata&&(reservationdata.length+coursecount)>=4){
+                return callback("您今天预约的课程超过了最大预约数据");
+            }
+            if(reservationdata&&reservationdata.length>0){
+                for (var i =0;i<reservationdata.length;i++){
+                    if(reservationdata.begintime==new Date(reservationinfo.begintime)){
+                        return callback("你已经预约过该时段的课程");
+                        break;
+                    }
+                }
+            }
+
             usermodel.findById(new mongodb.ObjectId(reservationinfo.userid),function(err,userdata) {
-        if (err | !userdata) {
+        if (err || !userdata) {
             return callback("不能找到此用户" + err);
         }
         //判断用户状态
@@ -353,8 +369,7 @@ exports.postReservation=function(reservationinfo,callback){
         if (userdata.subject.subjectid != 2 && userdata.subject.subjectid != 3) {
             return callback("该用户现阶段不能预约课程:" + userdata.subject.name);
         }
-        arr = reservationinfo.courselist.split(',');
-        coursecount = arr.length;
+
         if (coursecount <= 0) {
             return callback("无法确定您的选择课程");
         }
@@ -363,23 +378,23 @@ exports.postReservation=function(reservationinfo,callback){
                 return callback("查询教练出错：" + err);
             }
                 if (coachdata.is_lock){
-                    return callback("该教练被锁定");
+                    return callback("教练被锁定");
                 }
                 if (!coachdata.is_validation){
-                    return callback("该教练没有通过验证不能预约");
+                    return callback("教练没有通过验证不能预约");
                 }
                 // 判断报名的教练是否在所报名的驾校下
                 if(coachdata.driveschool.toString()!=userdata.applyschool.toString()){
-                    return callback("报名教练所在教练与所在驾校不相符，无法预约");
+                    return callback("教练所在教练与所在驾校不相符，无法预约");
                 }
                 // 判断科目、、if(userdata.subject.subjectid==)
                 // 判断车型 C1 C2
                 if(userdata.carmodel.modelsid!=coachdata.carmodel.modelsid){
-                    return callback("您所报的驾照类型与该教练教的不同，无法预约");
+                    return callback("您所报的驾照类型与教练教的不同，无法预约");
                 }
                 // 判断班级
                 if(coachdata.serverclasslist.indexOf(userdata.applyclasstype)==-1){
-                    return callback("该教练不服务您所报的班级，无法报名");
+                    return callback("教练不服务所报的班级，无法报名");
                 }
 
             VerificationCourse(arr, reservationinfo.userid, function (err) {
