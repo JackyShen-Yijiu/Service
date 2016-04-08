@@ -339,7 +339,7 @@ exports.postReservation=function(reservationinfo,callback){
             ,begintime: { $gte: begintime.clearTime(),$lte:datetomorrow.clearTime()}
    // , endtime:{$lte:new Date(reservationinfo.endtime)}
     })
-        .select("_id" )
+        .select("_id begintime" )
         .exec(function(err,reservationdata){
             if(reservationdata&&reservationdata.length>=4){
                 return callback("您今天预约的课程超过了最大预约数据");
