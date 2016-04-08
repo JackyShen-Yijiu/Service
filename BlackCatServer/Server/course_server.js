@@ -349,7 +349,7 @@ exports.postReservation=function(reservationinfo,callback){
             }
             if(reservationdata&&reservationdata.length>0){
                 for (var i =0;i<reservationdata.length;i++){
-                    if(reservationdata.begintime==new Date(reservationinfo.begintime)){
+                    if(reservationdata[i].begintime==new Date(reservationinfo.begintime)){
                         return callback("你已经预约过该时段的课程");
                         break;
                     }
