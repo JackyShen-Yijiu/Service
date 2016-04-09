@@ -406,7 +406,7 @@ exports.postReservation=function(reservationinfo,callback){
             if(reservationdata&&reservationdata.length>=4){
                 return callback("您今天预约的课程超过了最大预约数据");
             }
-            if(reservationdata&&(reservationdata.length+coursecount)>=4){
+            if(reservationdata&&(reservationdata.length+coursecount)>4){
                 return callback("您今天预约的课程超过了最大预约数据");
             }
             if(reservationdata&&reservationdata.length>0){

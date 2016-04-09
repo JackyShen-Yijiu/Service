@@ -118,7 +118,7 @@ var defaultFun = {
             phone: req.body.phone ? req.body.phone : "",
             shortname: req.body.shortname ? req.body.shortname : "",
             examurl: req.body.examurl ? req.body.examurl : "",
-            querycoursehoururl: req.body.shortname ? req.body.querycoursehoururl : "",
+            querycoursehoururl: req.body.querycoursehoururl ? req.body.querycoursehoururl : "",
             examroomname: req.body.examroomname ? req.body.examroomname : "",
             pictures_path: req.body.pictures_path
         };
