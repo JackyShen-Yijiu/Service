@@ -124,18 +124,19 @@ exports.getCoachDayTimelysreservation=function(coachid,date,callback){
         return index;
     }
     date=new Date(date).toFormat("YYYY-MM-DD").toString();
+    var now  =new Date();
+    if(now.getDaysBetween(new Date(date))>7){
+        //return res.json(new BaseReturnInfo(0,"无法获取该时间段的课程安排",[]));
+        return callback("无法获取该时间段的课程安排");
+
+    }
     coursemode.findCourse(coachid,date,function(err,coursedata) {
         if (err) {
             return callback("查询课程信息出错：" + err);
         }
 
         if (!coursedata || coursedata.length == 0) {
-            var now  =new Date();
-            if(now.getDaysBetween(new Date(date))>7){
-                //return res.json(new BaseReturnInfo(0,"无法获取该时间段的课程安排",[]));
-                return callback("无法获取该时间段的课程安排");
 
-            }
            // return callback(null,[]);
             courses_serverv1.GetCoachCourse(coachid,date,function(err,coursedata){
                 if(err){
