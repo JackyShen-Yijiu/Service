@@ -1073,20 +1073,30 @@ exports.getSameTimeStudentsv2=function(coachid,begintime,endtime,index,callback)
             if (coachdata.driveschool===undefined){
                 return callback(null,[]);
             }
-            console.log( new  Date(begintime*1000));
-            console.log( new  Date(endtime*1000));
+            //console.log( new  Date(begintime*1000));
+            //console.log( new  Date(endtime*1000));
             reservationmodel.find({"driveschool":new mongodb.ObjectId(coachdata.driveschool),
-                "begintime": { $gte: new  Date(begintime*1000), $lte:new Date(endtime*1000)},
-                    "reservationstate":{"$ne":2,"$ne":4}})
+                "begintime": { $gte: new  Date(begintime*1000), $lt:new Date(endtime*1000)},
+              //  "begintime":new  Date(begintime*1000),
+              //  "endtime":new Date(endtime*1000),
+                    "reservationstate":{"$ne":2,"$ne":4,"$ne":10}})
                 .select("userid")
                 .populate("userid","_id  name headportrait ")
-                .skip((index-1)*10)
-                .limit(10)
+                .skip((index-1)*30)
+                .limit(30)
                 .exec(function(err,data){
                     if(err){
                         return callback("查询同时段学员出錯:"+t);
                     }
-                    callback(null,data);
+                    var returndata=[];
+                    var exitdata=[];
+                    data.forEach(function(r,index){
+                        if(exitdata.indexOf(r.userid._id)==-1){
+                            returndata.push(r);
+                            exitdata.push(r.userid._id)
+                        }
+                    })
+                    callback(null,returndata);
                 })
 
         })
