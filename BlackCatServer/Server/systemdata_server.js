@@ -113,6 +113,17 @@ exports.saveFeedback=function(feedbackinfo,callback){
         return callback(null,"success");
     })
 };
+// 获取我的投诉列表
+exports.getcomplaintlist=function(query,callback){
+    feedbackModel.find({"userid":query.userid,"$or":[{"feedbacktype":1},{"feedbacktype":2}]})
+        .select("_id feedbackmessage  userid  createtime feedbacktype name feedbackusertype becomplainedname piclist")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询我的投诉出错："+err);
+            }
+            return callback(null,data);
+        })
+}
 exports.getHeadLineNews=function(callback){
     headLineModel.find({"is_using":"true"})
         .limit(8)

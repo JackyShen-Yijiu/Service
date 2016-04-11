@@ -1862,7 +1862,7 @@ exports.receiveMyCupon=function(queryinfo,callback){
         })
 };
 // 获取我可以使用的Y码
-exports.getUserAvailableFcode=function(queryinfo,callback){
+exports.getUserAvailab2leFcode=function(queryinfo,callback){
     usermodel.findById(new mongodb.ObjectId(queryinfo.userid),function(err,userdata){
         if(err){
             return callback("查询用户出错："+err);

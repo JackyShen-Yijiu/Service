@@ -288,6 +288,26 @@ exports.postUserFeedBack=function(req,res){
     })
 
 };
+// 获取用户投诉
+exports.getmycomplaintv2=function(req,res){
+    var queryinfo= {
+        userid:req.query.userid,
+    };
+    if (queryinfo.userid === undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数不完整",[]));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",[]));
+    };
+    sysstemserver.getcomplaintlist(queryinfo,function(err,data){
+        if (err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 exports.getmessagecount=function(req,res){
     var searchinfo={
         coachid:req.query.coachid,

@@ -84,8 +84,7 @@ v1.post("/userinfo/buyproduct",ensureAuthorizedController.ensureAuthorized,userC
 v1.get("/userinfo/getmyorderlist",ensureAuthorizedController.ensureAuthorized,userController.getMyorderList);
 // 获取验证码
 v1.get('/code/:mobile', userController.fetchCode);
-// 验证用户是否存在
-v1.get("/userinfo/userexists",userController.verifyUserExists);
+// 验证用户是否存在v1.get("/userinfo/userexists",userController.verifyUserExists);
 // 检验验证码 (用户登后修改验证码使用)
 v1.get('/Verificationsmscode', userController.verificationSmscode);
 //用户注册
@@ -223,7 +222,9 @@ v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized
 
 // 获取我的投诉
 v1.get("/courseinfo/getmycomplaint",ensureAuthorizedController.ensureAuthorized,courseController.getmycomplaint);
-
+        // 获取我的投诉列表 V2
+        v1.get("/courseinfo/getmycomplaintv2",ensureAuthorizedController.ensureAuthorized,
+            appsystemController.getmycomplaintv2);
 //获取同时段学员
 v1.get("/courseinfo/sametimestudentsv2",courseController.sameTimeStudentsv2);
 
