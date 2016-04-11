@@ -1863,7 +1863,12 @@ exports.receiveMyCupon=function(queryinfo,callback){
 };
 // 获取我可以使用的Y码
 exports.getUserAvailableFcode=function(queryinfo,callback){
-    userAvailableFcodeModel.find({"userid":queryinfo.userid},function(err,data){
+    usermodel.findById(new mongodb.ObjectId(queryinfo.userid),function(err,userdata){
+        if(err){
+            return callback("查询用户出错："+err);
+        }
+        userAvailableFcodeModel.find({$or:[
+            {"userid":queryinfo.userid},{"mobile":userdata.mobile}]},function(err,data){
         if(err){
             return callback("查找可用Y码出错");
         }
@@ -1877,6 +1882,7 @@ exports.getUserAvailableFcode=function(queryinfo,callback){
             returndatalist.push(Ycode);
         })
         return callback(null,returndatalist);
+    })
     })
 }
 exports.getmyCupon=function(queryinfo,callback){
