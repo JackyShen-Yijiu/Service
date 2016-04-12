@@ -265,7 +265,7 @@ rule3.dayOfWeek = [0, new schedule.Range(1, 6)];
 
 rule3.hour = [0, new schedule.Range(1, 23)];
 
-rule3.minute = 45;
+rule3.minute = 55;
 try{
     var j = schedule.scheduleJob(rule3, function(){
         var boolasync =true;
@@ -273,6 +273,7 @@ try{
             function() { return boolasync },
             function(cb) {
                 var endtime =new Date().addHours(1);
+                cb("开始查询要提醒的数据");
                 reservationmodel.findOneAndUpdate({reservationstate:appTypeEmun.ReservationState.applyconfirm,
                     begintime: { $gte: new Date(),$lte:endtime},
                         "$or":[ {is_sendsms:false},{is_sendsms:null}]},
@@ -283,6 +284,7 @@ try{
                         }
                         if(!doc){
                             boolasync=false;
+                            console.log(没有查到要提醒的数据);
                             cb("没有查到要提醒的数据");
                         }
                         //console.log(doc);
@@ -290,7 +292,9 @@ try{
                             //console.log(doc);
                             pushmsg.beginClassMsg(doc.userid,doc._id,function(err,data){});
                             usermodel.findById(new mongodb.ObjectId(doc.userid),function(err,data){
-                                sendsms.sendClassBeginMessage(data.mobile,function(err,data){})
+                                sendsms.sendClassBeginMessage(data.mobile,function(err,data){
+                                    cb();
+                                })
                             })
                         }
                     });
