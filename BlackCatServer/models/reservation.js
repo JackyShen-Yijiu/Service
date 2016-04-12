@@ -79,8 +79,9 @@ var ReservationSchema=new Schema({
     coachname:String,   //  教练名称
     username:String,    // 用户 名称
     idcardnumber:String,  // 用户身份证号
-
-
+    usermobile:String,// 学员手机号
+    is_sendsms:{type:Boolean,default: false}, //是否发送学员通知短信
+    is_sendmessage:{type:Boolean,default: false}, // 是否发送系统通知
 });
 
 module.exports = mongoose.model('reservation', ReservationSchema);

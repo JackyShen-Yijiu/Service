@@ -13,7 +13,8 @@ var alterinfo={
     ReservationCancel:"您预约的课程被教练取消，请到预约详情里查看",
     CoachComment:"您预约的课程已经被教练评价，请到预约详情里查看评价内容",
     WalletUpdate:"您的积分有更新，进入我的钱包查看详情",
-    NewVersion:config.appname+"有版本更新啦！"
+    NewVersion:config.appname+"有版本更新啦！",
+    BeginClassMsg:"您预约的课程马上就要开课了，请做好上车准备",
 };
 var pushtype={
     ApplySuccess:"userapplysuccess",
@@ -22,7 +23,8 @@ var pushtype={
     CoachComment:"reservationcoachcomment ",
     WalletUpdate:"walletupdate",
     NewVersion:"newversion",
-    SystemMsg:"systemmsg"
+    SystemMsg:"systemmsg",
+    BeginClassMsg:"beginblassmsg"
 }
 // 发送系统消息
 exports.pushSystemMessage=function(userid,title,msg_content,callback){
@@ -36,7 +38,6 @@ exports.pushSystemMessage=function(userid,title,msg_content,callback){
     }
     BasePushmessage.pushMessagetoStudent(userid,title,msg_content,senddata,pushtype.SystemMsg,function(err,data){
         if(err){
-
             return callback(err);
         }
         return callback(null,data);
@@ -106,7 +107,23 @@ exports.pushApplySuccess=function(userid,callback){
         return callback(null,data);
     })
 }
-
+// 发送开课提醒
+exports.beginClassMsg=function(userid,reservationid,callback){
+    if(userid===undefined|| reservationid===undefined){
+        return callback("参数数据");
+    }
+    var senddata={
+        userid:userid,
+        reservationid:reservationid
+    }
+    BasePushmessage.PushToStudent(alterinfo.BeginClassMsg,title,userid,
+        senddata,BasePushmessage.SendPlatform.All,pushtype.BeginClassMsg,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        return callback(null,data);
+    })
+}
 //发送教练接受订单 预约成功
 exports.pushReservationSuccess=function(userid,reservationid,callback){
     if(userid===undefined|| reservationid===undefined){

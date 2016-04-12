@@ -539,6 +539,7 @@ exports.postReservation=function(reservationinfo,callback){
                     reservation.carmodelid = userdata.carmodel.modelsid;
                     reservation.coachname = coachdata.name;
                     reservation.username = userdata.name;
+                    reservation.usermobile= userdata.mobile;
                     reservation.idcardnumber = userdata.idcardnumber;
                     arr.forEach(function (r) {
                         reservation.reservationcourse.push(new mongodb.ObjectId(r));

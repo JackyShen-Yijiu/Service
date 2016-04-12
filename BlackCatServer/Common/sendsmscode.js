@@ -69,3 +69,27 @@ exports.sendsmscode=function(mobile,callback) {
     });
 }
 
+var sendmessage=function(mobile,msg,callback){
+    var options  = {
+        "sn": "SDK-WSS-010-08341",
+        "pwd": "DD6929B3420DA8E2785261FBF1074440",
+        "mobile": mobile,
+        "content": msg,
+        "ext":smsconfig.ext,
+        "stime":"",
+        "rrid":"",
+        "msgfmt":""
+    };
+    request
+        .post('http://sdk2.entinfo.cn:8061/webservice.asmx/mdsmssend')  // utf8 interface
+        .send(options)
+        .type('form')
+        .end(function(err, res){
+            callback(err, res);
+        });
+
+}
+exports.sendClassBeginMessage=function(mobile,callback){
+    var sms ="【"+config.companyname+"】，您预约的课程马上就要开课了，请做好上车准备";
+    sendmessage(mobile,sms,callback);
+}
