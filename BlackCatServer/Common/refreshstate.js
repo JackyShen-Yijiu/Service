@@ -284,7 +284,7 @@ try{
                         }
                         if(!doc){
                             boolasync=false;
-                            console.log(没有查到要提醒的数据);
+                            console.log("没有查到要提醒的数据");
                             cb("没有查到要提醒的数据");
                         }
                         //console.log(doc);
