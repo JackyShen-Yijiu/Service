@@ -121,6 +121,7 @@ exports.userBuyProduct=function(req,res){
         name:req.body.name,
         mobile:req.body.mobile,
         address:req.body.address,
+        buycount:req.body.buycount?req.body.buycount:1,
         couponid:req.body.couponid?req.body.couponid:""
     }
     if (postinfo.usertype === undefined

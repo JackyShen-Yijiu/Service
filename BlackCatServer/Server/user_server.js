@@ -178,9 +178,7 @@ userpayprocess=function(userdata,info,callback){
             return  ("查找商品出错:"+err)
         }
         if(!productdata){
-            if(!userdata){
-                return callback("没有查找到商品");
-            }
+            return callback("没有查找到商品");
         }
         //优惠券购买
         if(productdata.is_scanconsumption){
@@ -239,13 +237,16 @@ userpayprocess=function(userdata,info,callback){
         else {
 
             //积分购买
-            if (userdata.wallet < productdata.productprice) {
+            if (userdata.wallet < productdata.productprice*info.buycount) {
                 return callback("对不起，您的金币不足，无法购买商品");
+            }
+            if((productdata.productcount-productdata.buycount)<info.buycount){
+                return callback("商品数量不够，无法购买");
             }
             var payinfo = {
                 userid: userdata._id,
                 usertype: info.usertype,
-                amount: productdata.productprice * (-1),
+                amount: productdata.productprice * (-1)*info.buycount,
                 type: appTypeEmun.IntegralType.buyproduct
             }
             payuserIntegral(payinfo, function (err, data) {
@@ -259,7 +260,8 @@ userpayprocess=function(userdata,info,callback){
                 order.orderstate = appTypeEmun.MallOrderState.applying;
                 order.receivername = info.name;
                 order.mobile = info.mobile;
-                order.address = info.mobile;
+                order.count =info.buycount;
+                order.address = info.address;
                 order.save(function (err, data) {
                     if (err) {
                         return callback("保存订单出错:" + err);
