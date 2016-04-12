@@ -150,6 +150,7 @@ payuserIntegral=function(payinfo,callback){
     integralinfo.usertype=payinfo.usertype;
     integralinfo.amount=payinfo.amount;
     integralinfo.type=payinfo.type;
+    integralinfo.createtime=new Date();
     integralinfo.save(function(err,data){
         if(err){
             return callback("保存失败")
@@ -258,6 +259,7 @@ userpayprocess=function(userdata,info,callback){
                 order.usertype = info.usertype;
                 order.productid = productdata._id;
                 order.orderstate = appTypeEmun.MallOrderState.applying;
+                order.createtime =new Date();
                 order.receivername = info.name;
                 order.mobile = info.mobile;
                 order.count =info.buycount;
@@ -1888,13 +1890,31 @@ exports.getUserAvailab2leFcode=function(queryinfo,callback){
     })
 }
 exports.getmyCupon=function(queryinfo,callback){
-    coupon.find({"userid":queryinfo.userid})
-        .select("userid   createtime couponcomefrom is_forcash state")
+    coupon.find({"userid":queryinfo.userid,"$or":[
+        {state:0},{state:1},{state:4}
+    ]})
+        .select("userid   createtime couponcomefrom is_forcash state usetime useproductidlist")
+        .populate("useproductidlist","productname")
         .exec(function(err,data){
             if(err){
                 return callback("查询优惠卷出错："+err);
             }
-            callback(err,data);
+            var returndata=[];
+            data.forEach(function(r,index){
+                var onedata={
+                    _id: r._id,
+                    userid: r.userid,
+                    createtime: r.createtime,
+                    couponcomefrom: r.couponcomefrom,
+                    is_forcash: r.is_forcash,
+                    state: r.state,
+                    usetime: r.usetime,
+                    useproductidlist: r.useproductidlist,
+                    orderscanaduiturl:auditurl.applyurl + r._id
+                }
+                returndata.push(onedata);
+            })
+            callback(err,returndata);
         })
 };
 // 用户提现申请
@@ -2109,7 +2129,7 @@ exports.getmymoney=function(queryinfo,callback){
             userid:queryinfo.userid,
             wallet:results[0]?results[0]:0,
             fcode:results[1]? (results[1].fcode?results[1].fcode:""):"",
-            money:results[1]? (results[1].money?results[1].fcode:0):0,
+            money:results[1]? (results[1].money?results[1].money:0):0,
             couponcount:results[2]? results[2].length:0,
             couponremindlist:couponremindlist,
         };

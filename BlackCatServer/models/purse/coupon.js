@@ -15,7 +15,8 @@
        state:{type:Number,default:0},    // 0未领取  1领取  2过期  3作废    4 已消费
        remark:String,   // 备注信息
        usetime:Date,    // 使用实际
-       productid:String  // 购买商品id
+       productid:{type: String, ref: 'mallproduct'},  // 购买商品id
+       useproductidlist:[{type: String, ref: 'mallproduct'}] // 该优惠卷可以兑换商品类别
    });
    couponSchema.index({userid: 1});
    couponSchema.index({createtime:-1});
