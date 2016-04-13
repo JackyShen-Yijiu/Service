@@ -1076,12 +1076,12 @@ exports.applyExamintion=function(examinfo,callback){
         if (userdata.subject.subjectid<2 || userdata.subject.subjectid>4){
             return callback("用户无法报考");
         }
-        var examinfo= new userexaminfo();
-        examinfo.userid=userdata._id;
-        examinfo.createtime=new Date();
-        examinfo.examinationstate=1;
-        examinfo.applydate=new Date(examinfo.exambegintime);
-        examinfo.applyenddate=new Date(examinfo.examendtime);
+        var examinfosave= new userexaminfo();
+        examinfosave.userid=userdata._id;
+        examinfosave.createtime=new Date();
+        examinfosave.examinationstate=1;
+        examinfosave.applydate=new Date(examinfo.exambegintime);
+        examinfosave.applyenddate=new Date(examinfo.examendtime);
 
         switch (parseInt(examinfo.subjectid))
         {
@@ -1099,9 +1099,9 @@ exports.applyExamintion=function(examinfo,callback){
                 userdata.examinationinfo.subjectone.applystate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjectone.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjectone.applyenddate=new Date(examinfo.examendtime);
-                examinfo.subjectid=1;
-                examinfo.coachlist=userdata.subjectonecoach;
-                examinfo.save()
+                examinfosave.subjectid=1;
+                examinfosave.coachlist=userdata.subjectonecoach;
+                examinfosave.save()
                 break;
             }
             case 2:
@@ -1121,9 +1121,9 @@ exports.applyExamintion=function(examinfo,callback){
                 userdata.examinationinfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjecttwo.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjecttwo.applyenddate=new Date(examinfo.examendtime);
-                examinfo.subjectid=1;
-                examinfo.coachlist=userdata.subjecttwocoach;
-                examinfo.save()
+                examinfosave.subjectid=1;
+                examinfosave.coachlist=userdata.subjecttwocoach;
+                examinfosave.save()
                 break;
             }case 3:
             {
@@ -1142,9 +1142,9 @@ exports.applyExamintion=function(examinfo,callback){
                 userdata.examinationinfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjectthree.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjectthree.applyenddate=new Date(examinfo.examendtime);
-                examinfo.subjectid=1;
-                examinfo.coachlist=userdata.subjecttwocoach;
-                examinfo.save()
+                examinfosave.subjectid=1;
+                examinfosave.coachlist=userdata.subjecttwocoach;
+                examinfosave.save()
                 break;
             }case 4:
             {
@@ -1160,9 +1160,9 @@ exports.applyExamintion=function(examinfo,callback){
                 userdata.examinationinfo.subjectfour.applystate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjectfour.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjectfour.applyenddate=new Date(examinfo.examendtime);
-                examinfo.subjectid=1;
-                examinfo.coachlist=userdata.subjectonecoach;
-                examinfo.save()
+                examinfosave.subjectid=1;
+                examinfosave.coachlist=userdata.subjectonecoach;
+                examinfosave.save()
                 break;
             }
             default:{

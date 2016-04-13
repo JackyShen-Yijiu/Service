@@ -93,3 +93,7 @@ exports.sendClassBeginMessage=function(mobile,callback){
     var sms ="【"+config.companyname+"】，您预约的课程马上就要开课了，请做好上车准备";
     sendmessage(mobile,sms,callback);
 }
+var sms ="【"+config.companyname+"】，您预约的课程马上就要开课了，请做好上车准备";
+sendmessage("18811312701",sms,function(err,data){
+    console.log(err)
+});
