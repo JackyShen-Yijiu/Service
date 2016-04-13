@@ -1096,7 +1096,7 @@ exports.applyExamintion=function(examinfo,callback){
                 if(userdata.examinationinfo.subjectone.examinationstate!=0){
                     return callback("您已经申请过该科目的考试");
                 }
-                userdata.examinationinfo.subjectone.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjectone.examinationstate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjectone.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjectone.applyenddate=new Date(examinfo.examendtime);
                 examinfosave.subjectid=1;
@@ -1118,10 +1118,10 @@ exports.applyExamintion=function(examinfo,callback){
                 if(userdata.examinationinfo.subjecttwo.examinationstate!=0){
                     return callback("您已经申请过该科目的考试");
                 }
-                userdata.examinationinfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjecttwo.examinationstate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjecttwo.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjecttwo.applyenddate=new Date(examinfo.examendtime);
-                examinfosave.subjectid=1;
+                examinfosave.subjectid=2;
                 examinfosave.coachlist=userdata.subjecttwocoach;
                 examinfosave.save()
                 break;
@@ -1139,10 +1139,10 @@ exports.applyExamintion=function(examinfo,callback){
                 if(userdata.examinationinfo.subjectthree.examinationstate!=0){
                     return callback("您已经申请过该科目的考试");
                 }
-                userdata.examinationinfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjectthree.examinationstate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjectthree.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjectthree.applyenddate=new Date(examinfo.examendtime);
-                examinfosave.subjectid=1;
+                examinfosave.subjectid=3;
                 examinfosave.coachlist=userdata.subjecttwocoach;
                 examinfosave.save()
                 break;
@@ -1157,10 +1157,10 @@ exports.applyExamintion=function(examinfo,callback){
                 if(userdata.examinationinfo.subjectfour.examinationstate!=0){
                     return callback("您已经申请过该科目的考试");
                 }
-                userdata.examinationinfo.subjectfour.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjectfour.examinationstate=appTypeEmun.ExamintionSatte.applying;
                 userdata.examinationinfo.subjectfour.applydate=new Date(examinfo.exambegintime);
                 userdata.examinationinfo.subjectfour.applyenddate=new Date(examinfo.examendtime);
-                examinfosave.subjectid=1;
+                examinfosave.subjectid=4;
                 examinfosave.coachlist=userdata.subjectonecoach;
                 examinfosave.save()
                 break;
