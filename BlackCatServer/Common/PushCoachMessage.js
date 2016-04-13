@@ -49,26 +49,27 @@ exports.pushNewVersion=function(apptype,callback){
 }
 // 发送钱包更新通知
 exports.pushWalletUpdate=function(userid,callback){
-    if(userid===undefined){
-        return callback("参数数据");
-    }
-    var senddata={
-        userid:userid
-    }
-    BasePushmessage.PushToCoach(alterinfo.WalletUpdate,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.WalletUpdate,function(err,data){
-        if(err){
-            return callback(err);
-        }
-       var  sysmessage=new    SystemMessageModel();
-        sysmessage.createtime=new Date();
-        sysmessage.title=title;
-        sysmessage.description=alterinfo.WalletUpdate;
-        sysmessage.detial=alterinfo.WalletUpdate;
-        sysmessage.userid=userid;
-        sysmessage.Messagetype=0;
-        sysmessage.save(function(err,data){});
-        return callback(null,data);
-    })
+    //if(userid===undefined){
+    //    return callback("参数数据");
+    //}
+    //var senddata={
+    //    userid:userid
+    //}
+    //BasePushmessage.PushToCoach(alterinfo.WalletUpdate,title,userid,senddata,BasePushmessage.SendPlatform.All,pushtype.WalletUpdate,function(err,data){
+    //    if(err){
+    //        return callback(err);
+    //    }
+    //   var  sysmessage=new    SystemMessageModel();
+    //    sysmessage.createtime=new Date();
+    //    sysmessage.title=title;
+    //    sysmessage.description=alterinfo.WalletUpdate;
+    //    sysmessage.detial=alterinfo.WalletUpdate;
+    //    sysmessage.userid=userid;
+    //    sysmessage.Messagetype=0;
+    //    sysmessage.save(function(err,data){});
+    //    return callback(null,data);
+    //})
+
 }
 // 发送教练评价通知
 exports.pushStudentComment=function(userid,reservationid,callback){
