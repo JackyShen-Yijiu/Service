@@ -25,6 +25,7 @@ var basedatafun=require("./basedatafun");
 var cache=require('../Common/cache');
 var resendTimeout = 60;
 var usermodel=mongodb.UserModel;
+var userexaminfo=mongodb.UserExamInfo;
 var coachmode=mongodb.CoachModel;
 var coursemode=mongodb.CourseModel;
 var userCountModel=mongodb.UserCountModel;
@@ -994,9 +995,74 @@ exports.getSchoolCoach=function(coachinfo,callback){
     });
 
 };
+//获取我的报考信息
+exports.getMyExaminfo=function(examinfo,callback){
+    usermodel.findById(new mongodb.ObjectId(examinfo.userid),function(err,userdata) {
+        if (err) {
+            return callback("查找用户出错：" + err)
+        }
+        if (!userdata) {
+            return callback("没有找到相关用户");
+        }
+        var returndata={};
+        switch (parseInt(examinfo.subjectid))
+        {
+            case 1:
+            {
+                 returndata={
+                    examinationstate:userdata.examinationinfo.subjectone.examinationstate,
+                    applydate:userdata.examinationinfo.subjectone.applydate||"",
+                    applyenddate:userdata.examinationinfo.subjectone.applyenddate||"",
+                    examinationdate:userdata.examinationinfo.subjectone.examinationdate||"",
+                     examaddress:""
+                }
+                break;
+            }
+            case 2:
+            { returndata={
+                examinationstate:userdata.examinationinfo.subjecttwo.examinationstate,
+                applydate:userdata.examinationinfo.subjecttwo.applydate||"",
+                applyenddate:userdata.examinationinfo.subjecttwo.applyenddate||"",
+                examinationdate:userdata.examinationinfo.subjecttwo.examinationdate||"",
+                examaddress:""
+            }
+
+                break;
+            }
+            case 3:
+                returndata={
+                    examinationstate:userdata.examinationinfo.subjectthree.examinationstate,
+                    applydate:userdata.examinationinfo.subjectthree.applydate||"",
+                    applyenddate:userdata.examinationinfo.subjectthree.applyenddate||"",
+                    examinationdate:userdata.examinationinfo.subjectthree.examinationdate||"",
+                    examaddress:""
+                }
+                break;
+
+            case 4:
+        {
+            returndata={
+                examinationstate:userdata.examinationinfo.subjectfour.examinationstate,
+                applydate:userdata.examinationinfo.subjectfour.applydate||"",
+                applyenddate:userdata.examinationinfo.subjectfour.applyenddate||"",
+                examinationdate:userdata.examinationinfo.subjectfour.examinationdate||"",
+                examaddress:""
+            }
+            break;
+        }
+            default:{
+                return callback("报考科目不正确");
+                break;
+            }
+        }
+
+        return callback(null,returndata);
+
+    })
+}
 // 用户报考
-exports.applyExamintion=function(userid,callback){
-    usermodel.findById(new mongodb.ObjectId(userid),function(err,userdata){
+exports.applyExamintion=function(examinfo,callback){
+    usermodel.findById(new mongodb.ObjectId(examinfo.userid),function(err,userdata){
         if(err)
         {
             return callback("查找用户出错："+err)
@@ -1007,23 +1073,102 @@ exports.applyExamintion=function(userid,callback){
         if (userdata.is_lock || userdata.applystate!=appTypeEmun.ApplyState.Applyed){
             return callback("您暂时没有权限报考");
         }
-        if (userdata.subject.subjectid!=2 && userdata.subject.subjectid!=3){
-            return callback("该科目下无法报考");
+        if (userdata.subject.subjectid<2 || userdata.subject.subjectid>4){
+            return callback("用户无法报考");
         }
+        var examinfo= new userexaminfo();
+        examinfo.userid=userdata._id;
+        examinfo.createtime=new Date();
+        examinfo.examinationstate=1;
+        examinfo.applydate=new Date(examinfo.exambegintime);
+        examinfo.applyenddate=new Date(examinfo.examendtime);
 
-        if(userdata.subject.subjectid==2){
-            if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation<userdata.subjecttwo.totalcourse){
-                return callback("您的学时不够，无法报考");
+        switch (parseInt(examinfo.subjectid))
+        {
+            case 1:
+            {
+                if(userdata.subject.subjectid!=1){
+                return callback("您无法报考当前科目");
+                }
+                if(userdata.examinationinfo.subjectone.examinationresult==2){
+                    return callback("当前科目已经通过考试");
+                }
+                if(userdata.examinationinfo.subjectone.examinationstate!=0){
+                    return callback("您已经申请过该科目的考试");
+                }
+                userdata.examinationinfo.subjectone.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjectone.applydate=new Date(examinfo.exambegintime);
+                userdata.examinationinfo.subjectone.applyenddate=new Date(examinfo.examendtime);
+                examinfo.subjectid=1;
+                examinfo.coachlist=userdata.subjectonecoach;
+                examinfo.save()
+                break;
             }
-            userdata.examinationinfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
-            userdata.examinationinfo.subjecttwo.applydate=new Date();
-        }else if(userdata.subject.subjectid==3){
-
-            if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation<userdata.subjectthree.totalcourse){
-                return callback("您的学时不够，无法报考");
+            case 2:
+            {
+                if(userdata.subject.subjectid!=2){
+                    return callback("您无法报考当前科目");
+                }
+                if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation<userdata.subjecttwo.totalcourse){
+                    return callback("您的学时不够，无法报考");
+                }
+                if(userdata.examinationinfo.subjecttwo.examinationresult==2){
+                    return callback("当前科目已经通过考试");
+                }
+                if(userdata.examinationinfo.subjecttwo.examinationstate!=0){
+                    return callback("您已经申请过该科目的考试");
+                }
+                userdata.examinationinfo.subjecttwo.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjecttwo.applydate=new Date(examinfo.exambegintime);
+                userdata.examinationinfo.subjecttwo.applyenddate=new Date(examinfo.examendtime);
+                examinfo.subjectid=1;
+                examinfo.coachlist=userdata.subjecttwocoach;
+                examinfo.save()
+                break;
+            }case 3:
+            {
+                if(userdata.subject.subjectid!=3){
+                    return callback("您无法报考当前科目");
+                }
+                if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation<userdata.subjectthree.totalcourse){
+                    return callback("您的学时不够，无法报考");
+                }
+                if(userdata.examinationinfo.subjectthree.examinationresult==2){
+                    return callback("当前科目已经通过考试");
+                }
+                if(userdata.examinationinfo.subjectthree.examinationstate!=0){
+                    return callback("您已经申请过该科目的考试");
+                }
+                userdata.examinationinfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjectthree.applydate=new Date(examinfo.exambegintime);
+                userdata.examinationinfo.subjectthree.applyenddate=new Date(examinfo.examendtime);
+                examinfo.subjectid=1;
+                examinfo.coachlist=userdata.subjecttwocoach;
+                examinfo.save()
+                break;
+            }case 4:
+            {
+                if(userdata.subject.subjectid!=4){
+                    return callback("您无法报考当前科目");
+                }
+                if(userdata.examinationinfo.subjectfour.examinationresult==2){
+                    return callback("当前科目已经通过考试");
+                }
+                if(userdata.examinationinfo.subjectfour.examinationstate!=0){
+                    return callback("您已经申请过该科目的考试");
+                }
+                userdata.examinationinfo.subjectfour.applystate=appTypeEmun.ExamintionSatte.applying;
+                userdata.examinationinfo.subjectfour.applydate=new Date(examinfo.exambegintime);
+                userdata.examinationinfo.subjectfour.applyenddate=new Date(examinfo.examendtime);
+                examinfo.subjectid=1;
+                examinfo.coachlist=userdata.subjectonecoach;
+                examinfo.save()
+                break;
             }
-            userdata.examinationinfo.subjectthree.applystate=appTypeEmun.ExamintionSatte.applying;
-            userdata.examinationinfo.subjectthree.applydate=new Date();
+            default:{
+                return callback("报考科目不正确");
+                break;
+            }
         }
         userdata.save(function(err){
             if (err){
@@ -1866,7 +2011,7 @@ exports.receiveMyCupon=function(queryinfo,callback){
         })
 };
 // 获取我可以使用的Y码
-exports.getUserAvailab2leFcode=function(queryinfo,callback){
+exports.getUserAvailableFcode=function(queryinfo,callback){
     usermodel.findById(new mongodb.ObjectId(queryinfo.userid),function(err,userdata){
         if(err){
             return callback("查询用户出错："+err);

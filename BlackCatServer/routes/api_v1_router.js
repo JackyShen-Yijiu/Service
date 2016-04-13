@@ -220,7 +220,8 @@ v1.get("/courseinfo/getusercomment/:type/:userid/:index",courseController.getUse
 v1.get("/courseinfo/sametimestudents/reservationid/:reservationid/index/:index",courseController.sameTimeStudents);
 // 用户报考
 v1.post("/userinfo/applyexamination",ensureAuthorizedController.ensureAuthorized,userController.postApplyExamination);
-
+// 获取我的报名信息
+        v1.get("/userinfo/getmyexaminfo",ensureAuthorizedController.ensureAuthorized,userController.getMyExaminfo);
 // 获取我的投诉
 v1.get("/courseinfo/getmycomplaint",ensureAuthorizedController.ensureAuthorized,courseController.getmycomplaint);
         // 获取我的投诉列表 V2

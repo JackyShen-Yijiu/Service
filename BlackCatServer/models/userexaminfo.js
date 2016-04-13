@@ -17,6 +17,7 @@ var UserExamInfoSchema=new Schema({
     subjectid:Number , // 科目id
     coachlist:[String], // 教练列表
     score:Number ,  // 成绩
+    createtime:Date ,  // 创建时间
 });
 
 UserExamInfoSchema.index({userid: 1});

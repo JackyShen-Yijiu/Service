@@ -260,13 +260,18 @@ exports.getSchoolCoach=function(req,res){
 }
 
 exports.postApplyExamination=function(req,res){
-    var userid =req.userId;
-    var exambegintime=req.body.exambegintime;
-    var examendtime=req.body.examendtime;  // 期望时间
-    var exammobile=req.body.exammobile;  // 考试电话
-    var examname=req.body.examname;     // 考试姓名
-    var exampractice=req.body.exampractice?req.query.exampractice:0; // 0 不练车  1 提前练车
-    userserver.applyExamintion(userid,function(err,data){
+
+    var examinfo= {
+         userid :req.userId,
+         exambegintime : req.body.exambegintime,
+        examendtime : req.body.examendtime,  // 期望时间
+        exammobile : req.body.exammobile,  // 考试电话
+        examname : req.body.examname,     // 考试姓名
+        exampractice : req.body.exampractice ? req.query.exampractice : 0, // 0 不练车  1 提前练车
+         examreason : req.body.examname || "",
+         subjectid : req.body.subjectid || 1
+    }
+    userserver.applyExamintion(examinfo,function(err,data){
         if (err)
         {
             return res.json(new BaseReturnInfo(0,err,""));
@@ -274,7 +279,22 @@ exports.postApplyExamination=function(req,res){
             return res.json(new BaseReturnInfo(1,"",data));
         }
     });
+};
+exports.getMyExaminfo=function(req,res){
+    var examinfo= {
+        userid :req.userId,
+        subjectid : req.query.subjectid || 1
+    }
+    userserver.getMyExaminfo(examinfo,function(err,data){
+        if (err)
+        {
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }else{
+            return res.json(new BaseReturnInfo(1,"",data));
+        }
+    });
 }
+
 
 //  教练查看学生详情页
 exports.getStudentInfo=function(req,res){

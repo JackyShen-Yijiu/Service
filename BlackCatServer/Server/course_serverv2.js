@@ -848,6 +848,7 @@ exports.studentLoginByCode=function(userinfo,callback){
                             }, secretParam.secret);
                             userinstace.token = token;
                             userinstace.logintime = Date.now();
+                         console.log(userinstace)
                             userinstace.save(function (err, newinstace) {
                                 if (err) {
                                     return callback("save  user login  err:" + err);

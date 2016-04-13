@@ -29,9 +29,18 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 var crypto = require('crypto');
-usermodel.remove({applystate:0},function(err,data){
+coachmode.findOne({mobile:"18612202030"},function(err,data){
+    console.log(err);
     console.log(data);
+    data.save(function(err,newdata){
+        console.log(err);
+        console.log(newdata);
+    })
+
 })
+//usermodel.remove({applystate:0},function(err,data){
+//    console.log(data);
+//})
 //coachmode.remove({is_validation:false},function(err,data){
 //    console.log(data);
 //})
