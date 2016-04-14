@@ -1127,6 +1127,26 @@ exports.getmyCupon=function(req,res){
         return res.json(new BaseReturnInfo(1,"",data));
     });
 }
+
+exports.getcuponuselist=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+    };
+    if (queryinfo.userid===undefined) {
+        return res.json(
+            new BaseReturnInfo(0,"参数错误",""));
+    };
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getmyCuponUselist(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
 // 获取我的金额
 exports.getmymoney=function(req,res){
     var  queryinfo={

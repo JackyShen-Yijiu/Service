@@ -64,6 +64,9 @@ v1.get("/verifyfcodecorrect",ensureAuthorizedController.ensureAuthorized,userCon
 v1.get("/userinfo/getmymoney",ensureAuthorizedController.ensureAuthorized,userController.getmymoney);
 // 获取我的 优惠券
 v1.get("/userinfo/getmycupon",ensureAuthorizedController.ensureAuthorized,userController.getmyCupon);
+        // 获取我的 优惠券使用列表
+        v1.get("/userinfo/getcuponuselist",ensureAuthorizedController.ensureAuthorized,userController.getcuponuselist);
+
 // 获取的的金币列表
 v1.get("/userinfo/getmymoneylist",ensureAuthorizedController.ensureAuthorized,userController.getMymoneyList);
 // 领取优惠券或者密码

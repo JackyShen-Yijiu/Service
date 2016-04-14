@@ -2062,6 +2062,33 @@ exports.getmyCupon=function(queryinfo,callback){
             callback(err,returndata);
         })
 };
+ // 获取我的兑换卷使用列表
+exports.getmyCuponUselist=function(queryinfo,callback){
+    coupon.find({"userid":queryinfo.userid,state:4})
+        .select("userid   createtime couponcomefrom is_forcash state usetime productid")
+        .populate("productid","productname")
+        .exec(function(err,data){
+            if(err){
+                return callback("查询优惠卷出错："+err);
+            }
+            var returndata=[];
+            data.forEach(function(r,index){
+                var onedata={
+                    _id: r._id,
+                    userid: r.userid,
+                    createtime: r.createtime,
+                    couponcomefrom: r.couponcomefrom,
+                    is_forcash: r.is_forcash,
+                    state: r.state,
+                    usetime: r.usetime,
+                    productid: r.productid,
+                    orderscanaduiturl:auditurl.applyurl + r._id
+                }
+                returndata.push(onedata);
+            })
+            callback(err,returndata);
+        })
+};
 // 用户提现申请
 exports.userCashOut=function(cashinfo,callback){
     var usertypeobject;
