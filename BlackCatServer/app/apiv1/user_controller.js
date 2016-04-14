@@ -1403,5 +1403,47 @@ exports.getsysteminfo=function(req,res){
     });
 
 }
+// 用户提交科目一科目四成绩
+exports.sendTestSocre=function(req,res){
+    var scoreinfo={
+        userid:req.body.userid,
+        begintime:req.body.begintime,
+        endtime:req.body.endtime,
+        score:req.body.score||90,
+        subjectid:req.body.subjectid||1,
+    }
+    if(scoreinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.saveTestSocre(scoreinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+
+};
+// 用户获取我的科目一科目四的考试成绩
+
+exports.getMyScore=function(req,res){
+    var scoreinfo={
+        userid:req.query.userid,
+        subjectid:req.query.subjectid||1,
+    }
+    if(scoreinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",{}));
+    };
+    userserver.getMyScore(scoreinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,[]));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    });
+}
+
+
+
 
 

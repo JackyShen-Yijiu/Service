@@ -45,6 +45,7 @@ var SystemMessage=mongodb.SystemMessageModel;
 var UserPayModel=mongodb.UserPayModel;
 var HeadMaster=mongodb.HeadMasterModel;
 var activityCouponModel=mongodb.ActivityCouponModel;
+var userinfoModel = mongodb.UserInfoModel;
 var userAvailableFcodeModel=mongodb.UserAvailableFcodeModel;
 require('date-utils');
 var _ = require("underscore");
@@ -158,7 +159,7 @@ payuserIntegral=function(payinfo,callback){
         }
         if(payinfo.usertype==appTypeEmun.UserType.User){
             usermodel.update({"_id":new mongodb.ObjectId(payinfo.userid)},{$inc: { wallet: payinfo.amount }},function(err,data){
-                if(err){
+                    if(err){
                     return callback("保存失败")
                 }
               return  callback(null,"suncess");
@@ -3515,6 +3516,104 @@ exports.getSystemInfo =function(searchinfo,callback){
             }
             return callback(null,data);
         })
+};
+// 提交用户考试成绩
+exports.saveTestSocre =function(scoreinfo,callback){
+    userinfoModel.FindByID(scoreinfo.userid,function(err,questions) {
+        if (!err) {
+            if (!questions) {
+                var u = new userinfo();
+                u.id = scoreinfo.userid;
+                u.kemuyi_wronglist = [];
+                u.kemusi_wronglist = [];
+                u.kemuyi_score=[];
+                u.kemusi_score=[];
+                var tempsocre= {
+                    socre:scoreinfo.score,
+                    begintime:scoreinfo.begintime,
+                    endtime:scoreinfo.endtime,
+                    is_pass:scoreinfo.score>=90?1:0
+                }
+                if(scoreinfo.subjectid==1){
+                    u.kemuyi_score=[tempsocre];
+                    usermodel.update({"_id":new mongodb.ObjectId(scoreinfo.userid)},
+                        {$inc: { "subjectone.finishcourse": 1 }},function(err,data){
+                    })
+                }
+                else {
+                    u.kemusi_score=[tempsocre];
+                    usermodel.update({"_id":new mongodb.ObjectId(scoreinfo.userid)},
+                        {$inc: { "subjectfour.finishcourse": 1 }},function(err,data){
+                        })
+                }
+                u.save(function(err,data){
+                    if(err){
+                        return callback("保存成绩出错："+err);
+                    }else{
+                        return callback(null,"success");
+                    }
+                })
+            } else
+            {
+                var tempsocre= {
+                    socre:scoreinfo.score,
+                    begintime:scoreinfo.begintime,
+                    endtime:scoreinfo.endtime,
+                    is_pass:scoreinfo.score>=90?1:0
+                }
+                if(questions.kemuyi_score===undefined){
+                    questions.kemuyi_score=[];
+                }
+                if(questions.kemusi_score===undefined){
+                    questions.kemusi_score=[];
+                }
+                if(scoreinfo.subjectid==1){
+                    questions.kemuyi_score.push(tempsocre);
+                    usermodel.update({"_id":new mongodb.ObjectId(scoreinfo.userid)},
+                        {$inc: { "subjectone.finishcourse": 1 }},function(err,data){
+                        })
+                }
+                else {
+                    questions.kemusi_score.push(tempsocre);
+                    usermodel.update({"_id":new mongodb.ObjectId(scoreinfo.userid)},
+                        {$inc: { "subjectfour.finishcourse": 1 }},function(err,data){
+                        })
+                }
+
+                questions.save(function(err,data){
+                    if(err){
+                        return callback("保存成绩出错："+err);
+                    }else{
+                        return callback(null,"success");
+                    }
+            })
+            }
+        } else {
+           return callback("查询出错:"+err)
+        }
+    })
+};
+// h获取用户提交的模拟成绩
+exports.getMyScore=function(scoreinfo,callback){
+    userinfoModel.FindByID(scoreinfo.userid,function(err,questions) {
+        if (!err) {
+            if (!questions) {
+                return callback("没有查询到成绩信息");
+            } else
+            {
+                if(scoreinfo.subjectid==1){
+                    return callback(null, questions.kemuyi_score);
+
+                }
+                else {
+                    return callback(null, questions.kemusi_score);
+                }
+
+            }
+        } else {
+            return callback("查询出错:"+err)
+        }
+    })
 }
 // 获取用户显示id和邀请码
 var  getUserCount=function(callback){

@@ -320,6 +320,15 @@ v1.get("/payinfo/getprepayinfo",ensureAuthorizedController.ensureAuthorized,
     userController.getprepayinfo);
 //=============================================================
 
+//==============================科目一四上传成绩=========================
+        v1.post("/userinfo/sendtestscore",ensureAuthorizedController.ensureAuthorized,
+            userController.sendTestSocre);
+        v1.get("/userinfo/getmyscore",ensureAuthorizedController.ensureAuthorized,
+            userController.getMyScore);
+        //========================================================
+
+
+
 //---------------------------------ceshishiyong---------------------------------------
 v1.get('/addschool', testController.adddriveschool);
 v1.get('/addschoolclass', testController.adddschoolclass);
