@@ -300,29 +300,29 @@ VCoachCourseCoachCourse=function(courselist,coachdata,coachid,date,callback){
                 break;
             }
         };
-        if(!searchcourse){
-            var r=coachdata.worktime[i];
-            var course = new coursemode;
-            course.coachid = new mongodb.ObjectId(coachid);
-            course.coursedate = new Date(date);
-            course.driveschool=coachdata.driveschool;
-            course.coursestudentcount = coachdata.coursestudentcount ? coachdata.coursestudentcount : 1;
-            course.coursetime.timeid = r.timeid;
-            course.coursebegintime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.begintime);
-            course.courseendtime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.endtime);
-            course.coursetime.timespace = r.timespace;
-            course.coursetime.begintime = r.begintime;
-            course.coursetime.endtime = r.endtime;
-            course.carmodelid=coachdata.carmodel.modelsid;
-            course.subjectid=coachdata.subject.length>0?coachdata.subject[0].subjectid:2;
-            course.coachname=coachdata.name;
-            course.platenumber=coachdata.platenumber;
-            course.save(function (err, newcouse) {
-                if (err || !newcouse) {
-                    return callback("存储课程出错：" + err);
-                }
-            })
-        }
+        //if(!searchcourse){
+        //    var r=coachdata.worktime[i];
+        //    var course = new coursemode;
+        //    course.coachid = new mongodb.ObjectId(coachid);
+        //    course.coursedate = new Date(date);
+        //    course.driveschool=coachdata.driveschool;
+        //    course.coursestudentcount = coachdata.coursestudentcount ? coachdata.coursestudentcount : 1;
+        //    course.coursetime.timeid = r.timeid;
+        //    course.coursebegintime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.begintime);
+        //    course.courseendtime=new Date(course.coursedate.toFormat("YYYY-MM-DD")+" " +r.endtime);
+        //    course.coursetime.timespace = r.timespace;
+        //    course.coursetime.begintime = r.begintime;
+        //    course.coursetime.endtime = r.endtime;
+        //    course.carmodelid=coachdata.carmodel.modelsid;
+        //    course.subjectid=coachdata.subject.length>0?coachdata.subject[0].subjectid:2;
+        //    course.coachname=coachdata.name;
+        //    course.platenumber=coachdata.platenumber;
+        //    course.save(function (err, newcouse) {
+        //        if (err || !newcouse) {
+        //            return callback("存储课程出错：" + err);
+        //        }
+        //    })
+        //}
     }
     coursemode.findCourse(coachid,date,function(err,coursedata){
         return callback(err,coursedata);
