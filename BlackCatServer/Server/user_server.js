@@ -401,6 +401,7 @@ exports.getMyorderList=function(searchinfo,callback){
                             receivername: r.receivername,
                             mobile: r.mobile,
                             address: r.address,
+                            count: r.count||1,
                             orderscanaduiturl: r.orderscanaduiturl,
                             is_confirmbyscan: r.is_confirmbyscan,
                             productid: r.productid._id,

@@ -13,6 +13,7 @@ var FeedbackSchema = new Schema({
     feedbackmessage: {type:String,default:''},
     userid:{type: Schema.Types.ObjectId, ref: 'User'},
     schoolid :{type: Schema.Types.ObjectId, ref: 'DriveSchool'},   //学校id
+    coachid :{type: Schema.Types.ObjectId, ref: 'coach'},   //学校id
     appversion:String,
     mobileversion:{type:String,default:''},
     network :{type:String,default:''},

@@ -276,6 +276,8 @@ exports.postUserFeedBack=function(req,res){
         feedbackusertype:req.body.feedbackusertype?req.body.feedbackusertype:1,  //投诉类型  0 匿名投诉 1 实名投诉
         moblie:req.body.moblie?req.body.moblie:"", // 投诉人手机号
         becomplainedname:req.body.becomplainedname?req.body.becomplainedname:"",  //被投诉姓名
+        coachid:req.body.coachid?req.body.coachid:"",  //投诉教练的id
+        schoolid:req.body.schoolid?req.body.schoolid:"",  // 投诉驾校id
         piclist:req.body.piclist?req.body.piclist:""  // 图片列表
     }
     //console.log(feedbackinfo);

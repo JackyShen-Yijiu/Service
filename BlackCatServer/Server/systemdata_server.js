@@ -105,6 +105,8 @@ exports.saveFeedback=function(feedbackinfo,callback){
     feedback.moblie=feedbackinfo.moblie; // 投诉人手机号
     feedback.becomplainedname=feedbackinfo.becomplainedname ;  //被投诉姓名
     feedback.piclist=feedbackinfo.piclist.split(',');   // 图片列表
+    feedback.schoolid=feedbackinfo.schoolid;
+    feedback.coachid=feedbackinfo.coachid;
     //console.log(feedback.createtime);
     feedback.save(function(err){
         if(err){
