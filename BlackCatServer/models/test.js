@@ -29,15 +29,44 @@ var fs=require("fs");
 var cache=require('../Common/cache');
 
 var crypto = require('crypto');
-coachmode.findOne({mobile:"18612202030"},function(err,data){
-    console.log(err);
-    console.log(data);
-    data.save(function(err,newdata){
-        console.log(err);
-        console.log(newdata);
-    })
 
-})
+var userconsult= mongodb.UserConsultModel;
+var coonsult={
+    userid:"56e6341394aaa86c3244d9a1",
+    name:"",
+    mobile:"15652305650",
+    licensetype:"C1",  // 驾照类型
+    createtime:new Date(), //创建时间
+    state:2, //  处理状态 0 没有处理  1 处理中  2 处理完成
+    replytime:new Date(),     //创建时间
+    replyuser:"",
+    content:"如果临时有事怎样取消预约？",   //咨询内容
+    replycontent:"  根据驾校的取消预约时间规定，学员可以进入极致驾服APP“预约”中查看已经预约的学时，如需要取消预约，点击预约订单详情中取消预约并填写取消原因即可。需要注意取消预约截止时间依据驾校规定。", // 回复内容
+}
+//var tempuserconsult=new userconsult(coonsult);
+//tempuserconsult.save(function(err,data){
+//    console.log(data);
+//})
+
+//userconsult.find({userid:{$exists: true}})
+//    .select(" userid content  createtime replycontent replytime replyuser")
+//  //  .populate("userid","name headportrait")
+//    .sort({"createtime" : 1})
+//    .exec(function(err,data){
+//
+//        console.log(data)
+//        console.log(err)
+//    })
+
+//coachmode.findOne({mobile:"18612202030"},function(err,data){
+//    console.log(err);
+//    console.log(data);
+//    data.save(function(err,newdata){
+//        console.log(err);
+//        console.log(newdata);
+//    })
+//
+//})
 //usermodel.remove({applystate:0},function(err,data){
 //    console.log(data);
 //})

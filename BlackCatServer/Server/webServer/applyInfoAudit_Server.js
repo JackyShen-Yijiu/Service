@@ -267,7 +267,7 @@ exports.doOrderScanAudit=function(auditinfo,callback){
                     data.finishtime=new Date();
                     data.orderstate=typeEmun.MallOrderState.finished;
                     data.is_confirmbyscan=true;
-                    data.svae(function(err,data){
+                    data.save(function(err,data){
                         if(err){
                             return callback("验证失败");
                         }
