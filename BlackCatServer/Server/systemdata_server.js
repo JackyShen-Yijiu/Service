@@ -181,7 +181,7 @@ exports.getCourseWare=function( queryinfo,callback){
                         productdesc: r.productdesc,
                         viewcount: r.viewcount,
                         buycount: r.buycount,
-                        productcount: r.productcount- r.buycount,
+                        productcount: r.productcount,
                         detailsimg: r.detailsimg,
                         detailurl: prodcutdetail+r._id,
                         is_scanconsumption: r.is_scanconsumption?Number(r.is_scanconsumption):0,
