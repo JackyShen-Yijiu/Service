@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <style>
+        .container {
+            padding: 0 15px;
+        }
+    </style>
 </head>
 <body>
 <div class="main"  ng-controller="advisoryLink">
@@ -14,32 +19,33 @@
         <!-- Begin page content -->
         <div class="container">
             <div class="page-header">
-                <h2><%=data.title%></h2>
+                <h2 class="font-size: 24px;"><%=data.title%></h2>
                 <br>
-                <span><%=data.createtime2%>&nbsp;&nbsp;&nbsp;来源：一步学车</span>
-                <!--增加一个分享开始-->
+                <span><%=data.createtime2%>&nbsp;&nbsp;&nbsp;来源：极致驾服</span>
+                <!--增加一个分享开始
                 <div class="bdsharebuttonbox bdshare-button-style0-16" style="float:right;" data-bd-bind="">
                     <a href="#" class="bds_more" data-cmd="more"></a>
                     <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
                     <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
                     <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-                </div>
+                </div>-->
                 <!--增加一个分享结束-->
 
             </div>
-           <%-data.content%>
-
+            <div class="content">
+                <%-data.content%>
+            </div>
         </div>
         <div id="footer">
             <div class="container">
-                <p class="muted credit">@2016 <a href="http://www.yibuxueche.com/">极致驾服</a> .</p>
+                <p class="muted credit">@2016 <a href="http://www.jizhijiafu.cn">极致驾服</a>.</p>
             </div>
         </div>
     </div>
 </div>
-<!--分享控制-->
+<!--分享控制
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["weixin","sqq","qzone","tqf","tsina","tqq","renren","fx","huaban","kaixin001","copy","print"],"viewText":"分享到：","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
-
+-->
 
 
 
