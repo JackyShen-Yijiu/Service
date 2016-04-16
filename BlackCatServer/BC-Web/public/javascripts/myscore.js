@@ -24,21 +24,21 @@
         //console.log(Mydata.data.kemuyi_score[i].socre);
         var oScoreBlock01 = $('#scoreBlock01');
         var oScoreBlock02 = $('#scoreBlock02');
-
+        oScoreBlock01.hide();
+        oScoreBlock02.hide();
         if(Mydata.data.kemuyi_score.length > 0) {
             oScoreBlock01.show();
-            oScoreBlock02.hide();
         }
         if(Mydata.data.kemusi_score.length > 0) {
-            oScoreBlock01.hide();
             oScoreBlock02.show();
         }
 
         (function(){
+            var spans="";
             for (var i = 0; i < Mydata.data.kemuyi_score.length; i++) {
                 var div=document.createElement('div');
 
-                var spans="";
+
                 //毫秒转换成本地时间
                 /*date start*/
                 var date_start=new Date(Mydata.data.kemuyi_score[i].begintime*1000);
@@ -76,10 +76,11 @@
         })();
 
 
+        var spans="";
         for (var i = 0; i < Mydata.data.kemusi_score.length; i++) {
             var div=document.createElement('div');
 
-            var spans="";
+
 
             /*date start*/
             var date_start=new Date(Mydata.data.kemusi_score[i].begintime*1000);
