@@ -12,6 +12,13 @@
     //获取数据
     $.get('http://www.yibuxueche.com/question/getmysocre?userid=' + userid, function(Mydata){
         console.log(Mydata.data);
+        if(Mydata.code === 0) {
+            $('.score-info').html('没有查询到成绩信息').show();
+            return;
+        } else {
+            $('.score-info').html('').hide();
+        }
+
         //console.log(Mydata.data.kemusi_score);//科四
         //console.log(Mydata.data.kemuyi_score);//科目一
         //console.log(Mydata.data.kemuyi_score[i].socre);
@@ -68,7 +75,7 @@
             };
         })();
 
-        
+
         for (var i = 0; i < Mydata.data.kemusi_score.length; i++) {
             var div=document.createElement('div');
 

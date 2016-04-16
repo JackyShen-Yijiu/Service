@@ -7,6 +7,22 @@
 	<link rel="stylesheet" href="stylesheets/myscore.css">
 	<script src="js/jquery.min.js"></script>
 	<script src="javascripts/myscore.js"></script>
+	<style>
+		.score-block {
+			display: none;
+		}
+		.score-info {
+			position: absolute;
+			top: 50%;
+			text-align: center;
+			left: 0;
+			right: 0;
+			line-height: 30px;
+			font-size: 14px;
+			color: #f00;
+			display: none;
+		}
+	</style>
 </head>
 
 <body>
@@ -15,6 +31,7 @@
 </div>
 
 <div class="main">
+	<div class="score-info"></div>
 	<div class="score-block" id="scoreBlock01">
 		<div class="title">科目一</div>
 		<!--<div class="cell">
