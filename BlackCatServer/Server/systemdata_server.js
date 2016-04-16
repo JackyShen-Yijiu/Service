@@ -31,7 +31,6 @@ exports.getUserConsult=function(index,callback){
             }
             var list=[];
             data.forEach(function(r,index){
-                console.log(r);
                 if(!r.userid){
                     r.userid=undefined;
                 }

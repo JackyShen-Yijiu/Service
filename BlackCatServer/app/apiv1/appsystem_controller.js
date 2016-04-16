@@ -224,7 +224,7 @@ exports.getHeadLineNews=function (req,res){
 }
 exports.getUserConsult=function(req,res){
     var index=req.query.index?req.query.index:1;
-    console.log(index);
+    //console.log(index);
     sysstemserver.getUserConsult(index,function(err,data){
         if(err){
             return res.json(new BaseReturnInfo(0,err,""));
