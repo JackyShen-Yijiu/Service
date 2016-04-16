@@ -104,7 +104,9 @@ exports.saveFeedback=function(feedbackinfo,callback){
     feedback.feedbackusertype=feedbackinfo.feedbackusertype ;  //投诉类型  0 匿名投诉 1 实名投诉
     feedback.moblie=feedbackinfo.moblie; // 投诉人手机号
     feedback.becomplainedname=feedbackinfo.becomplainedname ;  //被投诉姓名
-    feedback.piclist=feedbackinfo.piclist.split(',');   // 图片列表
+    if(feedbackinfo.piclist!="") {
+        feedback.piclist = feedbackinfo.piclist.split(',');   // 图片列表
+    }
     feedback.schoolid=feedbackinfo.schoolid;
     feedback.coachid=feedbackinfo.coachid;
     //console.log(feedback.createtime);

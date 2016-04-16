@@ -365,7 +365,7 @@ var syncReservationdesc=function(userid,callback){
                                 })
                             })
                         });
-                        console.log(reservationlist.length)
+                        //console.log(reservationlist.length)
                         if(userdata.subject.subjectid==2){
                             usermodel.update({"_id":userdata._id},{"subjecttwo.reservation":reservationlist.length},{safe: false},function(err,data){});
                         }
@@ -1004,7 +1004,7 @@ exports.coachCommentV2=function(commnetinfo,callback){
             usermodel.findById(new mongodb.ObjectId(newdata.userid),function(err,data){
 
                 if (newdata.subject.subjectid==2){
-                    data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;;
+                    data.subjecttwo.reservation=data.subjecttwo.reservation-newdata.coursehour;
                     data.subjecttwo.finishcourse=data.subjecttwo.finishcourse+newdata.coursehour;
                     data.subjecttwo.progress=resdata.courseprocessdesc;
                     data.subjecttwo.reservationid=commnetinfo.reservationid;
