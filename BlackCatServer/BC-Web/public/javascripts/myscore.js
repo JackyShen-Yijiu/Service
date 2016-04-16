@@ -13,8 +13,10 @@
     $.get('http://www.yibuxueche.com/question/getmysocre?userid=' + userid, function(Mydata){
         console.log(Mydata.data);
         if(Mydata.code === 0) {
-            alert('没有查询到成绩信息');
+            $('.score-info').html('没有查询到成绩信息').show();
             return;
+        } else {
+            $('.score-info').html('').hide();
         }
 
         //console.log(Mydata.data.kemusi_score);//科四
