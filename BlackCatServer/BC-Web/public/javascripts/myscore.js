@@ -35,7 +35,7 @@
 
         (function(){
 
-            for (var i = 0; i < Mydata.data.kemuyi_score.length; i++) {
+            for (var i = Mydata.data.kemuyi_score.length-1; i < Mydata.data.kemuyi_score.length; i++) {
 
                 var spans="";
                 //毫秒转换成本地时间
@@ -76,7 +76,7 @@
 
 
 
-        for (var i = 0; i < Mydata.data.kemusi_score.length; i++) {
+        for (var i =Mydata.data.kemusi_score.length-1 ; i < Mydata.data.kemusi_score.length; i++) {
             var spans="";
             /*date start*/
             var date_start=new Date(Mydata.data.kemusi_score[i].begintime*1000);
