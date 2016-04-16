@@ -34,11 +34,10 @@
         }
 
         (function(){
-            var spans="";
+
             for (var i = 0; i < Mydata.data.kemuyi_score.length; i++) {
-                var div=document.createElement('div');
 
-
+                var spans="";
                 //毫秒转换成本地时间
                 /*date start*/
                 var date_start=new Date(Mydata.data.kemuyi_score[i].begintime*1000);
@@ -68,20 +67,17 @@
                 }
 
 
-                div.innerHTML=spans;
+                var div = '<div>' + spans + '</div>';
 
-                oScoreBlock01.appendChild(div);
+                oScoreBlock01.append(div);
 
             };
         })();
 
 
-        var spans="";
+
         for (var i = 0; i < Mydata.data.kemusi_score.length; i++) {
-            var div=document.createElement('div');
-
-
-
+            var spans="";
             /*date start*/
             var date_start=new Date(Mydata.data.kemusi_score[i].begintime*1000);
             var date_end=new Date(Mydata.data.kemusi_score[i].endtime*1000);
@@ -109,9 +105,9 @@
                 spans+="<span class='cell-title'>"+"是否通过：否"+"</span>";
             }
 
-            div.innerHTML=spans;
+            var div = '<div>' + spans + '</div>';
 
-            oScoreBlock02.appendChild(div);
+            oScoreBlock02.append(div);
 
         };
 
