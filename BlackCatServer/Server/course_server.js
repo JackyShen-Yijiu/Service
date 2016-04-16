@@ -473,7 +473,7 @@ exports.postReservation=function(reservationinfo,callback){
 
                     //判断用户预约课程数量
                     if (userdata.subjecttwo.finishcourse+userdata.subjecttwo.reservation
-                        +userdata.subjecttwo.missingcourse+ coursecount >= userdata.subjecttwo.totalcourse) {
+                        + coursecount >= userdata.subjecttwo.totalcourse) {
                         return callback("您的课程已约满");
                     }
 
@@ -490,7 +490,7 @@ exports.postReservation=function(reservationinfo,callback){
                 }
                 else if (userdata.subject.subjectid == 3) {
                     if (userdata.subjectthree.finishcourse+userdata.subjectthree.reservation+
-                        +userdata.subjectthree.missingcourse+ coursecount >= userdata.subjectthree.totalcourse) {
+                         coursecount >= userdata.subjectthree.totalcourse) {
                         return callback("您的课程已约满");
                     }
                     currentcoursecount=userdata.subjectthree.finishcourse+userdata.subjectthree.reservation;
