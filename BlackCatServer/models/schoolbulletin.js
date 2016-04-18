@@ -12,8 +12,9 @@ var  SchoolBulletinSchema = new Schema({
     driveschool:{type: Schema.Types.ObjectId, ref: 'DriveSchool'} ,// 所在学校
     content:{type:String,default:""},
     createtime:{type:Date,default:Date.now()}, //创建时间
-    bulletobject:{type:Number,default:2}  // 公告对象 1 学员  2 教练
-});
+    bulletobject:{type:Number,default:2},  // 公告对象 1 学员  2 教练
+    title:{type:String,default:""}  // 公告标题
+     });
 
 SchoolBulletinSchema.plugin(seqlist.plugin, {
     model: 'schoolbulletin',

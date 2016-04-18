@@ -37,7 +37,8 @@ exports.postBulletin=function(req,res){
         userid:req.body.userid,
         schoolid:req.body.schoolid,
         content:req.body.content,
-        bulletobject:req.body.bulletobject
+        bulletobject:req.body.bulletobject,
+        title:req.body.title
     };
     //console.log(bulletininfo);
     //console.log(req.body);

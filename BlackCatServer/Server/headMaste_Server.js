@@ -125,6 +125,7 @@ exports.publishBulletin=function(bulletioninfo,callback){
     bulletion.driveschool=new mongodb.ObjectId(bulletioninfo.schoolid);
     bulletion.content=bulletioninfo.content;
     bulletion.bulletobject=bulletioninfo.bulletobject;
+    bulletion.title=bulletioninfo.title;
     bulletion.save(function(err,data){
         if(err){
             return callback("发布消息出错："+err);
@@ -158,6 +159,7 @@ exports.getSchoolBulletin=function(searchinfo,callback){
                         content: r.content,
                         createtime: r.createtime,
                         bulletobject: r.bulletobject,
+                        title: r.title,
                         seqindex: r.seqindex
                     }
                     bulletionlist.push(bulletin);
