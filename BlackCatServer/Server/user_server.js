@@ -3281,7 +3281,16 @@ exports.getImUserInfo=function(userid,callback){
                                         return callback("查询用户出错：" + err);
                                     }
                                     if(userdata) {
-                                        return callback(null, userdata);
+                                        var returndata={
+                                            _id: userdata._id,
+                                            name:userdata.name,
+                                            headportrait: {
+                                                originalpic:userdata.headportrait,  //头像信息  原始地址
+                                                thumbnailpic:"", // 缩略图地址
+                                                width:"",  // 宽度
+                                                height:""}, // 高度
+                                        }
+                                        return callback(null, returndata);
                                     }
                                     else {
                                         return callback("没有查询到此用户");
