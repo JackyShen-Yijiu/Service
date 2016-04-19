@@ -159,7 +159,7 @@ exports.getSchoolBulletin=function(searchinfo,callback){
                         content: r.content,
                         createtime: r.createtime,
                         bulletobject: r.bulletobject,
-                        title: r.title,
+                        title: r.title||"",
                         seqindex: r.seqindex
                     }
                     bulletionlist.push(bulletin);
