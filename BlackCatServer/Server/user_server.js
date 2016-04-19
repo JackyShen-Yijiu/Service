@@ -968,6 +968,7 @@ exports.getSchoolCoach=function(coachinfo,callback){
                 coachlist.forEach(function (r, idx) {
                     var returnmodel  = { //new resbasecoachinfomode(r);
                         coachid : r._id,
+                        mobile: r.mobile,
                         name: r.name,
                         driveschoolinfo: r.driveschoolinfo,
                         headportrait:r.headportrait,
