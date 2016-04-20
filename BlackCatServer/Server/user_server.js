@@ -992,8 +992,10 @@ exports.getSchoolCoach=function(coachinfo,callback){
                     rescoachlist.push(returnmodel);
                 });
 
-                basedatafun.getSchoolCoachCount(coachinfo.schoolid,coachcount);
+                basedatafun.getSchoolCoachCount(coachinfo.schoolid,function(err,coachcount)
+                {
                 callback(null, rescoachlist,coachcount);
+                });
             });
         }
 
