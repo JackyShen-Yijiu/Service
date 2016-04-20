@@ -36,7 +36,7 @@ exports.createQrcode =function(req,res){
 
 exports.appVersion=function(req,res){
     var apptype=req.params.type;
-    if (apptype>4||apptype<1||apptype === undefined)
+    if (apptype>6||apptype<1||apptype === undefined)
     {
         return res.status(500).send(new BaseReturnInfo(0,"请求参数错误",""));
     }

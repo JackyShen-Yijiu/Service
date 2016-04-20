@@ -31,18 +31,18 @@ var cache=require('../Common/cache');
 var crypto = require('crypto');
 
 var userconsult= mongodb.UserConsultModel;
-var coonsult={
-    userid:"56e6341394aaa86c3244d9a1",
-    name:"",
-    mobile:"15652305650",
-    licensetype:"C1",  // 驾照类型
-    createtime:new Date(), //创建时间
-    state:2, //  处理状态 0 没有处理  1 处理中  2 处理完成
-    replytime:new Date(),     //创建时间
-    replyuser:"",
-    content:"如果临时有事怎样取消预约？",   //咨询内容
-    replycontent:"  根据驾校的取消预约时间规定，学员可以进入极致驾服APP“预约”中查看已经预约的学时，如需要取消预约，点击预约订单详情中取消预约并填写取消原因即可。需要注意取消预约截止时间依据驾校规定。", // 回复内容
-}
+//var coonsult={
+//    userid:"56e6341394aaa86c3244d9a1",
+//    name:"",
+//    mobile:"15652305650",
+//    licensetype:"C1",  // 驾照类型
+//    createtime:new Date(), //创建时间
+//    state:2, //  处理状态 0 没有处理  1 处理中  2 处理完成
+//    replytime:new Date(),     //创建时间
+//    replyuser:"",
+//    content:"如果临时有事怎样取消预约？",   //咨询内容
+//    replycontent:"  根据驾校的取消预约时间规定，学员可以进入极致驾服APP“预约”中查看已经预约的学时，如需要取消预约，点击预约订单详情中取消预约并填写取消原因即可。需要注意取消预约截止时间依据驾校规定。", // 回复内容
+//}
 //var tempuserconsult=new userconsult(coonsult);
 //tempuserconsult.save(function(err,data){
 //    console.log(data);
@@ -134,27 +134,55 @@ var coonsult={
 //
 //    })
 //})
-schoolModel.find({},function(err,data){
-    data.forEach(function(r,index){
-        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
-            var minprice=1000000000;
+//schoolModel.find({},function(err,data){
+//    data.forEach(function(r,index){
+//        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
+//            var minprice=1000000000;
+//            var maxprice=0;
+//            for (var i=0 ;i<classdata.length;i++){
+//               if( classdata[i].onsaleprice>maxprice){
+//                   maxprice=classdata[i].onsaleprice;
+//               }
+//                if( classdata[i].onsaleprice<minprice){
+//                    minprice=classdata[i].onsaleprice;
+//                }
+//            }
+//            if(maxprice==0){
+//                minprice=0;
+//            }
+//
+//            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
+//        })
+//    })
+//})
+
+coachmode.find({is_validation:true})
+    .populate("serverclasslist")
+    .exec(function(err,data){
+       if(data)
+       for( var i=0;i<data.length;i++)
+       {
+          if( data[i].serverclasslist && data[i].serverclasslist.length>0){
+              var minprice=1000000000;
             var maxprice=0;
-            for (var i=0 ;i<classdata.length;i++){
-               if( classdata[i].onsaleprice>maxprice){
-                   maxprice=classdata[i].onsaleprice;
+            for (var j=0 ;j<data[i].serverclasslist.length;j++){
+               if( data[i].serverclasslist[j].onsaleprice>maxprice){
+                   maxprice=data[i].serverclasslist[j].onsaleprice;
                }
-                if( classdata[i].onsaleprice<minprice){
-                    minprice=classdata[i].onsaleprice;
+                if( data[i].serverclasslist[j].onsaleprice<minprice){
+                    minprice=data[i].serverclasslist[j].onsaleprice;
                 }
             }
             if(maxprice==0){
                 minprice=0;
             }
+              coachmode.update({"_id": data[i]._id},
+                  { $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
 
-            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
-        })
+          }
+       }
+
     })
-})
 //console.log(crypto.createHash('md5').update("123456").digest('hex'));
 
 
