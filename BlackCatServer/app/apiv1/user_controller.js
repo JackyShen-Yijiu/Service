@@ -249,12 +249,12 @@ exports.getSchoolCoach=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"parms is wrong",""));
     };
-    userserver.getSchoolCoach(coachinfo,function(err,data){
+    userserver.getSchoolCoach(coachinfo,function(err,data,coachcount){
         if (err)
         {
             return res.json(new BaseReturnInfo(0,err,[]));
         }else{
-            return res.json(new BaseReturnInfo(1,"",data));
+            return res.json(new BaseReturnInfo(1,"",data,coachcount));
         }
     });
 }

@@ -6,8 +6,21 @@ var cache=require('../Common/cache');
 var mongodb = require('../models/mongodb.js');
 var schoolModel=mongodb.DriveSchoolModel;
 var userModel=mongodb.UserModel;
+var coachModel=mongodb.CoachModel;
 var basedataFunc = {
-
+    getSchoolCoachCount: function(schoolid,callback){
+        cache.get("getSchoolCoachCount"+schoolid,function(err,data){
+            if(!data){
+                coachModel.count({driveschool:new mongodb.ObjectId(schoolid)},function(err,schooldata){
+                    cache.set("getSchoolCoachCount"+schoolid,schooldata,60,function(err){});
+                    return callback(null,schooldata);
+                })
+            }
+            if(data){
+                return callback(null,data);
+            }
+        })
+    },
     getschoolinfo: function(schoolid,callback){
         cache.get("schoolinfo"+schoolid,function(err,data){
             if(!data){
