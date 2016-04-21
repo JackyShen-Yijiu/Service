@@ -522,7 +522,7 @@ var getApplyStudentCountDayly=function(schoolid,beginDate,endDate,callback){
             return callback(null,data);
         }else{
             usermodel.aggregate([{$match:{"applyschool":new mongodb.ObjectId(schoolid)
-                    ,"applystate":appTypeEmun.ApplyState.Applying
+                    //,"applystate":appTypeEmun.ApplyState.Applying
                     ,"$or":[{applystate: appTypeEmun.ApplyState.Applying },
                         {applystate: appTypeEmun.ApplyState.Applyed}]
                     ,"applyinfo.applytime": { $gte: beginDate, $lte:endDate}
