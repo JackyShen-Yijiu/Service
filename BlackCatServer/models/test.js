@@ -134,55 +134,55 @@ var userconsult= mongodb.UserConsultModel;
 //
 //    })
 //})
-//schoolModel.find({},function(err,data){
-//    data.forEach(function(r,index){
-//        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
-//            var minprice=1000000000;
-//            var maxprice=0;
-//            for (var i=0 ;i<classdata.length;i++){
-//               if( classdata[i].onsaleprice>maxprice){
-//                   maxprice=classdata[i].onsaleprice;
-//               }
-//                if( classdata[i].onsaleprice<minprice){
-//                    minprice=classdata[i].onsaleprice;
-//                }
-//            }
-//            if(maxprice==0){
-//                minprice=0;
-//            }
-//
-//            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
-//        })
-//    })
-//})
-
-coachmode.find({is_validation:true})
-    .populate("serverclasslist")
-    .exec(function(err,data){
-       if(data)
-       for( var i=0;i<data.length;i++)
-       {
-          if( data[i].serverclasslist && data[i].serverclasslist.length>0){
-              var minprice=1000000000;
+schoolModel.find({},function(err,data){
+    data.forEach(function(r,index){
+        schoolclassModel.find({"schoolid": r._id,is_using:true},function(err,classdata){
+            var minprice=1000000000;
             var maxprice=0;
-            for (var j=0 ;j<data[i].serverclasslist.length;j++){
-               if( data[i].serverclasslist[j].onsaleprice>maxprice){
-                   maxprice=data[i].serverclasslist[j].onsaleprice;
+            for (var i=0 ;i<classdata.length;i++){
+               if( classdata[i].onsaleprice>maxprice){
+                   maxprice=classdata[i].onsaleprice;
                }
-                if( data[i].serverclasslist[j].onsaleprice<minprice){
-                    minprice=data[i].serverclasslist[j].onsaleprice;
+                if( classdata[i].onsaleprice<minprice){
+                    minprice=classdata[i].onsaleprice;
                 }
             }
             if(maxprice==0){
                 minprice=0;
             }
-              coachmode.update({"_id": data[i]._id},
-                  { $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
 
-          }
-       }
-
+            schoolModel.update({"_id": r._id},{ $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
+        })
     })
+})
+
+//coachmode.find({is_validation:true})
+//    .populate("serverclasslist")
+//    .exec(function(err,data){
+//       if(data)
+//       for( var i=0;i<data.length;i++)
+//       {
+//          if( data[i].serverclasslist && data[i].serverclasslist.length>0){
+//              var minprice=1000000000;
+//            var maxprice=0;
+//            for (var j=0 ;j<data[i].serverclasslist.length;j++){
+//               if( data[i].serverclasslist[j].onsaleprice>maxprice){
+//                   maxprice=data[i].serverclasslist[j].onsaleprice;
+//               }
+//                if( data[i].serverclasslist[j].onsaleprice<minprice){
+//                    minprice=data[i].serverclasslist[j].onsaleprice;
+//                }
+//            }
+//            if(maxprice==0){
+//                minprice=0;
+//            }
+//              coachmode.update({"_id": data[i]._id},
+//                  { $set: { "maxprice": maxprice ,"minprice":minprice}},function(err,errdata){})
+//
+//          }
+//       }
+//
+//    })
 //console.log(crypto.createHash('md5').update("123456").digest('hex'));
 
 

@@ -108,7 +108,7 @@ if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     console.log(err);
-    log.writeLog(req, err, logType.err);
+    //log.writeLog(req, err, logType.err);
     res.json(new BaseReturnInfo(0, "服务器内部错误", ""));
     /*res.render('error', {
      message: err.message,
@@ -122,7 +122,7 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   console.log(err.status);
-  log.writeLog(req,err,logType.err);
+  //log.writeLog(req,err,logType.err);
   res.json(new BaseReturnInfo(0,"服务器内部错误",""));
   /*res.render('error', {
     message: err.message,

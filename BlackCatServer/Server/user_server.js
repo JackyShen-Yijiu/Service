@@ -1432,7 +1432,7 @@ exports.getUsefulCoachListtimely=function(useid,index,coursedate,timeid,callback
         //判断用户的预约权限
         if(user.applystate!=2)
         {
-            return  callback("用户没有报名的权限");
+            return  callback("用户没有报名");
         }
         if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
             return  callback("该用户现阶段不能预约课程:"+user.subject.name);
@@ -1567,7 +1567,7 @@ exports.getUserFirstCoach=function(userid,subjectid,callback){
         //判断用户的预约权限
         if(user.applystate!=2)
         {
-            return  callback("用户没有报名的权限");
+            return  callback("用户没有报名");
         }
         if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
             return  callback("该用户现阶段不能预约课程:"+user.subject.name);
@@ -1622,7 +1622,7 @@ exports.getUsefulCoachList=function(useid,index,searchname,callback){
         //判断用户的预约权限
         if(user.applystate!=2)
         {
-            return  callback("用户没有报名的权限");
+            return  callback("用户没有报名");
         }
         if(user.subject.subjectid!=2&&user.subject.subjectid!=3){
             return  callback("该用户现阶段不能预约课程:"+user.subject.name);
