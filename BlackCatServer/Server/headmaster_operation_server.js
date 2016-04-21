@@ -352,6 +352,7 @@ var getGroupCoachCourseDay=function (schoolid,beginDate,endDate,callback){
                     ,{$group:{_id:"$coursecount", coachcout: {$sum : 1}}}
                 ],
                 function(err,data){
+                    //console.log(data);
                     if(err){
                         return callback(err);
                     }
@@ -367,6 +368,7 @@ var getGroupCoachCourseDay=function (schoolid,beginDate,endDate,callback){
                             coachgrouplist.push(onelist);
                         })
                     };
+                   //console.log(coachgrouplist);
                     coachmodel.aggregate([{$match:{
                             "driveschool":new mongodb.ObjectId(schoolid),
                             "is_validation": true
@@ -400,7 +402,12 @@ var getGroupCoachCourseDay=function (schoolid,beginDate,endDate,callback){
     });
 }
 
-
+//测试投诉数量
+var  endtime = (new Date("2016-04-21")).addDays(1).clearTime();
+var begintime=(new Date("2016-04-21")).clearTime();
+getGroupCoachCourseDay("56ea8f86b701b0323b14a507" ,begintime,endtime,function(err,data){
+  console.log(data)
+})
 //统计某一驾校科目一二三四 在学 学生人数
 var getSchoolStudentCount=function(schoolid,callback){
     cache.get('studentcount:'+schoolid, function(err,data) {

@@ -1579,10 +1579,13 @@ exports.getUserFirstCoach=function(userid,subjectid,callback){
                 "subject.subjectid":{'$in':[subjectid]}})
             .sort({"passrate": -1})
             .exec(function(err ,coachdata) {
-                if (err || !coachdata  ) {
-                    console.log(err);
+                if (err   ) {
+                    //console.log(err);
                     return callback("获取教练失败：" + err);
 
+                }
+                if( !coachdata){
+                    return callback("没有查询到可以预约的教练" );
                 }
                 var returnmodel = { //new resbasecoachinfomode(r);
                     coachid: coachdata._id,
