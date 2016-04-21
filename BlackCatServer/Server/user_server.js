@@ -1810,6 +1810,10 @@ exports.FavoritSchoolList=function(userid,callback){
                             latitude: r.latitude,
                             longitude: r.longitude,
                             address: r.address,
+                            maxprice: r.maxprice,
+                            minprice: r.minprice,
+                            schoollevel: r.schoollevel,
+                            coachcount: r.coachcount? r.coachcount:0,
                             passingrate: r.passingrate
                         }
                         driveschoollist.push(oneschool);
