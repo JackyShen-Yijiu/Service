@@ -139,11 +139,12 @@ exports.getSchoolBulletin=function(searchinfo,callback){
     if(searchinfo.seqindex==0){
         searchinfo.seqindex=Number.MAX_VALUE;
     };
-    console.log(searchinfo);
+    //console.log(searchinfo);
     schoolBulletin.find({"seqindex":{$lt:searchinfo.seqindex},
-    "headmaster":new mongodb.ObjectId(searchinfo.userid),
+    //"headmaster":new mongodb.ObjectId(searchinfo.userid),
     "driveschool":new mongodb.ObjectId(searchinfo.shcoolid)
     })
+        .populate("headmaster","name")
         .sort({seqindex:-1})
         .limit(searchinfo.count)
         .exec(function(err,data){
@@ -159,6 +160,7 @@ exports.getSchoolBulletin=function(searchinfo,callback){
                         content: r.content,
                         createtime: r.createtime,
                         bulletobject: r.bulletobject,
+                        name: r.headmaster.name,
                         title: r.title||"",
                         seqindex: r.seqindex
                     }

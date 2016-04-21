@@ -46,6 +46,19 @@ var basedataFunc = {
                 return callback(null,data);
             }
         })
+    },
+    getcoachinfo:function(userid,callback){
+        cache.get("getcoachinfo"+userid,function(err,data){
+            if(!data){
+                coachModel.findById(new mongodb.ObjectId(userid),function(err,userdata){
+                    cache.set("getcoachinfo"+userid,userdata,60,function(err){});
+                    return callback(null,userdata);
+                })
+            }
+            if(data){
+                return callback(null,data);
+            }
+        })
     }
 
 

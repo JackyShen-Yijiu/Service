@@ -15,6 +15,8 @@ var activityModel=mongodb.ActivityModel;
 var systemmessageModel=mongodb.SystemMessageModel;
 var industryNewsModel=mongodb.IndustryNewsModel;
 var activityCouponModel= mongodb.ActivityCouponModel;
+var schoolBulletin=mongodb.SchoolBulletin;
+var baseFunction=require("./basedatafun");
 var prodcutdetail=require("../Config/sysconfig").validationurl.prodcutdetail;
 require('date-utils');
 
@@ -55,6 +57,31 @@ exports.saveUserConsult=function(userinfo,callback){
         return callback(null,"success");
     })
 };
+//
+var searchcoachBulletin=function(coachid,bulletin,callback){
+    baseFunction.getcoachinfo(coachid,function(err,coachdata){
+        if(coachdata&&coachdata.driveschool){
+            schoolBulletin.count({seqindex:{"$gt":bulletin},
+                "driveschool":coachdata.driveschool},function(err,newscount) {
+                if (err) {
+                    return callback("查询行业信息：" + err);
+                }
+                else {
+                    var  returninfo={
+                        bulletincount:newscount,
+                        bulletin:"你有新的公告",
+                        bulletintime:(new Date).toFormat("YYYY-MM-DD")
+                    }
+                    return callback(null,returninfo);
+                }
+            })
+        }
+        else {
+            return callback("没有查询到教练信息")
+        }
+    })
+
+}
 //  查询用户消息
 exports.getmessagecount=function(searchinfo,callback){
     systemmessageModel.count({userid:searchinfo.coachid,seqindex:{"$gt":searchinfo.lastmessage}},
@@ -66,6 +93,11 @@ exports.getmessagecount=function(searchinfo,callback){
             if(err){
                 return callback("查询行业信息："+err);
             }
+            searchcoachBulletin(searchinfo.coachid,searchinfo.bulletin,function(err,databulletininfo)
+            {
+                if(err){
+                    return callback("查询公告信息出错："+err);
+                }
             var info={
                 //systemmessagecount:systemmessagecount,
                 //newscount:newscount
@@ -78,10 +110,12 @@ exports.getmessagecount=function(searchinfo,callback){
                     newscount:newscount,
                     news:"",
                     newstime:(new Date).toFormat("YYYY-MM-DD")
-                }
+                },
+                bulletininfo:databulletininfo
 
             }
             return  callback(null,info);
+            })
         })
     })
 
