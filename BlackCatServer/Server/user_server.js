@@ -3544,7 +3544,7 @@ exports.saveTestSocre =function(scoreinfo,callback){
     userinfoModel.FindByID(scoreinfo.userid,function(err,questions) {
         if (!err) {
             if (!questions) {
-                var u = new userinfo();
+                var u = new userinfoModel();
                 u.id = scoreinfo.userid;
                 u.kemuyi_wronglist = [];
                 u.kemusi_wronglist = [];
