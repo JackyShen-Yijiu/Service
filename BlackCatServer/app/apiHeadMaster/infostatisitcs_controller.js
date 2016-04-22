@@ -69,7 +69,7 @@ exports.getComplaintDetails=function(req,res) {
         return res.json(
             new BaseReturnInfo(0, "无法确认请求用户", ""));
     };
-    headMasterOperation.getComplaintDetails(queryinfo, function (err, data) {
+    headMasterOperation.getComplaintDetailsv2(queryinfo, function (err, data) {
         if (err) {
             return res.json(new BaseReturnInfo(0, err, {}));
         }
@@ -95,7 +95,7 @@ exports.handleComplaint=function(req,res){
         return res.json(
             new BaseReturnInfo(0,"无法确认请求用户",""));
     };
-    headMasterOperation.handleComplaint(handleinfo, function (err, data) {
+    headMasterOperation.handleComplaintv2(handleinfo, function (err, data) {
         if (err) {
             return res.json(new BaseReturnInfo(0, err, ""));
         }

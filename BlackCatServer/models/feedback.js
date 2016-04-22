@@ -26,7 +26,12 @@ var FeedbackSchema = new Schema({
     becomplainedname:{type:String,default:''},  //被投诉姓名
     piclist:[String] , // 图片列表
     usefeedbackmessage: {type:String,default:''},// 3系统使用系统使用反馈
-
+    complainthandinfo:{
+        handlestate:{ type: Number, default: 0},  // 0 没有处理 ， 1 处理结束 2 处理完成
+        handlemessage:{ type: String, default: ""}, // 处理消息
+        operator:{ type: String, default: ""}, // 处理人
+        handledatetime:Date      //处理时间
+    },
 });
 
 

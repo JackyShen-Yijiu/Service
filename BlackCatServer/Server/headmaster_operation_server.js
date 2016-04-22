@@ -13,6 +13,7 @@ var coachmodel=mongodb.CoachModel;
 var headmastermodel=mongodb.HeadMasterModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
+var userFeedBack=mongodb.FeedBackModel;
 var _ = require("underscore");
 require('date-utils');
 
@@ -221,7 +222,6 @@ var getMoreDataStudentByYear=function(schoolid,beginDate,endDate,callback){
 }
 
 
-
 // 按时段统计今天 的预约人数
 var  getReservationCourseCountTimely=function(schoolid,beginDate,endDate,callback){
     cache.get('getReservationCourseCountTimely:'+schoolid+beginDate, function(err,data) {
@@ -403,11 +403,11 @@ var getGroupCoachCourseDay=function (schoolid,beginDate,endDate,callback){
 }
 
 //测试投诉数量
-var  endtime = (new Date("2016-04-21")).addDays(1).clearTime();
-var begintime=(new Date("2016-04-21")).clearTime();
-getGroupCoachCourseDay("56ea8f86b701b0323b14a507" ,begintime,endtime,function(err,data){
-  console.log(data)
-})
+//var  endtime = (new Date("2016-04-21")).addDays(1).clearTime();
+//var begintime=(new Date("2016-04-21")).clearTime();
+//getGroupCoachCourseDay("56ea8f86b701b0323b14a507" ,begintime,endtime,function(err,data){
+//  console.log(data)
+//})
 //统计某一驾校科目一二三四 在学 学生人数
 var getSchoolStudentCount=function(schoolid,callback){
     cache.get('studentcount:'+schoolid, function(err,data) {
@@ -1227,14 +1227,154 @@ exports.handleComplaint=function(handleinfo,callback){
             return callback("没有查询到信息");
         }
     });
+};
+//校长处理投诉V2
+exports.handleComplaintv2=function(handleinfo,callback){
+    headmastermodel.findById(new mongodb.ObjectId(handleinfo.userid),function(err,data){
+        if(err){
+            return callback("查询驾校出错："+err);
+        }
+        if(data){
+            userFeedBack.findOne(
+                {"schoolid":new mongodb.ObjectId(data.driveschool),
+                "_id":new mongodb.ObjectId(handleinfo.reservationid) })
+                .exec(function(err,reservationdata){
+                    if (err){
+                        return callback("查询投诉信息报错："+err);
+                    }
+                    if(reservationdata){
+                        reservationdata.complainthandinfo.handlestate=appTypeEmun.ApplyHandelState.Handeled;
+                        reservationdata.complainthandinfo.handlemessage=handleinfo.complainthandlemessage;
+                        reservationdata.complainthandinfo.operator=data.name;
+                        reservationdata.complainthandinfo.handledatetime=new Date();
+                        reservationdata.save(function(err,data){
+                            if(err){
+                                return callback("保存信息出错："+err);
+                            }
+                            return callback(null,"sucess");
+                        })
+
+                    }else {
+                        return callback("没有查询到投诉信息")
+                    }
+                })
+
+        }else{
+            return callback("没有查询到信息");
+        }
+    });
 }
+
+// 查询投诉详情第二版本
+exports.getComplaintDetailsv2=function(queryinfo,callback){
+    userFeedBack.find( {"schoolid":new mongodb.ObjectId(queryinfo.schoolid),
+        "feedbacktype":1,
+            userid: {$exists: true},
+            coachid: {$exists: true},
+
+    })
+        .populate("userid","mobile name  headportrait applyclasstypeinfo")
+        .populate("coachid"," name mobile headportrait ")
+        .sort({"createtime":-1})
+        .skip((queryinfo.index-1)*queryinfo.count)
+        .limit(queryinfo.count)
+        .exec(function(err,data){
+            if(err){
+                return call("查询投诉信息出错："+err)
+            }
+            process.nextTick(function(){
+                var complaintlist=[];
+                data.forEach(function(r,index){
+                    // console.log(r.userid);
+                    complaintinfo={
+                        reservationid: r._id,
+                        complaintreason: "",
+                        complaintcontent: r.feedbackmessage,
+                        complaintDateTime: r.createtime,
+                        complainthandlestate: (r.complainthandinfo.handlestate&&r.complainthandinfo.handlestate>0) ?
+                            1:0,
+                        complainthandlemessage: r.complainthandinfo.handlemessage? r.complainthandinfo.handlemessage:"",
+                        subject: {
+                            subjectid:2,
+                            name:"科目二"
+                        },
+                        studentinfo:{
+                            userid: r.userid._id,
+                            mobile: r.userid.mobile,
+                            name:r.userid.name,
+                            headportrait:r.userid.headportrait,
+                            classtype:r.userid.applyclasstypeinfo
+                        },
+                        coachinfo:{
+                            coachid: r.coachid._id,
+                            mobile: r.coachid.mobile,
+                            name:r.coachid.name,
+                            headportrait:r.coachid.headportrait,
+
+                        }
+                    }
+                    complaintlist.push(complaintinfo);
+                });
+                return callback(null,complaintlist);
+            })
+        });
+    //reservationmodel.find(
+    //    {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
+    //    "is_complaint":true
+    //   // ,"complaint.complainttime": { $gte:beginDate, $lte:endDate}
+    //    ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+    //        {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
+    //    .select("userid coachid is_complaint  complaint subject complainthandinfo ")
+    //    .populate("userid","mobile name  headportrait applyclasstypeinfo")
+    //    .populate("coachid"," name mobile headportrait ")
+    //    .sort({"complaint.complainttime":-1})
+    //    .skip((queryinfo.index-1)*queryinfo.count)
+    //    .limit(queryinfo.count)
+    //    .exec(function(err,data){
+    //        if(err){
+    //            return call("查询投诉信息出错："+err)
+    //        }
+    //        process.nextTick(function(){
+    //            var complaintlist=[];
+    //            data.forEach(function(r,index){
+    //               // console.log(r.userid);
+    //                complaintinfo={
+    //                    reservationid: r._id,
+    //                    complaintreason: r.complaint.reason,
+    //                    complaintcontent: r.complaint.complaintcontent,
+    //                    complaintDateTime: r.complaint.complainttime,
+    //                    complainthandlestate: (r.complainthandinfo.handlestate&&r.complainthandinfo.handlestate>0) ?
+    //                        1:0,
+    //                    complainthandlemessage: r.complainthandinfo.handlemessage? r.complainthandinfo.handlemessage:"",
+    //                    subject: r.subject,
+    //                    studentinfo:{
+    //                        userid: r.userid._id,
+    //                        mobile: r.userid.mobile,
+    //                        name:r.userid.name,
+    //                        headportrait:r.userid.headportrait,
+    //                        classtype:r.userid.applyclasstypeinfo
+    //                    },
+    //                    coachinfo:{
+    //                        coachid: r.coachid._id,
+    //                        mobile: r.coachid.mobile,
+    //                        name:r.coachid.name,
+    //                        headportrait:r.coachid.headportrait,
+    //
+    //                    }
+    //                }
+    //                complaintlist.push(complaintinfo);
+    //            });
+    //            return callback(null,complaintlist);
+    //        })
+    //    })
+};
 // 查询投诉详情
 exports.getComplaintDetails=function(queryinfo,callback){
     reservationmodel.find(
         {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
-        "is_complaint":true
-       // ,"complaint.complainttime": { $gte:beginDate, $lte:endDate}
-        ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
+            "is_complaint":true
+            // ,"complaint.complainttime": { $gte:beginDate, $lte:endDate}
+            ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
             {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
         .select("userid coachid is_complaint  complaint subject complainthandinfo ")
         .populate("userid","mobile name  headportrait applyclasstypeinfo")
@@ -1249,7 +1389,7 @@ exports.getComplaintDetails=function(queryinfo,callback){
             process.nextTick(function(){
                 var complaintlist=[];
                 data.forEach(function(r,index){
-                   // console.log(r.userid);
+                    // console.log(r.userid);
                     complaintinfo={
                         reservationid: r._id,
                         complaintreason: r.complaint.reason,
