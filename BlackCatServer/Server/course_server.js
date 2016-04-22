@@ -657,7 +657,7 @@ exports.getuserReservation=function(userid,subjectid,reservationstate,callback){
     }
     reservationmodel.find(searhinfo)
         .select("coachid reservationstate reservationcreatetime subject shuttleaddress classdatetimedesc " +
-        "courseprocessdesc trainfieldlinfo  is_comment  begintime endtime  cancelreason learningcontent")
+        "courseprocessdesc trainfieldlinfo  is_comment sigintime  begintime endtime  cancelreason learningcontent")
         .populate("coachid","_id name driveschoolinfo headportrait  Gender")
        .sort({begintime:-1})
         .exec(function(err,reservationlist){
