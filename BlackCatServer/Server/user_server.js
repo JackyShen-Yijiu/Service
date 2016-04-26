@@ -2657,9 +2657,9 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   // 判断 报的车型与课程里面的课程是否一样
                   console.log("applyinfo.carmodel.modelsid:"+applyinfo.carmodel.modelsid);
                   console.log("classtypedata.carmodel.modelsid:"+classtypedata.carmodel.modelsid);
-                  if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
-                      return callback("所报车型与课程的类型不同，请重新选择");
-                  }
+                  //if (applyinfo.carmodel.modelsid!=classtypedata.carmodel.modelsid){
+                  //    return callback("所报车型与课程的类型不同，请重新选择");
+                  //}
                       getuserpayorder(applyinfo.userid,function(err,payorder){
                           if(err){
                               return callback("查询订单出错："+err);
@@ -2672,7 +2672,7 @@ exports.applyschoolinfo=function(applyinfo,callback){
                   userdata.name =applyinfo.name;
                   userdata.telephone=applyinfo.telephone;
                   userdata.address=applyinfo.address;
-                  userdata.carmodel=applyinfo.carmodel;
+                  userdata.carmodel=classtypedata.carmodel;
                   userdata.userpic=applyinfo.userpic?applyinfo.userpic:userdata.userpic,
                   userdata.applyschool=applyinfo.schoolid;
                   userdata.applyschoolinfo.id=applyinfo.schoolid;
