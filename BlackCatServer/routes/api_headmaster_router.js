@@ -57,6 +57,10 @@ router.get("/info/getweather",userCenterController.getWeatherinfo);
 
 //================================================校长端v2.0===========================
 
+// 获取主页数据
+router.get("/statistics/getmainpagedatav2",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getMainPageDataV2);
+// 获取投诉列表
 router.get("/statistics/complaintlist",ensureAuthorizedController.ensureAuthorized,
     statisitcsController.getComplaintList);
 

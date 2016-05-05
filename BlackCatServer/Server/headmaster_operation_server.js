@@ -1763,3 +1763,51 @@ exports.getComplaintList=function(queryinfo,callback){
         });
 
 };
+
+// 主页数据
+exports.getMainPageDatav2=function(queryinfo,callback){
+    if (queryinfo.searchtype==appTypeEmun.StatisitcsType.day){
+        var begintime=(new Date()).clearTime();
+        var  endtime = (new Date()).addDays(1).clearTime();}
+    else
+    {
+        var begintime=(new Date()).addDays(-1).clearTime();
+        var  endtime = (new Date()).clearTime();
+    }
+
+    var proxy = new eventproxy();
+    if (parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.day) {
+        proxy.all('SchoolStudentCount', "ApplyStudentCount", "CommentStudentCount", "ComplaintStudentCount",
+            function (SchoolStudentCount, ApplyStudentCount, CommentStudentCount, ComplaintStudentCount ) {
+                var info = {
+                    "schoolstudentcount": SchoolStudentCount,
+                    "applystudentcount": ApplyStudentCount,
+                    "commentstudentcount": CommentStudentCount,
+                    "complaintstudentcount": ComplaintStudentCount,
+
+                };
+                var passrate=[99,99,99,99];
+                var overstockstudent=[99,99,99,99];
+                info.passrate=passrate,
+                info.overstockstudent=overstockstudent;
+                return callback(null, info);
+            });
+    }
+    else {
+        return callback("查询类型出错");
+    }
+
+
+    proxy.fail(callback);
+
+    // 获取在校学生 科目一*四
+    getSchoolStudentCount(queryinfo.schoolid,proxy.done('SchoolStudentCount'))
+    //获取今日申请人数
+    getApplyStudentCountDayly(queryinfo.schoolid,begintime,endtime,proxy.done('ApplyStudentCount'))
+    // 获取 评价数量
+    getStudentCommentDayly(queryinfo.schoolid,begintime,endtime,proxy.done('CommentStudentCount'))
+    // 投诉数量
+    getStudentComplaintDayly(queryinfo.schoolid,begintime,endtime,proxy.done('ComplaintStudentCount'))
+
+
+}
