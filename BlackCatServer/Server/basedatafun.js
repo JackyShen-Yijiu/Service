@@ -8,6 +8,14 @@ var schoolModel=mongodb.DriveSchoolModel;
 var userModel=mongodb.UserModel;
 var coachModel=mongodb.CoachModel;
 var basedataFunc = {
+    getModelCount: function (obj, searchinfo, callback) {
+        obj.count(searchinfo, function (err, count) {
+            if (err) {
+                return callback(err);
+            }
+            return callback(null, count);
+        })
+    },
     getSchoolCoachCount: function(schoolid,callback){
         cache.get("getSchoolCoachCount"+schoolid,function(err,data){
             if(!data){

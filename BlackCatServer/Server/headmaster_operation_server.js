@@ -14,6 +14,7 @@ var headmastermodel=mongodb.HeadMasterModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var userFeedBack=mongodb.FeedBackModel;
+var basefun=require("./basedatafun");
 var _ = require("underscore");
 require('date-utils');
 
@@ -1699,3 +1700,66 @@ var statisitcsCourseDetails=function(schoolid,beginDate,endDate, callback){
 //statisitcsCourseDetails("562dcc3ccb90f25c3bde40da" ,begintime,endtime,function(err,data){
 //  //console.log(data)
 //})
+
+
+
+
+
+//====================================v2==========================
+// 查询投诉详情第二版本
+exports.getComplaintList=function(queryinfo,callback){
+    var searchinfo={"schoolid":new mongodb.ObjectId(queryinfo.schoolid),
+       "$or":[  {"feedbacktype":1},{"feedbacktype":2}],
+        userid: {$exists: true},
+        coachid: {$exists: true},
+    }
+    userFeedBack.find(searchinfo)
+        .populate("userid","mobile name  headportrait applyclasstypeinfo")
+        .populate("coachid"," name mobile headportrait ")
+        .sort({"createtime":-1})
+        .skip((queryinfo.index-1)*queryinfo.count)
+        .limit(queryinfo.count)
+        .exec(function(err,data){
+            if(err){
+                return call("查询投诉信息出错："+err)
+            }
+            basefun.getModelCount(userFeedBack,searchinfo,function(err,feedcount){
+                process.nextTick(function(){
+                var complaintlist=[];
+                data.forEach(function(r,index){
+                    // console.log(r.userid);
+                    complaintinfo={
+                        complaintid: r._id,
+                        complaintcontent: r.feedbackmessage,
+                        complaintDateTime: r.createtime,
+                        feedbackusertype: r.feedbackusertype,
+                        feedbacktype: r.feedbacktype,
+                        piclistr: r.piclist,
+                        complainthandinfo: r.complainthandinfo,
+                        studentinfo:{
+                            userid: r.userid._id,
+                            mobile: r.userid.mobile,
+                            name:r.userid.name,
+                            headportrait:r.userid.headportrait,
+                            classtype:r.userid.applyclasstypeinfo
+                        },
+                        coachinfo:{
+                            coachid: r.coachid._id,
+                            mobile: r.coachid.mobile,
+                            name:r.coachid.name,
+                            headportrait:r.coachid.headportrait,
+
+                        }
+                    }
+                    complaintlist.push(complaintinfo);
+                });
+                    returndata={
+                        count:feedcount,
+                        complaintlist:complaintlist
+                    }
+                return callback(null,returndata);
+            })
+            })
+        });
+
+};

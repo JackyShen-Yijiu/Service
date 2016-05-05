@@ -54,4 +54,10 @@ router.get('/info/getnews', userCenterController.getIndustryNews);
 router.get("/info/getweather",userCenterController.getWeatherinfo);
 
 
+
+//================================================校长端v2.0===========================
+
+router.get("/statistics/complaintlist",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getComplaintList);
+
 module.exports = router;

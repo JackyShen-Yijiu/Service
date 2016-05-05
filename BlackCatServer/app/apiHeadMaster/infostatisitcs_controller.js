@@ -155,3 +155,31 @@ exports.getCoachCourseDetails=function(req,res){
     })
 }
 
+
+//  ==========================v2=====================
+
+//  获取投诉列表
+exports.getComplaintList=function(req,res) {
+    queryinfo = {
+        userid: req.query.userid,
+        schoolid: req.query.schoolid,
+        index:req.query.index? req.query.index :1,
+        count:req.query.count? req.query.count :10
+    };
+    //console.log(queryinfo);
+    if ( queryinfo.userid === undefined || queryinfo.schoolid === undefined) {
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    if (queryinfo.userid != req.userId) {
+        return res.json(
+            new BaseReturnInfo(0, "无法确认请求用户", ""));
+    };
+    headMasterOperation.getComplaintList(queryinfo, function (err, data) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err, {}));
+        }
+        return res.json(new BaseReturnInfo(1, "", data));
+    })
+
+}
+
