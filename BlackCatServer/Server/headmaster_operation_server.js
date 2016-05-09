@@ -14,6 +14,7 @@ var headmastermodel=mongodb.HeadMasterModel;
 var appTypeEmun=require("../custommodel/emunapptype");
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var userFeedBack=mongodb.FeedBackModel;
+var UserExamInfo=mongodb.UserExamInfo;
 var basefun=require("./basedatafun");
 var _ = require("underscore");
 require('date-utils');
@@ -1810,4 +1811,139 @@ exports.getMainPageDatav2=function(queryinfo,callback){
     getStudentComplaintDayly(queryinfo.schoolid,begintime,endtime,proxy.done('ComplaintStudentCount'))
 
 
+};
+
+// 考试信息列表 获取考试月份
+exports.getExamMonth=function(queryinfo,callback){
+    UserExamInfo.aggregate([{
+            $match: {
+                driveschool: queryinfo.schoolid,
+                subjectid:parseInt(queryinfo.subjectid),
+                examinationstate: {"$gt": 2}
+            }
+        },
+            {
+                "$project": {
+                    "uninid": {
+                        "$concat": [{"$substr": [{$year: "$examinationdate"}, 0, 4]},
+                            '-',
+                            {"$substr": [{$month: "$examinationdate"}, 0, 2]}]
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$uninid", studentcount: {$sum: 1}
+                }
+            }
+        //    ,
+        //{
+        //        "$sort": {"$examinationdate": -1}
+        //    }
+        ],
+        function (err, examinfodata) {
+            if (err) {
+                return  callback("查询出错:"+err);
+            }
+            else {
+                return callback(null,examinfodata);
+            }
+
+        }
+    )
+};
+
+// 获取考试通过信息
+exports.getExaminfo=function(queryinfo,callback){
+    var beginDate=new Date();
+    var endDate=new Date();
+    beginDate.setFullYear(queryinfo.year,queryinfo.month-1,1);
+    endDate.setFullYear(queryinfo.year,queryinfo.month-1,1);
+    endDate=endDate.addMonths(1);
+    //console.log(beginDate);
+    //console.log(endDate);
+    UserExamInfo.aggregate([{
+            $match: {
+                driveschool: queryinfo.schoolid,
+                subjectid:parseInt(queryinfo.subjectid),
+                examinationstate: {"$gt": 2},
+                examinationdate: { $gte:beginDate, $lte:endDate}
+            }
+        },
+            {
+                "$project": {
+                    "examinationstate": "$examinationstate",
+                    "subjectid": "$subjectid",
+                    "uninid": {
+                        "$concat": [{"$substr": [{$year: "$examinationdate"}, 0, 4]},
+                            '-',
+                            {"$substr": [{$month: "$examinationdate"}, 0, 2]},
+                            '-',
+                            {"$substr": [{$dayOfMonth: "$examinationdate"}, 0, 2]},
+                            {"$substr": ["$subjectid", 0, 1]}]
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$uninid", studentcount: {$sum: 1},
+                    examinationstate: {"$push": "$examinationstate"}
+                }
+            }
+            , {
+                "$sort": {"_id": -1}
+            },
+            //{
+            //    "$limit": parseInt(count)
+            //},
+            //{
+            //    "$skip": (index-1)*count
+            //}
+        ],
+        function (err, examinfodata) {
+            if (err) {
+                return  callback("查询出错:"+err);
+            }
+            else {
+                examinfo=[];
+                examinfodata.forEach(function(r,index){
+                    var oneexaminfo={
+                        examdate: r._id.substr(0,(r._id.length-1)),
+                        subject:r._id.substr(r._id.length-1),
+                        studentcount: r.studentcount,
+                        passstudent:0,
+                        nopassstudent:0,
+                        missexamstudent:0,
+                    }
+                    var passstudent=0;
+                    var nopassstudent=0;
+                    var missexamstudent=0;
+                    for(var i=0;i< r.examinationstate.length;i++){
+                        if(r.examinationstate[i]==5){
+                            passstudent=passstudent+1;
+                        }
+                        else if(r.examinationstate[i]==4)
+                        {
+                            nopassstudent=nopassstudent+1;
+                        }
+                        else {
+                            missexamstudent=missexamstudent+1;
+                        }
+                    }
+                    oneexaminfo.passstudent=passstudent;
+                    oneexaminfo.nopassstudent=nopassstudent;
+                    oneexaminfo.missexamstudent=missexamstudent;
+                    if (oneexaminfo.passstudent==0||oneexaminfo.studentcount==0){
+                        oneexaminfo.passrate=0;
+                    }
+                    else{
+                        oneexaminfo.passrate=oneexaminfo.passstudent/oneexaminfo.studentcount;
+                    }
+                    examinfo.push(oneexaminfo);
+                })
+                return callback(null,examinfo);
+            }
+
+        }
+    )
 }

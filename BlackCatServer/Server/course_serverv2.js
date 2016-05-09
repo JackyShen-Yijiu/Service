@@ -675,7 +675,7 @@ exports.getCoachSummary=function(coachid,callback){
 };
 
 var execExamSummaryInfo=function(coachid,index ,count,callback) {
-    console.log(count);
+    //console.log(count);
     UserExamInfo.aggregate([{
             $match: {
                 coachlist: {$in: [coachid]},

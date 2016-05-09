@@ -9,6 +9,7 @@ var Schema = mongoose.Schema;
 
 var UserExamInfoSchema=new Schema({
     userid:{type: String, ref: 'User'}, // 用户ID
+    driveschool:{type: String, ref: 'DriveSchool'} ,// 所在学校
     examinationstate:{type:Number,default:0}, //科目二报考状态  0 未申请 1 申请中  2 申请拒绝
     //  3 已安排 4 没有通过 5 通过
     applydate:Date,  //  申请时间

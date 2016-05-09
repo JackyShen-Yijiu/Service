@@ -63,5 +63,12 @@ router.get("/statistics/getmainpagedatav2",ensureAuthorizedController.ensureAuth
 // 获取投诉列表
 router.get("/statistics/complaintlist",ensureAuthorizedController.ensureAuthorized,
     statisitcsController.getComplaintList);
+//  考试 合格率
+        // 获取考试月份
+router.get("/statistics/getexammonth",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getExamMonth);
+        // 获取考试详情
+router.get("/statistics/getexaminfo",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getExaminfo);
 
 module.exports = router;

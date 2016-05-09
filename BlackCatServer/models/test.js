@@ -31,6 +31,18 @@ var cache=require('../Common/cache');
 var crypto = require('crypto');
 
 var userconsult= mongodb.UserConsultModel;
+var UserExamInfo=mongodb.UserExamInfo;
+//UserExamInfo.find({},function(err,data){
+//    data.forEach(function(r,index){
+//        console.log(r);
+//        r.driveschool="562dcc3ccb90f25c3bde40da";
+//        r.examinationstate=5;
+//        r.examinationdate=new Date("2016/5/16 8:27:01");
+//        r.save(function(err,newdata){
+//            console.log(err);
+//        })
+//    })
+//})
 //var coonsult={
 //    userid:"56e6341394aaa86c3244d9a1",
 //    name:"",

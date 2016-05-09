@@ -204,4 +204,37 @@ exports.getMainPageDataV2=function(req,res) {
     })
 }
 
+//获取考试月份
+exports.getExamMonth=function(req,res){
+    var queryinfo = {
+        userid: req.query.userid,
+        schoolid: req.query.schoolid,
+        subjectid: req.query.subjectid,
+    }
+    //
+    headMasterOperation.getExamMonth(queryinfo, function (err, data) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err, {}));
+        }
+        return res.json(new BaseReturnInfo(1, "", data));
+    })
+}
+// 获取月份考试 详情
+exports.getExaminfo=function(req,res){
+    var queryinfo = {
+        userid: req.query.userid,
+        schoolid: req.query.schoolid,
+        subjectid: req.query.subjectid,
+        year:req.query.year,
+        month:req.query.month,
+    };
+    headMasterOperation.getExaminfo(queryinfo, function (err, data) {
+        if (err) {
+            return res.json(new BaseReturnInfo(0, err, {}));
+        }
+        return res.json(new BaseReturnInfo(1, "", data));
+    })
+}
+
+
 
