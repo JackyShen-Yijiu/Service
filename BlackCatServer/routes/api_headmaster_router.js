@@ -71,4 +71,9 @@ router.get("/statistics/getexammonth",ensureAuthorizedController.ensureAuthorize
 router.get("/statistics/getexaminfo",ensureAuthorizedController.ensureAuthorized,
     statisitcsController.getExaminfo);
 
+// 获取报名统计
+router.get("/statistics/applyschoolinfo",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.applySchoolInfo);
+
+
 module.exports = router;

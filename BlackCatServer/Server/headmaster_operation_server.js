@@ -1947,3 +1947,185 @@ exports.getExaminfo=function(queryinfo,callback){
         }
     )
 }
+// 周统计 周统计招生人数
+var getMoreApplyStudentByWeekv2=function(schoolid,beginDate,endDate,callback){
+    cache.get("getMoreApplyStudentByWeekv2"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "summarytime": { $gte: beginDate, $lt:endDate}
+
+                }},
+                    {"$project":{
+                        "day":{"$dayOfWeek":"$summarytime"}
+                        ,"applystudentcount":"$applystudentcount"
+                        ,"summarytime":"$summarytime"
+                        ,"_id":0
+                    }}
+                    // ,{$group:{_id:"$week",applystudentcount : {$sum : "$selectedstudentcount"}}}
+                ],function(err,schooldata){
+                    if(err){
+                        return callback(err);
+                    };
+                    schooldata.forEach(function(r,index){
+                        r.day= (r.day-1)==0?7:(r.day-1);
+                    })
+                    schooldataList= _.sortBy(schooldata,'summarytime');
+                    cache.set("getMoreApplyStudentByWeekv2"+schoolid+beginDate, schooldataList,60*1,function(){});
+                    return callback(null,schooldataList);
+                }
+            )
+        }
+    })
+}
+// 更多数据 月统计
+var getMoreDataStudentByMonthv2=function(schoolid,beginDate,endDate,callback){
+    cache.get("getMoreDataStudentByMonthv2"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "summarytime": { $gte: beginDate, $lt:endDate}
+
+                }},
+                    {"$project":{
+                        "day":{"$dayOfMonth":"$summarytime"}
+                        ,"applystudentcount":"$applystudentcount"
+                        ,"summarytime":"$summarytime"
+                        ,"_id":0
+                    }}
+                    //,{$group:{_id:"$week",
+                    //    applystudentcount : {$sum : "$applystudentcount"},
+                    //   }}
+                ],function(err,schooldata){
+                    if(err){
+                        return callback(err);
+                    }
+                    var datalist=[0,0,0];
+                    if (schooldata&&schooldata.length>0){
+                        schooldata.forEach(function(r,index){
+                             if(r.day<=10){
+                                 datalist[0]=datalist[0]+ r.applystudentcount;
+                             }else if(r.day<=20)
+                             {
+                                 datalist[1]=datalist[1]+ r.applystudentcount;
+                             }
+                            else {
+                                 datalist[2]=datalist[2]+ r.applystudentcount;
+                             }
+                            //var listone={
+                            //    weekindex:parseInt(r._id)+1,
+                            //    applystudentcount:r.applystudentcount,
+                            //}
+                            //datalist.push(listone);
+                        })
+                    }
+                    //datalist= _.sortBy(datalist,'weekindex');
+                    cache.set("getMoreDataStudentByMonthv2"+schoolid+beginDate, datalist,60*1,function(){});
+                    return callback(null,datalist);
+                }
+            )
+        }
+    })
+}
+// 更多数据 年统计
+var getMoreDataStudentByYearv2=function(schoolid,beginDate,endDate,callback){
+    cache.get("getMoreDataStudentByYearv2"+schoolid+beginDate,function(err,data){
+        if(err){
+            return callback(err);
+        }
+        if (data) {
+            return callback(null,data);
+        }else{
+            schooldaysunmmary.aggregate([{$match:{
+                    "driveschool":new mongodb.ObjectId(schoolid),
+                    "summarytime": { $gte: beginDate, $lt:endDate}
+
+                }},
+                    {"$project":{
+                        "month":{"$month":"$summarytime"}
+                        ,"applystudentcount":"$applystudentcount"
+                        ,"summarytime":"$summarytime"
+                        ,"_id":0
+                    }}
+                    ,{$group:{_id:"$month",applystudentcount : {$sum : "$applystudentcount"},
+                       }}
+                ],function(err,schooldata){
+                    if(err){
+                        return callback(err);
+                    }
+                    var datalist=[0,0,0,0];
+                    if (schooldata&&schooldata.length>0){
+                        schooldata.forEach(function(r,index){
+                            if(r._id>=1&&r._id<=3){
+                                datalist[0]=datalist[0]+ r.applystudentcount;
+                            }else if(r._id>=4&&r._id<=6)
+                            {
+                                datalist[1]=datalist[1]+ r.applystudentcount;
+                            }
+                            else  if(r._id>=7&&r._id<=9){
+                                datalist[2]=datalist[2]+ r.applystudentcount;
+                            }
+                            else {
+                                datalist[3]=datalist[3]+ r.applystudentcount;
+                            }
+                            //var listone={
+                            //    month:r._id,
+                            //    applystudentcount:r.applystudentcount,
+                            //}
+                            //datalist.push(listone);
+                        })
+                    }
+                    //datalist= _.sortBy(datalist,'month');
+                    cache.set("getMoreDataStudentByYearv2"+schoolid+beginDate, datalist,60*1,function(){});
+                    return callback(null,datalist);
+                }
+            )
+        }
+    })
+}
+
+//获取报名信息
+exports.getApplySchoolInfo=function(queryinfo,callback){
+    var begintime=(new Date()).addDays(-7).clearTime();
+    var  datenow=new Date();
+    var  endtime = (new Date()).addDays(1).clearTime();
+    if ( parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.week){
+        begintime=(new Date()).addDays(-6).clearTime();
+        //endtime = (new Date()).clearTime();
+    } else if (parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.month){
+
+        begintime=(new Date(datenow.getFullYear(),datenow.getMonth(),1))
+    }
+    else if(parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.year){
+        begintime=(new Date(datenow.getFullYear(),1,1))
+    }
+
+    var proxy = new eventproxy();
+    proxy.fail(callback);
+    if (parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.week){
+        getMoreApplyStudentByWeekv2(queryinfo.schoolid,begintime,endtime,proxy.done("ApplyStudentByWeek"));
+    } else if(parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.month){
+        getMoreDataStudentByMonthv2(queryinfo.schoolid,begintime,endtime,proxy.done("ApplyStudentByWeek"));
+    }else if(parseInt(queryinfo.searchtype)==appTypeEmun.StatisitcsType.year){
+        getMoreDataStudentByYearv2(queryinfo.schoolid,begintime,endtime,proxy.done("ApplyStudentByWeek"));
+    }
+    proxy.all('ApplyStudentByWeek',
+        function (ApplyStudentByWeek){
+            var weekmroedatainfo= {
+                datalist:ApplyStudentByWeek
+            };
+            return callback(null,weekmroedatainfo);
+        });
+
+}
+

@@ -236,5 +236,28 @@ exports.getExaminfo=function(req,res){
     })
 }
 
+exports.applySchoolInfo=function(req,res){
+    var  queryinfo={
+        userid:req.query.userid,
+        searchtype:req.query.searchtype,
+        schoolid:req.query.schoolid
+    }
+    if (queryinfo.searchtype===undefined|| queryinfo.userid===undefined
+        ||queryinfo.schoolid===undefined){
+        return res.json(new BaseReturnInfo(0,"参数错误",""));
+    }
+    if(queryinfo.userid!=req.userId){
+        return res.json(
+            new BaseReturnInfo(0,"无法确认请求用户",""));
+    };
+    headMasterOperation.getApplySchoolInfo(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
+
+
 
 
