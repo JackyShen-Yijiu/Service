@@ -87,3 +87,4 @@ exports.AdminUser=require("./AdminUser");
 exports.UserAvailableFcodeModel=require('./useravailableFcode');
 exports.WeiXinPayNotice=require("./weinxinpaynotice");
 exports.UserExamInfo=require("./userexaminfo");
+exports.CoachFeedBack=require("./coachfeedback");
