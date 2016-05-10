@@ -1459,7 +1459,7 @@ exports.getCommentDetails=function(queryinfo,callback){
              ,"comment.commenttime": {$gte: begintime,  $lte:enddate}
             ,"$and":[{reservationstate: { $ne : appTypeEmun.ReservationState.applycancel } },
             {reservationstate: { $ne : appTypeEmun.ReservationState.applyrefuse }}]})
-        .select("userid coachid is_comment  comment subject  ")
+        .select("userid coachid is_comment  comment subject _id ")
         .populate("userid","mobile name  headportrait applyclasstypeinfo")
         .populate("coachid"," name mobile headportrait ")
         .sort({"comment.commenttime":-1})
