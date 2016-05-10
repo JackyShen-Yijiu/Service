@@ -23,6 +23,7 @@ var tags=mongodb.CoachTagsModel;
 var systemmessage=mongodb.SystemMessageModel;
 var schoolbus=mongodb.SchoolBusRouteModel;
 var activityCouponModel= mongodb.ActivityCouponModel;
+var coachfeedback=mongodb.CoachFeedBack;
 require('date-utils');
 var async = require('async');
 var fs=require("fs");
@@ -32,6 +33,22 @@ var crypto = require('crypto');
 
 var userconsult= mongodb.UserConsultModel;
 var UserExamInfo=mongodb.UserExamInfo;
+
+var coachfeedback =new coachfeedback();
+coachfeedback.coachid="566651c1f14c20d07ffa6af3";
+coachfeedback.schoolid="562dcc3ccb90f25c3bde40da";
+coachfeedback.content="伙食不好伙食不好伙食不好伙食不好伙食不好伙食不好伙食不好";
+coachfeedback.createtime=new Date();
+coachfeedback.replyflag=1;
+coachfeedback.replyid="5670080fec71a9214cc32221";
+coachfeedback.replycontent="马上解决";
+coachfeedback.replytime=new Date();
+
+coachfeedback.save(function(err,data){
+    console.log("保存成功");
+})
+
+
 //UserExamInfo.find({},function(err,data){
 //    data.forEach(function(r,index){
 //        console.log(r);

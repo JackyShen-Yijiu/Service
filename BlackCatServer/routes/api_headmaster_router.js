@@ -75,5 +75,14 @@ router.get("/statistics/getexaminfo",ensureAuthorizedController.ensureAuthorized
 router.get("/statistics/applyschoolinfo",ensureAuthorizedController.ensureAuthorized,
     statisitcsController.applySchoolInfo);
 
+// 获取教练反馈
+
+router.get("/statistics/getcoachfeedback",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.getCoachFeedBack);
+
+// 校长回复教练反馈
+router.post("/statistics/replycoachfeedback",ensureAuthorizedController.ensureAuthorized,
+    statisitcsController.replyCoachFeedBack);
+
 
 module.exports = router;

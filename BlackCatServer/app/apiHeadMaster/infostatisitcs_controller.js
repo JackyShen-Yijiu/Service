@@ -256,7 +256,54 @@ exports.applySchoolInfo=function(req,res){
         }
         return res.json(new BaseReturnInfo(1,"",data));
     })
+};
+
+exports.getCoachFeedBack=function(req,res) {
+    var queryinfo = {
+        userid: req.query.userid,
+        index:req.query.index||1,
+        count:req.query.count||10,
+        schoolid: req.query.schoolid
+    }
+    if (queryinfo.userid === undefined
+        || queryinfo.schoolid === undefined) {
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    if (queryinfo.userid != req.userId) {
+        return res.json(
+            new BaseReturnInfo(0, "无法确认请求用户", ""));
+    };
+    headMasterOperation.getCoachFeedBack(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
 }
+exports.replyCoachFeedBack=function(req,res) {
+    var queryinfo = {
+        userid: req.body.userid,
+        replycontent:req.body.replycontent,
+        feedbackid:req.body.feedbackid,
+        schoolid: req.body.schoolid
+    }
+    if (queryinfo.replycontent === undefined || queryinfo.userid === undefined
+        || queryinfo.schoolid === undefined) {
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    if (queryinfo.userid != req.userId) {
+        return res.json(
+            new BaseReturnInfo(0, "无法确认请求用户", ""));
+    };
+    headMasterOperation.saveReplyCoachFeedBack(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}
+
+
 
 
 

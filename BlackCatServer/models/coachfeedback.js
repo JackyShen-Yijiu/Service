@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var CoachFeedbackSchema = new Schema({
-    coachid:{type: Schema.Types.ObjectId, ref: 'User'},//用户id
+    coachid:{type: Schema.Types.ObjectId, ref: 'coach'},//用户id
     schoolid :{type: Schema.Types.ObjectId, ref: 'DriveSchool'},   //学校id
     content : {type:String,default:''}, //内容
     piclist:[String] , // 图片列表

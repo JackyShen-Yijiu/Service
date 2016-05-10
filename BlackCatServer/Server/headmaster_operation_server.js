@@ -15,6 +15,7 @@ var appTypeEmun=require("../custommodel/emunapptype");
 var schooldaysunmmary=mongodb.SchoolDaySummaryModel;
 var userFeedBack=mongodb.FeedBackModel;
 var UserExamInfo=mongodb.UserExamInfo;
+var CoachFeedBack=mongodb.CoachFeedBack;
 var basefun=require("./basedatafun");
 var _ = require("underscore");
 require('date-utils');
@@ -2127,5 +2128,52 @@ exports.getApplySchoolInfo=function(queryinfo,callback){
             return callback(null,weekmroedatainfo);
         });
 
-}
+};
 
+// 获取教练反馈
+exports.getCoachFeedBack=function(queryinfo,callback){
+    CoachFeedBack.find({schoolid:new mongodb.ObjectId(queryinfo.schoolid)})
+        .select("coachid replyid content createtime replyflag replycontent replytime")
+        .populate("coachid","name _id headportrait ")
+        .populate("replyid","name _id headportrait ")
+        .sort({"createtime":-1})
+        .skip((queryinfo.index-1)*queryinfo.count)
+        .limit(queryinfo.count)
+        .exec(function(err,data){
+            if(err){
+                return callback("查询教练反馈报错："+err)
+            }else
+            {
+                return callback(null,data)
+            }
+        })
+};
+
+
+//保存校长回复教练反馈
+exports.saveReplyCoachFeedBack=function(replyinfo,callback){
+    CoachFeedBack.findById(replyinfo.feedbackid,function(err,data){
+        if(err){
+            return callback("查询教练反馈报错："+err)
+        }else if(!data){
+            return callback("没有查询到反馈信息")
+        }
+        else
+        {
+            data.replyflag=1;
+            data.replyid=new mongodb.ObjectId(replyinfo.userid);
+            data.replycontent=replyinfo.replycontent;
+            data.replytime=new Date();
+            data.save(function(err,newdata){
+                if(err){
+                    return callback("保存教练反馈报错："+err)
+                }
+                else{
+                    return callback(null,"sucess")
+                }
+            })
+
+
+        }
+    })
+}
