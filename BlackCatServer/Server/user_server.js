@@ -984,6 +984,8 @@ exports.getSchoolCoach=function(coachinfo,callback){
                         maxprice: r.maxprice?r.maxprice:0,  // 最高价格
                         minprice: r.minprice?r.minprice:0,  // 最低价格
                         carmodel: r.carmodel,
+                        coursecountr:5,
+                        isonline:0,
                         serverclasslist: r.serverclasslist? r.serverclasslist:[]
 
                     }

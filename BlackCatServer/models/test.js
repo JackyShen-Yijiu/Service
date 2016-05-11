@@ -39,10 +39,10 @@ coachfeedback.coachid="566651c1f14c20d07ffa6af3";
 coachfeedback.schoolid="562dcc3ccb90f25c3bde40da";
 coachfeedback.content="伙食不好伙食不好伙食不好伙食不好伙食不好伙食不好伙食不好";
 coachfeedback.createtime=new Date();
-coachfeedback.replyflag=1;
-coachfeedback.replyid="5670080fec71a9214cc32221";
-coachfeedback.replycontent="马上解决";
-coachfeedback.replytime=new Date();
+coachfeedback.replyflag=0;
+//coachfeedback.replyid="5670080fec71a9214cc32221";
+//coachfeedback.replycontent="马上解决";
+//coachfeedback.replytime=new Date();
 
 coachfeedback.save(function(err,data){
     console.log("保存成功");
