@@ -125,6 +125,7 @@ var defaultFun = {
         schoolinfo.loc = {type: "Point", coordinates: [schoolinfo.longitude, schoolinfo.latitude]};
         schoolinfo.logoimg.originalpic = req.body.logoimg;
         schoolinfo.worktime = schoolinfo.workbegintime + ":00--" + schoolinfo.workendtime + ":00";
+        schoolinfo.hours = schoolinfo.worktime;
         //schoolinfo.licensetype=schoolinfo.licensetype?schoolinfo.licensetype.split("||"):undefined;
         //schoolinfo.cartype=schoolinfo.cartype?schoolinfo.cartype.split("||"):undefined;
         //.schoolalbum=schoolinfo.schoolalbum?schoolinfo.schoolalbum.split("||"):undefined;
