@@ -117,3 +117,26 @@ exports.getWeatherinfo=function(req,res){
         return res.json(new BaseReturnInfo(1, "", data));
     })
 }
+
+
+exports.getBulletinCount=function(req,res) {
+    var queryinfo = {
+        userid: req.query.userid,
+        seqindex:req.query.seqindex||1,
+        schoolid: req.query.schoolid
+    }
+    if (queryinfo.seqindex === undefined || queryinfo.userid === undefined
+        || queryinfo.schoolid === undefined) {
+        return res.json(new BaseReturnInfo(0, "参数错误", ""));
+    }
+    if (queryinfo.userid != req.userId) {
+        return res.json(
+            new BaseReturnInfo(0, "无法确认请求用户", ""));
+    };
+    userCenterServer.getBulletinCount(queryinfo,function(err,data){
+        if(err){
+            return res.json(new BaseReturnInfo(0,err,{}));
+        }
+        return res.json(new BaseReturnInfo(1,"",data));
+    })
+}

@@ -202,3 +202,15 @@ exports.getIndustryNews=function(searchinfo,callback){
         })
 }
 
+exports.getBulletinCount=function(queryinfo,callback){
+    schoolBulletin.count({driveschool:queryinfo.schoolid,seqindex:{"$gt":queryinfo.seqindex}},
+        function(err,systemmessagecount) {
+            if (err) {
+                return callback("查询公告消息数量出错：" + err);
+            }
+
+            return callback(null,systemmessagecount);
+        })
+}
+
+

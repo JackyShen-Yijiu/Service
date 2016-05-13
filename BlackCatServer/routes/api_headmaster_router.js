@@ -85,4 +85,8 @@ router.post("/statistics/replycoachfeedback",ensureAuthorizedController.ensureAu
     statisitcsController.replyCoachFeedBack);
 
 
+// 获取公告数量
+router.get("/statistics/getbulletincount",ensureAuthorizedController.ensureAuthorized,
+    userCenterController.getBulletinCount);
+
 module.exports = router;
