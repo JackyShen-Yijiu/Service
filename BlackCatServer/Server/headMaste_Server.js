@@ -160,9 +160,14 @@ exports.getSchoolBulletin=function(searchinfo,callback){
                         content: r.content,
                         createtime: r.createtime,
                         bulletobject: r.bulletobject,
-                        name: r.headmaster.name,
+
                         title: r.title||"",
                         seqindex: r.seqindex
+                    }
+                    if( r.headmaster){
+                        bulletin.name= r.headmaster.name
+                    }else{
+                        bulletin.name="";
                     }
                     bulletionlist.push(bulletin);
                 })
