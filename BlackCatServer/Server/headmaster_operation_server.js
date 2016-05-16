@@ -1789,7 +1789,11 @@ exports.getMainPageDatav2=function(queryinfo,callback){
 
                 };
                 var passrate=[99,99,99,99];
-                var overstockstudent=[99,99,99,99];
+                var overstockstudent=[0,0,0,0];
+                console.log(SchoolStudentCount);
+                SchoolStudentCount.forEach(function(r,index){
+                    overstockstudent[(r.subjectid-1)]= r.studentcount;
+                })
                 info.passrate=passrate,
                 info.overstockstudent=overstockstudent;
                 return callback(null, info);
