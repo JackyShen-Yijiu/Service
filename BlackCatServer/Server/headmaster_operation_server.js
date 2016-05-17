@@ -1788,9 +1788,10 @@ exports.getMainPageDatav2=function(queryinfo,callback){
                     "complaintstudentcount": ComplaintStudentCount,
 
                 };
-                var passrate=[99,99,99,99];
+                var passrate=[-1,80,90,100];
                 var overstockstudent=[0,0,0,0];
-                console.log(SchoolStudentCount);
+                //console.log(SchoolStudentCount);
+
                 SchoolStudentCount.forEach(function(r,index){
                     overstockstudent[(r.subjectid-1)]= r.studentcount;
                 })
@@ -1814,8 +1815,6 @@ exports.getMainPageDatav2=function(queryinfo,callback){
     getStudentCommentDayly(queryinfo.schoolid,begintime,endtime,proxy.done('CommentStudentCount'))
     // 投诉数量
     getStudentComplaintDayly(queryinfo.schoolid,begintime,endtime,proxy.done('ComplaintStudentCount'))
-
-
 };
 
 // 考试信息列表 获取考试月份
