@@ -13,7 +13,10 @@ exports.resBaseUserInfo=function(user){
     this.email=user.email;
     this.headportrait =user.headportrait;
     this.carmodel=user.carmodel;
-    this.subject=user.subject;
+    this.subject={
+        "subjectid": user.subject.subjectid,
+        "name": user.subject.name
+    };
     this.logintime=user.logintime;
     this.invitationcode=user.invitationcode||"";
     this.applystate=user.applystate;
@@ -30,6 +33,4 @@ exports.resBaseUserInfo=function(user){
     this.subjecttwo=user.subjecttwo;
     this.subjectthree=user.subjectthree;
     this.vipserverlist=user.vipserverlist;
-    this.subject._id="";
-
 };
