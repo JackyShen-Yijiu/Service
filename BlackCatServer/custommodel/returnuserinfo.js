@@ -30,7 +30,6 @@ exports.resBaseUserInfo=function(user){
     this.subjecttwo=user.subjecttwo;
     this.subjectthree=user.subjectthree;
     this.vipserverlist=user.vipserverlist;
-    if(!this.subject._id){
-        this.subject._id="";
-    }
+    this.subject._id="";
+
 };
