@@ -1,7 +1,7 @@
 /**
  * Created by v-lyf on 2015/9/2.
  */
-//·µ»ØÓÃ»§»ù±¾ÐÅÏ¢
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 exports.resBaseUserInfo=function(user){
     //console.log(user);
     this.userid;
@@ -15,7 +15,7 @@ exports.resBaseUserInfo=function(user){
     this.carmodel=user.carmodel;
     this.subject=user.subject;
     this.logintime=user.logintime;
-    this.invitationcode=user.invitationcode;
+    this.invitationcode=user.invitationcode||"";
     this.applystate=user.applystate;
     this.applyschoolinfo=user.applyschoolinfo;
     this.displayuserid=user.displayuserid;
@@ -30,4 +30,7 @@ exports.resBaseUserInfo=function(user){
     this.subjecttwo=user.subjecttwo;
     this.subjectthree=user.subjectthree;
     this.vipserverlist=user.vipserverlist;
+    if(!this.subject._id){
+        this.subject._id="";
+    }
 };

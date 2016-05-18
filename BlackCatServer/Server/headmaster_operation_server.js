@@ -1453,6 +1453,9 @@ exports.getCommentDetails=function(queryinfo,callback){
     else {
         commentlevel=[0,1];
     }
+    //console.log(queryinfo);
+    //console.log(begintime);
+    //console.log(enddate);
     reservationmodel.find(
         {"driveschool":new mongodb.ObjectId(queryinfo.schoolid),
             "is_comment":true
@@ -1470,7 +1473,6 @@ exports.getCommentDetails=function(queryinfo,callback){
             if(err){
                 return call("查询投诉信息出错："+err)
             }
-
             process.nextTick(function(){
                 var complaintlist=[];
                 data.forEach(function(r,index){
