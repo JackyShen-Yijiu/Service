@@ -124,6 +124,7 @@ exports.getMyCourseoneday=function(coachid,userid,date ,callback){
 }
 
 var getCoachCourse=function(coachid,date ,callback){
+    console.log(coachid);
     coachmode.findById(new mongodb.ObjectId(coachid),function(err,coachdata){
         if(err){
            return callback("查询教练出错："+err);

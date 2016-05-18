@@ -1635,7 +1635,7 @@ exports.getUsefulCoachList=function(useid,index,searchname,callback){
         coachmode.find({is_lock:false,is_validation:true,
             driveschool:new mongodb.ObjectId(user.applyschool),
             name:new RegExp(searchname),
-            serverclasslist:{'$in':[user.applyclasstype]},
+            //serverclasslist:{'$in':[user.applyclasstype]},
             //"carmodel.modelsid":user.carmodel.modelsid,
         "subject.subjectid":{'$in':[user.subject.subjectid]}})
             .sort({"passrate": -1})
