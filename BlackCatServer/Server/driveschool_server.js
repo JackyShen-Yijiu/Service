@@ -30,7 +30,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
     if (searchinfo.licensetype!=""&&parseInt(searchinfo.licensetype)!=0){
         searchcondition.licensetype={"$in":[searchinfo.licensetype]}
     }
-    var ordercondition={};
+    var ordercondition={"privilegelevel":-1};
     // 0 默认 1距离 2 评分  3 价格
     if(searchinfo.ordertype==2){
         ordercondition.schoollevel=-1;
@@ -45,6 +45,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
         .sort(ordercondition)
         .skip((searchinfo.index-1)*searchinfo.count)
         .limit(searchinfo.count)
+
         .exec(function(err,driveschool){
             if (err ) {
                 console.log(err);
@@ -72,7 +73,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
                             commentcount: r.commentcount? r.commentcount:0,
                             passingrate: r.passingrate
                         };
-                        if(oneschool.name.indexOf("一步")>-1){
+                        if(oneschool.name.indexOf("一步")>-1||oneschool.name.indexOf("一众")>-1){
                             driveschoollist.unshift(oneschool);
                         }
                         else {
