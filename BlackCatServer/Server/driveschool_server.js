@@ -73,7 +73,8 @@ exports.searchDriverSchool=function(searchinfo,callback){
                             commentcount: r.commentcount? r.commentcount:0,
                             passingrate: r.passingrate
                         };
-                        if(oneschool.name.indexOf("一步")>-1||oneschool.name.indexOf("一众")>-1){
+                        //oneschool.name.indexOf("一步")>-1||
+                        if(oneschool.name.indexOf("一众")>-1){
                             driveschoollist.unshift(oneschool);
                         }
                         else {
@@ -83,7 +84,7 @@ exports.searchDriverSchool=function(searchinfo,callback){
                         //  r.restaurantId = r._id;
                         // delete(r._id);
                     });
-                     if (searchinfo.ordertype==0||searchinfo.ordertype==1)
+                     if (searchinfo.ordertype==1)
                      {
                          driveschoollist=  _.sortBy(driveschoollist,"distance")
                      }
