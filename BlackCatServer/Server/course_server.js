@@ -461,7 +461,12 @@ exports.postReservation=function(reservationinfo,callback){
                     return callback("您所报的驾照类型与教练教的不同，无法预约");
                 }
                 // 判断班级
-                if(coachdata.serverclasslist.indexOf(userdata.applyclasstype)==-1){
+                if(coachdata.serverclasslist) {
+                    if (coachdata.serverclasslist.indexOf(userdata.applyclasstype) == -1) {
+                        return callback("教练不服务所报的班级，无法报名");
+                    }
+                }else
+                {
                     return callback("教练不服务所报的班级，无法报名");
                 }
 
