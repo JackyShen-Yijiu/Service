@@ -40,7 +40,7 @@ exports.sendsmscode=function(mobile,callback) {
         var sms ="【"+config.companyname+"】"+smscode+", 您的"+config.appname+"注册／登陆验证码，三分钟内有效";
         var options  = {
             "sn": "SDK-WSS-010-08341",
-            "pwd": " ",
+            "pwd": "DD6929B3420DA8E2785261FBF1074440",
             "mobile": mobilecode,
             "content": sms,
             "ext":smsconfig.ext,
