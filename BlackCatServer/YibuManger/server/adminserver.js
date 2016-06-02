@@ -53,6 +53,7 @@ var defaultFun = {
             if (err) {
                 return callback(err);
             }
+            console.log(count);
             return callback(null, count);
         })
     },
@@ -1669,6 +1670,9 @@ exports.getSchoolist = function (req, res) {
         .limit(limit)
         .sort({createtime: -1})
         .exec(function (err, data) {
+            if(err) {
+                console.log(err);
+            }
             defaultFun.getSchoolcount(schoolname, function (err, schoolcount) {
                 var begintime = (new Date()).clearTime();
                 var endtime = (new Date()).addDays(1).clearTime();
