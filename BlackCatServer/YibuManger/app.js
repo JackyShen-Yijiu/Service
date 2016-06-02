@@ -62,6 +62,12 @@ app.use(function(req, res, next){
   next();
 });
 
+app.use(function(req, res, next) {
+    if(req.query && req.query.limit) {
+        req.query.limit = req.query.limit * 1;
+    }
+    next();
+});
 
 app.use('/', admin);
 app.use('/admin', validat);
